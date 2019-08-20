@@ -1,0 +1,27 @@
+//
+//  GKHttpTaskDelegate.h
+//  Zegobird
+//
+//  Created by 罗海雄 on 2019/3/15.
+//  Copyright © 2019 xiaozhai. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class GKHttpTask;
+
+///代理
+@protocol GKHttpTaskDelegate <NSObject>
+
+@optional
+
+///请求失败
+- (void)taskDidFail:(__kindof GKHttpTask*) task;
+
+///请求成功
+- (void)taskDidSuccess:(__kindof GKHttpTask*) task;
+
+///请求完成
+- (void)taskDidComplete:(__kindof GKHttpTask*) task;
+
+@end

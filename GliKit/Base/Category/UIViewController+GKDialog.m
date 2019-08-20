@@ -1,0 +1,498 @@
+//
+//  UIViewController+GKDialog.m
+//  Zegobird
+//
+//  Created by 罗海雄 on 2019/3/19.
+//  Copyright © 2019 xiaozhai. All rights reserved.
+//
+
+#import "UIViewController+GKDialog.h"
+#import "UIViewController+GKKeyboard.h"
+#import "UIView+GKAutoLayout.h"
+#import "GKBaseViewController.h"
+#import "GKContainer.h"
+
+static char GKisShowAsDialogKey;
+static char GKDialogKey;
+static char GKShouldDismissDialogOnTapTranslucentKey;
+static char GKDialogBackgroundViewKey;
+static char GKDialogShowAnimateKey;
+static char GKDialogDismissAnimateKey;
+static char GKisDialogShowingKey;
+static char GKDialogShowCompletionHandlerKey;
+static char GKDialogDismissCompletionHandlerKey;
+static char GKDialogShouldAnimateKey;
+static char GKTapDialogBackgroundGestureRecognizerKey;
+static char GKIsDialogViewDidLayoutSubviewsKey;
+static char GKInPresentWayKey;
+
+@implementation UIViewController (GKDialog)
+
++ (void)load
+{
+    SEL selectors[] = {
+        @selector(viewWillAppear:),
+        @selector(viewWillDisappear:),
+        @selector(viewDidAppear:),
+        @selector(viewDidLoad),
+        @selector(viewDidLayoutSubviews)
+    };
+    
+    int count = sizeof(selectors) / sizeof(SEL);
+    for(int i = 0;i < count;i ++){
+        [self gk_exchangeImplementations:selectors[i] prefix:@"gk_dialog_"];
+    }
+}
+
+#pragma mark 视图消失出现
+
+- (void)gk_dialog_viewWillAppear:(BOOL)animated
+{
+    [self gk_dialog_viewWillAppear:animated];
+    if(self.isShowAsDialog){
+        [self setIsDialogShowing:YES];
+    }
+}
+
+- (void)gk_dialog_viewWillDisappear:(BOOL)animated
+{
+    [self gk_dialog_viewWillDisappear:animated];
+    if(self.isShowAsDialog){
+        [self setIsDialogShowing:NO];
+    }
+}
+
+- (void)gk_dialog_viewDidAppear:(BOOL)animated
+{
+    [self gk_dialog_viewDidAppear:animated];
+    if(self.isShowAsDialog){
+        [self executeShowAnimate];
+    }
+}
+
+#pragma mark view init
+
+- (void)gk_dialog_viewDidLoad {
+    [self gk_dialog_viewDidLoad];
+    
+    if(self.isShowAsDialog){
+        UIView *backgroundView = [UIView new];
+        backgroundView.alpha = 0;
+        backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
+        [self.view insertSubview:backgroundView atIndex:0];
+        
+        [backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        [self setDialogBackgroundView:backgroundView];
+        
+        self.dialogShouldAnimate = YES;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        self.view.backgroundColor = [UIColor clearColor];
+        
+        self.shouldDismissDialogOnTapTranslucent = YES;
+    }
+}
+
+- (void)gk_dialog_viewDidLayoutSubviews
+{
+    [self gk_dialog_viewDidLayoutSubviews];
+    [self setIsDialogViewDidLayoutSubviews:YES];
+    
+    if(self.isShowAsDialog){
+        [self executeShowAnimate];
+    }
+}
+
+#pragma mark property
+
+- (void)setIsShowAsDialog:(BOOL)isShowAsDialog
+{
+    objc_setAssociatedObject(self, &GKisShowAsDialogKey, @(isShowAsDialog), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isShowAsDialog
+{
+    return [objc_getAssociatedObject(self, &GKisShowAsDialogKey) boolValue];
+}
+
+- (void)setDialog:(UIView *)dialog
+{
+#ifdef DEBUG
+    if([self isKindOfClass:[GKBaseViewController class]]){
+        GKBaseViewController *vc = (GKBaseViewController*)self;
+        NSAssert(vc.container == nil, @"如果 UIViewController 是 GKBaseViewController 或者其子类，并且没有使用xib，dialog属性将自动设置为 GKContainer");
+    }
+#endif
+    objc_setAssociatedObject(self, &GKDialogKey, dialog, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView*)dialog
+{
+    if([self isKindOfClass:[GKBaseViewController class]]){
+        GKBaseViewController *vc = (GKBaseViewController*)self;
+        if(vc.container != nil){
+            return vc.container;
+        }
+    }
+    
+    return objc_getAssociatedObject(self, &GKDialogKey);
+}
+
+- (void)setShouldDismissDialogOnTapTranslucent:(BOOL) flag
+{
+    if(self.shouldDismissDialogOnTapTranslucent != flag){
+        if(!self.tapDialogBackgroundGestureRecognizer){
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissDialog)];
+            [self.dialogBackgroundView addGestureRecognizer:tap];
+            [self setTapDialogBackgroundGestureRecognizer:tap];
+        }
+        
+        objc_setAssociatedObject(self, &GKShouldDismissDialogOnTapTranslucentKey, @(flag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        self.tapDialogBackgroundGestureRecognizer.enabled = flag;
+    }
+}
+
+- (BOOL)shouldDismissDialogOnTapTranslucent
+{
+    return [objc_getAssociatedObject(self, &GKShouldDismissDialogOnTapTranslucentKey) boolValue];
+}
+
+- (void)setTapDialogBackgroundGestureRecognizer:(UITapGestureRecognizer*) tap
+{
+    objc_setAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey, tap, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIGestureRecognizer*)tapDialogBackgroundGestureRecognizer
+{
+    return objc_getAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey);
+}
+
+- (void)setDialogBackgroundView:(UIView *)dialogBackgroundView
+{
+    objc_setAssociatedObject(self, &GKDialogBackgroundViewKey, dialogBackgroundView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView*)dialogBackgroundView
+{
+    return objc_getAssociatedObject(self, &GKDialogBackgroundViewKey);
+}
+
+- (void)setDialogShowAnimate:(GKDialogAnimate)dialogShowAnimate
+{
+    objc_setAssociatedObject(self, &GKDialogShowAnimateKey, @(dialogShowAnimate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (GKDialogAnimate)dialogShowAnimate
+{
+    return [objc_getAssociatedObject(self, &GKDialogShowAnimateKey) integerValue];
+}
+
+- (void)setDialogDismissAnimate:(GKDialogAnimate)dialogDismissAnimate
+{
+    objc_setAssociatedObject(self, &GKDialogDismissAnimateKey, @(dialogDismissAnimate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (GKDialogAnimate)dialogDismissAnimate
+{
+    return [objc_getAssociatedObject(self, &GKDialogDismissAnimateKey) integerValue];
+}
+
+- (void)setIsDialogShowing:(BOOL)isDialogShowing
+{
+    objc_setAssociatedObject(self, &GKisDialogShowingKey, @(isDialogShowing), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isDialogShowing
+{
+    return [objc_getAssociatedObject(self, &GKisDialogShowingKey) boolValue];
+}
+
+- (void)setDialogShowCompletionHandler:(void (^)(void)) handler
+{
+    objc_setAssociatedObject(self, &GKDialogShowCompletionHandlerKey, handler, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void(^)(void))dialogShowCompletionHandler
+{
+    return objc_getAssociatedObject(self, &GKDialogShowCompletionHandlerKey);
+}
+
+- (void)setDialogDismissCompletionHandler:(void (^)(void)) handler
+{
+    objc_setAssociatedObject(self, &GKDialogDismissCompletionHandlerKey, handler, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void(^)(void))dialogDismissCompletionHandler
+{
+    return objc_getAssociatedObject(self, &GKDialogDismissCompletionHandlerKey);
+}
+
+- (void)setDialogShouldAnimate:(BOOL) dialogShouldAnimate
+{
+    objc_setAssociatedObject(self, &GKDialogShouldAnimateKey, @(dialogShouldAnimate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)dialogShouldAnimate
+{
+    return [objc_getAssociatedObject(self, &GKDialogShouldAnimateKey) boolValue];
+}
+
+- (void)setIsDialogViewDidLayoutSubviews:(BOOL) flag
+{
+    objc_setAssociatedObject(self, &GKIsDialogViewDidLayoutSubviewsKey, @(flag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isDialogViewDidLayoutSubviews
+{
+    return [objc_getAssociatedObject(self, &GKIsDialogViewDidLayoutSubviewsKey) boolValue];
+}
+
+- (BOOL)inPresentWay
+{
+    return [objc_getAssociatedObject(self, &GKInPresentWayKey) boolValue];
+}
+
+- (void)setInPresentWay:(BOOL) value
+{
+    objc_setAssociatedObject(self, &GKInPresentWayKey, @(value), OBJC_ASSOCIATION_RETAIN);
+}
+
+#pragma mark public method
+
+- (void)showAsDialog
+{
+    [self showAsDialogInViewController:[[AppDelegate instance].window.rootViewController gk_topestPresentedViewController]];
+}
+
+- (void)showAsDialogInViewController:(UIViewController *)viewController
+{
+    [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil];
+}
+
+- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (^)(UIView *, UIView *))layoutHandler
+{
+    if(self.isDialogShowing){
+        return;
+    }
+    [self setIsShowAsDialog:YES];
+    self.dialogShouldAnimate = YES;
+    
+    if(inPresentWay){
+        ///设置使背景透明
+        [self setInPresentWay:YES];
+        self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
+    }else{
+        [self setIsDialogShowing:YES];
+        [self willMoveToParentViewController:viewController];
+        [viewController.view addSubview:self.view];
+        [viewController addChildViewController:self];
+        if(layoutHandler){
+            layoutHandler(self.view, viewController.view);
+        }else{
+            [self.view mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(viewController.view);
+            }];
+        }
+        [self didMoveToParentViewController:viewController];
+    }
+}
+
+///执行出场动画
+- (void)executeShowAnimate
+{
+    //出场动画
+    if(self.dialog && self.isDialogViewDidLayoutSubviews){
+        if(self.dialogShouldAnimate){
+            [self setDialogShouldAnimate:NO];
+            
+            switch (self.dialogShowAnimate) {
+                case GKDialogAnimateNone : {
+                    self.dialogBackgroundView.alpha = 1.0;
+                }
+                    break;
+                case GKDialogAnimateScale : {
+                    
+                    self.dialog.alpha = 0;
+                    [UIView animateWithDuration:0.25 animations:^(void){
+                        
+                        self.dialogBackgroundView.alpha = 1.0;
+                        self.dialog.alpha = 1.0;
+                        GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"transform.scale"];
+                        animation.fromValue = @(1.3);
+                        animation.toValue = @(1.0);
+                        animation.duration = 0.25;
+                        [self.dialog.layer addAnimation:animation forKey:@"scale"];
+                        
+                    }];
+                }
+                    break;
+                case GKDialogAnimateFromTop : {
+                    [UIView animateWithDuration:0.25 animations:^(void){
+                        
+                        self.dialogBackgroundView.alpha = 1.0;
+                        
+                        GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
+                        animation.fromValue = @(-self.dialog.mj_h / 2.0);
+                        animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
+                        animation.toValue = @(self.dialog.layer.position.y);
+                        animation.duration = 0.25;
+                        [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    }];
+                }
+                    break;
+                case GKDialogAnimateFromBottom : {
+                    
+                    [UIView animateWithDuration:0.25 animations:^(void){
+                        
+                        self.dialogBackgroundView.alpha = 1.0;
+                        
+                        GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
+                        animation.fromValue = @(self.view.mj_h + self.dialog.mj_h / 2);
+                        animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
+                        animation.toValue = @(self.dialog.layer.position.y);
+                        animation.duration = 0.25;
+                        [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    }];
+                }
+                    break;
+                case GKDialogAnimateCustom : {
+                    
+                    [self didExecuteDialogShowCustomAnimate:^(BOOL finish){
+                        
+                    }];
+                }
+                    break;
+            }
+        }else{
+            self.dialogBackgroundView.alpha = 1.0;
+        }
+    }
+    
+}
+
+- (void)dismissDialog
+{
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    switch (self.dialogDismissAnimate) {
+        case GKDialogAnimateNone : {
+            [self onDialogDismiss];
+        }
+            break;
+        case GKDialogAnimateScale : {
+            
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                [self setNeedsStatusBarAppearanceUpdate];
+                self.dialogBackgroundView.alpha = 0;
+                self.dialog.alpha = 0;
+                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"transform.scale"];
+                animation.fromValue = @(1.0);
+                animation.toValue = @(1.3);
+                animation.duration = 0.25;
+                animation.fillMode = kGKFillModeForwards;
+                animation.removedOnCompletion = NO;
+                [self.dialog.layer addAnimation:animation forKey:@"scale"];
+                
+            }completion:^(BOOL finish){
+                [self onDialogDismiss];
+            }];
+        }
+            break;
+        case GKDialogAnimateFromTop : {
+            
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                [self setNeedsStatusBarAppearanceUpdate];
+                self.dialogBackgroundView.alpha = 0;
+                
+                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
+                animation.fromValue = @(self.dialog.layer.position.y);
+                animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
+                animation.toValue = @(- self.dialog.mj_h / 2.0);
+                animation.duration = 0.25;
+                animation.fillMode = kGKFillModeForwards;
+                animation.removedOnCompletion = NO;
+                [self.dialog.layer addAnimation:animation forKey:@"position"];
+                
+            }completion:^(BOOL finish){
+                [self onDialogDismiss];
+            }];
+        }
+            break;
+        case GKDialogAnimateFromBottom : {
+            
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.dialogBackgroundView.alpha = 0;
+                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
+                animation.fromValue = @(self.dialog.layer.position.y);
+                animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
+                animation.toValue = @(self.view.mj_h + self.dialog.mj_h / 2);
+                animation.duration = 0.25;
+                animation.fillMode = kGKFillModeForwards;
+                animation.removedOnCompletion = NO;
+                [self.dialog.layer addAnimation:animation forKey:@"position"];
+            }completion:^(BOOL finish){
+                
+                [self onDialogDismiss];
+            }];
+        }
+            break;
+        case GKDialogAnimateCustom : {
+            
+            WeakObj(self);
+            [self didExecuteDialogDismissCustomAnimate:^(BOOL finish){
+                
+                [selfWeak onDialogDismiss];
+            }];
+        }
+            break;
+    }
+}
+
+///消失动画完成
+- (void)onDialogDismiss
+{
+    if([self inPresentWay]){
+        [self dismissViewControllerAnimated:NO completion:self.dialogDismissCompletionHandler];
+    }else{
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+        !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
+    }
+}
+
+- (void)didExecuteDialogShowCustomAnimate:(void(^)(BOOL finish)) completion
+{
+    !completion ?: completion(YES);
+}
+
+- (void)didExecuteDialogDismissCustomAnimate:(void(^)(BOOL finish)) completion
+{
+    !completion ?: completion(YES);
+}
+
+- (void)adjustDialogPosition
+{
+    CGFloat y = 0;
+    if(self.keyboardHidden){
+        y = self.view.mj_h / 2.0;
+    }else{
+        y = MIN(self.view.mj_h / 2.0, self.view.mj_h - self.keyboardFrame.size.height - self.dialog.mj_h / 2.0 - 10.0);
+    }
+    
+    NSLayoutConstraint *constraint = self.dialog.gk_centerYLayoutConstraint;
+    [UIView animateWithDuration:0.25 animations:^(void){
+        
+        if(constraint){
+            constraint.constant = y - self.view.mj_h / 2.0;
+            [self.view layoutIfNeeded];
+        }else{
+            self.dialog.center = CGPointMake(self.dialog.center.x, y - self.view.mj_h / 2.0);
+        }
+    }];
+}
+
+@end

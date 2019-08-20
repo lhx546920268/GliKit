@@ -1,0 +1,84 @@
+//
+//  GKProgressHUD.h
+//  Zegobird
+//
+//  Created by 罗海雄 on 2019/3/19.
+//  Copyright © 2019 xiaozhai. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+///状态
+typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
+    
+    ///隐藏 什么都没
+    GKProgressHUDStatusNone,
+    
+    ///加载中
+    GKProgressHUDStatusLoading,
+    
+    ///提示错误信息
+    GKProgressHUDStatusError,
+    
+    ///提示成功信息
+    GKProgressHUDStatusSuccess,
+    
+    ///警告
+    GKProgressHUDStatusWarning,
+};
+
+///加载指示器 和 提示信息
+@interface GKProgressHUD : UIView
+
+/**
+ 提示信息
+ */
+@property(nonatomic,copy) NSString *msg;
+
+/**
+ 内容视图是否延迟显示 0 不延迟
+ */
+@property(nonatomic,assign) NSTimeInterval delay;
+
+/**
+ 黑色半透明背景视图
+ */
+@property(nonatomic,readonly) UIView *translucentView;
+
+/**
+ 提示信息
+ */
+@property(nonatomic,readonly) UILabel *textLabel;
+
+/**
+ 加载指示器
+ */
+@property(nonatomic,readonly) UIActivityIndicatorView *activityIndicatorView;
+
+/**
+ 提示图标
+ */
+@property(nonatomic,readonly) UIImageView *imageView;
+
+/**
+ 状态
+ */
+@property(nonatomic,assign) GKProgressHUDStatus status;
+
+/**
+ 消失回调
+ */
+@property(nonatomic,copy) void(^dismissHandler)(void);
+
+///显示
+- (void)show;
+
+///关闭 loading
+- (void)dismissProgress;
+
+///关闭所有
+- (void)dismiss;
+
+@end
+
+
