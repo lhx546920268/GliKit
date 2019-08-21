@@ -8,6 +8,8 @@
 
 #import "GKProgressHUD.h"
 #import "NSString+GKUtils.h"
+#import "UIColor+GKUtils.h"
+#import "UIView+GKUtils.h"
 
 ///垂直间距
 static const CGFloat GKProgressHUDVerticalSpacing = 12.0f;
@@ -41,13 +43,18 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 
 @synthesize activityIndicatorView = _activityIndicatorView;
 @synthesize imageView = _imageView;
+@synthesize delay = _delay;
+@synthesize dismissHandler = _dismissHandler;
+@synthesize status = _status;
+@synthesize text = _text;
+
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self){
         
-        self.font = [UIFont appFontWithSize:13];
+        self.font = [UIFont systemFontOfSize:13];
         self.minimumSize = CGSizeMake(200, 116);
         self.maximumSize = CGSizeMake(200, 300);
         self.status = GKProgressHUDStatusNone;
@@ -114,7 +121,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.font = self.font;
         _textLabel.textColor = [UIColor whiteColor];
-        _textLabel.text = _msg;
+        _textLabel.text = _text;
         _textLabel.numberOfLines = 0;
         [_translucentView addSubview:_textLabel];
     }
@@ -129,7 +136,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     [self adjustViews];
 }
 
-#pragma mark timer
+//MARK: timer
 
 ///开始计时器
 - (void)startTimerWithInterval:(NSTimeInterval) interval
@@ -167,13 +174,13 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     }
 }
 
-#pragma mark- property
+//MARK: property
 
-- (void)setMsg:(NSString *)msg
+- (void)setText:(NSString *)text
 {
-    if(![_msg isEqualToString:msg]){
-        _msg = [msg copy];
-        _textSize = [_msg gk_stringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2];
+    if(![_text isEqualToString:text]){
+        _text = [text copy];
+        _textSize = [_text gk_stringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2];
         _textSize.width = ceil(_textSize.width);
         _textSize.height = ceil(_textSize.height);
         
@@ -185,7 +192,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
             _textSize.height = self.maximumSize.height;
         }
         if(_textLabel){
-            _textLabel.text = msg;
+            _textLabel.text = _text;
         }
     }
 }
@@ -238,17 +245,17 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         
         BOOL imageUse = self.status == GKProgressHUDStatusError || self.status == GKProgressHUDStatusSuccess || self.status == GKProgressHUDStatusWarning;
         BOOL indicatorUse = self.status == GKProgressHUDStatusLoading;
-        BOOL textUse = ![NSString isEmpty:self.msg];
+        BOOL textUse = ![NSString isEmpty:self.text];
         
         CGFloat realContentWidth = GKProgressHUDHorizontalSpacing * 2;
         CGFloat realConetnHeight = 0;
         if(imageUse){
-            realConetnHeight += self.imageView.mj_h;
-            realContentWidth = MAX(textUse ? self.textSize.width : 0, self.imageView.mj_w);
+            realConetnHeight += self.imageView.gkHeight;
+            realContentWidth = MAX(textUse ? self.textSize.width : 0, self.imageView.gkWidth);
             
         }else if(indicatorUse){
-            realConetnHeight += self.activityIndicatorView.mj_h;
-            realContentWidth = MAX(textUse ? self.textSize.width : 0, self.activityIndicatorView.mj_w);
+            realConetnHeight += self.activityIndicatorView.gkHeight;
+            realContentWidth = MAX(textUse ? self.textSize.width : 0, self.activityIndicatorView.gkWidth);
         }
         
         if(textUse){
@@ -258,16 +265,16 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         CGFloat contentWidth = MAX(realContentWidth, self.minimumSize.width);
         CGFloat contentHeight = MAX(self.minimumSize.height, realConetnHeight + GKProgressHUDVerticalSpacing * 2);
         
-        CGRect rect = CGRectMake((self.mj_w - contentWidth) / 2.0, (self.mj_h - contentHeight) / 2.0, contentWidth, contentHeight);
+        CGRect rect = CGRectMake((self.gkWidth - contentWidth) / 2.0, (self.gkHeight - contentHeight) / 2.0, contentWidth, contentHeight);
         self.translucentView.frame = rect;
         
         CGFloat y = (contentHeight - realConetnHeight) / 2;
         if(imageUse){
-            self.imageView.center = CGPointMake(contentWidth / 2, y + self.imageView.mj_h / 2.0);
-            y += self.imageView.mj_h;
+            self.imageView.center = CGPointMake(contentWidth / 2, y + self.imageView.gkHeight / 2.0);
+            y += self.imageView.gkHeight;
         }else if (indicatorUse){
-            self.activityIndicatorView.center = CGPointMake(contentWidth / 2, y + self.activityIndicatorView.mj_h / 2.0);
-            y += self.activityIndicatorView.mj_h;
+            self.activityIndicatorView.center = CGPointMake(contentWidth / 2, y + self.activityIndicatorView.gkHeight / 2.0);
+            y += self.activityIndicatorView.gkHeight;
         }
         
         if(textUse){

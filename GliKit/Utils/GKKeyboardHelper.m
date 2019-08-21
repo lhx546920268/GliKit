@@ -48,7 +48,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark 通知
+//MARK: 通知
 
 ///键盘显示
 - (void)keyboardWillShow:(NSNotification*) notification

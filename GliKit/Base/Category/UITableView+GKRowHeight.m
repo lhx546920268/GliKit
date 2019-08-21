@@ -63,7 +63,7 @@
     }
 }
 
-#pragma mark - data change
+//MARK: - data change
 
 - (void)gk_rowHeight_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
@@ -161,7 +161,7 @@
     [self gk_rowHeight_reloadData];
 }
 
-#pragma mark get and set
+//MARK: get and set
 
 - (NSNumber*)gk_rowHeightForIndexPath:(NSIndexPath *)indexPath
 {
@@ -186,7 +186,7 @@
     info.headerHeight = height;
 }
 
-- (NSNumber*)gk_headerHeightForSection:(NSInteger) section
+- (NSNumber*)gkHeaderHeightForSection:(NSInteger) section
 {
     GKTableViewSectionInfo *info = [[self gk_rowHeightCaches] objectForKey:@(section)];
     return info.headerHeight;
@@ -198,13 +198,13 @@
     info.footerHeight = height;
 }
 
-- (NSNumber*)gk_footerHeightForSection:(NSInteger) section
+- (NSNumber*)gkFooterHeightForSection:(NSInteger) section
 {
     GKTableViewSectionInfo *info = [[self gk_rowHeightCaches] objectForKey:@(section)];
     return info.footerHeight;
 }
 
-#pragma mark cell大小缓存
+//MARK: cell大小缓存
 
 ///缓存cell大小的数组
 - (NSMutableDictionary<NSNumber*, GKTableViewSectionInfo* >*)gk_rowHeightCaches

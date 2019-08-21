@@ -1,29 +1,29 @@
 //
-//  UIViewController+CAEmptyView.m
+//  UIViewController+GKEmptyView.m
 //  Zegobird
 //
 //  Created by 罗海雄 on 2019/7/19.
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import "UIViewController+CAEmptyView.h"
-#import "UIView+CAEmptyView.h"
+#import "UIViewController+GKEmptyView.h"
+#import "UIView+GKEmptyView.h"
 
-@implementation UIViewController (CAEmptyView)
+@implementation UIViewController (GKEmptyView)
 
-- (void)setCa_showEmptyView:(BOOL)ca_showEmptyView
+- (void)setGkShowEmptyView:(BOOL)gkShowEmptyView
 {
-    self.view.ca_showEmptyView = ca_showEmptyView;
+    self.view.gkShowEmptyView = gkShowEmptyView;
 }
 
-- (BOOL)ca_showEmptyView
+- (BOOL)gkShowEmptyView
 {
-    return self.view.ca_showEmptyView;
+    return self.view.gkShowEmptyView;
 }
 
-- (GKEmptyView*)ca_emptyView
+- (GKEmptyView*)gkEmptyView
 {
-    return self.view.ca_emptyView;
+    return self.view.gkEmptyView;
 }
 
 @end

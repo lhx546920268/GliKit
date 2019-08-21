@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */; };
+		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
 		CED0D2EF230BC8780057D405 /* GKAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertViewController.m */; };
 		CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22E230BC6250057D405 /* GKAlertProps.m */; };
 		CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D231230BC6250057D405 /* GKAlertAction.m */; };
@@ -27,11 +28,9 @@
 		CED0D32B230BC8780057D405 /* GKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2D7230BC6250057D405 /* GKTableViewController.m */; };
 		CED0D32C230BC8780057D405 /* GKBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2D8230BC6250057D405 /* GKBaseNavigationController.m */; };
 		CED0D32D230BC8780057D405 /* GKBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2D9230BC6250057D405 /* GKBaseViewController.m */; };
-		CED0D32F230BC8780057D405 /* CAScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2DB230BC6250057D405 /* CAScrollViewController.m */; };
+		CED0D32F230BC8780057D405 /* GKScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2DB230BC6250057D405 /* GKScrollViewController.m */; };
 		CED0D330230BC8780057D405 /* GKPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2DC230BC6250057D405 /* GKPageViewController.m */; };
 		CED0D332230BC8780057D405 /* GKCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2DE230BC6250057D405 /* GKCollectionViewController.m */; };
-		CED0D338230BC8780057D405 /* CARefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2E5230BC6250057D405 /* CARefreshHeader.m */; };
-		CED0D339230BC8780057D405 /* CARefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2E6230BC6250057D405 /* CARefreshFooter.m */; };
 		CED0D33A230BC8780057D405 /* GKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2E7230BC6250057D405 /* GKContainer.m */; };
 		CED0D33C230BC8780057D405 /* GKNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2E9230BC6250057D405 /* GKNavigationBar.m */; };
 		CED0D340230BC8780057D405 /* GKSystemNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2ED230BC6250057D405 /* GKSystemNavigationBar.m */; };
@@ -113,6 +112,18 @@
 		CED0D446230BED900057D405 /* NSString+GKWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D444230BED900057D405 /* NSString+GKWeb.m */; };
 		CED0D44A230BF2210057D405 /* UIApplication+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D449230BF2210057D405 /* UIApplication+GKTheme.m */; };
 		CED0D44F230BF9E80057D405 /* GKKeyboardHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D44D230BF9E80057D405 /* GKKeyboardHelper.m */; };
+		CED3A7F4230D443200C304B3 /* UIViewController+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EA230D443100C304B3 /* UIViewController+GKEmptyView.m */; };
+		CED3A7F5230D443200C304B3 /* UICollectionView+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EB230D443200C304B3 /* UICollectionView+GKEmptyView.m */; };
+		CED3A7F6230D443200C304B3 /* UITableView+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EC230D443200C304B3 /* UITableView+GKEmptyView.m */; };
+		CED3A7F7230D443200C304B3 /* UIView+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EF230D443200C304B3 /* UIView+GKEmptyView.m */; };
+		CED3A7F8230D443200C304B3 /* UIScrollView+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7F0230D443200C304B3 /* UIScrollView+GKEmptyView.m */; };
+		CED3A80A230D45A000C304B3 /* UIScrollView+GKRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7FB230D44EE00C304B3 /* UIScrollView+GKRefresh.m */; };
+		CED3A80B230D45A000C304B3 /* GKDataControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A805230D44EE00C304B3 /* GKDataControl.m */; };
+		CED3A80C230D45A000C304B3 /* GKDefaultLoadMoreControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A808230D44EE00C304B3 /* GKDefaultLoadMoreControl.m */; };
+		CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A807230D44EE00C304B3 /* GKDefaultRefreshControl.m */; };
+		CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A800230D44EE00C304B3 /* GKLoadMoreControl.m */; };
+		CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */; };
+		CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -131,6 +142,8 @@
 		0BEDB41C20325014EA1F86BB /* Pods-GliKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.release.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.release.xcconfig"; sourceTree = "<group>"; };
 		13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
+		CEBFAA48230CD5DD007B8D47 /* UIColor+GKTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+GKTheme.h"; sourceTree = "<group>"; };
+		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
 		CED0D1CE230BC5BE0057D405 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED0D1DC230BC6250057D405 /* GKPartialPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPartialPresentTransitionDelegate.h; sourceTree = "<group>"; };
 		CED0D1DE230BC6250057D405 /* CAPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAPresentTransitionDelegate.h; sourceTree = "<group>"; };
@@ -171,7 +184,7 @@
 		CED0D237230BC6250057D405 /* GKAlertHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAlertHeader.m; sourceTree = "<group>"; };
 		CED0D238230BC6250057D405 /* CKAlertCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAlertCell.h; sourceTree = "<group>"; };
 		CED0D23E230BC6250057D405 /* GKBaseWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseWebViewController.m; sourceTree = "<group>"; };
-		CED0D240230BC6250057D405 /* CABaseWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CABaseWebViewController.h; sourceTree = "<group>"; };
+		CED0D240230BC6250057D405 /* GKBaseWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseWebViewController.h; sourceTree = "<group>"; };
 		CED0D24B230BC6250057D405 /* GKSkeletonHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSkeletonHelper.m; sourceTree = "<group>"; };
 		CED0D24C230BC6250057D405 /* GKSkeletonAnimationHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSkeletonAnimationHelper.m; sourceTree = "<group>"; };
 		CED0D24D230BC6250057D405 /* GKSkeletonHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKSkeletonHelper.h; sourceTree = "<group>"; };
@@ -191,16 +204,6 @@
 		CED0D260230BC6250057D405 /* CAAlertUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAAlertUtils.h; sourceTree = "<group>"; };
 		CED0D261230BC6250057D405 /* GKRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKRouter.m; sourceTree = "<group>"; };
 		CED0D264230BC6250057D405 /* GKAppUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAppUtils.m; sourceTree = "<group>"; };
-		CED0D268230BC6250057D405 /* UIView+CAEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+CAEmptyView.m"; sourceTree = "<group>"; };
-		CED0D269230BC6250057D405 /* UIViewController+CAEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+CAEmptyView.m"; sourceTree = "<group>"; };
-		CED0D26A230BC6250057D405 /* UIScrollView+CAEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+CAEmptyView.m"; sourceTree = "<group>"; };
-		CED0D26B230BC6250057D405 /* UITableView+CAEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+CAEmptyView.h"; sourceTree = "<group>"; };
-		CED0D26C230BC6250057D405 /* UICollectionView+CAEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+CAEmptyView.m"; sourceTree = "<group>"; };
-		CED0D26D230BC6250057D405 /* UIView+CAEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+CAEmptyView.h"; sourceTree = "<group>"; };
-		CED0D26E230BC6250057D405 /* UICollectionView+CAEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+CAEmptyView.h"; sourceTree = "<group>"; };
-		CED0D26F230BC6250057D405 /* UITableView+CAEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+CAEmptyView.m"; sourceTree = "<group>"; };
-		CED0D270230BC6250057D405 /* UIScrollView+CAEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+CAEmptyView.h"; sourceTree = "<group>"; };
-		CED0D271230BC6250057D405 /* UIViewController+CAEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CAEmptyView.h"; sourceTree = "<group>"; };
 		CED0D273230BC6250057D405 /* GKEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKEmptyView.m; sourceTree = "<group>"; };
 		CED0D274230BC6250057D405 /* GKEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKEmptyView.h; sourceTree = "<group>"; };
 		CED0D277230BC6250057D405 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
@@ -260,23 +263,19 @@
 		CED0D2D8230BC6250057D405 /* GKBaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseNavigationController.m; sourceTree = "<group>"; };
 		CED0D2D9230BC6250057D405 /* GKBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseViewController.m; sourceTree = "<group>"; };
 		CED0D2DA230BC6250057D405 /* GKCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewController.h; sourceTree = "<group>"; };
-		CED0D2DB230BC6250057D405 /* CAScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CAScrollViewController.m; sourceTree = "<group>"; };
+		CED0D2DB230BC6250057D405 /* GKScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKScrollViewController.m; sourceTree = "<group>"; };
 		CED0D2DC230BC6250057D405 /* GKPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPageViewController.m; sourceTree = "<group>"; };
 		CED0D2DD230BC6250057D405 /* GKTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTableViewController.h; sourceTree = "<group>"; };
 		CED0D2DE230BC6250057D405 /* GKCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewController.m; sourceTree = "<group>"; };
 		CED0D2DF230BC6250057D405 /* GKBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseViewController.h; sourceTree = "<group>"; };
 		CED0D2E0230BC6250057D405 /* GKBaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseNavigationController.h; sourceTree = "<group>"; };
-		CED0D2E1230BC6250057D405 /* CAScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAScrollViewController.h; sourceTree = "<group>"; };
+		CED0D2E1230BC6250057D405 /* GKScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScrollViewController.h; sourceTree = "<group>"; };
 		CED0D2E2230BC6250057D405 /* GKPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPageViewController.h; sourceTree = "<group>"; };
 		CED0D2E4230BC6250057D405 /* GKNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNavigationBar.h; sourceTree = "<group>"; };
-		CED0D2E5230BC6250057D405 /* CARefreshHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CARefreshHeader.m; sourceTree = "<group>"; };
-		CED0D2E6230BC6250057D405 /* CARefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CARefreshFooter.m; sourceTree = "<group>"; };
 		CED0D2E7230BC6250057D405 /* GKContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKContainer.m; sourceTree = "<group>"; };
 		CED0D2E8230BC6250057D405 /* GKSystemNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKSystemNavigationBar.h; sourceTree = "<group>"; };
 		CED0D2E9230BC6250057D405 /* GKNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNavigationBar.m; sourceTree = "<group>"; };
 		CED0D2EA230BC6250057D405 /* GKContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKContainer.h; sourceTree = "<group>"; };
-		CED0D2EB230BC6250057D405 /* CARefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CARefreshFooter.h; sourceTree = "<group>"; };
-		CED0D2EC230BC6250057D405 /* CARefreshHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CARefreshHeader.h; sourceTree = "<group>"; };
 		CED0D2ED230BC6250057D405 /* GKSystemNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSystemNavigationBar.m; sourceTree = "<group>"; };
 		CED0D3DD230BCC110057D405 /* GKCollectionViewFlowFillLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewFlowFillLayout.h; sourceTree = "<group>"; };
 		CED0D3DE230BCC110057D405 /* GKCollectionViewFlowFillLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewFlowFillLayout.m; sourceTree = "<group>"; };
@@ -354,6 +353,30 @@
 		CED0D44C230BF7020057D405 /* GKBaseDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseDefines.h; sourceTree = "<group>"; };
 		CED0D44D230BF9E80057D405 /* GKKeyboardHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKKeyboardHelper.m; sourceTree = "<group>"; };
 		CED0D44E230BF9E80057D405 /* GKKeyboardHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKKeyboardHelper.h; sourceTree = "<group>"; };
+		CED3A7EA230D443100C304B3 /* UIViewController+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GKEmptyView.m"; sourceTree = "<group>"; };
+		CED3A7EB230D443200C304B3 /* UICollectionView+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+GKEmptyView.m"; sourceTree = "<group>"; };
+		CED3A7EC230D443200C304B3 /* UITableView+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+GKEmptyView.m"; sourceTree = "<group>"; };
+		CED3A7ED230D443200C304B3 /* UITableView+GKEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+GKEmptyView.h"; sourceTree = "<group>"; };
+		CED3A7EE230D443200C304B3 /* UIScrollView+GKEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+GKEmptyView.h"; sourceTree = "<group>"; };
+		CED3A7EF230D443200C304B3 /* UIView+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GKEmptyView.m"; sourceTree = "<group>"; };
+		CED3A7F0230D443200C304B3 /* UIScrollView+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+GKEmptyView.m"; sourceTree = "<group>"; };
+		CED3A7F1230D443200C304B3 /* UICollectionView+GKEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+GKEmptyView.h"; sourceTree = "<group>"; };
+		CED3A7F2230D443200C304B3 /* UIView+GKEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GKEmptyView.h"; sourceTree = "<group>"; };
+		CED3A7F3230D443200C304B3 /* UIViewController+GKEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GKEmptyView.h"; sourceTree = "<group>"; };
+		CED3A7FB230D44EE00C304B3 /* UIScrollView+GKRefresh.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+GKRefresh.m"; sourceTree = "<group>"; };
+		CED3A7FC230D44EE00C304B3 /* UIScrollView+GKRefresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+GKRefresh.h"; sourceTree = "<group>"; };
+		CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKRefreshControl.m; sourceTree = "<group>"; };
+		CED3A7FF230D44EE00C304B3 /* GKDefaultRefreshControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDefaultRefreshControl.h; sourceTree = "<group>"; };
+		CED3A800230D44EE00C304B3 /* GKLoadMoreControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLoadMoreControl.m; sourceTree = "<group>"; };
+		CED3A801230D44EE00C304B3 /* GKDataControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDataControl.h; sourceTree = "<group>"; };
+		CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKRefreshStyle.m; sourceTree = "<group>"; };
+		CED3A803230D44EE00C304B3 /* GKDefaultLoadMoreControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDefaultLoadMoreControl.h; sourceTree = "<group>"; };
+		CED3A804230D44EE00C304B3 /* GKRefreshControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRefreshControl.h; sourceTree = "<group>"; };
+		CED3A805230D44EE00C304B3 /* GKDataControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDataControl.m; sourceTree = "<group>"; };
+		CED3A806230D44EE00C304B3 /* GKLoadMoreControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLoadMoreControl.h; sourceTree = "<group>"; };
+		CED3A807230D44EE00C304B3 /* GKDefaultRefreshControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDefaultRefreshControl.m; sourceTree = "<group>"; };
+		CED3A808230D44EE00C304B3 /* GKDefaultLoadMoreControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDefaultLoadMoreControl.m; sourceTree = "<group>"; };
+		CED3A809230D44EE00C304B3 /* GKRefreshStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRefreshStyle.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +412,7 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
+				CED3A7F9230D44EE00C304B3 /* Refresh */,
 				CED0D44B230BF6DA0057D405 /* Constant */,
 				CED0D447230BF2040057D405 /* Theme */,
 				CED0D229230BC6250057D405 /* Alert */,
@@ -578,7 +602,7 @@
 		CED0D23D230BC6250057D405 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CED0D240230BC6250057D405 /* CABaseWebViewController.h */,
+				CED0D240230BC6250057D405 /* GKBaseWebViewController.h */,
 				CED0D23E230BC6250057D405 /* GKBaseWebViewController.m */,
 			);
 			path = Controller;
@@ -669,16 +693,16 @@
 		CED0D267230BC6250057D405 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				CED0D26E230BC6250057D405 /* UICollectionView+CAEmptyView.h */,
-				CED0D26C230BC6250057D405 /* UICollectionView+CAEmptyView.m */,
-				CED0D270230BC6250057D405 /* UIScrollView+CAEmptyView.h */,
-				CED0D26A230BC6250057D405 /* UIScrollView+CAEmptyView.m */,
-				CED0D26B230BC6250057D405 /* UITableView+CAEmptyView.h */,
-				CED0D26F230BC6250057D405 /* UITableView+CAEmptyView.m */,
-				CED0D26D230BC6250057D405 /* UIView+CAEmptyView.h */,
-				CED0D268230BC6250057D405 /* UIView+CAEmptyView.m */,
-				CED0D271230BC6250057D405 /* UIViewController+CAEmptyView.h */,
-				CED0D269230BC6250057D405 /* UIViewController+CAEmptyView.m */,
+				CED3A7F1230D443200C304B3 /* UICollectionView+GKEmptyView.h */,
+				CED3A7EB230D443200C304B3 /* UICollectionView+GKEmptyView.m */,
+				CED3A7EE230D443200C304B3 /* UIScrollView+GKEmptyView.h */,
+				CED3A7F0230D443200C304B3 /* UIScrollView+GKEmptyView.m */,
+				CED3A7ED230D443200C304B3 /* UITableView+GKEmptyView.h */,
+				CED3A7EC230D443200C304B3 /* UITableView+GKEmptyView.m */,
+				CED3A7F2230D443200C304B3 /* UIView+GKEmptyView.h */,
+				CED3A7EF230D443200C304B3 /* UIView+GKEmptyView.m */,
+				CED3A7F3230D443200C304B3 /* UIViewController+GKEmptyView.h */,
+				CED3A7EA230D443100C304B3 /* UIViewController+GKEmptyView.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -877,8 +901,8 @@
 				CED0D2DE230BC6250057D405 /* GKCollectionViewController.m */,
 				CED0D2E2230BC6250057D405 /* GKPageViewController.h */,
 				CED0D2DC230BC6250057D405 /* GKPageViewController.m */,
-				CED0D2E1230BC6250057D405 /* CAScrollViewController.h */,
-				CED0D2DB230BC6250057D405 /* CAScrollViewController.m */,
+				CED0D2E1230BC6250057D405 /* GKScrollViewController.h */,
+				CED0D2DB230BC6250057D405 /* GKScrollViewController.m */,
 				CED0D2DD230BC6250057D405 /* GKTableViewController.h */,
 				CED0D2D7230BC6250057D405 /* GKTableViewController.m */,
 			);
@@ -892,10 +916,6 @@
 				CED0D2E7230BC6250057D405 /* GKContainer.m */,
 				CED0D2E4230BC6250057D405 /* GKNavigationBar.h */,
 				CED0D2E9230BC6250057D405 /* GKNavigationBar.m */,
-				CED0D2EB230BC6250057D405 /* CARefreshFooter.h */,
-				CED0D2E6230BC6250057D405 /* CARefreshFooter.m */,
-				CED0D2EC230BC6250057D405 /* CARefreshHeader.h */,
-				CED0D2E5230BC6250057D405 /* CARefreshHeader.m */,
 				CED0D2E8230BC6250057D405 /* GKSystemNavigationBar.h */,
 				CED0D2ED230BC6250057D405 /* GKSystemNavigationBar.m */,
 			);
@@ -907,6 +927,8 @@
 			children = (
 				CED0D448230BF2210057D405 /* UIApplication+GKTheme.h */,
 				CED0D449230BF2210057D405 /* UIApplication+GKTheme.m */,
+				CEBFAA48230CD5DD007B8D47 /* UIColor+GKTheme.h */,
+				CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -917,6 +939,43 @@
 				CED0D44C230BF7020057D405 /* GKBaseDefines.h */,
 			);
 			path = Constant;
+			sourceTree = "<group>";
+		};
+		CED3A7F9230D44EE00C304B3 /* Refresh */ = {
+			isa = PBXGroup;
+			children = (
+				CED3A7FA230D44EE00C304B3 /* Category */,
+				CED3A7FD230D44EE00C304B3 /* View */,
+			);
+			path = Refresh;
+			sourceTree = "<group>";
+		};
+		CED3A7FA230D44EE00C304B3 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				CED3A7FC230D44EE00C304B3 /* UIScrollView+GKRefresh.h */,
+				CED3A7FB230D44EE00C304B3 /* UIScrollView+GKRefresh.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		CED3A7FD230D44EE00C304B3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CED3A801230D44EE00C304B3 /* GKDataControl.h */,
+				CED3A805230D44EE00C304B3 /* GKDataControl.m */,
+				CED3A803230D44EE00C304B3 /* GKDefaultLoadMoreControl.h */,
+				CED3A808230D44EE00C304B3 /* GKDefaultLoadMoreControl.m */,
+				CED3A7FF230D44EE00C304B3 /* GKDefaultRefreshControl.h */,
+				CED3A807230D44EE00C304B3 /* GKDefaultRefreshControl.m */,
+				CED3A806230D44EE00C304B3 /* GKLoadMoreControl.h */,
+				CED3A800230D44EE00C304B3 /* GKLoadMoreControl.m */,
+				CED3A804230D44EE00C304B3 /* GKRefreshControl.h */,
+				CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */,
+				CED3A809230D44EE00C304B3 /* GKRefreshStyle.h */,
+				CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		D05681B11BFA2B0DC254B5D8 /* Pods */ = {
@@ -1019,10 +1078,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED3A80A230D45A000C304B3 /* UIScrollView+GKRefresh.m in Sources */,
+				CED3A80B230D45A000C304B3 /* GKDataControl.m in Sources */,
+				CED3A80C230D45A000C304B3 /* GKDefaultLoadMoreControl.m in Sources */,
+				CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */,
+				CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */,
+				CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */,
+				CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */,
 				CED0D40A230BECD00057D405 /* NSDate+GKUtils.m in Sources */,
 				CED0D3FF230BECD00057D405 /* UIButton+GKUtils.m in Sources */,
 				CED0D2EF230BC8780057D405 /* GKAlertViewController.m in Sources */,
 				CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */,
+				CED3A7F6230D443200C304B3 /* UITableView+GKEmptyView.m in Sources */,
 				CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */,
 				CED0D2F5230BC8780057D405 /* GKAlertButton.m in Sources */,
 				CED0D2F6230BC8780057D405 /* CKAlertCell.m in Sources */,
@@ -1051,13 +1118,12 @@
 				CED0D32D230BC8780057D405 /* GKBaseViewController.m in Sources */,
 				CED0D429230BECF20057D405 /* UIView+GKOptimize.m in Sources */,
 				CED0D42A230BECF20057D405 /* UIScreen+GKUtils.m in Sources */,
-				CED0D32F230BC8780057D405 /* CAScrollViewController.m in Sources */,
+				CED0D32F230BC8780057D405 /* GKScrollViewController.m in Sources */,
 				CED0D437230BED160057D405 /* UIViewController+GKLoading.m in Sources */,
 				CED0D330230BC8780057D405 /* GKPageViewController.m in Sources */,
 				CED0D332230BC8780057D405 /* GKCollectionViewController.m in Sources */,
-				CED0D338230BC8780057D405 /* CARefreshHeader.m in Sources */,
-				CED0D339230BC8780057D405 /* CARefreshFooter.m in Sources */,
 				CED0D33A230BC8780057D405 /* GKContainer.m in Sources */,
+				CED3A7F8230D443200C304B3 /* UIScrollView+GKEmptyView.m in Sources */,
 				CED0D33C230BC8780057D405 /* GKNavigationBar.m in Sources */,
 				CED0D408230BECD00057D405 /* UITableViewCell+GKUtils.m in Sources */,
 				CED0D425230BECF20057D405 /* UINavigationItem+GKUtils.m in Sources */,
@@ -1071,6 +1137,7 @@
 				CED0D373230BC8790057D405 /* GKMenuBar.m in Sources */,
 				CED0D379230BC8790057D405 /* CAMenuBarCell.m in Sources */,
 				CED0D37E230BC8790057D405 /* GKCountDownTimer.m in Sources */,
+				CED3A7F7230D443200C304B3 /* UIView+GKEmptyView.m in Sources */,
 				CED0D37F230BC8790057D405 /* GKWeakObjectContainer.m in Sources */,
 				CED0D380230BC8790057D405 /* GKObject.m in Sources */,
 				CED0D383230BC8790057D405 /* GKFileManager.m in Sources */,
@@ -1100,6 +1167,7 @@
 				CED0D3A7230BC8790057D405 /* GKSkeletonLayer.m in Sources */,
 				CED0D3AA230BC8790057D405 /* GKPartialPresentTransitionDelegate.m in Sources */,
 				CED0D3AC230BC8790057D405 /* CAPresentTransitionDelegate.m in Sources */,
+				CED3A7F5230D443200C304B3 /* UICollectionView+GKEmptyView.m in Sources */,
 				CED0D427230BECF20057D405 /* UIViewController+GKKeyboard.m in Sources */,
 				CED0D403230BECD00057D405 /* NSArray+GKUtils.m in Sources */,
 				CED0D3FD230BECD00057D405 /* NSObject+GKUtils.m in Sources */,
@@ -1107,6 +1175,7 @@
 				CED0D3B4230BC8790057D405 /* GKRouter.m in Sources */,
 				CED0D401230BECD00057D405 /* UITextField+GKUtils.m in Sources */,
 				CED0D3B7230BC8790057D405 /* GKAppUtils.m in Sources */,
+				CED3A7F4230D443200C304B3 /* UIViewController+GKEmptyView.m in Sources */,
 				CED0D3BB230BC8790057D405 /* GKBaseWebViewController.m in Sources */,
 				CED0D3C7230BC8790057D405 /* GKCountDownButton.m in Sources */,
 				CED0D3CE230BC8790057D405 /* GKDivider.m in Sources */,
@@ -1122,6 +1191,7 @@
 				CED0D3D5230BC8790057D405 /* GKTextField.m in Sources */,
 				CED0D3DA230BC8790057D405 /* GKGridImageView.m in Sources */,
 				CED0D3DB230BC8790057D405 /* GKBadgeValueView.m in Sources */,
+				CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */,
 				CED0D400230BECD00057D405 /* NSAttributedString+GKUtils.m in Sources */,
 				CED0D436230BED160057D405 /* UIView+GKLoading.m in Sources */,
 			);

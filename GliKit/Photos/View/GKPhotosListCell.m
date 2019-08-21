@@ -1,6 +1,6 @@
 //
 //  GKPhotosListCell.m
-//  IOSLibrary
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/7/2.
 //  Copyright © 2019 罗海雄. All rights reserved.

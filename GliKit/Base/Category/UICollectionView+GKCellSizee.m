@@ -32,7 +32,7 @@
     for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
         
         SEL selector1 = selectors[i];
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gk_cellSize_%@", NSStringFromSelector(selector1)]);
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkCellSize_%@", NSStringFromSelector(selector1)]);
         
         Method method1 = class_getInstanceMethod(self, selector1);
         Method method2 = class_getInstanceMethod(self, selector2);
@@ -41,61 +41,61 @@
     }
 }
 
-#pragma mark - register cells
+//MARK: register cells
 
-- (void)gk_cellSize_registerClass:(Class) clazz forCellWithReuseIdentifier:(NSString *) identifier
+- (void)gkCellSize_registerClass:(Class) clazz forCellWithReuseIdentifier:(NSString *) identifier
 {
-    [self gk_cellSize_registerClass:clazz forCellWithReuseIdentifier:identifier];
-    [[self gk_registerObjects] setObject:NSStringFromClass(clazz) forKey:identifier];
+    [self gkCellSize_registerClass:clazz forCellWithReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:NSStringFromClass(clazz) forKey:identifier];
 }
 
-- (void)gk_cellSize_registerNib:(UINib *) nib forCellWithReuseIdentifier:(NSString *) identifier
+- (void)gkCellSize_registerNib:(UINib *) nib forCellWithReuseIdentifier:(NSString *) identifier
 {
-    [self gk_cellSize_registerNib:nib forCellWithReuseIdentifier:identifier];
-    [[self gk_registerObjects] setObject:nib forKey:identifier];
+    [self gkCellSize_registerNib:nib forCellWithReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:nib forKey:identifier];
 }
 
-- (void)gk_cellSize_registerClass:(Class) clazz forSupplementaryViewOfKind:(NSString *) kind withReuseIdentifier:(NSString *)identifier
+- (void)gkCellSize_registerClass:(Class) clazz forSupplementaryViewOfKind:(NSString *) kind withReuseIdentifier:(NSString *)identifier
 {
-    [self gk_cellSize_registerClass:clazz forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
-    [[self gk_registerObjects] setObject:NSStringFromClass(clazz) forKey:identifier];
+    [self gkCellSize_registerClass:clazz forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:NSStringFromClass(clazz) forKey:identifier];
 }
 
-- (void)gk_cellSize_registerNib:(UINib *) nib forSupplementaryViewOfKind:(NSString *) kind withReuseIdentifier:(NSString *)identifier
+- (void)gkCellSize_registerNib:(UINib *) nib forSupplementaryViewOfKind:(NSString *) kind withReuseIdentifier:(NSString *)identifier
 {
-    [self gk_cellSize_registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
-    [[self gk_registerObjects] setObject:nib forKey:identifier];
+    [self gkCellSize_registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:nib forKey:identifier];
 }
 
-#pragma mark - data change
+//MARK: data change
 
-- (void)gk_cellSize_reloadSections:(NSIndexSet *) sections
+- (void)gkCellSize_reloadSections:(NSIndexSet *) sections
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     if(caches.count > 0)    {
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             
             [caches removeObjectForKey:@(section)];
         }];
     }
-    [self gk_cellSize_reloadSections:sections];
+    [self gkCellSize_reloadSections:sections];
 }
 
-- (void)gk_cellSize_deleteSections:(NSIndexSet *) sections
+- (void)gkCellSize_deleteSections:(NSIndexSet *) sections
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     if(caches.count > 0){
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             
             [caches removeObjectForKey:@(section)];
         }];
     }
-    [self gk_cellSize_deleteSections:sections];
+    [self gkCellSize_deleteSections:sections];
 }
 
-- (void)gk_cellSize_moveSection:(NSInteger) section toSection:(NSInteger) newSection
+- (void)gkCellSize_moveSection:(NSInteger) section toSection:(NSInteger) newSection
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     if(caches.count > 0){
         NSMutableDictionary *dic = [caches objectForKey:@(section)];
         NSMutableDictionary *newDic = [caches objectForKey:@(newSection)];
@@ -110,92 +110,92 @@
         }
     }
     
-    [self gk_cellSize_moveSection:section toSection:newSection];
+    [self gkCellSize_moveSection:section toSection:newSection];
 }
 
-- (void)gk_cellSize_moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *) newIndexPath
+- (void)gkCellSize_moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *) newIndexPath
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     if(caches.count > 0){
-        NSValue *value = [self gk_cachedSizeForIndexPath:indexPath];
-        NSValue *toValue = [self gk_cachedSizeForIndexPath:newIndexPath];
+        NSValue *value = [self gkCachedSizeForIndexPath:indexPath];
+        NSValue *toValue = [self gkCachedSizeForIndexPath:newIndexPath];
         
         if(value != nil && toValue != nil){
-            [self gk_setCellSize:value forIndexPath:indexPath];
-            [self gk_setCellSize:toValue forIndexPath:newIndexPath];
+            [self gkSetCellSize:value forIndexPath:indexPath];
+            [self gkSetCellSize:toValue forIndexPath:newIndexPath];
         }else if(value != nil){
-            [self gk_setCellSize:value forIndexPath:indexPath];
+            [self gkSetCellSize:value forIndexPath:indexPath];
         }else if (toValue != nil){
-            [self gk_setCellSize:toValue forIndexPath:newIndexPath];
+            [self gkSetCellSize:toValue forIndexPath:newIndexPath];
         }
     }
     
-    [self gk_cellSize_moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+    [self gkCellSize_moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
 
-- (void)gk_cellSize_deleteItemsAtIndexPaths:(NSArray *)indexPaths
+- (void)gkCellSize_deleteItemsAtIndexPaths:(NSArray *)indexPaths
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     if(caches.count > 0){
         for(NSIndexPath *indexPath in indexPaths){
-            [self gk_setCellSize:nil forIndexPath:indexPath];
+            [self gkSetCellSize:nil forIndexPath:indexPath];
         }
     }
     
-    [self gk_cellSize_deleteItemsAtIndexPaths:indexPaths];
+    [self gkCellSize_deleteItemsAtIndexPaths:indexPaths];
 }
 
-- (void)gk_cellSize_reloadItemsAtIndexPaths:(NSArray *)indexPaths
+- (void)gkCellSize_reloadItemsAtIndexPaths:(NSArray *)indexPaths
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     if(caches.count > 0){
         for(NSIndexPath *indexPath in indexPaths){
-            [self gk_setCellSize:nil forIndexPath:indexPath];
+            [self gkSetCellSize:nil forIndexPath:indexPath];
         }
     }
     
-    [self gk_cellSize_reloadItemsAtIndexPaths:indexPaths];
+    [self gkCellSize_reloadItemsAtIndexPaths:indexPaths];
 }
 
 
 
-- (void)gk_cellSize_reloadData
+- (void)gkCellSize_reloadData
 {
-    [[self gk_cellSizeCaches] removeAllObjects];
-    [self gk_cellSize_reloadData];
+    [[self gkCellSizeCaches] removeAllObjects];
+    [self gkCellSize_reloadData];
 }
 
-#pragma mark- 计算
+//MARK:- 计算
 
-- (CGSize)gk_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(GKCellConfiguration) configuration
 {
-    return [self gk_cellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeZero configuration:configuration];
+    return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeZero configuration:configuration];
 }
 
-- (CGSize)gk_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(GKCellConfiguration) configuration
 {
-    return [self gk_cellSizeForIdentifier:identifier indexPath:indexPath constraintSize:constraintSize type:GKAutoLayoutCalculateTypeSize configuration:configuration];
+    return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:constraintSize type:GKAutoLayoutCalculateTypeSize configuration:configuration];
 }
 
-- (CGSize)gk_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(GKCellConfiguration) configuration
 {
-    return [self gk_cellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeMake(width, 0) type:GKAutoLayoutCalculateTypeHeight configuration:configuration];
+    return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeMake(width, 0) type:GKAutoLayoutCalculateTypeHeight configuration:configuration];
 }
 
-- (CGSize)gk_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(GKCellConfiguration) configuration
 {
-    return [self gk_cellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeMake(0, height) type:GKAutoLayoutCalculateTypeWidth configuration:configuration];
+    return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeMake(0, height) type:GKAutoLayoutCalculateTypeWidth configuration:configuration];
 }
 
-- (CGSize)gk_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize type:(GKAutoLayoutCalculateType) type configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize type:(GKAutoLayoutCalculateType) type configuration:(GKCellConfiguration) configuration
 {
-    NSValue *value = [self gk_cachedSizeForIndexPath:indexPath];
+    NSValue *value = [self gkCachedSizeForIndexPath:indexPath];
     if (value != nil && !CGSizeEqualToSize(CGSizeZero, [value CGSizeValue])){
         return [value CGSizeValue];
     }
     
     //计算大小
-    UICollectionReusableView *cell = [self gk_cellForIdentifier:identifier];
+    UICollectionReusableView *cell = [self gkCellForIdentifier:identifier];
     !configuration ?: configuration(cell);
     
     UIView *contentView = cell;
@@ -204,16 +204,16 @@
     }
     CGSize size = [contentView gk_sizeThatFits:constraintSize type:type];
     
-    [self gk_setCellSize:[NSValue valueWithCGSize:size] forIndexPath:indexPath];
+    [self gkSetCellSize:[NSValue valueWithCGSize:size] forIndexPath:indexPath];
     
     return size;
 }
 
 
-#pragma mark - cell大小缓存
+//MARK: - cell大小缓存
 
 ///缓存cell大小的数组
-- (NSMutableDictionary<NSNumber*, NSMutableDictionary<NSNumber*, NSValue*>* >*)gk_cellSizeCaches
+- (NSMutableDictionary<NSNumber*, NSMutableDictionary<NSNumber*, NSValue*>* >*)gkCellSizeCaches
 {
     NSMutableDictionary *caches = objc_getAssociatedObject(self, _cmd);
     if(caches == nil){
@@ -225,18 +225,18 @@
 }
 
 ///判断是否已有缓存
-- (NSValue*)gk_cachedSizeForIndexPath:(NSIndexPath*) indexPath
+- (NSValue*)gkCachedSizeForIndexPath:(NSIndexPath*) indexPath
 {
-    NSMutableDictionary *dic = [[self gk_cellSizeCaches] objectForKey:@(indexPath.section)];
+    NSMutableDictionary *dic = [[self gkCellSizeCaches] objectForKey:@(indexPath.section)];
     if(dic == nil)
         return nil;
     return [dic objectForKey:@(indexPath.item)];
 }
 
 ///设置缓存
-- (void)gk_setCellSize:(NSValue*) size forIndexPath:(NSIndexPath*) indexPath
+- (void)gkSetCellSize:(NSValue*) size forIndexPath:(NSIndexPath*) indexPath
 {
-    NSMutableDictionary *caches = [self gk_cellSizeCaches];
+    NSMutableDictionary *caches = [self gkCellSizeCaches];
     NSMutableDictionary *dic = [caches objectForKey:@(indexPath.section)];
     if(dic == nil){
         dic = [NSMutableDictionary dictionary];
@@ -250,10 +250,10 @@
     }
 }
 
-#pragma mark- 注册的 cells
+//MARK:- 注册的 cells
 
 ///注册的 class nib
-- (NSMutableDictionary*)gk_registerObjects
+- (NSMutableDictionary*)gkRegisterObjects
 {
     NSMutableDictionary *objects = objc_getAssociatedObject(self, _cmd);
     if (objects == nil){
@@ -264,7 +264,7 @@
 }
 
 ///注册的cells header footer 用来计算
-- (__kindof UICollectionReusableView*)gk_cellForIdentifier:(NSString *)identifier
+- (__kindof UICollectionReusableView*)gkCellForIdentifier:(NSString *)identifier
 {
     NSAssert(identifier != nil, @"identifier 不能为 nil");
     
@@ -276,7 +276,7 @@
     
     UICollectionReusableView *view = [cells objectForKey:identifier];
     if(view == nil){
-        NSObject *obj = [[self gk_registerObjects] objectForKey:identifier];
+        NSObject *obj = [[self gkRegisterObjects] objectForKey:identifier];
         if([obj isKindOfClass:[UINib class]]){
             UINib *nib = (UINib*)obj;
             view = [[nib instantiateWithOwner:nil options:nil] firstObject];
@@ -295,13 +295,13 @@
 
 
 ///头部
-- (NSIndexPath*)gk_headerIndexPathForSection:(NSInteger) section
+- (NSIndexPath*)gkHeaderIndexPathForSection:(NSInteger) section
 {
     return [NSIndexPath indexPathForItem:-1 inSection:section];
 }
 
 ///底部
-- (NSIndexPath*)gk_footerIndexPathForSection:(NSInteger) section
+- (NSIndexPath*)gkFooterIndexPathForSection:(NSInteger) section
 {
     return [NSIndexPath indexPathForItem:-2 inSection:section];
 }

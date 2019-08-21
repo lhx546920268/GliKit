@@ -123,7 +123,7 @@
     method_exchangeImplementations(method1, method2);
 }
 
-#pragma mark coder
+//MARK: coder
 
 - (void)gk_encodeWithCoder:(NSCoder *)coder
 {
@@ -215,7 +215,7 @@
     [self gk_initWithCoder:decoder clazz:[clazz superclass]];
 }
 
-#pragma mark copy
+//MARK: copy
 
 - (void)gk_copyObject:(NSObject*) object
 {
@@ -252,7 +252,7 @@
     [self gk_copyObject:object clazz:[clazz superclass]];
 }
 
-#pragma mark push
+//MARK: push
 
 + (void)gk_pushViewController:(UIViewController*) viewController
 {
@@ -281,7 +281,7 @@
             [viewControllers removeLastObject];
             [viewControllers addObject:viewController];
             
-            viewController.gk_showBackItem = YES;
+            viewController.gkShowBackItem = YES;
             
             [nav setViewControllers:viewControllers animated:YES];
         }else{
@@ -313,7 +313,7 @@
             }
         }
         [viewControllers removeObjectsInArray:removedViewControlelrs];
-        viewController.gk_showBackItem = YES;
+        viewController.gkShowBackItem = YES;
         [viewControllers addObject:viewController];
         
         [nav setViewControllers:viewControllers animated:YES];

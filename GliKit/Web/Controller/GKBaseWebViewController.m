@@ -77,7 +77,7 @@ static WKProcessPool *sharedProcessPool;
     _shouldDisplayProgress = YES;
 }
 
-#pragma mark- property
+//MARK:- property
 
 - (void)setHtmlString:(NSString *)htmlString
 {
@@ -98,7 +98,7 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
-#pragma mark web control
+//MARK: web control
 
 - (BOOL)canGoBack
 {
@@ -134,7 +134,7 @@ static WKProcessPool *sharedProcessPool;
     [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
 }
 
-#pragma mark dealloc
+//MARK: dealloc
 
 - (void)dealloc
 {
@@ -143,7 +143,7 @@ static WKProcessPool *sharedProcessPool;
     [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
 }
 
-#pragma mark 加载视图
+//MARK: 加载视图
 
 - (void)viewDidLoad
 {
@@ -292,7 +292,7 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
-#pragma mark kvo
+//MARK: kvo
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -315,7 +315,7 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
-#pragma mark WKNavigation delegate
+//MARK: WKNavigation delegate
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
@@ -328,7 +328,7 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
-#pragma mark WKUIDelegate
+//MARK: WKUIDelegate
 
 - (BOOL)webView:(WKWebView *)webView shouldPreviewElement:(WKPreviewElementInfo *)elementInfo NS_AVAILABLE_IOS(10.0)
 {
@@ -336,7 +336,7 @@ static WKProcessPool *sharedProcessPool;
     return NO;
 }
 
-#pragma mark progress handle
+//MARK: progress handle
 
 //重设进度
 - (void)resetProgress
@@ -356,14 +356,14 @@ static WKProcessPool *sharedProcessPool;
     
 }
 
-#pragma mark 页面是否可以打开
+//MARK: 页面是否可以打开
 
 - (BOOL)shouldOpenURL:(NSURL*) URL action:(WKNavigationAction *)action
 {
     return YES;
 }
 
-#pragma mark UIScrollViewDelegate
+//MARK: UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {

@@ -15,7 +15,7 @@ static char GKTransitioningDelegateKey;
 
 @implementation UIViewController (GKTransition)
 
-#pragma mark swwizle
+//MARK: swwizle
 
 + (void)load
 {

@@ -8,8 +8,9 @@
 
 #import "GKBaseViewController.h"
 #import "UIScrollView+GKEmptyView.h"
+#import "UIScrollView+GKRefresh.h"
 
-@class GKScrollViewModel, MJRefreshComponent;
+@class GKScrollViewModel, GKRefreshControl, GKLoadMoreControl;
 
 /**
  滚动视图控制器，具有加载更多和下拉刷新，键盘弹出时设置contentInset功能，防止键盘挡住输入框
@@ -43,14 +44,25 @@
 @property(nonatomic,assign) BOOL refreshEnable;
 
 /**
+ 下拉刷新视图
+ */
+@property(nonatomic,readonly) GKRefreshControl *refreshControl;
+
+/**
  加载更多和下拉刷是否可以共存 default is 'NO'
  */
 @property(nonatomic,assign) BOOL coexistRefreshAndLoadMore;
 
 /**
+ 加载更多时的指示视图
+ */
+@property(nonatomic,readonly) GKLoadMoreControl *loadMoreControl;
+
+/**
  是否可以加载更多数据 default is 'NO'
  */
 @property(nonatomic,assign) BOOL loadMoreEnable;
+
 
 /**
  当前第几页 default is 'GKHttpFirstPage'
@@ -83,14 +95,9 @@
 - (void)initViews NS_REQUIRES_SUPER;
 
 /**
- 下来刷新view，默认是 GKRefreshHeader，子类重写
+ 刷新列表数据 子类重写
  */
-- (MJRefreshComponent*)refreshHeader;
-
-/**
- 加载更多view，默认是 GKRefreshFooter，子类重写
- */
-- (MJRefreshComponent*)refreshFooter;
+- (void)reloadListData;
 
 ///以下的两个方法默认不做任何事，子类按需实现
 
@@ -164,11 +171,6 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset NS_REQUIRES_SUPER;
-
-/**
- 刷新列表数据 子类重写
- */
-- (void)reloadListData;
 
 
 @end

@@ -21,52 +21,50 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 @interface UIViewController (GKUtils)
 
 ///隐藏导航栏阴影
-@property(nonatomic, assign) BOOL gk_hideNavigationBarShadowImage;
-
-///显示返回按钮
-@property(nonatomic, assign) BOOL gk_showBackItem;
-
-///返回按钮
-@property(nonatomic, readonly) UIView *gk_backItem;
+@property(nonatomic, assign) BOOL gkHideNavigationBarShadowImage;
 
 ///是否可以滑动返回 default 'YES'
-@property(nonatomic, assign) BOOL gk_interactivePopEnable;
+@property(nonatomic, assign) BOOL gkInteractivePopEnable;
 
 ///状态栏高度
-@property(nonatomic,readonly) CGFloat gk_statusBarHeight;
+@property(nonatomic, readonly) CGFloat gkStatusBarHeight;
 
 ///导航栏高度
-@property(nonatomic,readonly) CGFloat gk_navigationBarHeight;
+@property(nonatomic, readonly) CGFloat gkNavigationBarHeight;
 
 ///选项卡高度
-@property(nonatomic,readonly) CGFloat gk_tabBarHeight;
+@property(nonatomic, readonly) CGFloat gkTabBarHeight;
 
 ///工具条高度
-@property(nonatomic,readonly) CGFloat gk_toolBarHeight;
+@property(nonatomic, readonly) CGFloat gkToolBarHeight;
+
+///获取最上层的 presentedViewController
+@property(nonatomic, readonly) __kindof UIViewController *gkTopestPresentedViewController;
+
+///获取最底层的 presentingViewController
+@property(nonatomic, readonly) __kindof UIViewController *gkRootPresentingViewController;
+
+///创建导航栏并返回
+@property(nonatomic, readonly) __kindof UINavigationController *gkCreateWithNavigationController;
+
+//MARK: 返回
+
+///显示返回按钮
+@property(nonatomic, assign) BOOL gkShowBackItem;
+
+///返回按钮
+@property(nonatomic, readonly) UIView *gkBackItem;
 
 ///返回 动画
-- (void)gk_back;
+- (void)gkBack;
 
 ///返回 是否动画
-- (void)gk_backAnimated:(BOOL) flag;
+- (void)gkBackAnimated:(BOOL) flag;
 
 ///返回 是否动画 返回完成回调
-- (void)gk_backAnimated:(BOOL) flag completion: (void (^)(void))completion;
+- (void)gkBackAnimated:(BOOL) flag completion:(void (^)(void))completion;
 
-/**
- 获取最上层的 presentedViewController
- */
-- (UIViewController*)gk_topestPresentedViewController;
-
-/**
- 获取最底层的 presentingViewController
- */
-- (UIViewController*)gk_rootPresentingViewController;
-
-/**
- 创建导航栏并返回
- */
-- (__kindof UINavigationController*)gk_createWithNavigationController;
+//MARK: 导航栏按钮
 
 /**
  设置导航栏按钮
@@ -74,7 +72,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param item 按钮
  @param position 位置
  */
-- (void)gk_setNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position;
+- (void)gkSetNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position;
 
 /**
  设置导航栏左边按钮
@@ -83,7 +81,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setLeftItemWithTitle:(NSString*) title action:(SEL) action;
+- (UIBarButtonItem*)gkSetLeftItemWithTitle:(NSString*) title action:(SEL) action;
 
 /**
  设置导航栏左边按钮
@@ -92,7 +90,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setLeftItemWithImage:(UIImage*) image action:(SEL) action;
+- (UIBarButtonItem*)gkSetLeftItemWithImage:(UIImage*) image action:(SEL) action;
 
 /**
  设置导航栏左边按钮
@@ -101,7 +99,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
+- (UIBarButtonItem*)gkSetLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
 
 /**
  设置导航栏左边按钮
@@ -109,7 +107,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param customView 自定义视图
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setLeftItemWithCustomView:(UIView*) customView;
+- (UIBarButtonItem*)gkSetLeftItemWithCustomView:(UIView*) customView;
 
 /**
  设置导航栏右边按钮
@@ -118,7 +116,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setRightItemWithTitle:(NSString*) title action:(SEL) action;
+- (UIBarButtonItem*)gkSetRightItemWithTitle:(NSString*) title action:(SEL) action;
 
 /**
  设置导航栏右边按钮
@@ -127,7 +125,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setRightItemWithImage:(UIImage*) image action:(SEL) action;
+- (UIBarButtonItem*)gkSetRightItemWithImage:(UIImage*) image action:(SEL) action;
 
 /**
  设置导航栏右边按钮
@@ -136,7 +134,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
+- (UIBarButtonItem*)gkSetRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
 
 /**
  设置导航栏右边按钮
@@ -144,14 +142,14 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param customView 自定义视图
  @return 按钮
  */
-- (UIBarButtonItem*)gk_setRightItemWithCustomView:(UIView*) customView;
+- (UIBarButtonItem*)gkSetRightItemWithCustomView:(UIView*) customView;
 
-#pragma mark- Class Method
+//MARK: Class Method
 
-+ (UIBarButtonItem*)gk_barItemWithImage:(UIImage*) image target:(id) target action:(SEL) action;
-+ (UIBarButtonItem*)gk_barItemWithTitle:(NSString*) title target:(id) target action:(SEL) action;
-+ (UIBarButtonItem*)gk_barItemWithCustomView:(UIView*) customView;
-+ (UIBarButtonItem*)gk_barItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action;
++ (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(id) target action:(SEL) action;
++ (UIBarButtonItem*)gkBarItemWithTitle:(NSString*) title target:(id) target action:(SEL) action;
++ (UIBarButtonItem*)gkBarItemWithCustomView:(UIView*) customView;
++ (UIBarButtonItem*)gkBarItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action;
 
 
 @end

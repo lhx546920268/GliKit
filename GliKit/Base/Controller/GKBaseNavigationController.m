@@ -8,6 +8,9 @@
 
 #import "GKBaseNavigationController.h"
 #import "GKSystemNavigationBar.h"
+#import "UIColor+GKTheme.h"
+#import "UIApplication+GKTheme.h"
+#import "UIViewController+GKUtils.h"
 
 @interface GKBaseNavigationController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>
 
@@ -23,8 +26,10 @@
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
     self = [self initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
-    if(rootViewController){
-        self.viewControllers = @[rootViewController];
+    if(self){
+        if(rootViewController){
+            self.viewControllers = @[rootViewController];
+        }
     }
     
     return self;
@@ -37,21 +42,19 @@
     //把导航栏变成透明
     [self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.navigationBar.shadowImage = [UIImage new];
-    self.navigationBar.tintColor = UIColor.appNavigationBarTintColor;
+    self.navigationBar.tintColor = UIColor.gkNavigationBarTintColor;
     
     __weak GKBaseNavigationController *weakSelf = self;
     
-    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
-        self.interactivePopGestureRecognizer.delegate = weakSelf;
-        self.delegate = weakSelf;
-    }
+    self.interactivePopGestureRecognizer.delegate = weakSelf;
+    self.delegate = weakSelf;
 }
 
-#pragma mark push
+//MARK: Push
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES){
+    if(animated){
         self.interactivePopGestureRecognizer.enabled = NO;
     }
     
@@ -60,7 +63,7 @@
 
 - (NSArray*)popToRootViewControllerAnimated:(BOOL)animated
 {
-    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES){
+    if(animated){
         self.interactivePopGestureRecognizer.enabled = NO;
     }
     
@@ -69,22 +72,18 @@
 
 - (NSArray*)popToViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
-        self.interactivePopGestureRecognizer.enabled = NO;
-    }
+    self.interactivePopGestureRecognizer.enabled = NO;
     
     return [super popToViewController:viewController animated:animated];
 }
 
-#pragma mark UINavigationControllerDelegate
+//MARK: UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animate
 {
-    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
-        self.interactivePopGestureRecognizer.enabled = viewController.gk_interactivePopEnable;
-    }
+    self.interactivePopGestureRecognizer.enabled = viewController.gkInteractivePopEnable;
 }
 
 
@@ -103,7 +102,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIApplication.appStatusBarStyle;
+    return UIApplication.gkStatusBarStyle;
 }
 
 - (UIViewController*)childViewControllerForStatusBarStyle

@@ -8,10 +8,11 @@
 
 #import "UIView+GKLoading.h"
 #import <objc/runtime.h>
-#import "GKPageLoadingContainer.h"
 #import "GKProgressHUD.h"
 #import "GKKeyboardHelper.h"
 #import "NSString+GKUtils.h"
+#import "GKPageLoadingContainer.h"
+#import "GKBaseDefines.h"
 
 static char GKPageLoadingViewKey;
 static char GKReloadDataHandlerKey;
@@ -19,7 +20,7 @@ static char GKProgressHUDKey;
 
 @implementation UIView (CaLoading)
 
-#pragma mark- page loading
+//MARK:- page loading
 
 - (void)setGkShowPageLoading:(BOOL)gkShowPageLoading
 {
@@ -27,7 +28,7 @@ static char GKProgressHUDKey;
     if(gkShowPageLoading != loading){
         
         if(gkShowPageLoading){
-            GKPageLoadingContainer *pageLoadingView = self.gkPageLoadingView;
+            UIView<GKPageLoadingContainer> *pageLoadingView = self.gkPageLoadingView;
             if(!pageLoadingView){
                 pageLoadingView = [self getPageLoadingView];
             }
@@ -41,29 +42,29 @@ static char GKProgressHUDKey;
         }
     }else if(loading){
         //如果原来已经显示 可能动画是停止的
-        [self.gkPageLoadingView.animatedimageView startAnimating];
+        self.gkPageLoadingView.status = GKPageLoadingStatusLoading;
     }
 }
 
 - (BOOL)gkShowPageLoading
 {
-    GKPageLoadingContainer *pageLoadingView = self.gkPageLoadingView;
+    UIView<GKPageLoadingContainer> *pageLoadingView = self.gkPageLoadingView;
     return pageLoadingView != nil && pageLoadingView.status == GKPageLoadingStatusLoading;
 }
 
-- (void)setCa_pageLoadingView:(GKPageLoadingContainer *)gk_pageLoadingView
+- (void)setGkPageLoadingView:(UIView<GKPageLoadingContainer> *)gkPageLoadingView
 {
-    GKPageLoadingContainer *pageLoadingView = self.gkPageLoadingView;
-    if(pageLoadingView == gk_pageLoadingView)
+    UIView<GKPageLoadingContainer> *pageLoadingView = self.gkPageLoadingView;
+    if(pageLoadingView == gkPageLoadingView)
         return;
     if(pageLoadingView){
         [pageLoadingView removeFromSuperview];
     }
-    objc_setAssociatedObject(self, &GKPageLoadingViewKey, gk_pageLoadingView, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &GKPageLoadingViewKey, gkPageLoadingView, OBJC_ASSOCIATION_RETAIN);
     
-    if(gk_pageLoadingView){
-        [self addSubview:gk_pageLoadingView];
-        [gk_pageLoadingView makeConstraints:^(MASConstraintMaker *make) {
+    if(gkPageLoadingView){
+        [self addSubview:gkPageLoadingView];
+        [gkPageLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
             
             //scrollView 需要确定滑动范围
@@ -74,17 +75,17 @@ static char GKProgressHUDKey;
     }
 }
 
-- (GKPageLoadingContainer*)gkPageLoadingView
+- (UIView<GKPageLoadingContainer> *)gkPageLoadingView
 {
     return objc_getAssociatedObject(self, &GKPageLoadingViewKey);
 }
 
-- (void)setCa_showFailPage:(BOOL)gk_showFailPage
+- (void)setGkShowFailPage:(BOOL)gkShowFailPage
 {
-    if(gk_showFailPage != self.gkShowFailPage){
+    if(gkShowFailPage != self.gkShowFailPage){
         
-        if(gk_showFailPage){
-            GKPageLoadingContainer *pageLoadingView = self.gkPageLoadingView;
+        if(gkShowFailPage){
+            UIView<GKPageLoadingContainer> *pageLoadingView = self.gkPageLoadingView;
             if(!pageLoadingView){
                 pageLoadingView = [self getPageLoadingView];
             }
@@ -100,7 +101,7 @@ static char GKProgressHUDKey;
 
 - (BOOL)gkShowFailPage
 {
-    GKPageLoadingContainer *pageLoadingView = self.gkPageLoadingView;
+    UIView<GKPageLoadingContainer> *pageLoadingView = self.gkPageLoadingView;
     return pageLoadingView != nil && pageLoadingView.status == GKPageLoadingStatusError;
 }
 
@@ -112,17 +113,17 @@ static char GKProgressHUDKey;
     
     WeakObj(self);
     pageLoadingView.refreshHandler = ^{
-        [selfWeak handlerTapFailPage:nil];
+        [selfWeak gkHandlerTapFailPage:nil];
     };
     self.gkPageLoadingView = pageLoadingView;
     return pageLoadingView;
 }
 
-#pragma mark- handler
+//MARK: handler
 
-- (void)setCa_reloadDataHandler:(void (^)(void))gk_reloadDataHandler
+- (void)setGkReloadDataHandler:(void (^)(void))gkReloadDataHandler
 {
-    objc_setAssociatedObject(self, &GKReloadDataHandlerKey, gk_reloadDataHandler, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, &GKReloadDataHandlerKey, gkReloadDataHandler, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 - (void (^)(void))gkReloadDataHandler
@@ -131,27 +132,27 @@ static char GKProgressHUDKey;
 }
 
 //点击失败视图
-- (void)handlerTapFailPage:(UITapGestureRecognizer*) tap
+- (void)gkHandlerTapFailPage:(UITapGestureRecognizer*) tap
 {
     void(^handler)(void) = self.gkReloadDataHandler;
     !handler ?: handler();
 }
 
-#pragma mark hud
+//MARK: hud
 
-- (GKProgressHUD*)gkProgressHUD
+- (UIView<GKProgressHUD> *)gkProgressHUD
 {
     return objc_getAssociatedObject(self, &GKProgressHUDKey);
 }
 
-- (void)setCa_progressHUD:(GKProgressHUD *)gk_progressHUD
+- (void)setGkProgressHUD:(UIView<GKProgressHUD> *)gkProgressHUD
 {
-    GKProgressHUD *hud = self.gkProgressHUD;
+    UIView<GKProgressHUD> *hud = self.gkProgressHUD;
     if(hud){
         [hud removeFromSuperview];
     }
     
-    objc_setAssociatedObject(self, &GKProgressHUDKey, gk_progressHUD, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &GKProgressHUDKey, gkProgressHUD, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)gkShowProgressWithText:(NSString*) text
@@ -162,29 +163,29 @@ static char GKProgressHUDKey;
 - (void)gkShowProgressWithText:(NSString*) text delay:(NSTimeInterval) delay
 {
     if([NSString isEmpty:text]){
-        text = @"load_data".zegoLocalizedString;
+        text = @"加载中...";
     }
-    [self gk_showHudWithStatus:GKProgressHUDStatusLoading text:text delay:delay];
+    [self gkShowHudWithStatus:GKProgressHUDStatusLoading text:text delay:delay];
 }
 
 - (void)gkShowSuccessWithText:(NSString*) text
 {
-    [self gk_showHudWithStatus:GKProgressHUDStatusSuccess text:text delay:2];
+    [self gkShowHudWithStatus:GKProgressHUDStatusSuccess text:text delay:2];
 }
 
 - (void)gkShowErrorWithText:(NSString*) text
 {
-    [self gk_showHudWithStatus:GKProgressHUDStatusError text:text delay:2];
+    [self gkShowHudWithStatus:GKProgressHUDStatusError text:text delay:2];
 }
 
 - (void)gkShowWarningWithText:(NSString *)text
 {
-    [self gk_showHudWithStatus:GKProgressHUDStatusWarning text:text delay:2];
+    [self gkShowHudWithStatus:GKProgressHUDStatusWarning text:text delay:2];
 }
 
-- (void)gk_showHudWithStatus:(GKProgressHUDStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
+- (void)gkShowHudWithStatus:(GKProgressHUDStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
 {
-    [self gk_showHudInView:self withStatus:status text:text delay:delay];
+    [self gkShowHudInView:self withStatus:status text:text delay:delay];
 }
 
 - (void)gkDismissProgress
@@ -197,7 +198,7 @@ static char GKProgressHUDKey;
     [self gk_dismissTextInView:self];
 }
 
-- (void)gk_showHudInView:(UIView*) view withStatus:(GKProgressHUDStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
+- (void)gkShowHudInView:(UIView*) view withStatus:(GKProgressHUDStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
 {
     UIWindow *keyboardWindow = [UIApplication sharedApplication].windows.lastObject;
     //键盘正在显示，要在键盘所在的window显示，否则可能会被键盘挡住
@@ -206,20 +207,20 @@ static char GKProgressHUDKey;
     }
     
     //隐藏window上的弹窗 防止出现2个
-    if(![view isEqual:[AppDelegate instance].window]){
-        [[AppDelegate instance].window gk_dismissText];
+    if(![view isEqual:UIApplication.sharedApplication.delegate.window]){
+        [UIApplication.sharedApplication.delegate.window gkDismissText];
     }else if (![view isEqual:keyboardWindow]){
         [keyboardWindow gkDismissText];
     }
     
-    GKProgressHUD *hud = view.gkProgressHUD;
+    UIView<GKProgressHUD> *hud = view.gkProgressHUD;
     if(!hud){
         hud = [GKProgressHUD new];
         view.gkProgressHUD = hud;
         
         WeakObj(view);
         hud.dismissHandler = ^{
-            viewWeak.gk_progressHUD = nil;
+            viewWeak.gkProgressHUD = nil;
         };
         [view addSubview:hud];
         
@@ -234,7 +235,7 @@ static char GKProgressHUDKey;
     }
     
     hud.delay = delay;
-    hud.msg = text;
+    hud.text = text;
     hud.status = status;
     [hud show];
 }

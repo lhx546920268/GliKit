@@ -27,18 +27,42 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
     GKProgressHUDStatusWarning,
 };
 
-///加载指示器 和 提示信息
-@interface GKProgressHUD : UIView
+///加载指示器代理
+@protocol GKProgressHUD <NSObject>
 
 /**
  提示信息
  */
-@property(nonatomic,copy) NSString *msg;
+@property(nonatomic, copy) NSString *text;
 
 /**
  内容视图是否延迟显示 0 不延迟
  */
-@property(nonatomic,assign) NSTimeInterval delay;
+@property(nonatomic, assign) NSTimeInterval delay;
+
+/**
+ 状态
+ */
+@property(nonatomic, assign) GKProgressHUDStatus status;
+
+/**
+ 消失回调
+ */
+@property(nonatomic, copy) void(^dismissHandler)(void);
+
+///显示
+- (void)show;
+
+///关闭 loading
+- (void)dismissProgress;
+
+///关闭所有
+- (void)dismiss;
+
+@end
+
+///加载指示器 和 提示信息
+@interface GKProgressHUD : UIView<GKProgressHUD>
 
 /**
  黑色半透明背景视图
@@ -59,25 +83,6 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
  提示图标
  */
 @property(nonatomic,readonly) UIImageView *imageView;
-
-/**
- 状态
- */
-@property(nonatomic,assign) GKProgressHUDStatus status;
-
-/**
- 消失回调
- */
-@property(nonatomic,copy) void(^dismissHandler)(void);
-
-///显示
-- (void)show;
-
-///关闭 loading
-- (void)dismissProgress;
-
-///关闭所有
-- (void)dismiss;
 
 @end
 

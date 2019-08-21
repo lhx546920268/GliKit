@@ -10,6 +10,7 @@
 #import "GKContainer.h"
 #import "GKPageLoadingContainer.h"
 #import "GKBaseWebViewController.h"
+#import "UIView+GKUtils.h"
 
 @interface GKPageViewController ()<UIScrollViewDelegate>
 
@@ -136,7 +137,7 @@
     }
 }
 
-#pragma mark public method
+//MARK: Public Method
 
 - (void)removeAllViewContollers
 {
@@ -187,7 +188,7 @@
     
 }
 
-#pragma mark- GKMenuBarDelegate
+//MARK: GKMenuBarDelegate
 
 - (void)menuBar:(GKMenuBar *)menu didSelectItemAtIndex:(NSUInteger)index
 {
@@ -196,7 +197,7 @@
     [self onScrollTopPage:index];
 }
 
-#pragma mark- UIScrollViewDelegate
+//MARK: UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -211,14 +212,14 @@
     [self layoutVisiablePages];
     
     CGFloat offset = scrollView.contentOffset.x;
-    if(offset <= 0 || offset >= scrollView.mj_w * (self.menuBar.titles.count - 1)){
+    if(offset <= 0 || offset >= scrollView.gkWidth * (self.menuBar.titles.count - 1)){
         return;
     }
     
     //是否是向右滑动
     BOOL toRight = scrollView.contentOffset.x >= self.beginOffset.x;
     
-    CGFloat width = scrollView.mj_w;
+    CGFloat width = scrollView.gkWidth;
     int index = (toRight ? offset : (offset + width)) / width;
     if(index != self.menuBar.selectedIndex)
         return;
@@ -254,7 +255,7 @@
 ///滑动到可见位置
 - (void)scrollToVisibleIndex
 {
-    NSInteger index = floor(self.scrollView.bounds.origin.x / self.scrollView.mj_w);
+    NSInteger index = floor(self.scrollView.bounds.origin.x / self.scrollView.gkWidth);
     
     if(index != _currentPage){
         _currentPage = index;

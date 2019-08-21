@@ -9,6 +9,8 @@
 #import "GKTableViewController.h"
 #import "UITableView+GKUtils.h"
 #import "UIView+GKEmptyView.h"
+#import "UIColor+GKTheme.h"
+#import "UIView+GKUtils.h"
 
 @interface GKTableViewController ()
 
@@ -45,7 +47,7 @@
     return _tableView;
 }
 
-#pragma mark public method
+//MARK: public method
 
 - (void)initViews
 {
@@ -67,9 +69,9 @@
         _tableView.estimatedSectionFooterHeight = 0;
         _tableView.estimatedSectionHeaderHeight = 0;
         if(_style == UITableViewStyleGrouped){
-            _tableView.backgroundColor = UIColor.appGrayBackgroundColor;
+            _tableView.backgroundColor = UIColor.gkGrayBackgroundColor;
         }
-        _tableView.gk_emptyViewDelegate = self;
+        _tableView.gkEmptyViewDelegate = self;
         
         [_tableView setSeparatorInset:self.separatorEdgeInsets];
         
@@ -114,7 +116,7 @@
     }
 }
 
-#pragma mark- tableView 代理
+//MARK:- tableView 代理
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -163,17 +165,17 @@
         [cell setLayoutMargins:self.separatorEdgeInsets];
     }
     
-    [tableView gk_setRowHeight:@(cell.mj_h) forIndexPath:indexPath];
+    [tableView gk_setRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    [tableView gk_setHeaderHeight:@(view.mj_h) forSection:section];
+    [tableView gk_setHeaderHeight:@(view.gkHeight) forSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
-    [tableView gk_setFooterHeight:@(view.mj_h) forSection:section];
+    [tableView gk_setFooterHeight:@(view.gkHeight) forSection:section];
 }
 
 - (void)viewDidLayoutSubviews
@@ -188,7 +190,7 @@
     }
 }
 
-#pragma mark- 屏幕旋转
+//MARK:- 屏幕旋转
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {

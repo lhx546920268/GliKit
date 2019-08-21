@@ -7,13 +7,14 @@
 //
 
 #import "GKScrollViewController.h"
-#import <MJRefresh.h>
-#import "GKRefreshHeader.h"
-#import "GKRefreshFooter.h"
+#import "GKRefreshControl.h"
+#import "GKLoadMoreControl.h"
 #import "UIViewController+GKKeyboard.h"
 #import "GKPageViewController.h"
 #import "GKScrollViewModel.h"
 #import "GKHttpTask.h"
+#import "GKBaseDefines.h"
+#import "UIView+GKUtils.h"
 
 @interface GKScrollViewController ()<UIScrollViewDelegate>
 
@@ -32,7 +33,7 @@
     return self;
 }
 
-#pragma mark- property
+//MARK: property
 
 - (void)setScrollView:(UIScrollView *)scrollView
 {
@@ -44,47 +45,7 @@
     }
 }
 
-- (void)setRefreshEnable:(BOOL) refreshEnable
-{
-    if(_refreshEnable != refreshEnable){
-#ifdef DEBUG
-        NSAssert(_scrollView != nil, @"%@ 设置下拉刷新 scrollView 不能为nil", NSStringFromClass([self class]));
-#endif
-        _refreshEnable = refreshEnable;
-        if(_refreshEnable){
-
-            self.scrollView.mj_header = (GKRefreshHeader*)[self refreshHeader];
-        }else{
-            self.scrollView.mj_header = nil;
-        }
-    }
-}
-
-- (void)setLoadMoreEnable:(BOOL)loadMoreEnable
-{
-    if(_loadMoreEnable != loadMoreEnable){
-#ifdef DEBUG
-        NSAssert(_scrollView != nil, @"%@ 设置加载更多 scrollView 不能为nil", NSStringFromClass([self class]));
-#endif
-        _loadMoreEnable = loadMoreEnable;
-        
-        if(_loadMoreEnable){
-            self.scrollView.mj_footer = (GKRefreshFooter*)[self refreshFooter];
-        }else{
-            self.scrollView.mj_footer = nil;
-        }
-    }
-}
-
-- (void)setLoadingMore:(BOOL)loadingMore
-{
-    _loadingMore = loadingMore;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
+//MARK: 加载视图
 
 - (BOOL)isInit
 {
@@ -96,17 +57,36 @@
     
 }
 
-- (MJRefreshComponent*)refreshHeader
+- (void)reloadListData
 {
-    return [GKRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(willRefresh)];
+    
 }
 
-- (MJRefreshComponent*)refreshFooter
+//MARK: Refresh
+
+- (void)setRefreshEnable:(BOOL) refreshEnable
 {
-    return [GKRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(willLoadMore)];
+    if(_refreshEnable != refreshEnable){
+#ifdef DEBUG
+        NSAssert(_scrollView != nil, @"%@ 设置下拉刷新 scrollView 不能为nil", NSStringFromClass([self class]));
+#endif
+        _refreshEnable = refreshEnable;
+        if(_refreshEnable){
+            WeakObj(self);
+            [self.scrollView gkAddRefreshWithHandler:^(void){
+                
+                [selfWeak willRefresh];
+            }];
+        }else{
+            [self.scrollView gkRemoveRefreshControl];
+        }
+    }
 }
 
-#pragma mark refresh
+- (GKRefreshControl *)refreshControl
+{
+    return self.scrollView.gkRefreshControl;
+}
 
 ///将要触发下拉刷新
 - (void)willRefresh
@@ -122,13 +102,13 @@
 - (void)stopRefresh
 {
     _refreshing = NO;
-    [self.scrollView.mj_header endRefreshing];
+    [self.refreshControl stopLoading];
 }
 
 
 - (void)startRefresh
 {
-    [self.scrollView.mj_header beginRefreshing];
+    [self.refreshControl startLoading];
 }
 
 - (void)onRefesh
@@ -138,7 +118,32 @@
     }
 }
 
-#pragma mark- load more
+//MARK: Load More
+
+- (void)setLoadMoreEnable:(BOOL)loadMoreEnable
+{
+    if(_loadMoreEnable != loadMoreEnable){
+#ifdef DEBUG
+        NSAssert(_scrollView != nil, @"%@ 设置加载更多 scrollView 不能为nil", NSStringFromClass([self class]));
+#endif
+        _loadMoreEnable = loadMoreEnable;
+        
+        if(_loadMoreEnable){
+            WeakObj(self);
+            [self.scrollView gkAddLoadMoreWithHandler:^(void){
+                
+                [selfWeak willLoadMore];
+            }];
+        }else{
+            [self.scrollView gkRemoveLoadMoreControl];
+        }
+    }
+}
+
+- (GKLoadMoreControl *)loadMoreControl
+{
+    return self.scrollView.gkLoadMoreControl;
+}
 
 ///将要触发加载更多
 - (void)willLoadMore
@@ -155,22 +160,22 @@
 {
     _loadingMore = NO;
     if(flag){
-        [self.scrollView.mj_footer endRefreshing];
+        [self.loadMoreControl stopLoading];
     }else{
         
-        [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+        [self.loadMoreControl noMoreInfo];
     }
 }
 
 - (void)stopLoadMoreWithFail
 {
     _loadingMore = NO;
-    [self.scrollView.mj_footer endRefreshing];
+    [self.loadMoreControl loadFail];
 }
 
 - (void)startLoadMore
 {
-    [self.scrollView.mj_footer beginRefreshing];
+    [self.loadMoreControl startLoading];
 }
 
 - (void)onLoadMore
@@ -209,11 +214,9 @@
     }
 }
 
-#pragma mark- 键盘
+//MARK: 键盘
 
-/**
- 键盘高度改变
- */
+///键盘高度改变
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
     [super keyboardWillChangeFrame:notification];
@@ -222,7 +225,7 @@
         if(!self.keyboardHidden){
             insets.bottom += self.keyboardFrame.size.height;
             if(self.bottomView){
-                insets.bottom -= self.bottomView.mj_h;
+                insets.bottom -= self.bottomView.gkHeight;
             }
             if(insets.bottom < 0){
                 insets.bottom = 0;
@@ -236,7 +239,7 @@
     }
 }
 
-#pragma mark UIScrollViewDelegate
+//MARK: UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -259,17 +262,13 @@
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
+    [self.loadMoreControl scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     if(scrollView == self.scrollView){
         if([self.parentViewController isKindOfClass:[GKPageViewController class]]){
             GKPageViewController *page = (GKPageViewController*)self.parentViewController;
             page.scrollView.scrollEnabled = YES;
         }
     }
-}
-
-- (void)reloadListData
-{
-    
 }
 
 @end

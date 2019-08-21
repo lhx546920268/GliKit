@@ -58,7 +58,7 @@
     [self removeNotifications];
 }
 
-#pragma mark- property
+//MARK:- property
 
 - (void)setTimeToCountDown:(NSTimeInterval)timeToCountDown
 {
@@ -76,7 +76,7 @@
     }
 }
 
-#pragma mark- timer
+//MARK:- timer
 
 - (void)start
 {
@@ -154,7 +154,7 @@
     !self.completionHandler ?: self.completionHandler();
 }
 
-#pragma mark- 通知
+//MARK:- 通知
 
 ///添加通知 app进入后台 手机锁屏后 来电 计时器会停止
 - (void)addNotifications

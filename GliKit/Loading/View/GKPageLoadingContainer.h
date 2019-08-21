@@ -29,6 +29,12 @@ typedef NS_ENUM(NSInteger, GKPageLoadingStatus){
 ///刷新回调
 @property(nonatomic, copy) void(^refreshHandler)(void);
 
+///开始动画
+- (void)startAnimating;
+
+///停止动画
+- (void)stopAnimating;
+
 @end
 
 ///页面加载显示的容器

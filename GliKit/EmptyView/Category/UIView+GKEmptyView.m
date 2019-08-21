@@ -6,82 +6,83 @@
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import "UIView+CAEmptyView.h"
+#import "UIView+GKEmptyView.h"
 #import "GKWeakObjectContainer.h"
+#import <objc/runtime.h>
+#import "GKBaseDefines.h"
 
 ///空视图key
-static char CAEmptyViewKey;
+static char GKEmptyViewKey;
 
 ///代理
-static char CAEmptyViewDelegateKey;
+static char GKEmptyViewDelegateKey;
 
 ///显示空视图
-static char CAShowEmptyViewKey;
+static char GKShowEmptyViewKey;
 
 ///旧的视图大小
-static char CAOldSizeKey;
+static char GKOldSizeKey;
 
-@implementation UIView (CAEmptyView)
+@implementation UIView (GKEmptyView)
 
-
-- (GKEmptyView*)ca_emptyView
+- (GKEmptyView*)gkEmptyView
 {
-    return objc_getAssociatedObject(self, &CAEmptyViewKey);;
+    return objc_getAssociatedObject(self, &GKEmptyViewKey);;
 }
 
-- (void)setCa_emptyView:(GKEmptyView *)ca_emptyView
+- (void)setGkEmptyView:(GKEmptyView *)gkEmptyView
 {
-    UIView *emptyView = self.ca_emptyView;
-    if(emptyView != ca_emptyView){
+    UIView *emptyView = self.gkEmptyView;
+    if(emptyView != gkEmptyView){
         [emptyView removeFromSuperview];
-        objc_setAssociatedObject(self, &CAEmptyViewKey, ca_emptyView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &GKEmptyViewKey, gkEmptyView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
-- (void)setCa_showEmptyView:(BOOL)ca_showEmptyView
+- (void)setGkShowEmptyView:(BOOL)gkShowEmptyView
 {
-    if(ca_showEmptyView != self.ca_showEmptyView){
-        objc_setAssociatedObject(self, &CAShowEmptyViewKey, @(ca_showEmptyView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if(ca_showEmptyView){
-            if(!self.ca_emptyView){
-                self.ca_emptyView = [GKEmptyView new];
+    if(gkShowEmptyView != self.gkShowEmptyView){
+        objc_setAssociatedObject(self, &GKShowEmptyViewKey, @(gkShowEmptyView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        if(gkShowEmptyView){
+            if(!self.gkEmptyView){
+                self.gkEmptyView = [GKEmptyView new];
             }
             [self layoutEmtpyView];
         }else{
-            self.ca_emptyView = nil;
+            self.gkEmptyView = nil;
         }
     }
 }
 
-- (BOOL)ca_showEmptyView
+- (BOOL)gkShowEmptyView
 {
-    return [objc_getAssociatedObject(self, &CAShowEmptyViewKey) boolValue];
+    return [objc_getAssociatedObject(self, &GKShowEmptyViewKey) boolValue];
 }
 
-- (void)setCa_emptyViewDelegate:(id<GKEmptyViewDelegate>)ca_emptyViewDelegate
+- (void)setGkEmptyViewDelegate:(id<GKEmptyViewDelegate>)gkEmptyViewDelegate
 {
-    GKWeakObjectContainer *container = objc_getAssociatedObject(self, &CAEmptyViewDelegateKey);
+    GKWeakObjectContainer *container = objc_getAssociatedObject(self, &GKEmptyViewDelegateKey);
     if(!container){
         container = [[GKWeakObjectContainer alloc] init];
     }
     
-    container.weakObject = ca_emptyViewDelegate;
-    objc_setAssociatedObject(self, &CAEmptyViewDelegateKey, container, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    container.weakObject = gkEmptyViewDelegate;
+    objc_setAssociatedObject(self, &GKEmptyViewDelegateKey, container, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id<GKEmptyViewDelegate>)ca_emptyViewDelegate
+- (id<GKEmptyViewDelegate>)gkEmptyViewDelegate
 {
-    GKWeakObjectContainer *container = objc_getAssociatedObject(self, &CAEmptyViewDelegateKey);
+    GKWeakObjectContainer *container = objc_getAssociatedObject(self, &GKEmptyViewDelegateKey);
     return container.weakObject;
 }
 
 ///调整emptyView
 - (void)layoutEmtpyView
 {
-    if(self.ca_showEmptyView){
-        GKEmptyView *emptyView = self.ca_emptyView;
+    if(self.gkShowEmptyView){
+        GKEmptyView *emptyView = self.gkEmptyView;
         if(emptyView != nil && emptyView.superview == nil){
-            id<GKEmptyViewDelegate> delegate = self.ca_emptyViewDelegate;
+            id<GKEmptyViewDelegate> delegate = self.gkEmptyViewDelegate;
             if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
                 [delegate emptyViewWillAppear:emptyView];
             }
@@ -98,15 +99,15 @@ static char CAOldSizeKey;
     }
 }
 
-- (CGSize)ca_oldSize
+- (CGSize)gkOldSize
 {
-    NSValue *value = objc_getAssociatedObject(self, &CAOldSizeKey);
+    NSValue *value = objc_getAssociatedObject(self, &GKOldSizeKey);
     return !value ? CGSizeZero : [value CGSizeValue];
 }
 
-- (void)setCa_oldSize:(CGSize)ca_oldSize
+- (void)setGkOldSize:(CGSize)gkOldSize
 {
-    objc_setAssociatedObject(self, &CAOldSizeKey, [NSValue valueWithCGSize:ca_oldSize], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKOldSizeKey, [NSValue valueWithCGSize:gkOldSize], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

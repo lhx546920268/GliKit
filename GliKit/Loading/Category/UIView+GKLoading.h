@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class GKPageLoadingContainer, GKProgressHUD;
+@protocol GKPageLoadingContainer, GKProgressHUD;
+@class GKProgressHUD;
 
 ///loading相关扩展
 @interface UIView (GKLoading)
@@ -17,7 +18,7 @@
 @property(nonatomic, assign) BOOL gkShowPageLoading;
 
 ///页面第一次加载视图
-@property(nonatomic, strong) GKPageLoadingContainer *gkPageLoadingView;
+@property(nonatomic, strong) UIView<GKPageLoadingContainer> *gkPageLoadingView;
 
 ///显示加载失败页面
 @property(nonatomic, assign) BOOL gkShowFailPage;
@@ -26,10 +27,10 @@
 @property(nonatomic, copy) void(^gkReloadDataHandler)(void);
 
 ///当前hud
-@property(nonatomic, strong) GKProgressHUD *gkProgressHUD;
+@property(nonatomic, strong) UIView<GKProgressHUD> *gkProgressHUD;
 
 ///点击失败视图
-- (void)handlerTapFailPage:(UITapGestureRecognizer*) tap;
+- (void)gkHandlerTapFailPage:(UITapGestureRecognizer*) tap;
 
 ///显示hud
 - (void)gkShowProgressWithText:(NSString*) text;

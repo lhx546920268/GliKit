@@ -35,13 +35,13 @@
 - (void)gk_setRowHeight:(NSNumber*) rowHeight forIndexPath:(NSIndexPath*) indexPath;
 
 ///获取区域头部
-- (NSNumber*)gk_headerHeightForSection:(NSInteger) section;
+- (NSNumber*)gkHeaderHeightForSection:(NSInteger) section;
 
 ///设置区域头部高度
 - (void)gk_setHeaderHeight:(NSNumber*) headerHeight forSection:(NSInteger) section;
 
 ///获取区域底部高度
-- (NSNumber*)gk_footerHeightForSection:(NSInteger) section;
+- (NSNumber*)gkFooterHeightForSection:(NSInteger) section;
 
 ///设置区域底部高度
 - (void)gk_setFooterHeight:(NSNumber*) footerHeight forSection:(NSInteger) section;

@@ -14,5 +14,15 @@
 ///分割线高度
 @property (class, nonatomic, assign) CGFloat gkSeparatorHeight;
 
+///导航栏间距
+@property (class, nonatomic, assign) CGFloat gkNavigationBarMargin;
+
+///导航栏titleView 和 item的间距
+@property (class, nonatomic, assign) CGFloat gkNavigationBarTitleViewItemMargin;
+
+///状态栏样式
+@property (class, nonatomic, assign) UIStatusBarStyle gkStatusBarStyle;
+
+
 @end
 

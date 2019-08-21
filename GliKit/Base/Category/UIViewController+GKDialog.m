@@ -44,7 +44,7 @@ static char GKInPresentWayKey;
     }
 }
 
-#pragma mark 视图消失出现
+//MARK: 视图消失出现
 
 - (void)gk_dialog_viewWillAppear:(BOOL)animated
 {
@@ -70,7 +70,7 @@ static char GKInPresentWayKey;
     }
 }
 
-#pragma mark view init
+//MARK: view init
 
 - (void)gk_dialog_viewDidLoad {
     [self gk_dialog_viewDidLoad];
@@ -104,7 +104,7 @@ static char GKInPresentWayKey;
     }
 }
 
-#pragma mark property
+//MARK: property
 
 - (void)setIsShowAsDialog:(BOOL)isShowAsDialog
 {
@@ -258,7 +258,7 @@ static char GKInPresentWayKey;
     objc_setAssociatedObject(self, &GKInPresentWayKey, @(value), OBJC_ASSOCIATION_RETAIN);
 }
 
-#pragma mark public method
+//MARK: public method
 
 - (void)showAsDialog
 {

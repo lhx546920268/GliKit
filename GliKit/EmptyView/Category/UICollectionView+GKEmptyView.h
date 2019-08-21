@@ -1,5 +1,5 @@
 //
-//  UICollectionView+CAEmptyView.h
+//  UICollectionView+GKEmptyView.h
 //  Zegobird
 //
 //  Created by 罗海雄 on 2019/3/14.
@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 ///用于collectionView 的空视图
-@interface UICollectionView (CAEmptyView)
+@interface UICollectionView (GKEmptyView)
 
 ///存在 sectionHeader 时，是否显示空视图 default is 'NO'
-@property(nonatomic,assign) BOOL ca_shouldShowEmptyViewWhenExistSectionHeaderView;
+@property(nonatomic,assign) BOOL gkShouldShowEmptyViewWhenExistSectionHeaderView;
 
 ///存在 sectionFooter 时，是否显示空视图 default is 'NO'
-@property(nonatomic,assign) BOOL ca_shouldShowEmptyViewWhenExistSectionFooterView;
+@property(nonatomic,assign) BOOL gkShouldShowEmptyViewWhenExistSectionFooterView;
 
 @end

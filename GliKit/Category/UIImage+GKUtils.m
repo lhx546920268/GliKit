@@ -85,7 +85,7 @@
     return retImage;
 }
 
-#pragma mark resize
+//MARK: resize
 
 - (CGSize)gk_fitWithSize:(CGSize) size type:(GKImageFitType) type
 {

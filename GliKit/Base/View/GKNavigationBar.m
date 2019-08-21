@@ -7,6 +7,9 @@
 //
 
 #import "GKNavigationBar.h"
+#import "GKBaseDefines.h"
+#import "UIApplication+GKTheme.h"
+#import "UIColor+GKTheme.h"
 
 @interface GKNavigationBar ()
 
@@ -26,7 +29,7 @@
         
         _backgroundView = [UIView new];
         _backgroundView.alpha = 0.95;
-        _backgroundView.backgroundColor = UIColor.appNavigationBarBackgroundColor;
+        _backgroundView.backgroundColor = UIColor.gkNavigationBarBackgroundColor;
         [self addSubview:_backgroundView];
         
         [_backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -41,12 +44,12 @@
 {
     if(!_shadowView){
         _shadowView = [UIView new];
-        _shadowView.backgroundColor = UIColor.appSeparatorColor;
+        _shadowView.backgroundColor = UIColor.gkSeparatorColor;
         [self addSubview:_shadowView];
         
         [_shadowView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.bottom.equalTo(self);
-            make.height.equalTo(UIApplication.appSeparatorHeight);
+            make.height.equalTo(UIApplication.gkSeparatorHeight);
         }];
     }
     
@@ -63,11 +66,6 @@
 {
     [super setBackgroundColor:UIColor.clearColor];
     self.backgroundView.backgroundColor = backgroundColor;
-}
-
-- (void)setHidden:(BOOL)hidden
-{
-    [super setHidden:hidden];
 }
 
 @end

@@ -10,7 +10,7 @@
 
 @implementation NSDate (Utils)
 
-#pragma mark 单例
+//MARK: 单例
 
 + (NSDateFormatter*)sharedDateFormatter
 {
@@ -24,7 +24,7 @@
     return dateFormatter;
 }
 
-#pragma mark 单个时间
+//MARK: 单个时间
 
 - (int)gk_second
 {
@@ -76,7 +76,7 @@
     return components.weekday;
 }
 
-#pragma mark 时间获取
+//MARK: 时间获取
 
 + (NSString*)gk_currentTime
 {
@@ -115,7 +115,7 @@
     return [dateFormatter stringFromDate:date];
 }
 
-#pragma mark 时间转换
+//MARK: 时间转换
 
 + (NSString*)gk_formatTime:(NSString*) time format:(NSString*) format
 {
@@ -183,7 +183,7 @@
     return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, second];
 }
 
-#pragma mark- 时间比较
+//MARK:- 时间比较
 
 + (BOOL)gk_TimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval
 {
@@ -221,7 +221,7 @@
     return [date1 isEqualToDate:date2];
 }
 
-#pragma mark- other
+//MARK:- other
 
 + (NSString*)gk_random
 {

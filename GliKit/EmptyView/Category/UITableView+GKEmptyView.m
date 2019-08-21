@@ -1,36 +1,37 @@
 //
-//  UITableView+CAEmptyView.m
+//  UITableView+GKEmptyView.m
 //  Zegobird
 //
 //  Created by 罗海雄 on 2019/3/14.
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import "UITableView+CAEmptyView.h"
+#import "UITableView+GKEmptyView.h"
 #import <objc/runtime.h>
-#import "UIView+CAEmptyView.h"
-#import "UIScrollView+CAEmptyView.h"
+#import "UIView+GKEmptyView.h"
+#import "UIScrollView+GKEmptyView.h"
+#import "UIView+GKUtils.h"
 
-static char CAShouldShowEmptyViewWhenExistTableHeaderViewKey;
-static char CAShouldShowEmptyViewWhenExistTableFooterViewKey;
-static char CAShouldShowEmptyViewWhenExistSectionHeaderViewKey;
-static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
+static char GKShouldShowEmptyViewWhenExistTableHeaderViewKey;
+static char GKShouldShowEmptyViewWhenExistTableFooterViewKey;
+static char GKShouldShowEmptyViewWhenExistSectionHeaderViewKey;
+static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 
-@implementation UITableView (CAEmptyView)
+@implementation UITableView (GKEmptyView)
 
-#pragma mark- super method
+//MARK: Super Method
 
 - (void)layoutEmtpyView
 {
     [super layoutEmtpyView];
     
-    GKEmptyView *emptyView = self.ca_emptyView;
+    GKEmptyView *emptyView = self.gkEmptyView;
     if(emptyView && emptyView.superview && !emptyView.hidden){
         CGRect frame = emptyView.frame;
         CGFloat y = frame.origin.y;
         
-        y += self.tableHeaderView.mj_h;
-        y += self.tableFooterView.mj_h;
+        y += self.tableHeaderView.gkHeight;
+        y += self.tableFooterView.gkHeight;
         
         NSInteger numberOfSections = 1;
         if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]){
@@ -38,7 +39,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取sectionHeader 高度
-        if(self.ca_shouldShowEmptyViewWhenExistSectionHeaderView){
+        if(self.gkShouldShowEmptyViewWhenExistSectionHeaderView){
             if([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]){
                 for(NSInteger i = 0;i < numberOfSections;i ++){
                     y += [self.delegate tableView:self heightForHeaderInSection:i];
@@ -49,7 +50,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取section footer 高度
-        if(self.ca_shouldShowEmptyViewWhenExistTableFooterView){
+        if(self.gkShouldShowEmptyViewWhenExistTableFooterView){
             if([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]){
                 for(NSInteger i = 0;i < numberOfSections;i ++){
                     y += [self.delegate tableView:self heightForFooterInSection:i];
@@ -60,7 +61,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         frame.origin.y = y;
-        frame.size.height = self.mj_h - y;
+        frame.size.height = self.gkHeight - y;
         if(frame.size.height <= 0){
             [emptyView removeFromSuperview];
         }else{
@@ -69,15 +70,15 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     }
 }
 
-- (BOOL)isEmptyData
+- (BOOL)gkIsEmptyData
 {
     BOOL empty = YES;
     
-    if(!self.ca_shouldShowEmptyViewWhenExistTableHeaderView && self.tableHeaderView){
+    if(!self.gkShouldShowEmptyViewWhenExistTableHeaderView && self.tableHeaderView){
         empty = NO;
     }
     
-    if(!self.ca_shouldShowEmptyViewWhenExistTableFooterView && self.tableFooterView){
+    if(!self.gkShouldShowEmptyViewWhenExistTableFooterView && self.tableFooterView){
         empty = NO;
     }
     
@@ -99,7 +100,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         
         ///行数为0，section 大于0时，可能存在sectionHeader
         if(empty && section > 0 && self.delegate){
-            if(!self.ca_shouldShowEmptyViewWhenExistSectionHeaderView && [self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]){
+            if(!self.gkShouldShowEmptyViewWhenExistSectionHeaderView && [self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]){
                 for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.delegate tableView:self viewForHeaderInSection:i];
                     if(view){
@@ -109,7 +110,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
                 }
             }
             
-            if(empty && !self.ca_shouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]){
+            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]){
                 for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.delegate tableView:self viewForFooterInSection:i];
                     if(view){
@@ -124,16 +125,16 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return empty;
 }
 
-#pragma mark- property
+//MARK: Property
 
-- (void)setCa_shouldShowEmptyViewWhenExistTableHeaderView:(BOOL)ca_shouldShowEmptyViewWhenExistTableHeaderView
+- (void)setGkShouldShowEmptyViewWhenExistTableHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistTableHeaderView
 {
-    objc_setAssociatedObject(self, &CAShouldShowEmptyViewWhenExistTableHeaderViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyViewWhenExistTableHeaderView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderViewKey, @(gkShouldShowEmptyViewWhenExistTableHeaderView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)ca_shouldShowEmptyViewWhenExistTableHeaderView
+- (BOOL)gkShouldShowEmptyViewWhenExistTableHeaderView
 {
-    NSNumber *number = objc_getAssociatedObject(self, &CAShouldShowEmptyViewWhenExistTableHeaderViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderViewKey);
     if(number){
         return [number boolValue];
     }
@@ -141,14 +142,14 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return YES;
 }
 
-- (void)setCa_shouldShowEmptyViewWhenExistTableFooterView:(BOOL)ca_shouldShowEmptyViewWhenExistTableFooterView
+- (void)setGkShouldShowEmptyViewWhenExistTableFooterView:(BOOL)gkShouldShowEmptyViewWhenExistTableFooterView
 {
-    objc_setAssociatedObject(self, &CAShouldShowEmptyViewWhenExistTableFooterViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyViewWhenExistTableFooterView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableFooterViewKey, @(gkShouldShowEmptyViewWhenExistTableFooterView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)ca_shouldShowEmptyViewWhenExistTableFooterView
+- (BOOL)gkShouldShowEmptyViewWhenExistTableFooterView
 {
-    NSNumber *number = objc_getAssociatedObject(self, &CAShouldShowEmptyViewWhenExistTableFooterViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableFooterViewKey);
     if(number){
         return [number boolValue];
     }
@@ -157,14 +158,14 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
 }
 
 
-- (void)setCa_shouldShowEmptyViewWhenExistSectionHeaderView:(BOOL)ca_shouldShowEmptyViewWhenExistSectionHeaderView
+- (void)setGkShouldShowEmptyViewWhenExistSectionHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
 {
-    objc_setAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionHeaderViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyViewWhenExistSectionHeaderView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey, @(gkShouldShowEmptyViewWhenExistSectionHeaderView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)ca_shouldShowEmptyViewWhenExistSectionHeaderView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
 {
-    NSNumber *number = objc_getAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionHeaderViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey);
     if(number){
         return [number boolValue];
     }
@@ -173,14 +174,14 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
 }
 
 
-- (void)setCa_shouldShowEmptyViewWhenExistSectionFooterView:(BOOL)ca_shouldShowEmptyViewWhenExistSectionFooterView
+- (void)setGkShouldShowEmptyViewWhenExistSectionFooterView:(BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
 {
-    objc_setAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionFooterViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyViewWhenExistSectionFooterView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey,@(gkShouldShowEmptyViewWhenExistSectionFooterView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)ca_shouldShowEmptyViewWhenExistSectionFooterView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
 {
-    NSNumber *number = objc_getAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionFooterViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey);
     if(number)
     {
         return [number boolValue];
@@ -189,7 +190,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return NO;
 }
 
-#pragma mark- swizzle
+//MARK: Swizzle
 
 + (void)load
 {
@@ -208,7 +209,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     for(NSInteger i = 0;i < count;i ++)
     {
         SEL selector1 = selectors[i];
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"ca_empty_%@", NSStringFromSelector(selector1)]);
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkEmpty_%@", NSStringFromSelector(selector1)]);
         
         Method method1 = class_getInstanceMethod(self, selector1);
         Method method2 = class_getInstanceMethod(self, selector2);
@@ -217,48 +218,48 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     }
 }
 
-- (void)ca_empty_reloadData
+- (void)gkEmpty_reloadData
 {
-    [self ca_empty_reloadData];
+    [self gkEmpty_reloadData];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkEmpty_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self ca_empty_reloadSections:sections withRowAnimation:animation];
+    [self gkEmpty_reloadSections:sections withRowAnimation:animation];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkEmpty_insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self ca_empty_insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+    [self gkEmpty_insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkEmpty_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self ca_empty_insertSections:sections withRowAnimation:animation];
+    [self gkEmpty_insertSections:sections withRowAnimation:animation];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkEmpty_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self ca_empty_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+    [self gkEmpty_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkEmpty_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self ca_empty_deleteSections:sections withRowAnimation:animation];
+    [self gkEmpty_deleteSections:sections withRowAnimation:animation];
     [self layoutEmtpyView];
 }
 
 ///用于使用约束时没那么快得到 frame
-- (void)ca_empty_layoutSubviews
+- (void)gkEmpty_layoutSubviews
 {
-    [self ca_empty_layoutSubviews];
-    if(!CGSizeEqualToSize(self.ca_oldSize, self.frame.size)){
-        self.ca_oldSize = self.frame.size;
+    [self gkEmpty_layoutSubviews];
+    if(!CGSizeEqualToSize(self.gkOldSize, self.frame.size)){
+        self.gkOldSize = self.frame.size;
         [self layoutEmtpyView];
     }
 }

@@ -18,18 +18,22 @@ GKNavigationBar,
 GKSystemNavigationBar,
 GKNavigationItemHelper;
 
-/**
- 控制视图的基类
- */
+///控制视图的基类
 @interface GKBaseViewController : UIViewController<GKEmptyViewDelegate>
 
-/**
- 关联的viewModel 如果有关联 调用viewModel对应方法
- */
+///关联的viewModel 如果有关联 调用viewModel对应方法
 @property(nonatomic, strong) __kindof GKBaseViewModel *viewModel;
 
 ///获取兼容的状态栏高度 比如有连接个人热点的时候状态栏的高度是不一样的 viewDidLayoutSubviews 获取
 @property(nonatomic, readonly) CGFloat compatiableStatusHeight;
+
+///是否已计算出frame，使用约束时用到
+@property(nonatomic, readonly) BOOL isViewDidLayoutSubviews;
+
+///设置点击self.view 回收键盘
+@property(nonatomic, assign) BOOL shouldDismissKeyboardWhileTap;
+
+//MARK: 内容视图
 
 ///固定在顶部的视图 xib不要用
 @property(nonatomic, strong) UIView *topView;
@@ -42,39 +46,6 @@ GKNavigationItemHelper;
 
 ///视图容器 self.view xib 不要用，如果 showAsDialog = YES，self.view将不再是 container 且 要自己设置container的约束
 @property(nonatomic, readonly) GKContainer *container;
-
-///导航栏
-@property(nonatomic, readonly) GKNavigationBar *navigatonBar;
-
-///item帮助类
-@property(nonatomic, readonly) GKNavigationItemHelper *navigationItemHelper;
-
-///系统导航栏
-@property(nonatomic, readonly) GKSystemNavigationBar *systemNavigationBar;
-
-///是否要创建自定义导航栏 default YES
-@property(nonatomic, assign) BOOL shouldCreateNavigationBar;
-
-///自定义导航栏类
-@property(nonatomic, readonly) Class navigationBarClass;
-
-///是否已计算出frame，使用约束时用到
-@property(nonatomic, readonly) BOOL isViewDidLayoutSubviews;
-
-///设置点击self.view 回收键盘
-@property(nonatomic, assign) BOOL shouldDismissKeyboardWhileTap;
-
-///右边更多弹窗按钮
-@property(nonatomic, readonly) UIBarButtonItem *moreNavigationItem;
-
-///设置是否显示更多按钮
-@property(nonatomic, assign) BOOL shouldMoreNavigationItem;
-
-///设置导航栏隐藏
-- (void)setNavigatonBarHidden:(BOOL) hidden animate:(BOOL) animate;
-
-//点击更多
-- (void)handleMore;
 
 /**
  设置顶部视图
@@ -92,12 +63,32 @@ GKNavigationItemHelper;
  */
 - (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
 
+//MARK: 导航栏
+
+///导航栏
+@property(nonatomic, readonly) GKNavigationBar *navigatonBar;
+
+///item帮助类
+@property(nonatomic, readonly) GKNavigationItemHelper *navigationItemHelper;
+
+///系统导航栏
+@property(nonatomic, readonly) GKSystemNavigationBar *systemNavigationBar;
+
+///是否要创建自定义导航栏 default YES
+@property(nonatomic, assign) BOOL shouldCreateNavigationBar;
+
+///自定义导航栏类
+@property(nonatomic, readonly) Class navigationBarClass;
+
+///设置导航栏隐藏
+- (void)setNavigatonBarHidden:(BOOL) hidden animate:(BOOL) animate;
+
 /**
  主要是用于要子类调用 super
  */
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
-#pragma mark task
+//MARK: Task
 
 /**
  添加需要取消的请求 在dealloc
@@ -125,19 +116,12 @@ GKNavigationItemHelper;
 /**
  加载页面数据 第一次加载 或者 网络错误重新加载
  */
-- (void)gk_reloadData NS_REQUIRES_SUPER;
+- (void)gkReloadData NS_REQUIRES_SUPER;
 
 /**
  数据加载完成回调 子类重写
  */
 - (void)onLoadData;
-
-/**
- 发送谷歌分析数据
- 
- @param name 页面名称或者动作名称
- */
-- (void)sendTrackerWithName:(NSString *)name clazz:(NSObject*)clazz;
 
 @end
 

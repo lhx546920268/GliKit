@@ -28,7 +28,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 
 @interface NSString (GKUtils)
 
-#pragma mark 空判断
+//MARK: 空判断
 
 /**
  判断字符串是否为空，会去掉 空格 \n \r
@@ -40,7 +40,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 + (BOOL)isNull:(NSString*) str;
 
-#pragma mark- 获取
+//MARK:- 获取
 
 /**
  第一个字符
@@ -71,7 +71,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 - (CGSize)gk_stringSizeWithFont:(UIFont*) font contraintWith:(CGFloat) width;
 
-#pragma mark 图片
+//MARK: 图片
 
 /**
  获取缩略图路径
@@ -81,7 +81,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 - (NSString*)thumbnailURLWithSize:(CGSize) size;
 
-#pragma mark 校验
+//MARK: 校验
 
 /**
  是否是缅甸手机号
@@ -98,7 +98,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 - (BOOL)isInteger;
 
-#pragma mark 加密
+//MARK: 加密
 
 ///获取md5字符串
 - (NSString*)gk_MD5String;
@@ -106,7 +106,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 ///获取加密的手机号
 - (NSString*)encryptedMobile;
 
-#pragma mark 过滤
+//MARK: 过滤
 
 /**
  过滤字符串

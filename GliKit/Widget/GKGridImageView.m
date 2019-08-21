@@ -85,7 +85,7 @@
     return (UIImageView*)[self viewWithTag:GKGridImageViewStartTag + index];
 }
 
-#pragma mark private method
+//MARK: private method
 
 ///配置cell
 - (void)configCellForIndex:(NSInteger) index
@@ -142,7 +142,7 @@
     !self.selectImageHandler ?: self.selectImageHandler(self.images[index], index);
 }
 
-#pragma mark Class method
+//MARK: Class method
 
 - (CGFloat)heightForImageCount:(NSInteger) count
 {

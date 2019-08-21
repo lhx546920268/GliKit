@@ -159,7 +159,7 @@
     _dismissWhenSelectButton = YES;
 }
 
-#pragma mark- layout
+//MARK:- layout
 
 - (void)viewDidLayoutSubviews
 {
@@ -431,7 +431,7 @@
     self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
 }
 
-#pragma mark- private method
+//MARK:- private method
 
 ///取消
 - (void)cancel:(id) sender
@@ -457,7 +457,7 @@
                 
                 self.dialogBackgroundView.alpha = 1.0;
                 self.container.alpha = 1.0;
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"transform.scale"];
                 animation.fromValue = [NSNumber numberWithFloat:1.3];
                 animation.toValue = [NSNumber numberWithFloat:1.0];
                 animation.duration = 0.25;
@@ -499,7 +499,7 @@
     }
 }
 
-#pragma mark- public method
+//MARK:- public method
 
 - (void)reloadButtonForIndex:(NSUInteger) index
 {
@@ -528,7 +528,7 @@
     [self dismissDialog];
 }
 
-#pragma mark- UITapGestureRecognizer delegate
+//MARK:- UITapGestureRecognizer delegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -541,7 +541,7 @@
     return YES;
 }
 
-#pragma mark- UICollectionView delegate
+//MARK:- UICollectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -634,7 +634,7 @@
     cell.backgroundColor = self.props.highlightedBackgroundColor;
 }
 
-#pragma mark- property
+//MARK:- property
 
 - (GKAlertProps*)props
 {

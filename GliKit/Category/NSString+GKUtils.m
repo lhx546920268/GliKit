@@ -52,7 +52,7 @@
     return NO;
 }
 
-#pragma mark- 获取
+//MARK:- 获取
 
 - (char)gk_firstCharacter
 {
@@ -105,14 +105,14 @@
     return size;
 }
 
-#pragma mark 图片
+//MARK: 图片
 
 - (NSString*)thumbnailURLWithSize:(CGSize) size
 {
     return [self stringByAppendingFormat:@"@%.0fw_%.0fh", size.width, size.height];
 }
 
-#pragma mark 校验
+//MARK: 校验
 
 - (BOOL)isMyanmarMobile
 {
@@ -141,7 +141,7 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]].length == 0;
 }
 
-#pragma mark 加密
+//MARK: 加密
 
 - (NSString*)gk_MD5String
 {
@@ -166,7 +166,7 @@
     return self;
 }
 
-#pragma mark 过滤
+//MARK: 过滤
 
 - (NSString*)gk_stringByFilterWithType:(GKTextType)type
 {

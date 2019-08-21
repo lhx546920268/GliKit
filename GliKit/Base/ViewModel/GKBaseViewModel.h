@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "GKBaseViewController.h"
 
-
 ///基础视图逻辑处理
 @interface GKBaseViewModel : NSObject
 

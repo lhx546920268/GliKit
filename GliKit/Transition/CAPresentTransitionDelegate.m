@@ -94,7 +94,7 @@
     }
 }
 
-#pragma mark- UIViewControllerTransitioningDelegate
+//MARK:- UIViewControllerTransitioningDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
@@ -131,16 +131,16 @@
     }
 }
 
-#pragma mark- Class method
+//MARK:- Class method
 
 + (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller
 {
     GKPresentTransitionDelegate *delegate = [[GKPresentTransitionDelegate alloc] init];
     if(flag){
         
-        UINavigationController *nav = [vc gk_createWithNavigationController];
+        UINavigationController *nav = [vc gkCreateWithNavigationController];
         nav.gk_transitioningDelegate = delegate;
-        vc.gk_showBackItem = YES;
+        vc.gkShowBackItem = YES;
         [parentedViewConttroller.gk_topestPresentedViewController presentViewController:nav animated:YES completion:^(void){
 
             if(vc.navigationController){
@@ -330,7 +330,7 @@
     [self.delegate.panGestureRecognizer removeTarget:self action:@selector(handlePan:)];
 }
 
-#pragma mark- super method
+//MARK:- super method
 
 - (void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {

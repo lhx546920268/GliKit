@@ -26,7 +26,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  */
 + (NSDateFormatter*)sharedDateFormatter;
 
-#pragma mark 单个时间
+//MARK: 单个时间
 
 ///获取当前时间的 秒
 - (int)gk_second;
@@ -49,7 +49,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
 ///获取当前时间的 星期几 1-7 星期日 到星期六
 - (NSInteger)gk_weekday;
 
-#pragma mark 时间获取
+//MARK: 时间获取
 
 /**
  获取当前时间格式为 YYYY-MM-dd HH:mm:ss
@@ -88,7 +88,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  */
 + (NSString*)gk_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime;
 
-#pragma mark 时间转换
+//MARK: 时间转换
 
 /**
  时间格式转换 从@"YYYY-MM-dd HH:mm:ss" 转换成给定格式
@@ -146,7 +146,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  */
 + (NSString*)formatSeconds:(long) seconds;
 
-#pragma mark 时间比较
+//MARK: 时间比较
 
 /**
  time - 当前时间 > timeInterval
@@ -167,7 +167,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  */
 + (BOOL)gk_time:(NSString*) time1 equalToTime:(NSString*) time2;
 
-#pragma mark other
+//MARK: other
 
 /**当前时间和随机数生成的字符串
  *@return 如 1989072407080998

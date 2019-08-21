@@ -10,33 +10,35 @@
 #import <objc/runtime.h>
 #import "GKBaseNavigationController.h"
 #import "UINavigationBar+GKUtils.h"
+#import "UIView+GKUtils.h"
+#import "UIApplication+GKTheme.h"
+#import "NSString+GKUtils.h"
 
-/**
- 返回按钮
- */
+///返回按钮
 static char GKBackItemViewKey;
 
-/**
- 是否可以活动返回
- */
+///是否可以活动返回
 static char GKInteractivePopEnableKey;
+
+///返回按钮tag
+static const NSInteger GKBackItemTag = 10329;
 
 @implementation UIViewController (Utils)
 
-- (void)setCa_hideNavigationBarShadowImage:(BOOL)gk_hideNavigationBarShadowImage
+- (void)setGkHideNavigationBarShadowImage:(BOOL)gkHideNavigationBarShadowImage
 {
-    UIImageView *shadowImageView = [self gk_findShadowImageView:self.navigationController.navigationBar];
-    shadowImageView.hidden = gk_hideNavigationBarShadowImage;
+    UIImageView *shadowImageView = [self gkFindShadowImageView:self.navigationController.navigationBar];
+    shadowImageView.hidden = gkHideNavigationBarShadowImage;
 }
 
-- (UIImageView*)gk_findShadowImageView:(UIView*)view
+- (UIImageView*)gkFindShadowImageView:(UIView*)view
 {
     if([view isKindOfClass:[UIImageView class]] && view.bounds.size.height <= 1.0){
         return (UIImageView*) view;
     }
     
     for(UIView *subView in view.subviews){
-        UIImageView *imageView = [self gk_findShadowImageView:subView];
+        UIImageView *imageView = [self gkFindShadowImageView:subView];
         if(imageView){
             return imageView;
         }
@@ -45,20 +47,33 @@ static char GKInteractivePopEnableKey;
     return nil;
 }
 
-//设置返回按钮
-- (void)setCa_showBackItem:(BOOL)gk_showBackItem
+- (BOOL)gkInteractivePopEnable
 {
-    if(gk_showBackItem){
+    NSNumber *number = objc_getAssociatedObject(self, &GKInteractivePopEnableKey);
+    return number ? number.boolValue : YES;
+}
+
+- (void)setCa_interactivePopEnable:(BOOL)gk_interactivePopEnable
+{
+    self.navigationController.interactivePopGestureRecognizer.enabled = gk_interactivePopEnable;
+    objc_setAssociatedObject(self, &GKInteractivePopEnableKey, @(gk_interactivePopEnable), OBJC_ASSOCIATION_RETAIN);
+}
+
+//MARK: 返回
+
+- (void)setGkShowBackItem:(BOOL)gkShowBackItem
+{
+    if(gkShowBackItem){
         UIImage *image = [UIImage imageNamed:@"nav_btn_back_white"];
         //Template
         if(image.renderingMode != UIImageRenderingModeAlwaysTemplate){
             image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
         
-        UIBarButtonItem *item = [[self class] gk_barItemWithImage:image target:self action:@selector(gk_back)];
+        UIBarButtonItem *item = [[self class] gkBarItemWithImage:image target:self action:@selector(gkBack)];
         item.customView.tag = GKBackItemTag;
         objc_setAssociatedObject(self, &GKBackItemViewKey, item.customView, OBJC_ASSOCIATION_RETAIN);
-        [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
+        [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
     }else{
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.leftBarButtonItems = nil;
@@ -67,27 +82,27 @@ static char GKInteractivePopEnableKey;
     }
 }
 
-- (UIView *)gk_backItem
+- (UIView *)gkBackItem
 {
     return objc_getAssociatedObject(self, &GKBackItemViewKey);
 }
 
-- (BOOL)gk_showBackItem
+- (BOOL)gkShowBackItem
 {
     return self.navigationItem.leftBarButtonItem.customView.tag == GKBackItemTag;
 }
 
-- (void)gk_back
+- (void)gkBack
 {
-    [self gk_backAnimated:YES];
+    [self gkBackAnimated:YES];
 }
 
-- (void)gk_backAnimated:(BOOL) flag
+- (void)gkBackAnimated:(BOOL) flag
 {
-    [self gk_backAnimated:flag completion:nil];
+    [self gkBackAnimated:flag completion:nil];
 }
 
-- (void)gk_backAnimated:(BOOL) flag completion: (void (^)(void))completion
+- (void)gkBackAnimated:(BOOL) flag completion: (void (^)(void))completion
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
@@ -104,25 +119,13 @@ static char GKInteractivePopEnableKey;
     }
 }
 
-- (BOOL)gk_interactivePopEnable
-{
-    NSNumber *number = objc_getAssociatedObject(self, &GKInteractivePopEnableKey);
-    return number ? number.boolValue : YES;
-}
+//MARK: property readonly
 
-- (void)setCa_interactivePopEnable:(BOOL)gk_interactivePopEnable
-{
-    self.navigationController.interactivePopGestureRecognizer.enabled = gk_interactivePopEnable;
-    objc_setAssociatedObject(self, &GKInteractivePopEnableKey, @(gk_interactivePopEnable), OBJC_ASSOCIATION_RETAIN);
-}
-
-#pragma mark property readonly
-
-- (CGFloat)gk_statusBarHeight
+- (CGFloat)gkStatusBarHeight
 {
     CGFloat height = [[UIApplication sharedApplication] statusBarFrame].size.height;
     if(height == 0){
-        if([AppDelegate instance].window.gk_safeAreaInsets.bottom > 0){
+        if(UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom > 0){
             height = 44;
         }else{
             height = 20;
@@ -132,7 +135,7 @@ static char GKInteractivePopEnableKey;
     return height;
 }
 
-- (CGFloat)gk_navigationBarHeight
+- (CGFloat)gkNavigationBarHeight
 {
     CGFloat height = self.navigationController.navigationBar.bounds.size.height;
     if(height == 0){
@@ -143,7 +146,7 @@ static char GKInteractivePopEnableKey;
 }
 
 
-- (CGFloat)gk_tabBarHeight
+- (CGFloat)gkTabBarHeight
 {
     if(self.tabBarController){
         return self.tabBarController.tabBar.bounds.size.height;
@@ -152,40 +155,40 @@ static char GKInteractivePopEnableKey;
     }
 }
 
-- (CGFloat)gk_toolBarHeight
+- (CGFloat)gkToolBarHeight
 {
     return 44;
 }
 
-- (UIViewController*)gk_topestPresentedViewController
+- (__kindof UIViewController *)gkTopestPresentedViewController
 {
     if(self.presentedViewController){
-        return [self.presentedViewController gk_topestPresentedViewController];
+        return [self.presentedViewController gkTopestPresentedViewController];
     }else{
         return self;
     }
 }
 
-- (UIViewController*)gk_rootPresentingViewController
+- (__kindof UIViewController*)gkRootPresentingViewController
 {
     if(self.presentingViewController){
-        return [self.presentingViewController gk_rootPresentingViewController];
+        return [self.presentingViewController gkRootPresentingViewController];
     }else{
         return self;
     }
 }
 
-#pragma mark navigation
-
-- (__kindof UINavigationController*)gk_createWithNavigationController
+- (__kindof UINavigationController*)gkCreateWithNavigationController
 {
     return [[GKBaseNavigationController alloc] initWithRootViewController:self];
 }
 
-- (void)gk_setNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position
+//MARK: 导航栏按钮
+
+- (void)gkSetNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position
 {
     item.customView.tintColor = self.navigationController.navigationBar.tintColor;
-    item.customView.mj_w += GKNavigationBarMargin * 2;
+    item.customView.gkWidth += UIApplication.gkNavigationBarMargin * 2;
     switch (position) {
         case GKNavigationItemPositionLeft : {
             self.navigationItem.leftBarButtonItem = item;
@@ -199,73 +202,73 @@ static char GKInteractivePopEnableKey;
     }
 }
 
-- (UIBarButtonItem*)gk_setLeftItemWithTitle:(NSString*) title action:(SEL) action
+- (UIBarButtonItem*)gkSetLeftItemWithTitle:(NSString*) title action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithTitle:title target:self action:action];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
+    UIBarButtonItem *item = [[self class] gkBarItemWithTitle:title target:self action:action];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setLeftItemWithImage:(UIImage*) image action:(SEL) action
+- (UIBarButtonItem*)gkSetLeftItemWithImage:(UIImage*) image action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithImage:image target:self action:action];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
+    UIBarButtonItem *item = [[self class] gkBarItemWithImage:image target:self action:action];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action
+- (UIBarButtonItem*)gkSetLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithSystemItem:systemItem target:self action:action];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
+    UIBarButtonItem *item = [[self class] gkBarItemWithSystemItem:systemItem target:self action:action];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setLeftItemWithCustomView:(UIView*) customView
+- (UIBarButtonItem*)gkSetLeftItemWithCustomView:(UIView*) customView
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithCustomView:customView];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
+    UIBarButtonItem *item = [[self class] gkBarItemWithCustomView:customView];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setRightItemWithTitle:(NSString*) title action:(SEL) action
+- (UIBarButtonItem*)gkSetRightItemWithTitle:(NSString*) title action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithTitle:title target:self action:action];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
+    UIBarButtonItem *item = [[self class] gkBarItemWithTitle:title target:self action:action];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setRightItemWithImage:(UIImage*) image action:(SEL) action
+- (UIBarButtonItem*)gkSetRightItemWithImage:(UIImage*) image action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithImage:image target:self action:action];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
+    UIBarButtonItem *item = [[self class] gkBarItemWithImage:image target:self action:action];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action
+- (UIBarButtonItem*)gkSetRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithSystemItem:systemItem target:self action:action];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
+    UIBarButtonItem *item = [[self class] gkBarItemWithSystemItem:systemItem target:self action:action];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
     
     return item;
 }
 
-- (UIBarButtonItem*)gk_setRightItemWithCustomView:(UIView*) customView
+- (UIBarButtonItem*)gkSetRightItemWithCustomView:(UIView*) customView
 {
-    UIBarButtonItem *item = [[self class] gk_barItemWithCustomView:customView];
-    [self gk_setNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
+    UIBarButtonItem *item = [[self class] gkBarItemWithCustomView:customView];
+    [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionRight];
     
     return item;
 }
 
-#pragma mark- Class Method
+//MARK: Class Method
 
-+ (UIBarButtonItem*)gk_barItemWithImage:(UIImage*) image target:(id) target action:(SEL) action
++ (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(id) target action:(SEL) action
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setImage:image forState:UIControlStateNormal];
@@ -275,11 +278,11 @@ static char GKInteractivePopEnableKey;
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
-+ (UIBarButtonItem*)gk_barItemWithTitle:(NSString*) title target:(id) target action:(SEL) action
++ (UIBarButtonItem*)gkBarItemWithTitle:(NSString*) title target:(id) target action:(SEL) action
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setTitle:title forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont appFontWithSize:14];
+    btn.titleLabel.font = [UIFont systemFontOfSize:14];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     CGSize size = [title gk_stringSizeWithFont:btn.titleLabel.font];
     btn.frame = CGRectMake(0, 0, size.width, 44);
@@ -287,12 +290,12 @@ static char GKInteractivePopEnableKey;
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
-+ (UIBarButtonItem*)gk_barItemWithCustomView:(UIView*) customView
++ (UIBarButtonItem*)gkBarItemWithCustomView:(UIView*) customView
 {
     return [[UIBarButtonItem alloc] initWithCustomView:customView];
 }
 
-+ (UIBarButtonItem*)gk_barItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action
++ (UIBarButtonItem*)gkBarItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action
 {
     return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:target action:action];
 }

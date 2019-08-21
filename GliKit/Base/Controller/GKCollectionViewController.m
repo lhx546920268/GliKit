@@ -36,7 +36,7 @@
 }
 
 
-#pragma mark- public method
+//MARK:- public method
 
 - (UICollectionViewFlowLayout*)flowLayout
 {
@@ -74,7 +74,7 @@
         _collectionView.alwaysBounceVertical = YES;
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.backgroundView = nil;
-        _collectionView.gk_emptyViewDelegate = self;
+        _collectionView.gkEmptyViewDelegate = self;
         self.scrollView = _collectionView;
     }
 }
@@ -123,7 +123,7 @@
     }
 }
 
-#pragma mark UICollectionView delegate
+//MARK: UICollectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

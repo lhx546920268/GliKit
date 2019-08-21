@@ -14,12 +14,15 @@
 #import "GKHttpMultiTasks.h"
 #import "UIViewController+GKKeyboard.h"
 #import "GKBaseViewModel.h"
-#import "GKMoreMenu.h"
 #import "GKNavigationBar.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "GKSystemNavigationBar.h"
 #import "GKNavigationItemHelper.h"
-#import <FirebaseAnalytics/FirebaseAnalytics.h>
+#import "UIViewController+GKUtils.h"
+#import "UIView+GKUtils.h"
+#import "UIViewController+GKDialog.h"
+#import "GKBaseDefines.h"
+#import "UIApplication+GKTheme.h"
 
 @interface GKBaseViewController ()<UIGestureRecognizerDelegate>
 
@@ -29,14 +32,10 @@
 ///点击回收键盘手势
 @property(nonatomic, strong) UITapGestureRecognizer *dismissKeyboardGestureRecognizer;
 
-///更多弹窗
-@property(strong, nonatomic) GKMoreMenu *moreMenu;
-
 @end
 
 @implementation GKBaseViewController
 
-@synthesize moreNavigationItem = _moreNavigationItem;
 @synthesize navigationItemHelper = _navigationItemHelper;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,16 +50,16 @@
 
 - (CGFloat)compatiableStatusHeight
 {
-    CGFloat statusHeight = self.gk_statusBarHeight;
+    CGFloat statusHeight = self.gkStatusBarHeight;
     CGFloat safeAreaTop = 0;
     if(@available(iOS 11, *)){
-        safeAreaTop = self.view.gk_safeAreaInsets.top;
+        safeAreaTop = self.view.gkSafeAreaInsets.top;
     }else{
         safeAreaTop = self.topLayoutGuide.length;
     }
     if(!self.navigationController.navigationBarHidden && self.navigationController.navigationBar.translucent){
-        if(safeAreaTop > self.gk_navigationBarHeight){
-            safeAreaTop -= self.gk_navigationBarHeight;
+        if(safeAreaTop > self.gkNavigationBarHeight){
+            safeAreaTop -= self.gkNavigationBarHeight;
         }
     }
     
@@ -71,22 +70,7 @@
     return statusHeight;
 }
 
-#pragma mark 加载视图
-
-- (void)loadView
-{
-    //如果有 xib 则加载对应的xib
-    if([[NSBundle mainBundle] pathForResource:self.gk_nameOfClass ofType:@"nib"]){
-        self.view = [[[NSBundle mainBundle] loadNibNamed:self.gk_nameOfClass owner:self options:nil] lastObject];
-    }else{
-        _container = [[GKContainer alloc] initWithViewController:self];
-        if(!self.isShowAsDialog){
-            self.view = self.container;
-        }else{
-            self.view = [UIView new];
-        }
-    }
-}
+//MARK: 内容视图
 
 - (void)setTopView:(UIView *)topView
 {
@@ -128,7 +112,23 @@
     return _container.contentView;
 }
 
-#pragma mark view
+//MARK: View Life Cycle
+
+
+- (void)loadView
+{
+    //如果有 xib 则加载对应的xib
+    if([[NSBundle mainBundle] pathForResource:self.gk_nameOfClass ofType:@"nib"]){
+        self.view = [[[NSBundle mainBundle] loadNibNamed:self.gk_nameOfClass owner:self options:nil] lastObject];
+    }else{
+        _container = [[GKContainer alloc] initWithViewController:self];
+        if(!self.isShowAsDialog){
+            self.view = self.container;
+        }else{
+            self.view = [UIView new];
+        }
+    }
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -195,11 +195,13 @@
     }else{
     
         self.view.backgroundColor = [UIColor whiteColor];
-        if(self.navigationController.viewControllers.count > 1 && !self.gk_showBackItem){
-            self.gk_showBackItem = YES;
+        if(self.navigationController.viewControllers.count > 1 && !self.gkShowBackItem){
+            self.gkShowBackItem = YES;
         }
     }
 }
+
+//MARK: 导航栏
 
 - (Class)navigationBarClass
 {
@@ -236,61 +238,17 @@
     return _navigationItemHelper;
 }
 
-#pragma mark GKEmptyViewDelegate
+//MARK: GKEmptyViewDelegate
 
 - (void)emptyViewWillAppear:(GKEmptyView *)view
 {
-    view.iconImageView.image = [UIImage imageNamed:@"search_icon_empty"];
-    view.textLabel.text = @"nothing".zegoLocalizedString;
+    view.iconImageView.image = [UIImage imageNamed:@"empty"];
+    view.textLabel.text = @"暂无数据";
 }
 
-#pragma mark 更多
+//MARK: 加载数据
 
-- (UIBarButtonItem*)moreNavigationItem
-{
-    if(!_moreNavigationItem){
-        _moreNavigationItem = [[self class] gk_barItemWithImage:[UIImage imageNamed:@"nav_btn_menu_normal"] target:self action:@selector(handleMore)];;
-    }
-    
-    return _moreNavigationItem;
-}
-
-- (void)setShouldMoreNavigationItem:(BOOL)shouldMoreNavigationItem
-{
-    if(_shouldMoreNavigationItem != shouldMoreNavigationItem){
-        _shouldMoreNavigationItem = shouldMoreNavigationItem;
-        if(_shouldMoreNavigationItem){
-            [self gk_setNavigationBarItem:self.moreNavigationItem posiiton:GKNavigationItemPositionRight];
-        }else{
-            [self gk_setNavigationBarItem:nil posiiton:GKNavigationItemPositionRight];
-        }
-    }
-}
-
-///更多
-- (void)handleMore
-{
-    if (!self.moreMenu.isShowing) {
-        [self.moreMenu showMoreMenu];
-    }else{
-        [self.moreMenu dissMissMoreMenu];
-        _moreMenu = nil;
-    }
-}
-
-- (GKMoreMenu*)moreMenu
-{
-    if (!_moreMenu) {
-        _moreMenu = [[GKMoreMenu alloc] init];
-        _moreMenu.controller = self;
-        
-    }
-    return _moreMenu;
-}
-
-#pragma mark 加载数据
-
-- (void)gk_reloadData
+- (void)gkReloadData
 {
     if(self.viewModel){
         [self.viewModel reloadData];
@@ -302,14 +260,14 @@
     
 }
 
-#pragma mark UIStatusBar
+//MARK: UIStatusBar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     if(self.isShowAsDialog){
         return UIStatusBarStyleLightContent;
     }else{
-        return UIApplication.appStatusBarStyle;
+        return UIApplication.gkStatusBarStyle;
     }
 }
 
@@ -322,7 +280,7 @@
     }
 }
 
-#pragma mark task
+//MARK: Task
 
 - (void)addCanceledTask:(GKHttpTask*) task
 {
@@ -386,7 +344,7 @@
     }
 }
 
-#pragma mark 键盘
+//MARK: 键盘
 
 - (void)setShouldDismissKeyboardWhileTap:(BOOL)shouldDismissKeyboardWhileTap
 {
@@ -402,9 +360,7 @@
     }
 }
 
-/**
- 键盘高度改变
- */
+///键盘高度改变
 - (void)keyboardWillChangeFrame:(NSNotification*) notification
 {
     [super keyboardWillChangeFrame:notification];
@@ -421,22 +377,12 @@
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
 }
 
-#pragma mark UIGestureRecognizerDelegate
+//MARK: UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     return touch.view == self.view;
 }
 
-//MARK: 谷歌分析
-
-- (void)sendTrackerWithName:(NSString *)name clazz:(NSObject*)clazz
-{
-    NSString *screenName = name;
-    NSString *screenClass = [clazz.classForCoder description];
-    
-    // [START set_current_screen]
-    [FIRAnalytics setScreenName:screenName screenClass:screenClass];
-}
 
 @end

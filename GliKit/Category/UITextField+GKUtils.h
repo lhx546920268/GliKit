@@ -11,7 +11,7 @@
 ///
 @interface UITextField (GKUtils)
 
-#pragma mark 内嵌视图
+//MARK: 内嵌视图
 
 /**
  设置输入框左边图标
@@ -53,7 +53,7 @@
 - (void)gk_addDefaultInputAccessoryViewWithTitle:(NSString *)title;
 - (void)gk_addDefaultInputAccessoryView;
 
-#pragma mark 文本限制
+//MARK: 文本限制
 
 /** 用于 gk_extraString
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

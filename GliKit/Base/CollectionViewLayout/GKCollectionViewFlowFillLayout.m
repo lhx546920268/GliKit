@@ -424,7 +424,7 @@
     self.attributes = [NSMutableArray array];
 }
 
-#pragma mark- 内容大小
+//MARK:- 内容大小
 
 - (CGSize)collectionViewContentSize
 {
@@ -625,7 +625,7 @@
     [self caculateContentSize];
 }
 
-#pragma mark- property
+//MARK:- property
 
 - (id<GKCollectionViewFlowFillLayoutDelegate>)delegate
 {
@@ -682,7 +682,7 @@
     }
 }
 
-#pragma mark- 布局属性 layout
+//MARK:- 布局属性 layout
 
 - (NSArray*)layoutAttributesForElementsInRect:(CGRect)rect
 {

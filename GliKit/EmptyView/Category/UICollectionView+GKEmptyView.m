@@ -1,28 +1,29 @@
 //
-//  UICollectionView+CAEmptyView.m
+//  UICollectionView+GKEmptyView.m
 //  Zegobird
 //
 //  Created by 罗海雄 on 2019/3/14.
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import "UICollectionView+CAEmptyView.h"
+#import "UICollectionView+GKEmptyView.h"
 #import <objc/runtime.h>
-#import "UIScrollView+CAEmptyView.h"
-#import "UIView+CAEmptyView.h"
+#import "UIScrollView+GKEmptyView.h"
+#import "UIView+GKEmptyView.h"
+#import "UIView+GKUtils.h"
 
-static char CAShouldShowEmptyViewWhenExistSectionHeaderViewKey;
-static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
+static char GKShouldShowEmptyViewWhenExistSectionHeaderViewKey;
+static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 
-@implementation UICollectionView (CAEmptyView)
+@implementation UICollectionView (GKEmptyView)
 
-#pragma mark- super method
+//MARK: Super Method
 
 - (void)layoutEmtpyView
 {
     [super layoutEmtpyView];
     
-    GKEmptyView *emptyView = self.ca_emptyView;
+    GKEmptyView *emptyView = self.gkEmptyView;
     if(emptyView && emptyView.superview && !emptyView.hidden){
         CGRect frame = emptyView.frame;
         CGFloat y = frame.origin.y;
@@ -33,7 +34,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取sectionHeader 高度
-        if(self.ca_shouldShowEmptyViewWhenExistSectionHeaderView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+        if(self.gkShouldShowEmptyViewWhenExistSectionHeaderView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
             
@@ -47,7 +48,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取section footer 高度
-        if(self.ca_shouldShowEmptyViewWhenExistSectionFooterView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+        if(self.gkShouldShowEmptyViewWhenExistSectionFooterView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.delegate;
             
@@ -61,7 +62,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         frame.origin.y = y;
-        frame.size.height = self.mj_h - y;
+        frame.size.height = self.gkHeight - y;
         if(frame.size.height <= 0){
             [emptyView removeFromSuperview];
         }else{
@@ -70,7 +71,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     }
 }
 
-- (BOOL)isEmptyData
+- (BOOL)gkIsEmptyData
 {
     BOOL empty = YES;
     
@@ -95,7 +96,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
         
         ///item为0，section 大于0时，可能存在sectionHeader
         if(empty && section > 0){
-            if(!self.ca_shouldShowEmptyViewWhenExistSectionHeaderView && [self.dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]){
+            if(!self.gkShouldShowEmptyViewWhenExistSectionHeaderView && [self.dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]){
                 for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.dataSource collectionView:self viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]];
                     if(view){
@@ -105,7 +106,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
                 }
             }
             
-            if(empty && !self.ca_shouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]){
+            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]){
                 for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.dataSource collectionView:self viewForSupplementaryElementOfKind:UICollectionElementKindSectionFooter atIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]];
                     if(view){
@@ -120,16 +121,16 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return empty;
 }
 
-#pragma mark- property
+//MARK: Property
 
-- (void)setCa_shouldShowEmptyViewWhenExistSectionHeaderView:(BOOL)ca_shouldShowEmptyViewWhenExistSectionHeaderView
+- (void)setGkShouldShowEmptyViewWhenExistSectionHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
 {
-    objc_setAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionHeaderViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyViewWhenExistSectionHeaderView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey, @(gkShouldShowEmptyViewWhenExistSectionHeaderView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)ca_shouldShowEmptyViewWhenExistSectionHeaderView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
 {
-    NSNumber *number = objc_getAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionHeaderViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey);
     if(number){
         return [number boolValue];
     }
@@ -138,14 +139,14 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
 }
 
 
-- (void)setCa_shouldShowEmptyViewWhenExistSectionFooterView:(BOOL)ca_shouldShowEmptyViewWhenExistSectionFooterView
+- (void)setGkShouldShowEmptyViewWhenExistSectionFooterView:(BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
 {
-    objc_setAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionFooterViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyViewWhenExistSectionFooterView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey, @(gkShouldShowEmptyViewWhenExistSectionFooterView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)ca_shouldShowEmptyViewWhenExistSectionFooterView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
 {
-    NSNumber *number = objc_getAssociatedObject(self, &CAShouldShowEmptyViewWhenExistSectionFooterViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey);
     if(number){
         return [number boolValue];
     }
@@ -153,7 +154,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return NO;
 }
 
-#pragma mark- swizzle
+//MARK: Swizzle
 
 + (void)load
 {
@@ -171,7 +172,7 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     int count = sizeof(selectors) / sizeof(SEL);
     for(NSInteger i = 0;i < count;i ++){
         SEL selector1 = selectors[i];
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"ca_empty_%@", NSStringFromSelector(selector1)]);
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkEmpty_%@", NSStringFromSelector(selector1)]);
         
         Method method1 = class_getInstanceMethod(self, selector1);
         Method method2 = class_getInstanceMethod(self, selector2);
@@ -180,48 +181,48 @@ static char CAShouldShowEmptyViewWhenExistSectionFooterViewKey;
     }
 }
 
-- (void)ca_empty_reloadData
+- (void)gkEmpty_reloadData
 {
-    [self ca_empty_reloadData];
+    [self gkEmpty_reloadData];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_reloadSections:(NSIndexSet *)sections
+- (void)gkEmpty_reloadSections:(NSIndexSet *)sections
 {
-    [self ca_empty_reloadSections:sections];
+    [self gkEmpty_reloadSections:sections];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+- (void)gkEmpty_insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
-    [self ca_empty_insertItemsAtIndexPaths:indexPaths];
+    [self gkEmpty_insertItemsAtIndexPaths:indexPaths];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_insertSections:(NSIndexSet *)sections
+- (void)gkEmpty_insertSections:(NSIndexSet *)sections
 {
-    [self ca_empty_insertSections:sections];
+    [self gkEmpty_insertSections:sections];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+- (void)gkEmpty_deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
-    [self ca_empty_deleteItemsAtIndexPaths:indexPaths];
+    [self gkEmpty_deleteItemsAtIndexPaths:indexPaths];
     [self layoutEmtpyView];
 }
 
-- (void)ca_empty_deleteSections:(NSIndexSet *)sections
+- (void)gkEmpty_deleteSections:(NSIndexSet *)sections
 {
-    [self ca_empty_deleteSections:sections];
+    [self gkEmpty_deleteSections:sections];
     [self layoutEmtpyView];
 }
 
 ///用于使用约束时没那么快得到 frame
-- (void)ca_empty_layoutSubviews
+- (void)gkEmpty_layoutSubviews
 {
-    [self ca_empty_layoutSubviews];
-    if(!CGSizeEqualToSize(self.ca_oldSize, self.frame.size)){
-        self.ca_oldSize = self.frame.size;
+    [self gkEmpty_layoutSubviews];
+    if(!CGSizeEqualToSize(self.gkOldSize, self.frame.size)){
+        self.gkOldSize = self.frame.size;
         [self layoutEmtpyView];
     }
 }

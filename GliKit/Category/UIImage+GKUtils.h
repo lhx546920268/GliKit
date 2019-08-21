@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, GKAssetImageOptions)
 ///图片扩展
 @interface UIImage (GKUtils)
 
-#pragma mark 创建图片
+//MARK: 创建图片
 
 /**
  从图片资源中获取图片数据
@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, GKAssetImageOptions)
  */
 + (UIImage*)gk_imageWithColor:(UIColor*) color size:(CGSize) size;
 
-#pragma mark resize
+//MARK: resize
 
 /**
  通过给定的大小，获取等比例缩小后的图片尺寸

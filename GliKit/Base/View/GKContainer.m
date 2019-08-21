@@ -14,6 +14,7 @@
 #import "UIView+GKLoading.h"
 #import "GKNavigationBar.h"
 #import "GKBaseViewController.h"
+#import "GKBaseDefines.h"
 
 @interface GKContainer()
 
@@ -80,7 +81,7 @@
     }
 }
 
-#pragma mark topView
+//MARK: topView
 
 - (void)setTopView:(UIView *)topView
 {
@@ -178,7 +179,7 @@
     }
 }
 
-#pragma mark contentView
+//MARK: contentView
 
 
 - (void)setContentView:(UIView *)contentView
@@ -232,7 +233,7 @@
     }
 }
 
-#pragma mark bottomView
+//MARK: bottomView
 
 - (void)setBottomView:(UIView *)bottomView
 {
@@ -330,15 +331,15 @@
     }
 }
 
-#pragma mark emptyView
+//MARK: emptyView
 
 - (void)layoutEmtpyView
 {
-    if(self.gk_showEmptyView){
-        GKEmptyView *emptyView = self.gk_emptyView;
+    if(self.gkShowEmptyView){
+        GKEmptyView *emptyView = self.gkEmptyView;
         if(emptyView != nil && emptyView.superview == nil){
-            self.gk_emptyViewDelegate = (id<GKEmptyViewDelegate>)self.viewController;
-            id<GKEmptyViewDelegate> delegate = self.gk_emptyViewDelegate;
+            self.gkEmptyViewDelegate = (id<GKEmptyViewDelegate>)self.viewController;
+            id<GKEmptyViewDelegate> delegate = self.gkEmptyViewDelegate;
             if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
                 [delegate emptyViewWillAppear:emptyView];
             }
@@ -381,7 +382,7 @@
     }
 }
 
-#pragma mark page loading
+//MARK: page loading
 
 - (GKPageLoadingContainer*)gkPageLoadingView
 {

@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
  */
 @property(nonatomic, readonly) BOOL gk_existConstraints;
 
-#pragma mark- 获取约束 constraint
+//MARK:- 获取约束 constraint
 
 /**
  清空约束
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
 - (NSLayoutConstraint*)gk_layoutConstraintForAttribute:(NSLayoutAttribute) attribute;
 - (NSLayoutConstraint*)gk_layoutConstraintForAttribute:(NSLayoutAttribute) attribute withSecondItem:(id) secondItem;
 
-#pragma mark- AutoLayout 计算大小
+//MARK:- AutoLayout 计算大小
 
 /**根据给定的 size 计算当前view的大小，要使用auto layout
  *@param fitsSize 大小范围 0 则不限制范围

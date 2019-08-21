@@ -1,6 +1,6 @@
 //
 //  GKPhotosPreviewViewController.m
-//  IOSLibrary
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/7/11.
 //  Copyright © 2019 罗海雄. All rights reserved.
@@ -73,7 +73,7 @@
     [super initialization];
     
     self.header = [GKPhotosPreviewHeader new];
-    [self.header.backButton addTarget:self action:@selector(gk_back) forControlEvents:UIControlEventTouchUpInside];
+    [self.header.backButton addTarget:self action:@selector(gkBack) forControlEvents:UIControlEventTouchUpInside];
     [self.header.checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
     [self.view addSubview:self.header];
     

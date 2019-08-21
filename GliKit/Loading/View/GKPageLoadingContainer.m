@@ -88,7 +88,7 @@
         [self addSubview:_textLabel];
         
         [_textLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.trailing.equalTo(0);
+            make.leading.trailing.bottom.equalTo(0);
             make.top.equalTo(self.imageView.bottom).offset(25);
         }];
     }
@@ -101,25 +101,11 @@
 @interface GKPageLoadingContainer()
 
 ///错误内容视图
-@property(nonatomic, strong) UIView *errorContentView;
-
-///加载出错的 图标
-@property(nonatomic, readonly) UIImageView *errorImageView;
-
-///加载出错提示文字
-@property(nonatomic, readonly) UILabel *textLabel;
-
-///刷新按钮
-@property(nonatomic, readonly) UIButton *refreshButton;
-
-///logo
-@property(nonatomic, strong) UIImageView *logoImageView;
+@property(nonatomic, strong) GKPageErrorContentView *errorContentView;
 
 ///loading内容视图
-@property(nonatomic, strong) UIView *loadingContentView;
+@property(nonatomic, strong) GKPageLoadingContentView *loadingContentView;
 
-///动画图片
-@property(nonatomic, readonly) SDAnimatedImageView *animatedimageView;
 
 @end
 
@@ -133,52 +119,23 @@
     self = [super initWithFrame:frame];
     if(self){
         
-        _loadingContentView = [UIView new];
+        _loadingContentView = [GKPageLoadingContentView new];
         [self addSubview:_loadingContentView];
         
         [_loadingContentView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(self).offset(10);
-            make.trailing.equalTo(self).offset(-10);
-            make.centerY.equalTo(self);
-        }];
-        
-        _logoImageView = [UIImageView new];
-        [_loadingContentView addSubview:_logoImageView];
-        
-        [_logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.top.equalTo(self.loadingContentView);
-        }];
-        
-        _animatedimageView = [SDAnimatedImageView new];
-        _animatedimageView.image = [[SDAnimatedImage alloc] initWithContentsOfFile:[NSBundle.mainBundle pathForResource:@"loading" ofType:@"gif"]];
-        _animatedimageView.shouldCustomLoopCount = YES;
-        _animatedimageView.animationRepeatCount = NSNotFound;
-        [self.loadingContentView addSubview:_animatedimageView];
-        
-        [_animatedimageView makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.bottom.equalTo(self.loadingContentView);
-            make.size.equalTo(CGSizeMake(80, 40));
-            make.top.equalTo(self.logoImageView.mas_bottom);
+            make.center.equalTo(self);
         }];
     }
     
     return self;
 }
 
-- (void)setLogo:(UIImage *)logo
-{
-    if(_logo != logo){
-        _logo = logo;
-        self.logoImageView.image = _logo;
-    }
-}
-
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     if(newWindow && self.status == GKPageLoadingStatusLoading){
-        [_animatedimageView startAnimating];
+        [self startAnimating];
     }else{
-        [_animatedimageView stopAnimating];
+        [self stopAnimating];
     }
 }
 
@@ -196,85 +153,56 @@
     switch (self.status) {
         case GKPageLoadingStatusLoading :
             self.loadingContentView.hidden = NO;
-            [self.animatedimageView startAnimating];
+            [self startAnimating];
             self.errorContentView.hidden = YES;
             
             break;
         case GKPageLoadingStatusError :
             
-            [self.animatedimageView stopAnimating];
+            [self stopAnimating];
             self.loadingContentView.hidden = YES;
             [self showErrorView];
             break;
     }
 }
 
+- (void)startAnimating
+{
+    [self.loadingContentView.indicatorView startAnimating];
+}
+
+- (void)stopAnimating
+{
+    [self.loadingContentView.indicatorView stopAnimating];
+}
+
 ///显示错误视图
 - (void)showErrorView
 {
     if(!self.errorContentView){
-        UIView *contentView = [UIView new];
-        [self addSubview:contentView];
+        self.errorContentView = [GKPageErrorContentView new];
+        [self addSubview:self.errorContentView];
         
-        [contentView makeConstraints:^(MASConstraintMaker *make) {
+        [self.errorContentView mas_makeConstraints:^(MASConstraintMaker *make) {
            
             make.leading.equalTo(self).offset(10);
             make.trailing.equalTo(self).offset(-10);
             make.centerY.equalTo(self);
         }];
-        
-        self.errorContentView = contentView;
-        
-        _errorImageView = [UIImageView new];
-        _errorImageView.image = [UIImage imageNamed:@"ordermng_icon_empty"];
-        [contentView addSubview:_errorImageView];
-        
-        [_errorImageView makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(contentView);
-            make.top.equalTo(contentView);
-        }];
-        
-        _textLabel = [UILabel new];
-        _textLabel.textColor = [UIColor gk_colorFromHex:@"aeaeae"];
-        _textLabel.font = [UIFont appFontWithSize:14];
-        _textLabel.textAlignment = NSTextAlignmentCenter;
-        _textLabel.text = @"load_error_tip".zegoLocalizedString;
-        _textLabel.numberOfLines = 0;
-        [contentView addSubview:_textLabel];
-        
-        [_textLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.trailing.equalTo(contentView);
-            make.top.equalTo(self.errorImageView.mas_bottom).offset(25);
-        }];
-        
-        
-        _refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_refreshButton setTitle:@"refresh".zegoLocalizedString forState:UIControlStateNormal];
-        [_refreshButton setTitleColor:UIColor.appBlackTextColor forState:UIControlStateNormal];
-        [_refreshButton addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventTouchUpInside];
-        _refreshButton.layer.cornerRadius = 15;
-        _refreshButton.layer.borderWidth = 0.5;
-        _refreshButton.layer.borderColor = [UIColor gk_colorFromHex:@"cccccc"].CGColor;
-        _refreshButton.titleLabel.font = [UIFont appFontWithSize:14];
-        [contentView addSubview:_refreshButton];
-        
-        [_refreshButton makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(contentView);
-            make.size.equalTo(CGSizeMake(100, 30));
-            make.bottom.equalTo(contentView);
-            make.top.equalTo(self.textLabel.mas_bottom).offset(50);
-        }];
+        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRefresh)]];
     }
     
     self.errorContentView.hidden = NO;
 }
 
-#pragma mark action
+//MARK: action
 
 //刷新
 - (void)handleRefresh
 {
-    !self.refreshHandler ?: self.refreshHandler();
+    if(self.status == GKPageLoadingStatusError){
+        !self.refreshHandler ?: self.refreshHandler();
+    }
 }
 
 @end

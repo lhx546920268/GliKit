@@ -1,5 +1,5 @@
 //
-//  UIViewController+CAEmptyView.h
+//  UIViewController+GKEmptyView.h
 //  Zegobird
 //
 //  Created by 罗海雄 on 2019/7/19.
@@ -11,13 +11,13 @@
 @class GKEmptyView;
 
 ///空视图相关扩展
-@interface UIViewController (CAEmptyView)
+@interface UIViewController (GKEmptyView)
 
 ///空视图
-@property(nonatomic,readonly) GKEmptyView *ca_emptyView;
+@property(nonatomic,readonly) GKEmptyView *gkEmptyView;
 
 ///设置显示空视图
-@property(nonatomic,assign) BOOL ca_showEmptyView;
+@property(nonatomic,assign) BOOL gkShowEmptyView;
 
 @end
 

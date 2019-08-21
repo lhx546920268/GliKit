@@ -1,63 +1,64 @@
 //
-//  UIScrollView+CAEmptyView.m
+//  UIScrollView+GKEmptyView.m
 //  Zegobird
 //
 //  Created by 罗海雄 on 2019/3/14.
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import "UIScrollView+CAEmptyView.h"
-#import "UIView+CAEmptyView.h"
+#import "UIScrollView+GKEmptyView.h"
+#import "UIView+GKEmptyView.h"
+#import <objc/runtime.h>
+#import "UIView+GKUtils.h"
+#import "UIScrollView+GKRefresh.h"
+#import "GKLoadMoreControl.h"
 
 ///是否显示空视图kkey
-static char CAShouldShowEmptyViewKey;
+static char GKShouldShowEmptyViewKey;
 
 ///偏移量
-static char CAEmptyViewInsetsKey;
+static char GKEmptyViewInsetsKey;
 
-@implementation UIScrollView (CAEmptyView)
+@implementation UIScrollView (GKEmptyView)
 
-#pragma mark- swizzle
-
-- (void)setCa_shouldShowEmptyView:(BOOL)ca_shouldShowEmptyView
+- (void)setGkShouldShowEmptyView:(BOOL)gkShouldShowEmptyView
 {
-    if(self.ca_shouldShowEmptyView != ca_shouldShowEmptyView)
+    if(self.gkShouldShowEmptyView != gkShouldShowEmptyView)
     {
-        objc_setAssociatedObject(self, &CAShouldShowEmptyViewKey, [NSNumber numberWithBool:ca_shouldShowEmptyView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &GKShouldShowEmptyViewKey, [NSNumber numberWithBool:gkShouldShowEmptyView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        if(ca_shouldShowEmptyView){
+        if(gkShouldShowEmptyView){
             [self layoutEmtpyView];
         }else{
-            self.ca_emptyView = nil;
+            self.gkEmptyView = nil;
         }
     }
 }
 
-- (BOOL)ca_shouldShowEmptyView
+- (BOOL)gkShouldShowEmptyView
 {
-    return [objc_getAssociatedObject(self, &CAShouldShowEmptyViewKey) boolValue];
+    return [objc_getAssociatedObject(self, &GKShouldShowEmptyViewKey) boolValue];
 }
 
-- (void)setCa_emptyViewInsets:(UIEdgeInsets)ca_emptyViewInsets
+- (void)setGkEmptyViewInsets:(UIEdgeInsets)gkEmptyViewInsets
 {
-    UIEdgeInsets insets = self.ca_emptyViewInsets;
-    if(!UIEdgeInsetsEqualToEdgeInsets(insets, ca_emptyViewInsets))
+    UIEdgeInsets insets = self.gkEmptyViewInsets;
+    if(!UIEdgeInsetsEqualToEdgeInsets(insets, gkEmptyViewInsets))
     {
-        objc_setAssociatedObject(self, &CAEmptyViewInsetsKey, [NSValue valueWithUIEdgeInsets:ca_emptyViewInsets], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &GKEmptyViewInsetsKey, [NSValue valueWithUIEdgeInsets:gkEmptyViewInsets], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self layoutEmtpyView];
     }
 }
 
-- (UIEdgeInsets)ca_emptyViewInsets
+- (UIEdgeInsets)gkEmptyViewInsets
 {
-    return [objc_getAssociatedObject(self, &CAEmptyViewInsetsKey) UIEdgeInsetsValue];
+    return [objc_getAssociatedObject(self, &GKEmptyViewInsetsKey) UIEdgeInsetsValue];
 }
-
 
 ///调整emptyView
 - (void)layoutEmtpyView
 {
-    if(!self.ca_shouldShowEmptyView)
+    if(!self.gkShouldShowEmptyView)
         return;
     
     [self.superview layoutIfNeeded];
@@ -66,38 +67,38 @@ static char CAEmptyViewInsetsKey;
         return;
     }
     
-    if([self isEmptyData]){
+    if([self gkIsEmptyData]){
         
-        GKEmptyView *emptyView = self.ca_emptyView;
+        GKEmptyView *emptyView = self.gkEmptyView;
         if(!emptyView){
             emptyView = [GKEmptyView new];
-            self.ca_emptyView = emptyView;
+            self.gkEmptyView = emptyView;
         }
         
-        UIEdgeInsets insets = self.ca_emptyViewInsets;
+        UIEdgeInsets insets = self.gkEmptyViewInsets;
         
-        emptyView.frame = CGRectMake(insets.left, insets.top, self.mj_w - insets.left - insets.right, self.mj_h - insets.top - insets.bottom);
+        emptyView.frame = CGRectMake(insets.left, insets.top, self.gkWidth - insets.left - insets.right, self.gkHeight - insets.top - insets.bottom);
         emptyView.hidden = NO;
         
         if(!emptyView.superview){
-            id<GKEmptyViewDelegate> delegate = self.ca_emptyViewDelegate;
+            id<GKEmptyViewDelegate> delegate = self.gkEmptyViewDelegate;
             if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
                 [delegate emptyViewWillAppear:emptyView];
             }
             
-            if(self.mj_footer){
-                [self insertSubview:emptyView aboveSubview:self.mj_footer];
+            if(self.gkLoadMoreControl){
+                [self insertSubview:emptyView aboveSubview:self.gkLoadMoreControl];
             }else{
                 [self insertSubview:emptyView atIndex:0];
             }
         }
     }else{
-        self.ca_emptyView = nil;
+        self.gkEmptyView = nil;
     }
 }
 
 ///当前是空数据 UIScrollView 一定是空的，其他的不一定
-- (BOOL)isEmptyData
+- (BOOL)gkIsEmptyData
 {
     return YES;
 }

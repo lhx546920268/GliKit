@@ -34,7 +34,7 @@
 @property(class, nonatomic, readonly) NSString *gk_nameOfClass;
 @property(nonatomic, readonly) NSString *gk_nameOfClass;
 
-#pragma mark 方法交换
+//MARK: 方法交换
 
 /**
  交换实例方法实现
@@ -53,7 +53,7 @@
  */
 + (void)gk_exchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
 
-#pragma mark coder
+//MARK: coder
 
 /**
  自动化归档，在encodeWithCoder 中调用，子类不需要重写encodeWithCoder
@@ -69,7 +69,7 @@
  */
 - (void)gk_initWithCoder:(NSCoder*) decoder;
 
-#pragma mark copy
+//MARK: copy
 
 /**
  拷贝某个对象
@@ -78,7 +78,7 @@
  */
 - (void)gk_copyObject:(NSObject*) object;
 
-#pragma mark push
+//MARK: push
 
 /**
  打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
