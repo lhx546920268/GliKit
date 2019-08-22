@@ -105,7 +105,7 @@
 - (void)updatePosition
 {
     CGFloat width = _indicatorView.isAnimating ? _indicatorView.gkWidth : 0;
-    CGSize size = [_statusLabel.text gk_stringSizeWithFont:_statusLabel.font contraintWith:self.frame.size.width - width];
+    CGSize size = [_statusLabel.text gkStringSizeWithFont:_statusLabel.font contraintWith:self.frame.size.width - width];
     _indicatorView.gkLeft = (self.frame.size.width - size.width - width) / 2.0;
     
     CGRect frame = _indicatorView.frame;

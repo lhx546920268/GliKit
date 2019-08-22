@@ -12,19 +12,7 @@
 
 + (UIFont*)appFontWithSize:(CGFloat) fontSize
 {
-    NSString *language = [GKLanguageHelper currentLanguage];
-    UIFont *font = nil;
-    if([language isEqualToString:GKLanguageHelper.mm3Name]){
-        font = [UIFont fontWithName:@"Myanmar3" size:fontSize];
-    }else if ([language isEqualToString:GKLanguageHelper.zawgyiName]){
-        font = [UIFont fontWithName:@"Zawgyi-One" size:fontSize];
-    }
-    
-    if(!font){
-        font = [UIFont systemFontOfSize:fontSize];
-    }
-    
-    return font;
+    return [UIFont systemFontOfSize:fontSize];
 }
 
 - (BOOL)isEqualToFont:(UIFont*) font

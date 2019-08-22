@@ -42,7 +42,7 @@
     CGFloat inset = 5;
     self.textContainerInset = UIEdgeInsetsMake(8, inset, 8, inset);
     _maxLength = NSUIntegerMax;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gk_textDidChange:) name:UITextViewTextDidChangeNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gkTextDidChange:) name:UITextViewTextDidChangeNotification object:self];
     
     self.font = [UIFont appFontWithSize:14];
     self.placeholderTextColor = nil;

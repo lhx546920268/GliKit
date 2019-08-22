@@ -7,10 +7,11 @@
 //
 
 #import "UIView+GKAutoLayout.h"
+#import <Masonry.h>
 
 @implementation UIView (GKAutoLayout)
 
-- (BOOL)gk_existConstraints
+- (BOOL)gkExistConstraints
 {
     if(self.constraints.count > 0){
         return YES;
@@ -31,7 +32,7 @@
 
 //MARK:- 获取约束 constraint
 
-- (void)gk_removeAllContraints
+- (void)gkRemoveAllContraints
 {
     [self removeConstraints:self.constraints];
     NSArray *contraints = self.superview.constraints;
@@ -47,52 +48,52 @@
     }
 }
 
-- (NSLayoutConstraint*)gk_heightLayoutConstraint
+- (NSLayoutConstraint*)gkHeightLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeHeight];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeHeight];
 }
 
-- (NSLayoutConstraint*)gk_widthLayoutConstraint
+- (NSLayoutConstraint*)gkWidthLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeWidth];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeWidth];
 }
 
-- (NSLayoutConstraint*)gk_leftLayoutConstraint
+- (NSLayoutConstraint*)gkLeftLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeLeading];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeLeading];
 }
 
-- (NSLayoutConstraint*)gk_rightLayoutConstraint
+- (NSLayoutConstraint*)gkRightLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeTrailing];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeTrailing];
 }
 
-- (NSLayoutConstraint*)gk_topLayoutConstraint
+- (NSLayoutConstraint*)gkTopLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeTop];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeTop];
 }
 
-- (NSLayoutConstraint*)gk_bottomLayoutConstraint
+- (NSLayoutConstraint*)gkBottomLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeBottom];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeBottom];
 }
 
-- (NSLayoutConstraint*)gk_centerXLayoutConstraint
+- (NSLayoutConstraint*)gkCenterXLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeCenterX];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeCenterX];
 }
 
-- (NSLayoutConstraint*)gk_centerYLayoutConstraint
+- (NSLayoutConstraint*)gkCenterYLayoutConstraint
 {
-    return [self gk_layoutConstraintForAttribute:NSLayoutAttributeCenterY];
+    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeCenterY];
 }
 
-- (NSLayoutConstraint*)gk_layoutConstraintForAttribute:(NSLayoutAttribute) attribute
+- (NSLayoutConstraint*)gkLayoutConstraintForAttribute:(NSLayoutAttribute) attribute
 {
-    return [self gk_layoutConstraintForAttribute:attribute withSecondItem:nil];
+    return [self gkLayoutConstraintForAttribute:attribute withSecondItem:nil];
 }
 
-- (NSLayoutConstraint*)gk_layoutConstraintForAttribute:(NSLayoutAttribute)attribute withSecondItem:(id)secondItem
+- (NSLayoutConstraint*)gkLayoutConstraintForAttribute:(NSLayoutAttribute)attribute withSecondItem:(id)secondItem
 {
     NSArray *constraints = nil;
     
@@ -205,21 +206,17 @@
 
 //MARK:- AutoLayout 计算大小
 
-- (CGSize)gk_sizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalculateType) type
+- (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalculateType) type
 {
     CGSize size = CGSizeZero;
     if (type != GKAutoLayoutCalculateTypeSize){
-        //        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
-        //        self.translatesAutoresizingMaskIntoConstraints = NO;
         //添加临时约束
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:type == GKAutoLayoutCalculateTypeHeight ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:type == GKAutoLayoutCalculateTypeHeight ? fitsSize.width : fitsSize.height];
         [self addConstraint:constraint];
         size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         [self removeConstraint:constraint];
-        //        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
+
     }else{
-        //        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
-        //        self.translatesAutoresizingMaskIntoConstraints = NO;
         //添加临时约束
         NSLayoutConstraint *constraint = nil;
         if(!CGSizeEqualToSize(fitsSize, CGSizeZero)){
@@ -233,20 +230,18 @@
         if(constraint != nil){
             [self removeConstraint:constraint];
         }
-        
-        //        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
     }
     
     return size;
 }
 
-- (void)gk_setVerticalHugAndCompressionPriority:(UILayoutPriority) priority
+- (void)gkSetVerticalHugAndCompressionPriority:(UILayoutPriority) priority
 {
     [self setContentCompressionResistancePriority:priority forAxis:UILayoutConstraintAxisVertical];
     [self setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisVertical];
 }
 
-- (void)gk_setHorizontalHugAndCompressionPriority:(UILayoutPriority) priority
+- (void)gkSetHorizontalHugAndCompressionPriority:(UILayoutPriority) priority
 {
     [self setContentCompressionResistancePriority:priority forAxis:UILayoutConstraintAxisHorizontal];
     [self setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];

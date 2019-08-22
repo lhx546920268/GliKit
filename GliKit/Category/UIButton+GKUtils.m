@@ -26,11 +26,11 @@ static char GKButtonBackgroundColorKey;
     
     int count = sizeof(selectors) / sizeof(SEL);
     for(NSInteger i = 0;i < count;i ++){
-        [self gk_exchangeImplementations:selectors[i] prefix:@"gk_"];
+        [self gkExchangeImplementations:selectors[i] prefix:@"gk_"];
     }
 }
 
-- (void)gk_setImagePosition:(GKButtonImagePosition) position margin:(CGFloat) margin
+- (void)gkSetImagePosition:(GKButtonImagePosition) position margin:(CGFloat) margin
 {
     if(self.contentHorizontalAlignment == UIControlContentHorizontalAlignmentFill || self.contentVerticalAlignment == UIControlContentVerticalAlignmentFill){
         return;
@@ -319,7 +319,7 @@ static char GKButtonBackgroundColorKey;
     return objc_getAssociatedObject(self, &GKButtonBackgroundColorKey);
 }
 
-- (void)gk_setBackgroundColor:(UIColor *)backgroundColor forState:(UIControlState)state
+- (void)gkSetBackgroundColor:(UIColor *)backgroundColor forState:(UIControlState)state
 {
     NSMutableDictionary *dic = [self gk_backgroundColorsForState];
     if(!backgroundColor && !dic)
@@ -344,23 +344,23 @@ static char GKButtonBackgroundColorKey;
 - (void)gk_setHighlighted:(BOOL)highlighted
 {
     [self gk_setHighlighted:highlighted];
-    [self gk_adjustsBackgroundColor];
+    [self gkAdjustsBackgroundColor];
 }
 
 - (void)gk_setSelected:(BOOL)selected
 {
     [self gk_setSelected:selected];
-    [self gk_adjustsBackgroundColor];
+    [self gkAdjustsBackgroundColor];
 }
 
 - (void)gk_setEnabled:(BOOL)enabled
 {
     [self gk_setEnabled:enabled];
-    [self gk_adjustsBackgroundColor];
+    [self gkAdjustsBackgroundColor];
 }
 
 ///获取当前颜色
-- (UIColor*)gk_currentBackgroundColorFromDictionary:(NSDictionary*) dic
+- (UIColor*)gkCurrentBackgroundColorFromDictionary:(NSDictionary*) dic
 {
     UIColor *color = nil;
     if(!self.enabled){
@@ -388,11 +388,11 @@ static char GKButtonBackgroundColorKey;
 }
 
 ///调整背景颜色
-- (void)gk_adjustsBackgroundColor
+- (void)gkAdjustsBackgroundColor
 {
     NSMutableDictionary *dic = [self gk_backgroundColorsForState];
     if(dic.count > 0){
-        self.backgroundColor = [self gk_currentBackgroundColorFromDictionary:dic];
+        self.backgroundColor = [self gkCurrentBackgroundColorFromDictionary:dic];
     }
 }
 

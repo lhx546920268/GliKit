@@ -11,6 +11,11 @@
 #import "UIView+GKAutoLayout.h"
 #import "GKBaseViewController.h"
 #import "GKContainer.h"
+#import "NSObject+GKUtils.h"
+#import "GKBaseDefines.h"
+#import <objc/runtime.h>
+#import "UIViewController+GKUtils.h"
+#import "UIView+GKUtils.h"
 
 static char GKisShowAsDialogKey;
 static char GKDialogKey;
@@ -40,31 +45,31 @@ static char GKInPresentWayKey;
     
     int count = sizeof(selectors) / sizeof(SEL);
     for(int i = 0;i < count;i ++){
-        [self gk_exchangeImplementations:selectors[i] prefix:@"gk_dialog_"];
+        [self gkExchangeImplementations:selectors[i] prefix:@"gkDialog_"];
     }
 }
 
 //MARK: 视图消失出现
 
-- (void)gk_dialog_viewWillAppear:(BOOL)animated
+- (void)gkDialog_viewWillAppear:(BOOL)animated
 {
-    [self gk_dialog_viewWillAppear:animated];
+    [self gkDialog_viewWillAppear:animated];
     if(self.isShowAsDialog){
         [self setIsDialogShowing:YES];
     }
 }
 
-- (void)gk_dialog_viewWillDisappear:(BOOL)animated
+- (void)gkDialog_viewWillDisappear:(BOOL)animated
 {
-    [self gk_dialog_viewWillDisappear:animated];
+    [self gkDialog_viewWillDisappear:animated];
     if(self.isShowAsDialog){
         [self setIsDialogShowing:NO];
     }
 }
 
-- (void)gk_dialog_viewDidAppear:(BOOL)animated
+- (void)gkDialog_viewDidAppear:(BOOL)animated
 {
-    [self gk_dialog_viewDidAppear:animated];
+    [self gkDialog_viewDidAppear:animated];
     if(self.isShowAsDialog){
         [self executeShowAnimate];
     }
@@ -72,8 +77,8 @@ static char GKInPresentWayKey;
 
 //MARK: view init
 
-- (void)gk_dialog_viewDidLoad {
-    [self gk_dialog_viewDidLoad];
+- (void)gkDialog_viewDidLoad {
+    [self gkDialog_viewDidLoad];
     
     if(self.isShowAsDialog){
         UIView *backgroundView = [UIView new];
@@ -94,9 +99,9 @@ static char GKInPresentWayKey;
     }
 }
 
-- (void)gk_dialog_viewDidLayoutSubviews
+- (void)gkDialog_viewDidLayoutSubviews
 {
-    [self gk_dialog_viewDidLayoutSubviews];
+    [self gkDialog_viewDidLayoutSubviews];
     [self setIsDialogViewDidLayoutSubviews:YES];
     
     if(self.isShowAsDialog){
@@ -262,7 +267,7 @@ static char GKInPresentWayKey;
 
 - (void)showAsDialog
 {
-    [self showAsDialogInViewController:[[AppDelegate instance].window.rootViewController gk_topestPresentedViewController]];
+    [self showAsDialogInViewController:UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController];
 }
 
 - (void)showAsDialogInViewController:(UIViewController *)viewController
@@ -319,7 +324,7 @@ static char GKInPresentWayKey;
                         
                         self.dialogBackgroundView.alpha = 1.0;
                         self.dialog.alpha = 1.0;
-                        GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"transform.scale"];
+                        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
                         animation.fromValue = @(1.3);
                         animation.toValue = @(1.0);
                         animation.duration = 0.25;
@@ -333,9 +338,9 @@ static char GKInPresentWayKey;
                         
                         self.dialogBackgroundView.alpha = 1.0;
                         
-                        GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
-                        animation.fromValue = @(-self.dialog.mj_h / 2.0);
-                        animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
+                        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                        animation.fromValue = @(-self.dialog.gkHeight / 2.0);
+                        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
                         animation.toValue = @(self.dialog.layer.position.y);
                         animation.duration = 0.25;
                         [self.dialog.layer addAnimation:animation forKey:@"position"];
@@ -348,9 +353,9 @@ static char GKInPresentWayKey;
                         
                         self.dialogBackgroundView.alpha = 1.0;
                         
-                        GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
-                        animation.fromValue = @(self.view.mj_h + self.dialog.mj_h / 2);
-                        animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
+                        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                        animation.fromValue = @(self.view.gkHeight + self.dialog.gkHeight / 2);
+                        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
                         animation.toValue = @(self.dialog.layer.position.y);
                         animation.duration = 0.25;
                         [self.dialog.layer addAnimation:animation forKey:@"position"];
@@ -387,11 +392,11 @@ static char GKInPresentWayKey;
                 [self setNeedsStatusBarAppearanceUpdate];
                 self.dialogBackgroundView.alpha = 0;
                 self.dialog.alpha = 0;
-                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"transform.scale"];
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
                 animation.fromValue = @(1.0);
                 animation.toValue = @(1.3);
                 animation.duration = 0.25;
-                animation.fillMode = kGKFillModeForwards;
+                animation.fillMode = kCAFillModeForwards;
                 animation.removedOnCompletion = NO;
                 [self.dialog.layer addAnimation:animation forKey:@"scale"];
                 
@@ -407,12 +412,12 @@ static char GKInPresentWayKey;
                 [self setNeedsStatusBarAppearanceUpdate];
                 self.dialogBackgroundView.alpha = 0;
                 
-                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
                 animation.fromValue = @(self.dialog.layer.position.y);
-                animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
-                animation.toValue = @(- self.dialog.mj_h / 2.0);
+                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                animation.toValue = @(- self.dialog.gkHeight / 2.0);
                 animation.duration = 0.25;
-                animation.fillMode = kGKFillModeForwards;
+                animation.fillMode = kCAFillModeForwards;
                 animation.removedOnCompletion = NO;
                 [self.dialog.layer addAnimation:animation forKey:@"position"];
                 
@@ -426,12 +431,12 @@ static char GKInPresentWayKey;
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.dialogBackgroundView.alpha = 0;
-                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"position.y"];
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
                 animation.fromValue = @(self.dialog.layer.position.y);
-                animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseIn];
-                animation.toValue = @(self.view.mj_h + self.dialog.mj_h / 2);
+                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                animation.toValue = @(self.view.gkHeight + self.dialog.gkHeight / 2);
                 animation.duration = 0.25;
-                animation.fillMode = kGKFillModeForwards;
+                animation.fillMode = kCAFillModeForwards;
                 animation.removedOnCompletion = NO;
                 [self.dialog.layer addAnimation:animation forKey:@"position"];
             }completion:^(BOOL finish){
@@ -478,19 +483,19 @@ static char GKInPresentWayKey;
 {
     CGFloat y = 0;
     if(self.keyboardHidden){
-        y = self.view.mj_h / 2.0;
+        y = self.view.gkHeight / 2.0;
     }else{
-        y = MIN(self.view.mj_h / 2.0, self.view.mj_h - self.keyboardFrame.size.height - self.dialog.mj_h / 2.0 - 10.0);
+        y = MIN(self.view.gkHeight / 2.0, self.view.gkHeight - self.keyboardFrame.size.height - self.dialog.gkHeight / 2.0 - 10.0);
     }
     
-    NSLayoutConstraint *constraint = self.dialog.gk_centerYLayoutConstraint;
+    NSLayoutConstraint *constraint = self.dialog.gkCenterYLayoutConstraint;
     [UIView animateWithDuration:0.25 animations:^(void){
         
         if(constraint){
-            constraint.constant = y - self.view.mj_h / 2.0;
+            constraint.constant = y - self.view.gkHeight / 2.0;
             [self.view layoutIfNeeded];
         }else{
-            self.dialog.center = CGPointMake(self.dialog.center.x, y - self.view.mj_h / 2.0);
+            self.dialog.center = CGPointMake(self.dialog.center.x, y - self.view.gkHeight / 2.0);
         }
     }];
 }

@@ -165,17 +165,17 @@
         [cell setLayoutMargins:self.separatorEdgeInsets];
     }
     
-    [tableView gk_setRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
+    [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    [tableView gk_setHeaderHeight:@(view.gkHeight) forSection:section];
+    [tableView gkSetHeaderHeight:@(view.gkHeight) forSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
-    [tableView gk_setFooterHeight:@(view.gkHeight) forSection:section];
+    [tableView gkSetFooterHeight:@(view.gkHeight) forSection:section];
 }
 
 - (void)viewDidLayoutSubviews

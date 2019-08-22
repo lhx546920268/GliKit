@@ -6,7 +6,7 @@
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /**
  文字类型类型
@@ -45,23 +45,23 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 /**
  第一个字符
  */
-- (char)gk_firstCharacter;
+- (char)gkFirstCharacter;
 
 /**
  最后一个字符
  */
-- (char)gk_lastCharacter;
+- (char)gkLastCharacter;
 
 /**
  从后面的字符串开始，获取对应字符的下标
  *@return 如果没有，返回NSNotFound
  */
-- (NSInteger)gk_lastIndexOfCharacter:(char) c;
+- (NSInteger)gkLastIndexOfCharacter:(char) c;
 
 /**
  return gk_stringSizeWithFont:(UIFont*) font contraintWith:CGFLOAT_MAX
  */
-- (CGSize)gk_stringSizeWithFont:(UIFont*) font;
+- (CGSize)gkStringSizeWithFont:(UIFont*) font;
 
 /**
  获取字符串所占位置大小
@@ -69,24 +69,9 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  *@param width 每行最大宽度
  *@return 字符串大小
  */
-- (CGSize)gk_stringSizeWithFont:(UIFont*) font contraintWith:(CGFloat) width;
-
-//MARK: 图片
-
-/**
- 获取缩略图路径
-
- @param size 缩略图大小
- @return 缩略图路径
- */
-- (NSString*)thumbnailURLWithSize:(CGSize) size;
+- (CGSize)gkStringSizeWithFont:(UIFont*) font contraintWith:(CGFloat) width;
 
 //MARK: 校验
-
-/**
- 是否是缅甸手机号
- */
-- (BOOL)isMyanmarMobile;
 
 /**
  是否是纯数字
@@ -101,10 +86,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 //MARK: 加密
 
 ///获取md5字符串
-- (NSString*)gk_MD5String;
-
-///获取加密的手机号
-- (NSString*)encryptedMobile;
+- (NSString*)gkMD5String;
 
 //MARK: 过滤
 
@@ -114,7 +96,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  @param type 文字输入类型
  @return 过滤后的字符串
  */
-- (NSString*)gk_stringByFilterWithType:(GKTextType)type;
+- (NSString*)gkStringByFilterWithType:(GKTextType)type;
 
 /**
  过滤字符串
@@ -123,7 +105,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  @param range 要过滤的范围
  @return 过滤后的字符串
  */
-- (NSString*)gk_stringByFilterWithType:(GKTextType) type range:(NSRange) range;
+- (NSString*)gkStringByFilterWithType:(GKTextType) type range:(NSRange) range;
 
 @end
 
@@ -132,11 +114,11 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 /**
  移除最后一个字符
  */
-- (void)gk_removeLastCharacter;
+- (void)gkRemoveLastCharacter;
 
 /**
  通过给定字符串，移除最后一个字符串
  */
-- (void)gk_removeLastString:(NSString*) str;
+- (void)gkRemoveLastString:(NSString*) str;
 
 @end

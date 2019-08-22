@@ -102,7 +102,7 @@
 {
     if(self.isHorizontal){
         CGFloat height = _indicatorView.gkHeight;
-        CGSize size = [_textLabel.text gk_stringSizeWithFont:_textLabel.font contraintWith:18];
+        CGSize size = [_textLabel.text gkStringSizeWithFont:_textLabel.font contraintWith:18];
         size.width += 1.0;
         size.height += 1.0;
         _indicatorView.gkTop = (self.gkHeight - height) / 2.0;
@@ -114,7 +114,7 @@
         _textLabel.frame = frame;
     }else{
         CGFloat width = _indicatorView.isAnimating ? _indicatorView.gkWidth : 0;
-        CGSize size = [_textLabel.text gk_stringSizeWithFont:_textLabel.font contraintWith:self.gkWidth - width];
+        CGSize size = [_textLabel.text gkStringSizeWithFont:_textLabel.font contraintWith:self.gkWidth - width];
         size.width += 1.0;
         size.height += 1.0;
         _indicatorView.gkLeft = (self.gkWidth - size.width - width) / 2.0;

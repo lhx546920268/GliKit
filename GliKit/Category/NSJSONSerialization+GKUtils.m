@@ -7,19 +7,20 @@
 //
 
 #import "NSJSONSerialization+GKUtils.h"
+#import "NSString+GKUtils.h"
 
 @implementation NSJSONSerialization (GKUtils)
 
-+ (NSDictionary*)gk_dictionaryFromString:(NSString *)string
++ (NSDictionary*)gkDictionaryFromString:(NSString *)string
 {
     if([NSString isEmpty:string]){
         return nil;
     }
     
-    return [self gk_dictionaryFromData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+    return [self gkDictionaryFromData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
-+ (NSDictionary*)gk_dictionaryFromData:(NSData*) data
++ (NSDictionary*)gkDictionaryFromData:(NSData*) data
 {
     if(![data isKindOfClass:[NSData class]])
         return nil;
@@ -37,16 +38,16 @@
     return nil;
 }
 
-+ (NSArray*)gk_arrayFromString:(NSString*) string
++ (NSArray*)gkArrayFromString:(NSString*) string
 {
     if([NSString isEmpty:string]){
         return nil;
     }
     
-    return [self gk_arrayFromData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+    return [self gkArrayFromData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
-+ (NSArray*)gk_arrayFromData:(NSData*) data
++ (NSArray*)gkArrayFromData:(NSData*) data
 {
     if(![data isKindOfClass:[NSData class]])
         return nil;
@@ -64,16 +65,16 @@
     return nil;
 }
 
-+ (NSString*)gk_stringFromObject:(id) object
++ (NSString*)gkStringFromObject:(id) object
 {
-    NSData *data = [self gk_dataFromObject:object];
+    NSData *data = [self gkDataFromObject:object];
     if(data){
         return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
     return @"";
 }
 
-+ (NSData*)gk_dataFromObject:(id) object
++ (NSData*)gkDataFromObject:(id) object
 {
     if([NSJSONSerialization isValidJSONObject:object]){
         NSError *error = nil;

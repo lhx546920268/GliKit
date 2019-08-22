@@ -11,17 +11,18 @@
 #import "GKPhotosGridCell.h"
 #import "GKPhotosCollection.h"
 #import <Photos/Photos.h>
-#import "GKBasic.h"
-#import "UIScrollView+GKEmptyView.h"
-#import "NSObject+Utils.h"
 #import "GKPhotosCheckBox.h"
 #import "GKAlertController.h"
-#import "UIViewController+Utils.h"
 #import "GKPhotosToolBar.h"
 #import "GKPhotosPreviewViewController.h"
 #import "GKContainer.h"
-#import "UIImage+Utils.h"
 #import <ImageIO/ImageIO.h>
+#import "UIViewController+GKUtils.h"
+#import "UIScreen+GKUtils.h"
+#import "UIViewController+GKLoading.h"
+#import "GKBaseDefines.h"
+#import "NSObject+GKUtils.h"
+#import "UIViewController+GKTransition.h"
 
 @interface GKPhotosGridViewController ()<PHPhotoLibraryChangeObserver, GKPhotosGridCellDelegate>
 
@@ -66,7 +67,7 @@
     [super viewDidLoad];
     
     if(self.navigationController.presentingViewController){
-        [self gk_setRightItemWithTitle:@"取消" action:@selector(handleCancel)];
+        [self gkSetRightItemWithTitle:@"取消" action:@selector(handleCancel)];
     }
     
     //多选
@@ -77,7 +78,7 @@
     self.navigationItem.title = self.collection.title;
     [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
     
-    [self initialization];
+    [self initViews];
 }
 
 - (void)dealloc
@@ -87,7 +88,7 @@
 }
 
 
-- (void)initialization
+- (void)initViews
 {
     if(self.photosOptions.intention == GKPhotosIntentionMultiSelection){
         self.photosToolBar = [GKPhotosToolBar new];
@@ -103,14 +104,14 @@
     self.flowLayout.minimumLineSpacing = spacing;
     self.flowLayout.minimumInteritemSpacing = spacing;
     self.flowLayout.sectionInset = UIEdgeInsetsMake(spacing, spacing, spacing, spacing);
-    CGFloat size = floor((UIScreen.screenWidth - (self.photosOptions.numberOfItemsPerRow + 1) * spacing) / self.photosOptions.numberOfItemsPerRow);
+    CGFloat size = floor((UIScreen.gkScreenWidth - (self.photosOptions.numberOfItemsPerRow + 1) * spacing) / self.photosOptions.numberOfItemsPerRow);
     self.flowLayout.itemSize = CGSizeMake(size, size);
     
     [self registerClass:GKPhotosGridCell.class];
     
-    self.collectionView.gk_shouldShowEmptyView = YES;
+    self.collectionView.gkShouldShowEmptyView = YES;
     
-    [super initialization];
+    [super initViews];
     
     if(self.collection.assets.count > 0){
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.collection.assets.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
@@ -144,11 +145,11 @@
 ///使用图片
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
-    self.gk_showNetworkActivity = YES;
-    self.gk_backImageView.userInteractionEnabled = NO;
+    [self gkShowProgressWithText:nil];
+    self.gkBackItem.userInteractionEnabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    WeakSelf(self)
+    WeakObj(self)
     __block NSInteger totalCount = assets.count;
     NSMutableArray *datas = [NSMutableArray arrayWithCapacity:totalCount];
     
@@ -159,7 +160,7 @@
                 [datas addObject:imageData];
             }
             if(totalCount <= 0){
-                [weakSelf onImageDataLoad:datas];
+                [selfWeak onImageDataLoad:datas];
             }
         }];
     }
@@ -170,7 +171,7 @@
 {
     NSMutableArray *results = [NSMutableArray arrayWithCapacity:datas.count];
     
-    WeakSelf(self)
+    WeakObj(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         for(NSData *data in datas){
@@ -181,9 +182,9 @@
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.gk_showNetworkActivity = NO;
-            !weakSelf.photosOptions.completion ?: weakSelf.photosOptions.completion(results);
-            [weakSelf handleCancel];
+            [selfWeak gkDismissProgress];
+            !selfWeak.photosOptions.completion ?: selfWeak.photosOptions.completion(results);
+            [selfWeak handleCancel];
         });
     });
 }
@@ -331,7 +332,7 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKPhotosGridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKPhotosGridCell.gk_nameOfClass forIndexPath:indexPath];
+    GKPhotosGridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKPhotosGridCell.gkNameOfClass forIndexPath:indexPath];
     
     PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
     if(self.photosOptions.intention == GKPhotosIntentionMultiSelection){

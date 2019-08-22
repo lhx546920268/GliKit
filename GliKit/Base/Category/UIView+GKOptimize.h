@@ -12,10 +12,10 @@
 @interface UIView (GKOptimize)
 
 ///避免颜色混合 会设置成父视图的背景颜色
-- (void)gk_avoidColorBlended;
+- (void)gkAvoidColorBlended;
 
 ///避免颜色混合 设置对应颜色
-- (void)gk_avoidColorBlendedForColor:(UIColor*) color;
+- (void)gkAvoidColorBlendedForColor:(UIColor*) color;
 
 @end
 

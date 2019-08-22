@@ -8,25 +8,26 @@
 
 #import "UINavigationBar+GKUtils.h"
 #import <objc/runtime.h>
+#import "UIApplication+GKTheme.h"
 
 @implementation UINavigationBar (GKUtils)
 
 + (void)load
 {
     Method method1 = class_getInstanceMethod(self, @selector(layoutSubviews));
-    Method method2 = class_getInstanceMethod(self, @selector(gk_layoutSubviews));
+    Method method2 = class_getInstanceMethod(self, @selector(gkLayoutSubviews));
     method_exchangeImplementations(method1, method2);
 }
 
-- (void)gk_layoutSubviews
+- (void)gkLayoutSubviews
 {
-    [self gk_layoutSubviews];
+    [self gkLayoutSubviews];
     
-    CGFloat margin = GKNavigationBarMargin;
-    [self gk_setNavigationItemMargin:UIEdgeInsetsMake(0, margin, 0, margin)];
+    CGFloat margin = UIApplication.gkNavigationBarMargin;
+    [self gkSetNavigationItemMargin:UIEdgeInsetsMake(0, margin, 0, margin)];
 }
 
-- (void)gk_setNavigationItemMargin:(UIEdgeInsets)margins
+- (void)gkSetNavigationItemMargin:(UIEdgeInsets)margins
 {
     //ios 11适配间距
     if(@available(iOS 11, *)){

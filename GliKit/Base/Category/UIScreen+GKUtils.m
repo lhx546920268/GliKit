@@ -2,7 +2,7 @@
 //  UIScreen+GKUtils.m
 //  Zegobird
 //
-//  Created by 唐建平 on 2019/3/20.
+//  Created by 罗海雄 on 2019/3/20.
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
@@ -10,17 +10,17 @@
 
 @implementation UIScreen (GKUtils)
 
-+ (CGFloat)gk_screenWidth
++ (CGFloat)gkScreenWidth
 {
-    return self.gk_screenSize.width;
+    return self.gkScreenSize.width;
 }
 
-+ (CGFloat)gk_screenHeight
++ (CGFloat)gkScreenHeight
 {
-    return self.gk_screenSize.height;
+    return self.gkScreenSize.height;
 }
 
-+ (CGSize)gk_screenSize
++ (CGSize)gkScreenSize
 {
     CGSize size = UIScreen.mainScreen.nativeBounds.size;
     size.width /= UIScreen.mainScreen.nativeScale;

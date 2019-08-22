@@ -157,7 +157,7 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 /**
  按钮信息 设置此值会导致菜单重新加载数据
  */
-@property(nonatomic,copy) NSArray<GKMenuBarItem*> *itemInfos;
+@property(nonatomic,copy) NSArray<GKMenuBarItem*> *items;
 
 /**
  获取菜单宽度 ，根据当前标题、字体和间隔来
@@ -178,10 +178,10 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 
 /**
  构造方法
- *@param itemInfos 按钮信息
+ *@param items 按钮信息
  *@return 一个实例
  */
-- (instancetype)initWithItemInfos:(NSArray<GKMenuBarItem*> *) itemInfos;
+- (instancetype)initWithItems:(NSArray<GKMenuBarItem*> *) items;
 
 /**
  构造方法
@@ -194,10 +194,10 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 /**
  构造方法
  *@param frame 位置大小
- *@param itemInfos 按钮信息
+ *@param items 按钮信息
  *@return 一个实例
  */
-- (instancetype)initWithFrame:(CGRect)frame itemInfos:(NSArray<GKMenuBarItem*> *) itemInfos;
+- (instancetype)initWithFrame:(CGRect)frame items:(NSArray<GKMenuBarItem*> *) items;
 
 /**设置选中的菜单按钮
  *@param selectedIndex 菜单按钮下标

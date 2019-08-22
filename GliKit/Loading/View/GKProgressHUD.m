@@ -113,7 +113,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         _translucentView = [[UIView alloc] init];
         _translucentView.layer.cornerRadius = 14.0f;
         _translucentView.layer.masksToBounds = YES;
-        _translucentView.backgroundColor = [UIColor gk_colorWithRed:50 green:50 blue:50 alpha:0.7];
+        _translucentView.backgroundColor = [UIColor gkColorWithRed:50 green:50 blue:50 alpha:0.7];
         [self addSubview:_translucentView];
         
         _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -180,7 +180,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 {
     if(![_text isEqualToString:text]){
         _text = [text copy];
-        _textSize = [_text gk_stringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2];
+        _textSize = [_text gkStringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2];
         _textSize.width = ceil(_textSize.width);
         _textSize.height = ceil(_textSize.height);
         

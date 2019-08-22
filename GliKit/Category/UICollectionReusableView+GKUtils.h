@@ -11,7 +11,7 @@
 @interface UICollectionReusableView (GKUtils)
 
 ///获取大小 子类重写
-@property(class, nonatomic, readonly) CGSize gk_itemSize;
+@property(class, nonatomic, readonly) CGSize gkItemSize;
 
 @end
 

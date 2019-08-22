@@ -7,6 +7,7 @@
 //
 
 #import "UITableView+GKRowHeight.h"
+#import <objc/runtime.h>
 
 ///tableView section 缓存大小
 @interface GKTableViewSectionInfo : NSObject
@@ -54,7 +55,7 @@
     
     for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
         SEL selector1 = selectors[i];
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gk_rowHeight_%@", NSStringFromSelector(selector1)]);
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkRowHeight_%@", NSStringFromSelector(selector1)]);
         
         Method method1 = class_getInstanceMethod(self, selector1);
         Method method2 = class_getInstanceMethod(self, selector2);
@@ -65,7 +66,7 @@
 
 //MARK: - data change
 
-- (void)gk_rowHeight_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkRowHeight_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self gk_rowHeightCaches];
     if(caches.count > 0){
@@ -74,10 +75,10 @@
             [caches removeObjectForKey:@(section)];
         }];
     }
-    [self gk_rowHeight_reloadSections:sections withRowAnimation:animation];
+    [self gkRowHeight_reloadSections:sections withRowAnimation:animation];
 }
 
-- (void)gk_rowHeight_deleteSections:(NSIndexSet *) sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkRowHeight_deleteSections:(NSIndexSet *) sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self gk_rowHeightCaches];
     if(caches.count > 0){
@@ -86,10 +87,10 @@
             [caches removeObjectForKey:@(section)];
         }];
     }
-    [self gk_rowHeight_deleteSections:sections withRowAnimation:animation];
+    [self gkRowHeight_deleteSections:sections withRowAnimation:animation];
 }
 
-- (void)gk_rowHeight_moveSection:(NSInteger)section toSection:(NSInteger)newSection
+- (void)gkRowHeight_moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
     NSMutableDictionary *caches = [self gk_rowHeightCaches];
     if(caches.count > 0){
@@ -107,69 +108,69 @@
         }
     }
     
-    [self gk_rowHeight_moveSection:section toSection:newSection];
+    [self gkRowHeight_moveSection:section toSection:newSection];
 }
 
-- (void)gk_rowHeight_moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
+- (void)gkRowHeight_moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
 {
     NSMutableDictionary *caches = [self gk_rowHeightCaches];
     if(caches.count > 0){
-        NSNumber *number = [self gk_rowHeightForIndexPath:indexPath];
-        NSNumber *toNumber = [self gk_rowHeightForIndexPath:newIndexPath];
+        NSNumber *number = [self gkRowHeightForIndexPath:indexPath];
+        NSNumber *toNumber = [self gkRowHeightForIndexPath:newIndexPath];
         
         if(number != nil && toNumber != nil){
-            [self gk_setRowHeight:number forIndexPath:indexPath];
-            [self gk_setRowHeight:toNumber forIndexPath:newIndexPath];
+            [self gkSetRowHeight:number forIndexPath:indexPath];
+            [self gkSetRowHeight:toNumber forIndexPath:newIndexPath];
         }else if(number != nil){
-            [self gk_setRowHeight:number forIndexPath:indexPath];
+            [self gkSetRowHeight:number forIndexPath:indexPath];
         }else if (toNumber != nil){
-            [self gk_setRowHeight:toNumber forIndexPath:newIndexPath];
+            [self gkSetRowHeight:toNumber forIndexPath:newIndexPath];
         }
     }
     
-    [self gk_rowHeight_moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+    [self gkRowHeight_moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
 
-- (void)gk_rowHeight_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkRowHeight_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self gk_rowHeightCaches];
     if(caches.count > 0){
         for(NSIndexPath *indexPath in indexPaths){
-            [self gk_setRowHeight:nil forIndexPath:indexPath];
+            [self gkSetRowHeight:nil forIndexPath:indexPath];
         }
     }
     
-    [self gk_rowHeight_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+    [self gkRowHeight_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
 }
 
-- (void)gk_rowHeight_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkRowHeight_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self gk_rowHeightCaches];
     if(caches.count > 0){
         for(NSIndexPath *indexPath in indexPaths){
-            [self gk_setRowHeight:nil forIndexPath:indexPath];
+            [self gkSetRowHeight:nil forIndexPath:indexPath];
         }
     }
     
-    [self gk_rowHeight_reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+    [self gkRowHeight_reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
 }
 
 
-- (void)gk_rowHeight_reloadData
+- (void)gkRowHeight_reloadData
 {
     [[self gk_rowHeightCaches] removeAllObjects];
-    [self gk_rowHeight_reloadData];
+    [self gkRowHeight_reloadData];
 }
 
 //MARK: get and set
 
-- (NSNumber*)gk_rowHeightForIndexPath:(NSIndexPath *)indexPath
+- (NSNumber*)gkRowHeightForIndexPath:(NSIndexPath *)indexPath
 {
     GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:indexPath.section];
     return info.rowHeights ? info.rowHeights[@(indexPath.row)] : nil;
 }
 
-- (void)gk_setRowHeight:(NSNumber *)rowHeight forIndexPath:(NSIndexPath *)indexPath
+- (void)gkSetRowHeight:(NSNumber *)rowHeight forIndexPath:(NSIndexPath *)indexPath
 {
     GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:indexPath.section];
     
@@ -180,7 +181,7 @@
     }
 }
 
-- (void)gk_setHeaderHeight:(NSNumber*) height forSection:(NSInteger) section
+- (void)gkSetHeaderHeight:(NSNumber*) height forSection:(NSInteger) section
 {
     GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:section];
     info.headerHeight = height;
@@ -192,7 +193,7 @@
     return info.headerHeight;
 }
 
-- (void)gk_setFooterHeight:(NSNumber*) height forSection:(NSInteger) section
+- (void)gkSetFooterHeight:(NSNumber*) height forSection:(NSInteger) section
 {
     GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:section];
     info.footerHeight = height;

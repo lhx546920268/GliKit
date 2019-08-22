@@ -6,6 +6,7 @@
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 
 @interface NSAttributedString (GKUtils)
 
@@ -14,6 +15,6 @@
  *@param width 每行最大宽度
  *@return 富文本框大小
  */
-- (CGSize)gk_boundsWithConstraintWidth:(CGFloat) width;
+- (CGSize)gkBoundsWithConstraintWidth:(CGFloat) width;
 
 @end

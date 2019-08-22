@@ -10,15 +10,15 @@
 
 @implementation UIView (GKOptimize)
 
-- (void)gk_avoidColorBlended
+- (void)gkAvoidColorBlended
 {
 #ifdef DEBUG
     NSAssert(self.superview, @"gk_avoidColorBlended superview can't be nil");
 #endif
-    [self gk_avoidColorBlendedForColor:self.superview.backgroundColor];
+    [self gkAvoidColorBlendedForColor:self.superview.backgroundColor];
 }
 
-- (void)gk_avoidColorBlendedForColor:(UIColor *)color
+- (void)gkAvoidColorBlendedForColor:(UIColor *)color
 {
     if(!color){
         color = UIColor.clearColor;

@@ -8,15 +8,17 @@
 
 #import "GKPhotosViewController.h"
 #import <Photos/Photos.h>
-#import "GKBasic.h"
 #import "UIScrollView+GKEmptyView.h"
-#import "GKTools.h"
-#import "UIViewController+Utils.h"
+#import "UIViewController+GKUtils.h"
 #import "GKPhotosCollection.h"
 #import "GKPhotosListCell.h"
-#import "NSObject+Utils.h"
-#import "UIColor+Utils.h"
+#import "NSObject+GKUtils.h"
+#import "UIColor+GKUtils.h"
 #import "GKPhotosGridViewController.h"
+#import "UIViewController+GKLoading.h"
+#import "GKBaseDefines.h"
+#import "GKAppUtils.h"
+#import "UIApplication+GKTheme.h"
 
 @interface GKPhotosViewController ()<PHPhotoLibraryChangeObserver>
 
@@ -59,12 +61,12 @@
     [super viewDidLoad];
     
     if(self.navigationController.presentingViewController){
-        [self gk_setRightItemWithTitle:@"取消" action:@selector(handleCancel)];
+        [self gkSetRightItemWithTitle:@"取消" action:@selector(handleCancel)];
     }
     
     self.navigationItem.title = @"相册";
     [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
-    [self gk_reloadData];
+    [self gkReloadData];
 }
 
 - (void)dealloc
@@ -73,18 +75,18 @@
     [self.imageManager stopCachingImagesForAllAssets];
 }
 
-- (void)initialization
+- (void)initViews
 {
     self.imageManager = [PHCachingImageManager new];
     self.imageManager.allowsCachingHighQualityImages = NO;
     
-    self.gk_showPageLoading = NO;
+    self.gkShowPageLoading = NO;
     [self registerClass:GKPhotosListCell.class];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = 70;
-    self.tableView.gk_shouldShowEmptyView = YES;
+    self.tableView.gkShouldShowEmptyView = YES;
     
-    [super initialization];
+    [super initViews];
 }
 
 //MARK: action
@@ -132,7 +134,7 @@
 {
     NSString *msg = nil;
     if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusDenied){
-        msg = [NSString stringWithFormat:@"无法访问您的照片，请在本机的“设置-隐私-照片”中设置,允许%@访问您的照片", appName()];
+        msg = [NSString stringWithFormat:@"无法访问您的照片，请在本机的“设置-隐私-照片”中设置,允许%@访问您的照片", GKAppUtils.appName];
     }else{
         msg = @"暂无照片信息";
     }
@@ -141,40 +143,40 @@
 
 //MARK: load
 
-- (void)gk_reloadData
+- (void)gkReloadData
 {
-    [super gk_reloadData];
-    self.gk_showPageLoading = YES;
+    [super gkReloadData];
+    self.gkShowPageLoading = YES;
     
-    WeakSelf(self)
+    WeakObj(self)
     if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined){
         //没有权限 先申请授权
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             if(status == PHAuthorizationStatusAuthorized){
-                [weakSelf loadPhotos];
+                [selfWeak loadPhotos];
             }else{
-                [weakSelf initialization];
+                [selfWeak initViews];
             }
         }];
     }else{
-        [weakSelf loadPhotos];
+        [selfWeak loadPhotos];
     }
 }
 
 ///加载相册信息
 - (void)loadPhotos
 {
-    WeakSelf(self)
+    WeakObj(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-        if(weakSelf.photosOptions.shouldDisplayAllPhotos){
-            weakSelf.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
+        if(selfWeak.photosOptions.shouldDisplayAllPhotos){
+            selfWeak.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
         }
-        weakSelf.smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-        weakSelf.userAlbums = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+        selfWeak.smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+        selfWeak.userAlbums = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf generateDatas];
+            [selfWeak generateDatas];
         });
     });
     
@@ -198,7 +200,7 @@
     if(self.isInit){
         [self.tableView reloadData];
     }else{
-        [self initialization];
+        [self initViews];
     }
     
     if(self.photosOptions.displayFistCollection && self.datas.count > 0){
@@ -235,7 +237,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKPhotosListCell *cell = [tableView dequeueReusableCellWithIdentifier:GKPhotosListCell.gk_nameOfClass forIndexPath:indexPath];
+    GKPhotosListCell *cell = [tableView dequeueReusableCellWithIdentifier:GKPhotosListCell.gkNameOfClass forIndexPath:indexPath];
     
     GKPhotosCollection *collection = self.datas[indexPath.row];
     cell.titleLabel.text = collection.title;
@@ -254,7 +256,7 @@
             }
         }];
     }else{
-        cell.thumbnailImageView.backgroundColor = GKImageBackgroundColorBeforeDownload;
+        cell.thumbnailImageView.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
         cell.thumbnailImageView.image = nil;
         cell.assetLocalIdentifier = nil;
     }

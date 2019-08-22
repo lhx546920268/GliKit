@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, GKButtonImagePosition){
  @param margin 图标和文字间隔
  @warning UIControlContentHorizontalAlignmentFill 和 UIControlContentVerticalAlignmentFill 将忽略
  */
-- (void)gk_setImagePosition:(GKButtonImagePosition) position margin:(CGFloat) margin;
+- (void)gkSetImagePosition:(GKButtonImagePosition) position margin:(CGFloat) margin;
 
 /**
  设置对应状态的背景颜色
@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, GKButtonImagePosition){
  @param backgroundColor 背景颜色，为nil时移除
  @param state 状态，支持  UIControlStateNormal， UIControlStateHighlighted，UIControlStateDisabled，UIControlStateSelected
  */
-- (void)gk_setBackgroundColor:(UIColor*) backgroundColor forState:(UIControlState) state;
+- (void)gkSetBackgroundColor:(UIColor*) backgroundColor forState:(UIControlState) state;
 
 @end
 

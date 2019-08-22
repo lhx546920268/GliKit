@@ -100,7 +100,7 @@ static UIColor *appGrayBackgroundColor = nil;
 + (UIColor *)gkGrayBackgroundColor
 {
     if(!appGrayBackgroundColor){
-        appGrayBackgroundColor = [UIColor gk_colorFromHex:@"F2F2F2"];
+        appGrayBackgroundColor = [UIColor gkColorFromHex:@"F2F2F2"];
     }
     return appGrayBackgroundColor;
 }

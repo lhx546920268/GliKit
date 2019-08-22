@@ -113,7 +113,7 @@
         }];
         
         if(_textLabel){
-            [self.contentView removeConstraint:_textLabel.gk_topLayoutConstraint];
+            [self.contentView removeConstraint:_textLabel.gkTopLayoutConstraint];
             [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.iconImageView.mas_bottom).offset(@(10));
             }];

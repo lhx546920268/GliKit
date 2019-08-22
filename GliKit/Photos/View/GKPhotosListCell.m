@@ -7,9 +7,7 @@
 //
 
 #import "GKPhotosListCell.h"
-#import "UIView+GKAutoLayout.h"
-#import "GKBasic.h"
-#import "UIColor+Utils.h"
+#import "GKBaseDefines.h"
 
 @implementation GKPhotosListCell
 
@@ -25,10 +23,12 @@
         _thumbnailImageView.clipsToBounds = YES;
         [self.contentView addSubview:_thumbnailImageView];
         
-        [_thumbnailImageView gk_leftToSuperview:15];
-        [_thumbnailImageView gk_topToSuperview:10];
-        [_thumbnailImageView gk_bottomToSuperview:10];
-        [_thumbnailImageView gk_aspectRatio:1.0];
+        [_thumbnailImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(15);
+            make.top.equalTo(10);
+            make.bottom.equalTo(-10);
+            make.width.equalTo(self.thumbnailImageView.height);
+        }];
         
         _titleLabel = [UILabel new];
         _titleLabel.font = [UIFont boldSystemFontOfSize:14];
@@ -36,8 +36,10 @@
         [_titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [self.contentView addSubview:_titleLabel];
         
-        [_titleLabel gk_leftToItemRight:_thumbnailImageView margin:15];
-        [_titleLabel gk_centerYInSuperview];
+        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(self.thumbnailImageView.trailing).offset(15);
+            make.centerY.equalTo(0);
+        }];
         
         _countLabel = [UILabel new];
         _countLabel.font = [UIFont systemFontOfSize:14];
@@ -46,9 +48,12 @@
         [_countLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh + 1 forAxis:UILayoutConstraintAxisHorizontal];
         [self.contentView addSubview:_countLabel];
         
-        [_countLabel gk_leftToItemRight:_titleLabel margin:5];
-        [_countLabel gk_centerYInSuperview];
-        [_countLabel gk_rightToSuperview:15];
+        [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(self.titleLabel.trailing).offset(5);
+            make.centerY.equalTo(0);
+            make.trailing.equalTo(-15);
+        }];
+        
         
         UIView *divider = [UIView new];
         divider.backgroundColor = GKSeparatorColor;

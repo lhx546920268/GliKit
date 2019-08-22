@@ -17,34 +17,34 @@
  //缓存
  - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
  {
- NSNumber *number = [tableView gk_rowHeightForIndexPath:indexPath];
+ NSNumber *number = [tableView gkRowHeightForIndexPath:indexPath];
  return number ? number.floatValue : UITableViewAutomaticDimension;
  }
  
  - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
  {
- [tableView gk_setRowHeight:@(cell.mj_h) forIndexPath:indexPath];
+ [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
  }
  */
 @interface UITableView (GKRowHeight)
 
 ///获取行高
-- (NSNumber*)gk_rowHeightForIndexPath:(NSIndexPath*) indexPath;
+- (NSNumber*)gkRowHeightForIndexPath:(NSIndexPath*) indexPath;
 
 ///设置行高
-- (void)gk_setRowHeight:(NSNumber*) rowHeight forIndexPath:(NSIndexPath*) indexPath;
+- (void)gkSetRowHeight:(NSNumber*) rowHeight forIndexPath:(NSIndexPath*) indexPath;
 
 ///获取区域头部
 - (NSNumber*)gkHeaderHeightForSection:(NSInteger) section;
 
 ///设置区域头部高度
-- (void)gk_setHeaderHeight:(NSNumber*) headerHeight forSection:(NSInteger) section;
+- (void)gkSetHeaderHeight:(NSNumber*) headerHeight forSection:(NSInteger) section;
 
 ///获取区域底部高度
 - (NSNumber*)gkFooterHeightForSection:(NSInteger) section;
 
 ///设置区域底部高度
-- (void)gk_setFooterHeight:(NSNumber*) footerHeight forSection:(NSInteger) section;
+- (void)gkSetFooterHeight:(NSNumber*) footerHeight forSection:(NSInteger) section;
 
 @end
 

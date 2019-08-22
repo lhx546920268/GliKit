@@ -6,7 +6,7 @@
 //  Copyright © 2019 xiaozhai. All rights reserved.
 //
 
-#import "GKAlertViewController.h"
+#import "GKAlertController.h"
 #import "GKContainer.h"
 #import "UIImage+GKUtils.h"
 #import "UIButton+GKUtils.h"
@@ -182,7 +182,7 @@
             if(self.icon){
                 self.header.imageView.image = self.icon;
                 if(self.icon.size.width > constraintWidth){
-                    CGSize size = [self.icon gk_fitWithSize:CGSizeMake(constraintWidth, 0) type:GKImageFitTypeWidth];
+                    CGSize size = [self.icon gkFitWithSize:CGSizeMake(constraintWidth, 0) type:GKImageFitTypeWidth];
                     self.header.imageView.frame = CGRectMake((self.header.gkWidth - size.width) / 2, y, size.width, size.height);
                 }else{
                     self.header.imageView.frame = CGRectMake((self.header.gkWidth - self.icon.size.width) / 2, y, self.icon.size.width, self.icon.size.height);
@@ -201,10 +201,10 @@
                 CGSize size = CGSizeZero;
                 if([self.alertTitle isKindOfClass:[NSString class]]){
                     self.header.titleLabel.text = self.alertTitle;
-                    size = [self.alertTitle gk_stringSizeWithFont:props.titleFont contraintWith:constraintWidth];
+                    size = [self.alertTitle gkStringSizeWithFont:props.titleFont contraintWith:constraintWidth];
                 }else if([self.alertTitle isKindOfClass:[NSAttributedString class]]){
                     self.header.titleLabel.attributedText = self.alertTitle;
-                    size = [self.alertTitle gk_boundsWithConstraintWidth:constraintWidth];
+                    size = [self.alertTitle gkBoundsWithConstraintWidth:constraintWidth];
                 }
                 
                 self.header.titleLabel.frame = CGRectMake(props.textInsets.left, y, constraintWidth, size.height + 1.0);
@@ -222,10 +222,10 @@
                 CGSize size = CGSizeZero;
                 if([self.message isKindOfClass:[NSString class]]){
                     self.header.messageLabel.text = self.message;
-                    size = [self.message gk_stringSizeWithFont:props.messageFont contraintWith:constraintWidth];
+                    size = [self.message gkStringSizeWithFont:props.messageFont contraintWith:constraintWidth];
                 }else if ([self.message isKindOfClass:[NSAttributedString class]]){
                     self.header.messageLabel.attributedText = self.message;
-                    size = [self.message gk_boundsWithConstraintWidth:constraintWidth];
+                    size = [self.message gkBoundsWithConstraintWidth:constraintWidth];
                 }
                 self.header.messageLabel.frame = CGRectMake(props.textInsets.left, y, constraintWidth, size.height + 1.0);
                 y += self.header.messageLabel.gkHeight;
@@ -586,7 +586,7 @@
     
     [cell.button setTitle:action.title forState:UIControlStateNormal];
     [cell.button setImage:action.icon forState:UIControlStateNormal];
-    [cell.button gk_setImagePosition:GKButtonImagePositionLeft margin:action.spacing];
+    [cell.button gkSetImagePosition:GKButtonImagePositionLeft margin:action.spacing];
     
     if(indexPath.item == _destructiveButtonIndex && style.destructiveButtonBackgroundColor){
         cell.contentView.backgroundColor = style.destructiveButtonBackgroundColor;

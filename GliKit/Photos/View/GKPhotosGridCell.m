@@ -7,10 +7,8 @@
 //
 
 #import "GKPhotosGridCell.h"
-#import "UIView+GKAutoLayout.h"
+#import "GKBaseDefines.h"
 #import "GKPhotosCheckBox.h"
-#import "GKBasic.h"
-#import "UIColor+Utils.h"
 
 @implementation GKPhotosGridCell
 
@@ -30,17 +28,22 @@
         _overlay.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
         [self.contentView addSubview:_overlay];
         
-        [_imageView gk_insetsInSuperview:UIEdgeInsetsZero];
-        [_overlay gk_insetsInSuperview:UIEdgeInsetsZero];
+        [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
+        [_overlay mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
         
         _checkBox = [GKPhotosCheckBox new];
         [_checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
         _checkBox.contentInsets = UIEdgeInsetsMake(5, 5, 5, 5);
         [self.contentView addSubview:_checkBox];
         
-        [_checkBox gk_sizeToSelf:CGSizeMake(30, 30)];
-        [_checkBox gk_rightToSuperview];
-        [_checkBox gk_topToSuperview];
+        [_checkBox mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.trailing.equalTo(0);
+            make.size.equalTo(CGSizeMake(30, 30));
+        }];
     }
     return self;
 }

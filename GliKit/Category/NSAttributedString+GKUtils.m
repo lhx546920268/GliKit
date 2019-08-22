@@ -10,11 +10,11 @@
 
 @implementation NSAttributedString (GKUtils)
 
-- (CGSize)gk_boundsWithConstraintWidth:(CGFloat) width
+- (CGSize)gkBoundsWithConstraintWidth:(CGFloat) width
 {
     return [self boundingRectWithSize:CGSizeMake(width, 8388608.0) options:NSStringDrawingTruncatesLastVisibleLine |
             NSStringDrawingUsesLineFragmentOrigin |
-            NSStringDrawingUsesFontLeading  context:nil].size;
+            NSStringDrawingUsesFontLeading context:nil].size;
 }
 
 @end

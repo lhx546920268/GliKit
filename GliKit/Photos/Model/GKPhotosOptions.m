@@ -8,7 +8,7 @@
 
 #import "GKPhotosOptions.h"
 #import <ImageIO/ImageIO.h>
-#import "UIImage+Utils.h"
+#import "UIImage+GKUtils.h"
 
 @implementation GKPhotosPickResult
 
@@ -43,7 +43,7 @@
         size.width *= scale;
         size.height *= scale;
         
-        size = [UIImage gk_fitImageSize:imageSize size:size type:GKImageFitTypeWidth];
+        size = [UIImage gkFitImageSize:imageSize size:size type:GKImageFitTypeWidth];
         
         NSDictionary *compressedImageOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
                                     (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
@@ -62,7 +62,7 @@
         size.width *= scale;
         size.height *= scale;
         
-        size = [UIImage gk_fitImageSize:imageSize size:size type:GKImageFitTypeWidth];
+        size = [UIImage gkFitImageSize:imageSize size:size type:GKImageFitTypeWidth];
         NSDictionary *thumbnailOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
                               (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
                               (id)kCGImageSourceCreateThumbnailWithTransform : @YES};

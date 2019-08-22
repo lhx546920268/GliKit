@@ -18,7 +18,7 @@
  *@param string Json数据
  *@return NSDictionary
  */
-+ (NSDictionary*)gk_dictionaryFromString:(NSString*) string;
++ (NSDictionary*)gkDictionaryFromString:(NSString*) string;
 
 /**
  
@@ -27,7 +27,7 @@
  *@param data Json数据
  *@return NSDictionary
  */
-+ (NSDictionary*)gk_dictionaryFromData:(NSData*) data;
++ (NSDictionary*)gkDictionaryFromData:(NSData*) data;
 
 /**
  
@@ -36,7 +36,7 @@
  *@param string Json数据
  *@return NSArray
  */
-+ (NSArray*)gk_arrayFromString:(NSString*) string;
++ (NSArray*)gkArrayFromString:(NSString*) string;
 
 /**
  
@@ -45,20 +45,20 @@
  *@param data Json数据
  *@return NSArray
  */
-+ (NSArray*)gk_arrayFromData:(NSData*) data;
++ (NSArray*)gkArrayFromData:(NSData*) data;
 
 /**
  把Json 对象转换成 json字符串
  *@param object 要转换成json的对象
  *@return json字符串
  */
-+ (NSString*)gk_stringFromObject:(id) object;
++ (NSString*)gkStringFromObject:(id) object;
 
 /**
  把 json 对象转换成 json二进制
  *@param object 要转换成json的对象
  *@return json字符串
  */
-+ (NSData*)gk_dataFromObject:(id) object;
++ (NSData*)gkDataFromObject:(id) object;
 
 @end

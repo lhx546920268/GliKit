@@ -8,20 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+@class MASViewAttribute;
+
 ///安全区域兼容 iOS11
 @interface UIViewController (GKSafeAreaCompatible)
 
 ///安全区域 顶部
-@property (nonatomic, strong, readonly) MASViewAttribute *gk_safeAreaLayoutGuideTop;
+@property (nonatomic, strong, readonly) MASViewAttribute *gkSafeAreaLayoutGuideTop;
 
 ///安全区域 底部
-@property (nonatomic, strong, readonly) MASViewAttribute *gk_safeAreaLayoutGuideBottom;
+@property (nonatomic, strong, readonly) MASViewAttribute *gkSafeAreaLayoutGuideBottom;
 
 ///安全区域 左边
-@property (nonatomic, strong, readonly) MASViewAttribute *gk_safeAreaLayoutGuideLeft;
+@property (nonatomic, strong, readonly) MASViewAttribute *gkSafeAreaLayoutGuideLeft;
 
 ///安全区域 右边
-@property (nonatomic, strong, readonly) MASViewAttribute *gk_safeAreaLayoutGuideRight;
+@property (nonatomic, strong, readonly) MASViewAttribute *gkSafeAreaLayoutGuideRight;
 
 @end
 

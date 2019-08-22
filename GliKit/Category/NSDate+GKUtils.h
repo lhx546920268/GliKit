@@ -29,47 +29,46 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
 //MARK: 单个时间
 
 ///获取当前时间的 秒
-- (int)gk_second;
+@property(nonatomic, readonly) int gkSecond;
 
 ///获取当前时间的 分
-- (int)gk_minute;
+@property(nonatomic, readonly) int gkMinute;
 
 ///获取当前时间的 小时
-- (int)gk_hour;
+@property(nonatomic, readonly) int gkHour;
 
 ///获取当前时间的 日期
-- (int)gk_day;
+@property(nonatomic, readonly) int gkDay;
 
 ///获取当前时间的 月份
-- (int)gk_month;
+@property(nonatomic, readonly) int gkMonth;
 
 ///获取当前时间的 年份
-- (int)gk_year;
+@property(nonatomic, readonly) int gkYear;
 
 ///获取当前时间的 星期几 1-7 星期日 到星期六
-- (NSInteger)gk_weekday;
+@property(nonatomic, readonly) NSInteger gkWeekday;
 
 //MARK: 时间获取
 
 /**
  获取当前时间格式为 YYYY-MM-dd HH:mm:ss
- *@return 当前时间
  */
-+ (NSString*)gk_currentTime;
+@property(class, nonatomic, readonly) NSString *gkCurrentTime;
 
 /**
  通过给的格式获取当前时间
  *@param format 时间格式， 如 YYYY-MM-dd HH:mm:ss
  *@return 当前时间
  */
-+ (NSString*)gk_currentTimeWithFormat:(NSString*) format;
++ (NSString*)gkCurrentTimeWithFormat:(NSString*) format;
 
 /**
  以当前时间为准，获取以后或以前的时间 时间格式为YYYY-MM-dd HH:mm:ss
  *@param timeInterval 时间间隔 大于0时，获取以后的时间,小于0时，获取以前的时间
  *@return 时间
  */
-+ (NSString*)gk_timeWithTimeInterval:(NSTimeInterval) timeInterval;
++ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval) timeInterval;
 
 /**
  以当前时间为准，获取以后或以前的时间
@@ -77,7 +76,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式为，如YYYY-MM-dd HH:mm:ss
  *@return 时间
  */
-+ (NSString*)gk_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format;
++ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format;
 
 /**
  通过给定时间，获取以后或以前的时间
@@ -86,7 +85,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param fromTime 以该时间为准
  *@return 时间
  */
-+ (NSString*)gk_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime;
++ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime;
 
 //MARK: 时间转换
 
@@ -96,7 +95,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 要转换成的格式
  *@retrun 转换后的时间
  */
-+ (NSString*)gk_formatTime:(NSString*) time format:(NSString*) format;
++ (NSString*)gkFormatTime:(NSString*) time format:(NSString*) format;
 
 /**
  时间格式转换
@@ -105,7 +104,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param toFormat 要转换成的格式
  *@retrun 转换后的时间
  */
-+ (NSString*)gk_formatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat;
++ (NSString*)gkFormatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat;
 
 /**
  通过时间戳获取具体时间
@@ -113,7 +112,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 要返回的时间格式
  *@return 具体时间
  */
-+ (NSString*)gk_formatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format;
++ (NSString*)gkFormatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format;
 
 /**
  通过时间获取时间戳
@@ -121,7 +120,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式
  *@return 时间戳
  */
-+ (NSTimeInterval)gk_timeIntervalFromTime:(NSString*) time format:(NSString*) format;
++ (NSTimeInterval)gkTimeIntervalFromTime:(NSString*) time format:(NSString*) format;
 
 /**
  从时间字符串中获取date
@@ -129,7 +128,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式
  *@return 时间date
  */
-+ (NSDate*)gk_dateFromTime:(NSString*) time format:(NSString*) format;
++ (NSDate*)gkDateFromTime:(NSString*) time format:(NSString*) format;
 
 /**
  从date获取时间字符串
@@ -137,14 +136,14 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式
  *@return 格式化的时间
  */
-+ (NSString*)gk_timeFromDate:(NSDate*) date format:(NSString*) format;
++ (NSString*)gkTimeFromDate:(NSDate*) date format:(NSString*) format;
 
 /**
  格式化秒
  @param seconds 要格式化的秒
  @return 00:00:00
  */
-+ (NSString*)formatSeconds:(long) seconds;
++ (NSString*)gkFormatSeconds:(long) seconds;
 
 //MARK: 时间比较
 
@@ -153,7 +152,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param time 要比较的时间
  *@param timeInterval 要大于的值
  */
-+ (BOOL)gk_TimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval;
++ (BOOL)gkTimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval;
 
 /**
  time1 - time2 > timeInterval
@@ -161,23 +160,23 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param time2 要比较的时间2
  *@param timeInterval 要大于的值
  */
-+ (BOOL)gk_TimeMinus:(NSString *) time1 time:(NSString*) time2 greaterThan:(NSTimeInterval) timeInterval;
++ (BOOL)gkTimeMinus:(NSString *) time1 time:(NSString*) time2 greaterThan:(NSTimeInterval) timeInterval;
 
 /**比较两个时间是否相等
  */
-+ (BOOL)gk_time:(NSString*) time1 equalToTime:(NSString*) time2;
++ (BOOL)gkTime:(NSString*) time1 equalToTime:(NSString*) time2;
 
 //MARK: other
 
 /**当前时间和随机数生成的字符串
  *@return 如 1989072407080998
  */
-+ (NSString*)gk_random;
++ (NSString*)gkRandom;
 
 /**
  计算时间距离现在有多少秒
  */
-+ (NSTimeInterval)gk_timeIntervalFromNow:(NSString*) time;
++ (NSTimeInterval)gkTimeIntervalFromNow:(NSString*) time;
 
 @end
 

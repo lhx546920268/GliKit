@@ -23,7 +23,7 @@ NSString *const GKColorAlpha = @"alpha";
 
 @implementation UIColor (GKUtils)
 
-- (NSDictionary<NSString*, NSNumber*>*)gk_colorARGB
+- (NSDictionary<NSString*, NSNumber*>*)gkColorARGB
 {
     CGFloat red, green, blue, alpha;
     
@@ -45,8 +45,8 @@ NSString *const GKColorAlpha = @"alpha";
 {
     if(!color)
         return NO;
-    NSDictionary *dic1 = [self gk_colorARGB];
-    NSDictionary *dic2 = [color gk_colorARGB];
+    NSDictionary *dic1 = [self gkColorARGB];
+    NSDictionary *dic2 = [color gkColorARGB];
     
     if(dic1 == nil || dic2 == nil)
         return NO;
@@ -64,9 +64,9 @@ NSString *const GKColorAlpha = @"alpha";
     return R1 == R2 && B1 == B2 && G1 == G2 && A1 == A2;
 }
 
-- (NSString*)gk_colorHex
+- (NSString*)gkColorHex
 {
-    NSDictionary *dic = [self gk_colorARGB];
+    NSDictionary *dic = [self gkColorARGB];
     if(dic != nil)
     {
         int R = [[dic objectForKey:GKColorRed] floatValue] * 255;
@@ -74,12 +74,12 @@ NSString *const GKColorAlpha = @"alpha";
         int B = [[dic objectForKey:GKColorBlue] floatValue] * 255;
         CGFloat A = [[dic objectForKey:GKColorAlpha] floatValue];
         
-        return [UIColor gk_colorHexFromRed:R green:G blue:B alpha:A];
+        return [UIColor gkColorHexFromRed:R green:G blue:B alpha:A];
     }
     return @"ff000000";
 }
 
-+ (NSDictionary<NSString*, NSNumber*>*)gk_colorARGBFromHex:(NSString*) hex
++ (NSDictionary<NSString*, NSNumber*>*)gkColorARGBFromHex:(NSString*) hex
 {
     if([NSString isEmpty:hex])
         return nil;
@@ -99,19 +99,19 @@ NSString *const GKColorAlpha = @"alpha";
         case 4 : {
             len = 1;
             if(length == 4){
-                int a = [self gk_decimalFromHexChar:[hex characterAtIndex:index]];
+                int a = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
                 alpha = a * 16 + a;
                 index += len;
             }
-            int value = [self gk_decimalFromHexChar:[hex characterAtIndex:index]];
+            int value = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
             red = value * 16 + value;
             index += len;
             
-            value = [self gk_decimalFromHexChar:[hex characterAtIndex:index]];
+            value = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
             green = value * 16 + value;
             index += len;
             
-            value = [self gk_decimalFromHexChar:[hex characterAtIndex:index]];
+            value = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
             blue = value * 16 + value;
         }
             break;
@@ -119,16 +119,16 @@ NSString *const GKColorAlpha = @"alpha";
         case 8 : {
             len = 2;
             if(length == 8){
-                alpha = [self gk_decimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
+                alpha = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
                 index += len;
             }
-            red = [self gk_decimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
+            red = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
             index += len;
             
-            green = [self gk_decimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
+            green = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
             index += len;
             
-            blue = [self gk_decimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
+            blue = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
         }
             break;
         default:
@@ -143,15 +143,15 @@ NSString *const GKColorAlpha = @"alpha";
             nil];
 }
 
-+ (NSString*)gk_colorHexFromRed:(int)red green:(int)green blue:(int)blue alpha:(CGFloat)alpha
++ (NSString*)gkColorHexFromRed:(int)red green:(int)green blue:(int)blue alpha:(CGFloat)alpha
 {
     int a = alpha * 255;
     return [NSString stringWithFormat:@"%02x%02x%02x%02x", a, red, green, blue];
 }
 
-+ (UIColor*)gk_colorFromHex:(NSString*) hex
++ (UIColor*)gkColorFromHex:(NSString*) hex
 {
-    NSDictionary *dic = [self gk_colorARGBFromHex:hex];
+    NSDictionary *dic = [self gkColorARGBFromHex:hex];
     CGFloat red = [[dic objectForKey:GKColorRed] floatValue];
     CGFloat green = [[dic objectForKey:GKColorGreen] floatValue];
     CGFloat blue = [[dic objectForKey:GKColorBlue] floatValue];
@@ -160,9 +160,9 @@ NSString *const GKColorAlpha = @"alpha";
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-+ (UIColor*)gk_colorFromHex:(NSString*) hex alpha:(CGFloat) alpha
++ (UIColor*)gkColorFromHex:(NSString*) hex alpha:(CGFloat) alpha
 {
-    NSDictionary *dic = [self gk_colorARGBFromHex:hex];
+    NSDictionary *dic = [self gkColorARGBFromHex:hex];
     CGFloat red = [[dic objectForKey:GKColorRed] floatValue];
     CGFloat green = [[dic objectForKey:GKColorGreen] floatValue];
     CGFloat blue = [[dic objectForKey:GKColorBlue] floatValue];
@@ -175,14 +175,14 @@ NSString *const GKColorAlpha = @"alpha";
  *@param hex 16进制
  *@return 10进制值
  */
-+ (int)gk_decimalFromHex:(NSString*) hex
++ (int)gkDecimalFromHex:(NSString*) hex
 {
     int result = 0;
     int than = 1;
     for(NSInteger i = hex.length - 1;i >= 0;i --){
         char c = [hex characterAtIndex:i];
         
-        result += [self gk_decimalFromHexChar:c] * than;
+        result += [self gkDecimalFromHexChar:c] * than;
         than *= 16;
     }
     return result;
@@ -193,7 +193,7 @@ NSString *const GKColorAlpha = @"alpha";
  *@param c 16进制
  *@return 10进制值
  */
-+ (int)gk_decimalFromHexChar:(char) c
++ (int)gkDecimalFromHexChar:(char) c
 {
     int value;
     switch (c) {
@@ -228,7 +228,7 @@ NSString *const GKColorAlpha = @"alpha";
     return value;
 }
 
-+ (UIColor*)gk_colorWithRed:(int) red green:(int) green blue:(int) blue alpha:(CGFloat) alpha
++ (UIColor*)gkColorWithRed:(int) red green:(int) green blue:(int) blue alpha:(CGFloat) alpha
 {
     red = MIN(255, abs(red));
     green = MIN(255, abs(green));

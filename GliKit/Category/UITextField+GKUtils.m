@@ -20,7 +20,7 @@ static char GKExtraStringKey;
 
 //MARK:- 内嵌视图
 
-- (void)gk_setLeftViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
+- (void)gkSetLeftViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
 {
     self.leftViewMode = UITextFieldViewModeAlways;
     UIImage *image = [UIImage imageNamed:imageName];
@@ -30,7 +30,7 @@ static char GKExtraStringKey;
     self.leftView = imageView;
 }
 
-- (void)gk_setRightViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
+- (void)gkSetRightViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
 {
     self.rightViewMode = UITextFieldViewModeAlways;
     UIImage *image = [UIImage imageNamed:imageName];
@@ -40,12 +40,12 @@ static char GKExtraStringKey;
     self.rightView = imageView;
 }
 
-- (UIView*)gk_setDefaultSeparator
+- (UIView*)gkSetDefaultSeparator
 {
     return [self gk_setSeparatorWithColor:UIColor.appSeparatorColor height:GKSeparatorHeight];
 }
 
-- (UIView*)gk_setSeparatorWithColor:(UIColor *)color height:(CGFloat)height
+- (UIView*)gkSetSeparatorWithColor:(UIColor *)color height:(CGFloat)height
 {
     UIView *separator = self.gk_separator;
     separator.backgroundColor = color;
@@ -71,22 +71,22 @@ static char GKExtraStringKey;
     return separator;
 }
 
-- (void)gk_addDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action
+- (void)gkAddDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action
 {
-    [self gk_addDefaultInputAccessoryViewWithTitle:nil target:target action:action];
+    [self gkAddDefaultInputAccessoryViewWithTitle:nil target:target action:action];
 }
 
-- (void)gk_addDefaultInputAccessoryView
+- (void)gkAddDefaultInputAccessoryView
 {
-    [self gk_addDefaultInputAccessoryViewWithTarget:nil action:nil];
+    [self gkAddDefaultInputAccessoryViewWithTarget:nil action:nil];
 }
 
-- (void)gk_addDefaultInputAccessoryViewWithTitle:(NSString *)title
+- (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString *)title
 {
-    [self gk_addDefaultInputAccessoryViewWithTitle:title target:nil action:nil];
+    [self gkAddDefaultInputAccessoryViewWithTitle:title target:nil action:nil];
 }
 
-- (void)gk_addDefaultInputAccessoryViewWithTitle:(NSString *)title target:(id)target action:(SEL)action
+- (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString *)title target:(id)target action:(SEL)action
 {
     if([NSString isEmpty:title]){
         title = @"ok".zegoLocalizedString;
@@ -120,12 +120,12 @@ static char GKExtraStringKey;
 
 //MARK: 文本限制
 
-- (BOOL)gk_shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)gkShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     //删除
-    NSString *extraString = self.gk_extraString;
+    NSString *extraString = self.gkExtraString;
     if(string.length == 0 && range.location >= self.text.length - extraString.length){
-        self.gk_selectedRange = NSMakeRange(self.text.length - extraString.length, 0);
+        self.gkSelectedRange = NSMakeRange(self.text.length - extraString.length, 0);
         return NO;
     }
     return YES;
@@ -134,10 +134,10 @@ static char GKExtraStringKey;
 - (void)setCa_maxLength:(NSUInteger) length
 {
     objc_setAssociatedObject(self, &GKMaxLengthKey, @(length), OBJC_ASSOCIATION_RETAIN);
-    [self shouldObserveEditingChange];
+    [self gkShouldObserveEditingChange];
 }
 
-- (NSUInteger)gk_maxLength
+- (NSUInteger)gkMaxLength
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKMaxLengthKey);
     return number ? [number unsignedIntegerValue] : NSUIntegerMax;
@@ -146,10 +146,10 @@ static char GKExtraStringKey;
 - (void)setCa_textType:(GKTextType) textType
 {
     objc_setAssociatedObject(self, &GKTextTypeKey, @(textType), OBJC_ASSOCIATION_RETAIN);
-    [self shouldObserveEditingChange];
+    [self gkShouldObserveEditingChange];
 }
 
-- (GKTextType)gk_textType
+- (GKTextType)gkTextType
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKTextTypeKey);
     return number ? [number unsignedIntegerValue] : GKTextTypeAll;
@@ -160,7 +160,7 @@ static char GKExtraStringKey;
     objc_setAssociatedObject(self, &GKTextDidChangeKey, gk_textDidChange, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void (^)(void))gk_textDidChange
+- (void (^)(void))gkTextDidChange
 {
     return objc_getAssociatedObject(self, &GKTextDidChangeKey);
 }
@@ -168,16 +168,16 @@ static char GKExtraStringKey;
 - (void)setCa_extraString:(NSString *) extraString
 {
     objc_setAssociatedObject(self, &GKExtraStringKey, extraString, OBJC_ASSOCIATION_COPY_NONATOMIC);
-    [self shouldObserveEditingChange];
+    [self gkShouldObserveEditingChange];
 }
 
-- (NSString*)gk_extraString
+- (NSString*)gkExtraString
 {
     return objc_getAssociatedObject(self, &GKExtraStringKey);
 }
 
 ///获取光标位置
-- (NSRange)gk_selectedRange
+- (NSRange)gkSelectedRange
 {
     UITextPosition *beginning = self.beginningOfDocument;
     
@@ -192,7 +192,7 @@ static char GKExtraStringKey;
 }
 
 ///设置光标位置
-- (void)setCa_selectedRange:(NSRange) range
+- (void)setGkSelectedRange:(NSRange) range
 {
     UITextPosition *start = [self positionFromPosition:self.beginningOfDocument
                                                 offset:range.location];
@@ -202,19 +202,19 @@ static char GKExtraStringKey;
     self.selectedTextRange = textRange;
 }
 
-- (void)setCa_forbiddenActions:(NSArray<NSString*>*) actions
+- (void)setGkForbiddenActions:(NSArray<NSString *> *) actions
 {
     objc_setAssociatedObject(self, &GKForbiddenActionsKey, actions, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (NSArray<NSString*>*)gk_forbiddenActions
+- (NSArray<NSString*>*)gkForbiddenActions
 {
     return objc_getAssociatedObject(self, &GKForbiddenActionsKey);
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    NSArray *actions = self.gk_forbiddenActions;
+    NSArray *actions = self.gkForbiddenActions;
     if(actions.count > 0){
         if([actions containsObject:NSStringFromSelector(action)]){
             return NO;
@@ -226,7 +226,7 @@ static char GKExtraStringKey;
     }
     
     if(self.text.length > 0){
-        NSRange range = self.gk_selectedRange;
+        NSRange range = self.gkSelectedRange;
         if(range.length > 0){
             if(action == @selector(cut:) || action == @selector(copy:) || action == @selector(selectAll:)){
                 return YES;
@@ -244,10 +244,10 @@ static char GKExtraStringKey;
 //MARK:- Edit change
 
 ///是否需要监听输入变化
-- (void)shouldObserveEditingChange
+- (void)gkShouldObserveEditingChange
 {
-    SEL action = @selector(textFieldTextDidChange:);
-    if(!(self.gk_textType & GKTextTypeAll) || self.gk_maxLength > 0){
+    SEL action = @selector(gkTextFieldTextDidChange:);
+    if(!(self.gkTextType & GKTextTypeAll) || self.gkMaxLength > 0){
         if(![self targetForAction:action withSender:self]){
             [self addTarget:self action:action forControlEvents:UIControlEventEditingChanged];
         }
@@ -257,17 +257,17 @@ static char GKExtraStringKey;
 }
 
 ///文字输入改变
-- (void)textFieldTextDidChange:(UITextField*) textField
+- (void)gkTextFieldTextDidChange:(UITextField*) textField
 {
     NSString *text = textField.text;
     
     //有输入法情况下忽略
     if(!textField.markedTextRange && text.length != 0){
         
-        GKTextType type = textField.gk_textType;
+        GKTextType type = textField.gkTextType;
         
-        NSUInteger maxLength = textField.gk_maxLength;
-        NSRange range = textField.gk_selectedRange;
+        NSUInteger maxLength = textField.gkMaxLength;
+        NSRange range = textField.gkSelectedRange;
         
         if([text isEqualToString:@"."]){
             textField.text = @"";
@@ -291,7 +291,7 @@ static char GKExtraStringKey;
         }
         
         //额外的字符串
-        NSString *extraString = self.gk_extraString;
+        NSString *extraString = self.gkExtraString;
         if(extraString.length > 0 && text.length >= extraString.length){
             if([text isEqualToString:extraString]){
                 textField.text = @"";
@@ -336,9 +336,9 @@ static char GKExtraStringKey;
         if(range.location + range.length > text.length){
             range.length = text.length - range.location;
         }
-        textField.gk_selectedRange = range;
+        textField.gkSelectedRange = range;
     }
-    !self.gk_textDidChange ?: self.gk_textDidChange();
+    !self.gkTextDidChange ?: self.gkTextDidChange();
 }
 
 @end

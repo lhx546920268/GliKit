@@ -284,7 +284,7 @@ static const NSInteger GKBackItemTag = 10329;
     [btn setTitle:title forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:14];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    CGSize size = [title gk_stringSizeWithFont:btn.titleLabel.font];
+    CGSize size = [title gkStringSizeWithFont:btn.titleLabel.font];
     btn.frame = CGRectMake(0, 0, size.width, 44);
     
     return [[UIBarButtonItem alloc] initWithCustomView:btn];

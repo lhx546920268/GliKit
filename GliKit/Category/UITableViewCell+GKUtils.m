@@ -13,12 +13,12 @@ static char GKTableViewHeaderFooterViewSectionKey;
 
 @implementation UITableViewCell (GKUtils)
 
-+ (CGFloat)gk_rowHeight
++ (CGFloat)gkRowHeight
 {
     return 0;
 }
 
-+ (CGFloat)gk_estimatedRowHeight
++ (CGFloat)gkEstimatedRowHeight
 {
     return 0;
 }
@@ -27,22 +27,22 @@ static char GKTableViewHeaderFooterViewSectionKey;
 
 @implementation UITableViewHeaderFooterView (GKUtils)
 
-- (void)setCa_section:(NSUInteger)gk_section
+- (void)setGkSection:(NSUInteger)gkSection
 {
-    objc_setAssociatedObject(self, &GKTableViewHeaderFooterViewSectionKey, @(gk_section), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &GKTableViewHeaderFooterViewSectionKey, @(gkSection), OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (NSUInteger)gk_section
+- (NSUInteger)gkSection
 {
     return [objc_getAssociatedObject(self, &GKTableViewHeaderFooterViewSectionKey) unsignedIntegerValue];
 }
 
-+ (CGFloat)gk_rowHeight
++ (CGFloat)gkRowHeight
 {
     return 0;
 }
 
-+ (CGFloat)gk_estimatedRowHeight
++ (CGFloat)gkEstimatedRowHeight
 {
     return 0;
 }

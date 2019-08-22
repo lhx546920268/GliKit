@@ -7,59 +7,15 @@
 //
 
 #import "UIImage+GKUtils.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation UIImage (GKUtils)
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
-+ (UIImage*)gk_imageFromAsset:(ALAsset *)asset
++ (UIImage*)gkImageFromView:(UIView *)view
 {
-    return [UIImage gk_imageFromAsset:asset options:GKAssetImageOptionsResolutionImage];
+    return [UIImage gkImageFromLayer:view.layer];
 }
 
-+ (UIImage*)gk_imageFromAsset:(ALAsset*) asset options:(GKAssetImageOptions) options
-{
-    if(asset == nil)
-        return nil;
-    
-    ALAssetRepresentation *representation = [asset defaultRepresentation];
-    
-    UIImage *image = nil;
-    
-    switch (options){
-        case GKAssetImageOptionsFullScreenImage : {
-            //满屏的图片朝向已调整为 UIImageOrientationUp
-            image = [UIImage imageWithCGImage:[representation fullScreenImage]];
-        }
-            break;
-        case GKAssetImageOptionsResolutionImage : {
-            //图片朝向可能不正确，需要调整
-            //获取正确的图片方向
-            UIImageOrientation orientation = UIImageOrientationUp;
-            NSNumber *number = [asset valueForProperty:ALAssetPropertyOrientation];
-            
-            if(number != nil){
-                orientation = [number intValue];
-            }
-            
-            image = [UIImage imageWithCGImage:[representation fullResolutionImage] scale:representation.scale orientation:orientation];
-        }
-            break;
-    }
-    
-    return image;
-}
-
-#pragma clang diagnostic pop
-
-+ (UIImage*)gk_imageFromView:(UIView *)view
-{
-    return [UIImage gk_imageFromLayer:view.layer];
-}
-
-+ (UIImage*)gk_imageFromLayer:(GKLayer*) layer
++ (UIImage*)gkImageFromLayer:(CALayer*) layer
 {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(floor(layer.bounds.size.width), floor(layer.bounds.size.height)), layer.opaque, [UIScreen mainScreen].scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -71,7 +27,7 @@
     return retImage;
 }
 
-+ (UIImage*)gk_imageWithColor:(UIColor*) color size:(CGSize) size
++ (UIImage*)gkImageWithColor:(UIColor*) color size:(CGSize) size
 {
     UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -87,12 +43,12 @@
 
 //MARK: resize
 
-- (CGSize)gk_fitWithSize:(CGSize) size type:(GKImageFitType) type
+- (CGSize)gkFitWithSize:(CGSize) size type:(GKImageFitType) type
 {
-    return [UIImage gk_fitImageSize:self.size size:size type:type];
+    return [UIImage gkFitImageSize:self.size size:size type:type];
 }
 
-+ (CGSize)gk_fitImageSize:(CGSize) imageSize size:(CGSize) size type:(GKImageFitType) type
++ (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size type:(GKImageFitType) type
 {
     CGSize retSize = CGSizeZero;
     CGFloat width = imageSize.width;
@@ -149,13 +105,13 @@
     return retSize;
 }
 
-- (UIImage*)gk_aspectFitWithSize:(CGSize)size
+- (UIImage*)gkAspectFitWithSize:(CGSize)size
 {
     CGImageRef cgImage = self.CGImage;
     size_t width = CGImageGetWidth(cgImage) / 2.0;
     size_t height = CGImageGetHeight(cgImage) / 2.0;
     
-    size = [UIImage gk_fitImageSize:CGSizeMake(width, height) size:size type:GKImageFitTypeSize];
+    size = [UIImage gkFitImageSize:CGSizeMake(width, height) size:size type:GKImageFitTypeSize];
     
     if(size.height >= height || size.width >= width)
         return self;
@@ -171,7 +127,7 @@
     return thumbnail;
 }
 
-- (UIImage*)gk_aspectFillWithSize:(CGSize)size
+- (UIImage*)gkAspectFillWithSize:(CGSize)size
 {
     UIImage *ret = nil;
     
@@ -185,13 +141,13 @@
         CGFloat scale = MIN(multipleWidthNum, multipleHeightNum);
         int width = size.width * scale;
         int height = size.height * scale;
-        ret = [self gk_subImageWithRect:CGRectMake((self.size.width - width) / 2.0, (self.size.height - height) / 2.0, width, height)];
+        ret = [self gkSubImageWithRect:CGRectMake((self.size.width - width) / 2.0, (self.size.height - height) / 2.0, width, height)];
     }
     
-    return [ret gk_aspectFitWithSize:size];
+    return [ret gkAspectFitWithSize:size];
 }
 
-- (UIImage*)gk_subImageWithRect:(CGRect)rect
+- (UIImage*)gkSubImageWithRect:(CGRect)rect
 {
     CGPoint origin = CGPointMake(-rect.origin.x, -rect.origin.y);
     
@@ -204,64 +160,6 @@
     UIGraphicsEndImageContext();
     
     return img;
-}
-
-+ (UIImage*)grayscaleImageForImage:(UIImage*)image
-{
-    // Adapted from this thread: http://stackoverflow.com/questions/1298867/convert-image-to-grayscale
-    const int RED =1;
-    const int GREEN =2;
-    const int BLUE =3;
-    
-    // Create image rectangle with current image width/height
-    CGRect imageRect = CGRectMake(0,0, image.size.width* image.scale, image.size.height* image.scale);
-    
-    int width = imageRect.size.width;
-    int height = imageRect.size.height;
-    
-    // the pixels will be painted to this array
-    uint32_t *pixels = (uint32_t*) malloc(width * height *sizeof(uint32_t));
-    
-    // clear the pixels so any transparency is preserved
-    memset(pixels,0, width * height *sizeof(uint32_t));
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    // create a context with RGBA pixels
-    CGContextRef context = CGBitmapContextCreate(pixels, width, height,8, width *sizeof(uint32_t), colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedLast);
-    
-    // paint the bitmap to our context which will fill in the pixels array
-    CGContextDrawImage(context,CGRectMake(0,0, width, height), [image CGImage]);
-    
-    for(int  y = 0; y < height; y++) {
-        for(int x = 0; x < width; x++) {
-            uint8_t *rgbaPixel = (uint8_t*) &pixels[y * width + x];
-            
-            // convert to grayscale using recommended method: http://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
-            uint32_t gray = 0.3 * rgbaPixel[RED] +0.59 * rgbaPixel[GREEN] +0.11 * rgbaPixel[BLUE];
-            
-            // set the pixels to gray
-            rgbaPixel[RED] = gray;
-            rgbaPixel[GREEN] = gray;
-            rgbaPixel[BLUE] = gray;
-        }
-    }
-    
-    // create a new CGImageRef from our context with the modified pixels
-    CGImageRef imageRef = CGBitmapContextCreateImage(context);
-    
-    // we're done with the context, color space, and pixels
-    CGContextRelease(context);
-    CGColorSpaceRelease(colorSpace);
-    free(pixels);
-    
-    // make a new UIImage to return
-    UIImage *resultUIImage = [UIImage imageWithCGImage:imageRef scale:image.scale orientation:UIImageOrientationUp];
-    
-    // we're done with image now too
-    CGImageRelease(imageRef);
-    
-    return resultUIImage;
 }
 
 @end

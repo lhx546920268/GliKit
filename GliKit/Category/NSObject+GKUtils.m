@@ -8,24 +8,21 @@
 
 #import "NSObject+GKUtils.h"
 #import <objc/runtime.h>
-#import "GKTabBarController.h"
 #import "UIViewController+GKUtils.h"
 #import "UIViewController+GKTransition.h"
 #import "GKPartialPresentTransitionDelegate.h"
 
 @implementation NSObject (GKUtils)
 
-+ (UIViewController*)gk_currentViewController
++ (UIViewController*)gkCurrentViewController
 {
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    
     //刚开始启动 不一定是tabBar
-    if(![delegate.window.rootViewController isKindOfClass:[GKTabBarController class]]){
-        return delegate.window.rootViewController;
+    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
+        return UIApplication.sharedApplication.delegate.window.rootViewController;
     }
     
-    GKTabBarController *tab = (GKTabBarController*)delegate.window.rootViewController;
-    UIViewController *parentViewControlelr = tab.gk_topestPresentedViewController;
+    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
     if(parentViewControlelr == tab){
         parentViewControlelr = tab.selectedViewController;
     }
@@ -42,22 +39,20 @@
     }
 }
 
-- (UIViewController*)gk_currentViewController
+- (UIViewController*)gkCurrentViewController
 {
-    return NSObject.gk_currentViewController;
+    return NSObject.gkCurrentViewController;
 }
 
-+ (UINavigationController*)gk_currentNavigationController
++ (UINavigationController*)gkCurrentNavigationController
 {
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    
     //刚开始启动 不一定是tabBar
-    if(![delegate.window.rootViewController isKindOfClass:[GKTabBarController class]]){
-        return delegate.window.rootViewController.navigationController;
+    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
+        return UIApplication.sharedApplication.delegate.window.rootViewController.navigationController;
     }
     
-    GKTabBarController *tab = (GKTabBarController*)delegate.window.rootViewController;
-    UIViewController *parentViewControlelr = tab.gk_topestPresentedViewController;
+    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
     
     if([parentViewControlelr.gk_transitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
         parentViewControlelr = parentViewControlelr.presentingViewController;
@@ -75,12 +70,12 @@
     }
 }
 
-- (UINavigationController*)gk_currentNavigationController
+- (UINavigationController*)gkCurrentNavigationController
 {
-    return NSObject.gk_currentNavigationController;
+    return NSObject.gkCurrentNavigationController;
 }
 
-- (NSArray<NSString*>*)gk_propertyNames
+- (NSArray<NSString*>*)gkPropertyNames
 {
     unsigned int count;
     objc_property_t *properties = class_copyPropertyList([self class], &count);
@@ -96,18 +91,18 @@
     return propertyNames;
 }
 
-- (NSString*)gk_nameOfClass
+- (NSString*)gkNameOfClass
 {
     return NSStringFromClass(self.class);
 }
 
-+ (NSString*)gk_nameOfClass
++ (NSString*)gkNameOfClass
 {
     return NSStringFromClass(self.class);
 }
 
 
-+ (void)gk_exchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix
++ (void)gkExchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix
 {
     Method method1 = class_getInstanceMethod(self.class, selector1);
     Method method2 = class_getInstanceMethod(self.class, NSSelectorFromString([NSString stringWithFormat:@"%@%@", prefix, NSStringFromSelector(selector1)]));
@@ -115,7 +110,7 @@
     method_exchangeImplementations(method1, method2);
 }
 
-+ (void)gk_exchangeImplementations:(SEL)selector1 selector2:(SEL)selector2
++ (void)gkExchangeImplementations:(SEL)selector1 selector2:(SEL)selector2
 {
     Method method1 = class_getInstanceMethod(self.class, selector1);
     Method method2 = class_getInstanceMethod(self.class, selector2);
@@ -125,12 +120,12 @@
 
 //MARK: coder
 
-- (void)gk_encodeWithCoder:(NSCoder *)coder
+- (void)gkEncodeWithCoder:(NSCoder *)coder
 {
-    [self gk_encodeWithCoder:coder clazz:[self class]];
+    [self gkEncodeWithCoder:coder clazz:[self class]];
 }
 
-- (void)gk_encodeWithCoder:(NSCoder*) coder clazz:(Class) clazz
+- (void)gkEncodeWithCoder:(NSCoder*) coder clazz:(Class) clazz
 {
     if(clazz == [NSObject class]){
         return;
@@ -158,15 +153,15 @@
     }
     
     //递归获取父类的属性
-    [self gk_encodeWithCoder:coder clazz:[clazz superclass]];
+    [self gkEncodeWithCoder:coder clazz:[clazz superclass]];
 }
 
-- (void)gk_initWithCoder:(NSCoder *)decoder
+- (void)gkInitWithCoder:(NSCoder *)decoder
 {
-    [self gk_initWithCoder:decoder clazz:[self class]];
+    [self gkInitWithCoder:decoder clazz:[self class]];
 }
 
-- (void)gk_initWithCoder:(NSCoder*) decoder clazz:(Class) clazz
+- (void)gkInitWithCoder:(NSCoder*) decoder clazz:(Class) clazz
 {
     if(clazz == [NSObject class]){
         return;
@@ -212,12 +207,12 @@
     }
     
     //递归获取父类的属性
-    [self gk_initWithCoder:decoder clazz:[clazz superclass]];
+    [self gkInitWithCoder:decoder clazz:[clazz superclass]];
 }
 
 //MARK: copy
 
-- (void)gk_copyObject:(NSObject*) object
+- (void)gkCopyObject:(NSObject*) object
 {
     [self gk_copyObject:object clazz:[object class]];
 }
@@ -227,7 +222,7 @@
     if(clazz == [NSObject class]){
         return;
     }
-    NSAssert([object isKindOfClass:[self class]], @"%@必须是%@或者其子类", object.gk_nameOfClass, self.gk_nameOfClass);
+    NSAssert([object isKindOfClass:[self class]], @"%@必须是%@或者其子类", object.gkNameOfClass, self.gkNameOfClass);
     
     //获取当前类的所有属性，该方法无法获取父类或者子类的属性
     unsigned int count;
@@ -254,22 +249,22 @@
 
 //MARK: push
 
-+ (void)gk_pushViewController:(UIViewController*) viewController
++ (void)gkPushViewController:(UIViewController*) viewController
 {
-    [self gk_pushViewController:viewController shouldReplaceLastSame:NO];
+    [self gkPushViewController:viewController shouldReplaceLastSame:NO];
 }
 
-+ (void)gk_pushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController
++ (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController
 {
-    [self gk_pushViewController:viewController shouldReplaceLastSame:YES];
+    [self gkPushViewController:viewController shouldReplaceLastSame:YES];
 }
 
-+ (void)gk_pushViewController:(UIViewController*) viewController shouldReplaceLastSame:(BOOL) replace
++ (void)gkPushViewController:(UIViewController*) viewController shouldReplaceLastSame:(BOOL) replace
 {
     if(!viewController)
         return;
     viewController.hidesBottomBarWhenPushed = YES;
-    UIViewController *parentViewControlelr = self.gk_currentViewController;
+    UIViewController *parentViewControlelr = self.gkCurrentViewController;
     
     UINavigationController *nav = parentViewControlelr.navigationController;
     if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
@@ -293,12 +288,12 @@
     }
 }
 
-+ (void)gk_pushViewControllerRemoveSameIfNeeded:(UIViewController*) viewController;
++ (void)gkPushViewControllerRemoveSameIfNeeded:(UIViewController*) viewController;
 {
     if(!viewController)
         return;
     viewController.hidesBottomBarWhenPushed = YES;
-    UIViewController *parentViewControlelr = self.gk_currentViewController;
+    UIViewController *parentViewControlelr = self.gkCurrentViewController;
     
     UINavigationController *nav = parentViewControlelr.navigationController;
     if([parentViewControlelr isKindOfClass:[UINavigationController class]]){

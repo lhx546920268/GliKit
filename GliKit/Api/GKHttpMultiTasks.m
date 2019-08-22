@@ -58,7 +58,7 @@ static NSMutableSet* GKSharedContainers()
 
 - (void)addTask:(GKHttpTask *)task
 {
-    [self addTask:task forKey:[task gk_nameOfClass]];
+    [self addTask:task forKey:[task gkNameOfClass]];
 }
 
 - (void)addTask:(GKHttpTask*) task forKey:(NSString *)key

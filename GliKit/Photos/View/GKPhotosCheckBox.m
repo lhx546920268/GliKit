@@ -7,9 +7,10 @@
 //
 
 #import "GKPhotosCheckBox.h"
-#import "GKBasic.h"
-#import "UIColor+Utils.h"
-#import "NSString+Utils.h"
+#import "UIColor+GKUtils.h"
+#import "NSString+GKUtils.h"
+#import "UIScreen+GKUtils.h"
+#import "UIColor+GKTheme.h"
 
 @interface GKPhotosCheckBox()
 
@@ -49,7 +50,7 @@
 {
     if(![_checkedText isEqualToString:checkedText]){
         _checkedText = checkedText;
-        self.checkedTextSize = [_checkedText gk_stringSizeWithFont:self.font contraintWith:UIScreen.screenWidth];
+        self.checkedTextSize = [_checkedText gkStringSizeWithFont:self.font contraintWith:UIScreen.gkScreenWidth];
         [self setNeedsDisplay];
     }
 }
@@ -77,11 +78,11 @@
     CGPoint center = CGPointMake(_contentInsets.left + radius, _contentInsets.top + radius);
     
     if(self.checked){
-        CGContextSetFillColorWithColor(context, GKAppMainColor.CGColor);
+        CGContextSetFillColorWithColor(context, UIColor.gkThemeColor.CGColor);
         CGContextAddArc(context, center.x, center.y, radius, 0, M_PI * 2, NO);
         CGContextFillPath(context);
         
-        [self.checkedText drawAtPoint:CGPointMake(center.x - self.checkedTextSize.width / 2.0, center.y - self.checkedTextSize.height / 2.0) withAttributes:@{NSFontAttributeName : self.font, NSForegroundColorAttributeName : GKAppMainTintColor}];
+        [self.checkedText drawAtPoint:CGPointMake(center.x - self.checkedTextSize.width / 2.0, center.y - self.checkedTextSize.height / 2.0) withAttributes:@{NSFontAttributeName : self.font, NSForegroundColorAttributeName : UIColor.gkThemeTintColor}];
     }else{
         CGContextAddArc(context, center.x, center.y, radius - lineWidth / 2.0, 0, M_PI * 2, NO);
         CGContextSetStrokeColorWithColor(context, UIColor.whiteColor.CGColor);
@@ -95,7 +96,7 @@
 {
     self.checked = checked;
     if(checked && animated){
-        GKSpringAnimation *animation = [GKSpringAnimation animationWithKeyPath:@"transform.scale"];
+        CASpringAnimation *animation = [CASpringAnimation animationWithKeyPath:@"transform.scale"];
         animation.fromValue = @0.7;
         animation.toValue = @1.0;
         animation.duration = 0.5;

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSString+GKUtils.h"
 
 ///
 @interface UITextField (GKUtils)
@@ -18,19 +19,19 @@
  *@param imageName 图标名称
  *@param padding 图标与文字的间距
  */
-- (void)gk_setLeftViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
+- (void)gkSetLeftViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
 
 /**
  设置输入框右边图标
  *@param imageName 图标名称
  *@param padding 图标与文字的间距
  */
-- (void)gk_setRightViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
+- (void)gkSetRightViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
 
 /**
  设置默认分割线
  */
-- (UIView*)gk_setDefaultSeparator;
+- (UIView*)gkSetDefaultSeparator;
 
 /**
  底部分割线
@@ -38,7 +39,7 @@
  *@param height 分割线高度
  *@return 分割线 使用autoLayout
  */
-- (UIView*)gk_setSeparatorWithColor:(UIColor*) color height:(CGFloat) height;
+- (UIView*)gkSetSeparatorWithColor:(UIColor*) color height:(CGFloat) height;
 
 
 /**
@@ -48,47 +49,47 @@
  @param target 点击确定方法回调，nil则使用默认的 关闭键盘
  @param action 点击确定方法回调，nil则使用默认的 关闭键盘
  */
-- (void)gk_addDefaultInputAccessoryViewWithTitle:(NSString*) title target:(id) target action:(SEL) action;
-- (void)gk_addDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action;
-- (void)gk_addDefaultInputAccessoryViewWithTitle:(NSString *)title;
-- (void)gk_addDefaultInputAccessoryView;
+- (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString*) title target:(id) target action:(SEL) action;
+- (void)gkAddDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action;
+- (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString *)title;
+- (void)gkAddDefaultInputAccessoryView;
 
 //MARK: 文本限制
 
 /** 用于 gk_extraString
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
  */
-- (BOOL)gk_shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+- (BOOL)gkShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
 /**
  输入最大长度 default is 'NSUIntegerMax' 没有限制
  */
-@property(nonatomic, assign) NSUInteger gk_maxLength;
+@property(nonatomic, assign) NSUInteger gkMaxLength;
 
 /**
  输入类型 default is 'GKTextTypeAll'
  */
-@property(nonatomic, assign) GKTextType gk_textType;
+@property(nonatomic, assign) GKTextType gkTextType;
 
 /**
  使用以上2个属性，不能自己监听文字变化 UIControlEventEditingChanged 否则会导致监听不对的问题，使用该属性来监听
  */
-@property(nonatomic, copy) void(^gk_textDidChange)(void);
+@property(nonatomic, copy) void(^gkTextDidChange)(void);
 
 /**
  额外字符串 放在文字后面 需要配合 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string 一起使用
  */
-@property(nonatomic, copy) NSString *gk_extraString;
+@property(nonatomic, copy) NSString *gkExtraString;
 
 /**
  禁止的方法列表，如复制，粘贴，通过 NSStringFromSelector 把需要禁止的方法传进来，如禁止粘贴，可传 NSStringFromSelector(paste:) default is 'nil'
  */
-@property(nonatomic,strong) NSArray<NSString*> *gk_forbiddenActions;
+@property(nonatomic,strong) NSArray<NSString*> *gkForbiddenActions;
 
 /**
  光标位置
  */
-@property(nonatomic,assign) NSRange gk_selectedRange;
+@property(nonatomic,assign) NSRange gkSelectedRange;
 
 @end
 

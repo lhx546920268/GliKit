@@ -10,7 +10,7 @@
 
 @implementation UICollectionReusableView (GKUtils)
 
-+ (CGSize)gk_itemSize
++ (CGSize)gkItemSize
 {
     return CGSizeZero;
 }

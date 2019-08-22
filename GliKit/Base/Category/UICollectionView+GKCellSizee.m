@@ -202,7 +202,7 @@
     if([cell isKindOfClass:[UICollectionViewCell class]]){
         contentView = [(UICollectionViewCell*)cell contentView];
     }
-    CGSize size = [contentView gk_sizeThatFits:constraintSize type:type];
+    CGSize size = [contentView gkSizeThatFits:constraintSize type:type];
     
     [self gkSetCellSize:[NSValue valueWithCGSize:size] forIndexPath:indexPath];
     

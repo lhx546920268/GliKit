@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 /**
  显示在制定viewControlelr
  *@param inPresentWay 是否通过present方式显示
- *@param layoutHandler 布局回调 ， inPresentWay = NO时有用 如果为空 则 为 gk_insetsInSuperview:UIEdgeInsetsZero
+ *@param layoutHandler 布局回调 ， inPresentWay = NO时有用
  */
 - (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void(^)(UIView *view, UIView *superview)) layoutHandler;
 

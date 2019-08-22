@@ -12,10 +12,10 @@
 @interface UITableViewCell (GKUtils)
 
 ///获取行高 子类重写
-@property(class, nonatomic, readonly) CGFloat gk_rowHeight;
+@property(class, nonatomic, readonly) CGFloat gkRowHeight;
 
 ///获取估算的行高 子类重写
-@property(class, nonatomic, readonly) CGFloat gk_estimatedRowHeight;
+@property(class, nonatomic, readonly) CGFloat gkEstimatedRowHeight;
 
 @end
 
@@ -23,13 +23,13 @@
 @interface UITableViewHeaderFooterView (GKUtils)
 
 ///对应的section
-@property(nonatomic, assign) NSUInteger gk_section;
+@property(nonatomic, assign) NSUInteger gkSection;
 
 ///获取行高 子类重写
-@property(class, nonatomic, readonly) CGFloat gk_rowHeight;
+@property(class, nonatomic, readonly) CGFloat gkRowHeight;
 
 ///获取估算的行高 子类重写
-@property(class, nonatomic, readonly) CGFloat gk_estimatedRowHeight;
+@property(class, nonatomic, readonly) CGFloat gkEstimatedRowHeight;
 
 @end
 

@@ -7,7 +7,6 @@
 //
 
 #import "GKCollectionViewFlowFillLayout.h"
-#import "GKBasic.h"
 
 ///更新invalid item 用来提升性能 吸顶情况只有 header需要更新
 @interface GKCollectionViewLayoutInvalidationContext : UICollectionViewLayoutInvalidationContext

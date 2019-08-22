@@ -7,6 +7,7 @@
 //
 
 #import "NSDate+GKUtils.h"
+#import "NSString+GKUtils.h"
 
 @implementation NSDate (Utils)
 
@@ -26,49 +27,49 @@
 
 //MARK: 单个时间
 
-- (int)gk_second
+- (int)gkSecond
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitSecond fromDate:self];
     return (int)components.second;
 }
 
-- (int)gk_minute
+- (int)gkMinute
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitMinute fromDate:self];
     return (int)components.minute;
 }
 
-- (int)gk_hour
+- (int)gkHour
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitHour fromDate:self];
     return (int)components.hour;
 }
 
-- (int)gk_day
+- (int)gkDay
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitDay fromDate:self];
     return (int)components.day;
 }
 
-- (int)gk_month
+- (int)gkMonth
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitMonth fromDate:self];
     return (int)components.month;
 }
 
-- (int)gk_year
+- (int)gkYear
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitYear fromDate:self];
     return (int)components.year;
 }
 
-- (NSInteger)gk_weekday
+- (NSInteger)gkWeekday
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:NSCalendarUnitWeekday fromDate:self];
@@ -78,12 +79,12 @@
 
 //MARK: 时间获取
 
-+ (NSString*)gk_currentTime
++ (NSString*)gkCurrentTime
 {
-    return [NSDate gk_currentTimeWithFormat:GKDateFormatYMdHms];
+    return [NSDate gkCurrentTimeWithFormat:GKDateFormatYMdHms];
 }
 
-+ (NSString*)gk_currentTimeWithFormat:(NSString*) format
++ (NSString*)gkCurrentTimeWithFormat:(NSString*) format
 {
     NSDateFormatter *dateFormatter = [NSDate sharedDateFormatter];
     [dateFormatter setDateFormat:format];
@@ -93,17 +94,17 @@
     return time;
 }
 
-+ (NSString*)gk_timeWithTimeInterval:(NSTimeInterval)timeInterval
++ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval
 {
-    return [NSDate gk_timeWithTimeInterval:timeInterval format:GKDateFormatYMdHms];
+    return [NSDate gkTimeWithTimeInterval:timeInterval format:GKDateFormatYMdHms];
 }
 
-+ (NSString*)gk_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format
++ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format
 {
-    return [NSDate gk_timeWithTimeInterval:timeInterval format:format fromTime:nil];
+    return [NSDate gkTimeWithTimeInterval:timeInterval format:format fromTime:nil];
 }
 
-+ (NSString*)gk_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime
++ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime
 {
     NSDateFormatter *dateFormatter = [NSDate sharedDateFormatter];
     [dateFormatter setDateFormat:format];
@@ -117,12 +118,12 @@
 
 //MARK: 时间转换
 
-+ (NSString*)gk_formatTime:(NSString*) time format:(NSString*) format
++ (NSString*)gkFormatTime:(NSString*) time format:(NSString*) format
 {
-    return [NSDate gk_formatTime:time fromFormat:GKDateFormatYMdHms toFormat:format];
+    return [NSDate gkFormatTime:time fromFormat:GKDateFormatYMdHms toFormat:format];
 }
 
-+ (NSString*)gk_formatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat
++ (NSString*)gkFormatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:fromFormat];
@@ -135,7 +136,7 @@
     return timeStr;
 }
 
-+ (NSString*)gk_formatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format
++ (NSString*)gkFormatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
@@ -148,7 +149,7 @@
     return [formatter stringFromDate:date];
 }
 
-+ (NSTimeInterval)gk_timeIntervalFromTime:(NSString*) time format:(NSString*) format
++ (NSTimeInterval)gkTimeIntervalFromTime:(NSString*) time format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
@@ -157,7 +158,7 @@
     return [date timeIntervalSince1970];
 }
 
-+ (NSDate*)gk_dateFromTime:(NSString*) time format:(NSString*) format
++ (NSDate*)gkDateFromTime:(NSString*) time format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
@@ -165,7 +166,7 @@
     return date;
 }
 
-+ (NSString*)gk_timeFromDate:(NSDate*) date format:(NSString*) format
++ (NSString*)gkTimeFromDate:(NSDate*) date format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
@@ -173,7 +174,7 @@
     return [formatter stringFromDate:date];
 }
 
-+ (NSString*)formatSeconds:(long)seconds
++ (NSString*)gkFormatSeconds:(long)seconds
 {
     long result = seconds / 60;
     int second = (int)(seconds % 60);
@@ -185,12 +186,12 @@
 
 //MARK:- 时间比较
 
-+ (BOOL)gk_TimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval
++ (BOOL)gkTimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval
 {
-    return [NSDate gk_TimeMinus:time time:[NSDate gk_currentTime] greaterThan:timeInterval];
+    return [NSDate gkTimeMinus:time time:[NSDate gkCurrentTime] greaterThan:timeInterval];
 }
 
-+ (BOOL)gk_TimeMinus:(NSString *)time1 time:(NSString*) time2 greaterThan:(NSTimeInterval)timeInterval
++ (BOOL)gkTimeMinus:(NSString *)time1 time:(NSString*) time2 greaterThan:(NSTimeInterval)timeInterval
 {
     if([NSString isEmpty:time1]){
         return YES;
@@ -210,7 +211,7 @@
     return [date1 timeIntervalSinceDate:date2] > timeInterval;
 }
 
-+ (BOOL)gk_time:(NSString*) time1 equalToTime:(NSString*) time2
++ (BOOL)gkTime:(NSString*) time1 equalToTime:(NSString*) time2
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:GKDateFormatYMdHms];
@@ -223,7 +224,7 @@
 
 //MARK:- other
 
-+ (NSString*)gk_random
++ (NSString*)gkRandom
 {
     int iRandom = arc4random() % 1000000;
     if (iRandom < 0) {
@@ -236,7 +237,7 @@
     return tResult;
 }
 
-+ (NSTimeInterval)gk_timeIntervalFromNow:(NSString*) time
++ (NSTimeInterval)gkTimeIntervalFromNow:(NSString*) time
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:GKDateFormatYMdHms];

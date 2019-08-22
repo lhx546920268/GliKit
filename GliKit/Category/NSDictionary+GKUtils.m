@@ -10,7 +10,7 @@
 
 @implementation NSDictionary (GKUtils)
 
-- (NSString*)gk_stringForKey:(id<NSCopying>) key
+- (NSString*)gkStringForKey:(id<NSCopying>) key
 {
     id value = [self objectForKey:key];
     
@@ -25,7 +25,7 @@
     }
 }
 
-- (id)gk_numberForKey:(id<NSCopying>) key
+- (id)gkNumberForKey:(id<NSCopying>) key
 {
     id value = [self objectForKey:key];
     
@@ -37,32 +37,32 @@
     return nil;
 }
 
-- (int)gk_intForKey:(id<NSCopying>) key
+- (int)gkIntForKey:(id<NSCopying>) key
 {
-    return [[self gk_numberForKey:key] intValue];
+    return [[self gkNumberForKey:key] intValue];
 }
 
-- (NSInteger)gk_integerForKey:(id<NSCopying>) key
+- (NSInteger)gkIntegerForKey:(id<NSCopying>) key
 {
-    return [[self gk_numberForKey:key] integerValue];
+    return [[self gkNumberForKey:key] integerValue];
 }
 
-- (float)gk_floatForKey:(id<NSCopying>) key
+- (float)gkFloatForKey:(id<NSCopying>) key
 {
-    return [[self gk_numberForKey:key] floatValue];
+    return [[self gkNumberForKey:key] floatValue];
 }
 
-- (double)gk_doubleForKey:(id<NSCopying>) key
+- (double)gkDoubleForKey:(id<NSCopying>) key
 {
-    return [[self gk_numberForKey:key] doubleValue];
+    return [[self gkNumberForKey:key] doubleValue];
 }
 
-- (BOOL)gk_boolForKey:(id<NSCopying>) key
+- (BOOL)gkBoolForKey:(id<NSCopying>) key
 {
-    return [[self gk_numberForKey:key] boolValue];
+    return [[self gkNumberForKey:key] boolValue];
 }
 
-- (NSDictionary*)gk_dictionaryForKey:(id<NSCopying>) key
+- (NSDictionary*)gkDictionaryForKey:(id<NSCopying>) key
 {
     NSDictionary *dic = [self objectForKey:key];
     if([dic isKindOfClass:[NSDictionary class]]){
@@ -71,7 +71,7 @@
     return nil;
 }
 
-- (NSArray*)gk_arrayForKey:(id<NSCopying>) key
+- (NSArray*)gkArrayForKey:(id<NSCopying>) key
 {
     NSArray *array = [self objectForKey:key];
     if([array isKindOfClass:[NSArray class]]){

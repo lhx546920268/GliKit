@@ -80,7 +80,7 @@
         }];
         
         _textLabel = [UILabel new];
-        _textLabel.textColor = [UIColor gk_colorFromHex:@"aeaeae"];
+        _textLabel.textColor = [UIColor gkColorFromHex:@"aeaeae"];
         _textLabel.font = [UIFont systemFontOfSize:14];
         _textLabel.textAlignment = NSTextAlignmentCenter;
         _textLabel.text = @"load_error_tip";

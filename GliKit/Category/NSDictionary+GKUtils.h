@@ -13,48 +13,48 @@
 /**
  去空获取对象 并且如果对象是NSNumber将会转化成字符串
  */
-- (NSString*)gk_stringForKey:(id<NSCopying>) key;
+- (NSString*)gkStringForKey:(id<NSCopying>) key;
 
 /**
  获取可转成数字的对象 NSNumber 、NSString
  */
-- (id)gk_numberForKey:(id<NSCopying>) key;
+- (id)gkNumberForKey:(id<NSCopying>) key;
 
 /**
  获取整数
  */
-- (int)gk_intForKey:(id<NSCopying>) key;
+- (int)gkIntForKey:(id<NSCopying>) key;
 
 /**
  获取整数
  */
-- (NSInteger)gk_integerForKey:(id<NSCopying>) key;
+- (NSInteger)gkIntegerForKey:(id<NSCopying>) key;
 
 /**
  获取小数点
  */
-- (float)gk_floatForKey:(id<NSCopying>) key;
+- (float)gkFloatForKey:(id<NSCopying>) key;
 
 /**
  获取小数点
  */
-- (double)gk_doubleForKey:(id<NSCopying>) key;
+- (double)gkDoubleForKey:(id<NSCopying>) key;
 
 /**
  获取布尔
  */
-- (BOOL)gk_boolForKey:(id<NSCopying>) key;
+- (BOOL)gkBoolForKey:(id<NSCopying>) key;
 
 
 /**
  获取字典
  */
-- (NSDictionary*)gk_dictionaryForKey:(id<NSCopying>) key;
+- (NSDictionary*)gkDictionaryForKey:(id<NSCopying>) key;
 
 /**
  获取数组
  */
-- (NSArray*)gk_arrayForKey:(id<NSCopying>) key;
+- (NSArray*)gkArrayForKey:(id<NSCopying>) key;
 
 @end
 

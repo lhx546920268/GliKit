@@ -7,10 +7,11 @@
 //
 
 #import "UIViewController+GKSafeAreaCompatible.h"
+#import <Masonry.h>
 
 @implementation UIViewController (GKSafeAreaCompatible)
 
-- (MASViewAttribute*)gk_safeAreaLayoutGuideTop
+- (MASViewAttribute*)gkSafeAreaLayoutGuideTop
 {
     if(@available(iOS 11.0, *)){
         return self.view.mas_safeAreaLayoutGuideTop;
@@ -19,7 +20,7 @@
     }
 }
 
-- (MASViewAttribute*)gk_safeAreaLayoutGuideBottom
+- (MASViewAttribute*)gkSafeAreaLayoutGuideBottom
 {
     if(@available(iOS 11.0, *)){
         return self.view.mas_safeAreaLayoutGuideBottom;
@@ -28,7 +29,7 @@
     }
 }
 
-- (MASViewAttribute*)gk_safeAreaLayoutGuideLeft
+- (MASViewAttribute*)gkSafeAreaLayoutGuideLeft
 {
     if(@available(iOS 11.0, *)){
         return self.view.mas_safeAreaLayoutGuideLeft;
@@ -37,7 +38,7 @@
     }
 }
 
-- (MASViewAttribute*)gk_safeAreaLayoutGuideRight
+- (MASViewAttribute*)gkSafeAreaLayoutGuideRight
 {
     if(@available(iOS 11.0, *)){
         return self.view.mas_safeAreaLayoutGuideRight;
