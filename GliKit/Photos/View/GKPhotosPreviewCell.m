@@ -7,10 +7,10 @@
 //
 
 #import "GKPhotosPreviewCell.h"
-#import "UIView+Utils.h"
-#import "UIImage+Utils.h"
-#import "UIView+GKAutoLayout.h"
+#import "UIView+GKUtils.h"
+#import "UIImage+GKUtils.h"
 #import <Photos/PHAsset.h>
+#import "GKBaseDefines.h"
 
 @interface GKPhotosPreviewCell()<UIScrollViewDelegate>
 
@@ -27,7 +27,7 @@
 
 @implementation GKPhotosPreviewCell
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self)
@@ -67,7 +67,9 @@
         _indicatorView.hidesWhenStopped = YES;
         [self addSubview:_indicatorView];
         
-        [_indicatorView gk_centerInSuperview];
+        [_indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(0);
+        }];
     }
     
     return _indicatorView;
@@ -122,12 +124,12 @@
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     //缩放完后把视图居中
-    CGFloat x = (self.width - _imageView.width) / 2;
+    CGFloat x = (self.gkWidth - _imageView.gkWidth) / 2;
     x = x < 0 ? 0 : x;
-    CGFloat y = (self.height - _imageView.height) / 2;
+    CGFloat y = (self.gkHeight - _imageView.gkHeight) / 2;
     y = y < 0 ? 0 : y;
     
-    _imageView.center = CGPointMake(x + _imageView.width / 2.0, y + _imageView.height / 2.0);
+    _imageView.center = CGPointMake(x + _imageView.gkWidth / 2.0, y + _imageView.gkHeight / 2.0);
 }
 
 - (void)onLoadImage:(UIImage*) image
@@ -135,9 +137,9 @@
     self.loading = NO;
     if(image){
         _imageView.frame = [self rectFromImage:image];
-        _scrollView.contentSize = CGSizeMake(_scrollView.width, MAX(_scrollView.height, _imageView.height));
+        _scrollView.contentSize = CGSizeMake(_scrollView.gkWidth, MAX(_scrollView.gkHeight, _imageView.gkHeight));
     }else{
-        _imageView.frame = CGRectMake(0, 0, _scrollView.width, _scrollView.height);
+        _imageView.frame = CGRectMake(0, 0, _scrollView.gkWidth, _scrollView.gkHeight);
         _scrollView.contentSize = CGSizeZero;
     }
     self.imageView.image = image;
@@ -145,7 +147,7 @@
 
 - (CGRect)rectFromImage:(UIImage*) image
 {
-    CGSize size = [UIImage gk_fitImageSize:CGSizeMake(self.asset.pixelWidth, self.asset.pixelHeight) size:_scrollView.bounds.size type:GKImageFitTypeWidth];
+    CGSize size = [UIImage gkFitImageSize:CGSizeMake(self.asset.pixelWidth, self.asset.pixelHeight) size:_scrollView.bounds.size type:GKImageFitTypeWidth];
     return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
 }
 

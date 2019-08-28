@@ -7,8 +7,8 @@
 //
 
 #import "GKPhotosToolBar.h"
-#import "UIView+GKAutoLayout.h"
-#import "GKBasic.h"
+#import "GKBaseDefines.h"
+#import "GKDivider.h"
 
 @implementation GKPhotosToolBar
 
@@ -19,18 +19,16 @@
         
         self.backgroundColor = UIColor.whiteColor;
         
-        _divider = [UIView new];
-        _divider.backgroundColor = GKSeparatorColor;
+        _divider = [GKDivider new];
         [self addSubview:_divider];
         
-        [_divider gk_leftToSuperview];
-        [_divider gk_rightToSuperview];
-        [_divider gk_topToSuperview];
-        [_divider gk_heightToSelf:GKSeparatorWidth];
+        [_divider mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.trailing.top.equalTo(0);
+        }];
         
         CGFloat bottom = 0;
         if(@available(iOS 11, *)){
-            bottom = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
+            bottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
         }
         
         _previewButton = [UIButton new];
@@ -43,9 +41,10 @@
         [_previewButton setTitleColor:[UIColor colorWithWhite:0 alpha:0.5] forState:UIControlStateHighlighted];
         [self addSubview:_previewButton];
         
-        [_previewButton gk_leftToSuperview];
-        [_previewButton gk_topToSuperview];
-        [_previewButton gk_bottomToSuperview:bottom];
+        [_previewButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.top.equalTo(0);
+            make.bottom.equalTo(bottom);
+        }];
         
         _useButton = [UIButton new];
         [_useButton setTitle:@"使用" forState:UIControlStateNormal];
@@ -57,20 +56,24 @@
         [_useButton setTitleColor:[UIColor colorWithWhite:0 alpha:0.5] forState:UIControlStateHighlighted];
         [self addSubview:_useButton];
         
-        [_useButton gk_rightToSuperview];
-        [_useButton gk_topToSuperview];
-        [_useButton gk_bottomToSuperview:bottom];
+        [_useButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.trailing.top.equalTo(0);
+            make.bottom.equalTo(bottom);
+        }];
         
         _countLabel = [UILabel new];
         _countLabel.text = @"已选0张图片";
         _countLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:_countLabel];
         
-        [_countLabel gk_centerXInSuperview];
-        [_countLabel gk_bottomToSuperview:bottom];
-        [_countLabel gk_topToSuperview];
+        [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.centerX.equalTo(0);
+            make.bottom.equalTo(bottom);
+        }];
         
-        [self gk_heightToSelf:45 + bottom];
+        [self mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(45 + bottom);
+        }];
     }
     return self;
 }

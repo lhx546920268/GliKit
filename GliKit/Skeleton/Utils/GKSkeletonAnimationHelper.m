@@ -10,23 +10,23 @@
 
 @implementation GKSkeletonAnimationHelper
 
-- (void)executeOpacityAnimationForLayer:(GKLayer*) layer completion:(GKSkeletonAnimationCompletion) completion
+- (void)executeOpacityAnimationForLayer:(CALayer*) layer completion:(GKSkeletonAnimationCompletion) completion
 {
     self.completion = completion;
-    GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"opacity"];
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     animation.fromValue = @(1.0);
     animation.toValue = @(0);
     animation.duration = 0.25;
-    animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseInEaseOut];
-    animation.delegate = (id<GKAnimationDelegate>)self;
-    animation.fillMode = kGKFillModeForwards;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.delegate = (id<CAAnimationDelegate>)self;
+    animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
     [layer addAnimation:animation forKey:@"opacity"];
 }
 
 //MARK: GKAnimationDelegate
 
-- (void)animationDidStop:(GKAnimation *)anim finished:(BOOL)flag
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     !self.completion ?: self.completion(flag);
     self.completion = nil;

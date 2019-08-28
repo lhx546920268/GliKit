@@ -7,23 +7,8 @@
 //
 
 #import "GKCollectionViewFlowFillLayout.h"
-
-///更新invalid item 用来提升性能 吸顶情况只有 header需要更新
-@interface GKCollectionViewLayoutInvalidationContext : UICollectionViewLayoutInvalidationContext
-
-///当前需要更新的
-@property(nonatomic, strong) NSDictionary<NSString*, NSArray<NSIndexPath*> *> *invalidSupplementaryIndexPaths;
-
-@end
-
-@implementation GKCollectionViewLayoutInvalidationContext
-
-- (NSDictionary<NSString *,NSArray<NSIndexPath *> *> *)invalidatedSupplementaryIndexPaths
-{
-    return self.invalidSupplementaryIndexPaths;
-}
-
-@end
+#import "UIScreen+GKUtils.h"
+#import "GKCollectionViewLayoutInvalidationContext.h"
 
 @class GKCollectionFlowRowInfo;
 
@@ -129,7 +114,7 @@
 
     CGFloat width = self.layoutAttributes.layout.collectionView.frame.size.width;
     if(width == 0){
-        width = UIScreen.screenWidth;
+        width = UIScreen.gkScreenWidth;
     }
     
     if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost > width){
@@ -466,10 +451,10 @@
     NSAssert(sizeForItemDelegate, @"必须实现 collectionViewFlowFillLayout:itemSizeForIndexPath:");
 #endif
 
-    [self.collectionView layoutIfNeeded];
+    [self.collectionView.superview layoutIfNeeded];
     CGFloat width = self.collectionView.bounds.size.width;
     if(width == 0){
-        width = UIScreen.screenWidth;
+        width = UIScreen.gkScreenWidth;
     }
     //计算内容高度
     CGFloat height = 0;
@@ -695,7 +680,7 @@
     }
     
     if(rect.size.width == 0){
-        rect.size.width = UIScreen.screenWidth;
+        rect.size.width = UIScreen.gkScreenWidth;
     }
     
 

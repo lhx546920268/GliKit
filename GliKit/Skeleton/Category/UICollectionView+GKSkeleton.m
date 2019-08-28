@@ -7,7 +7,7 @@
 //
 
 #import "UICollectionView+GKSkeleton.h"
-#import <NSObject+Utils.h>
+#import "NSObject+GKUtils.h"
 #import "UIView+GKSkeleton.h"
 #import <objc/runtime.h>
 #import "GKSkeletonHelper.h"
@@ -18,34 +18,34 @@ static char GKSkeletonHideAnimateKey;
 
 + (void)load
 {
-    [self gk_exchangeImplementations:@selector(setDelegate:) prefix:@"gk_skeleton_"];
-    [self gk_exchangeImplementations:@selector(setDataSource:) prefix:@"gk_skeleton_"];
+    [self gkExchangeImplementations:@selector(setDelegate:) prefix:@"gkSkeleton_"];
+    [self gkExchangeImplementations:@selector(setDataSource:) prefix:@"gkSkeleton_"];
 }
 
-- (void)gk_skeleton_setDelegate:(id<UICollectionViewDelegate>)delegate
+- (void)gkSkeleton_setDelegate:(id<UICollectionViewDelegate>)delegate
 {
     if(delegate){
         [GKSkeletonHelper replaceImplementations:@selector(collectionView:didSelectItemAtIndexPath:) owner:delegate implementer:self];
         [GKSkeletonHelper replaceImplementations:@selector(collectionView:shouldHighlightItemAtIndexPath:) owner:delegate implementer:self];
     }
     
-    [self gk_skeleton_setDelegate:delegate];
+    [self gkSkeleton_setDelegate:delegate];
 }
 
-- (void)gk_skeleton_setDataSource:(id<UICollectionViewDataSource>)dataSource
+- (void)gkSkeleton_setDataSource:(id<UICollectionViewDataSource>)dataSource
 {
     if(dataSource){
         [GKSkeletonHelper replaceImplementations:@selector(collectionView:cellForItemAtIndexPath:) owner:dataSource implementer:self];
         [GKSkeletonHelper replaceImplementations:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:) owner:dataSource implementer:self];
     }
     
-    [self gk_skeleton_setDataSource:dataSource];
+    [self gkSkeleton_setDataSource:dataSource];
 }
 
-- (void)gk_showSkeletonWithDuration:(NSTimeInterval)duration completion:(GKShowSkeletonCompletionHandler)completion
+- (void)gkShowSkeletonWithDuration:(NSTimeInterval)duration completion:(GKShowSkeletonCompletionHandler)completion
 {
-    if(self.gk_skeletonStatus == GKSkeletonStatusNone){
-        self.gk_skeletonStatus = GKSkeletonStatusShowing;
+    if(self.gkSkeletonStatus == GKSkeletonStatusNone){
+        self.gkSkeletonStatus = GKSkeletonStatusShowing;
         [self reloadData];
         
         if(duration > 0 && completion){
@@ -56,22 +56,22 @@ static char GKSkeletonHideAnimateKey;
     }
 }
 
-- (void)setGk_skeletonHideAnimate:(BOOL) animate
+- (void)setGkSkeletonHideAnimate:(BOOL) animate
 {
     objc_setAssociatedObject(self, &GKSkeletonHideAnimateKey, @(animate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gk_skeletonHideAnimate
+- (BOOL)gkSkeletonHideAnimate
 {
     return [objc_getAssociatedObject(self, &GKSkeletonHideAnimateKey) boolValue];
 }
 
-- (void)gk_hideSkeletonWithAnimate:(BOOL)animate completion:(void (^)(BOOL))completion
+- (void)gkHideSkeletonWithAnimate:(BOOL)animate completion:(void (^)(BOOL))completion
 {
-    GKSkeletonStatus status = self.gk_skeletonStatus;
+    GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing){
-        self.gk_skeletonStatus = GKSkeletonStatusWillHide;
-        [self setGk_skeletonHideAnimate:animate];
+        self.gkSkeletonStatus = GKSkeletonStatusWillHide;
+        [self setGkSkeletonHideAnimate:animate];
         [self reloadData];
     }
 }
@@ -80,34 +80,34 @@ static char GKSkeletonHideAnimateKey;
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return collectionView.gk_skeletonStatus == GKSkeletonStatusNone;
+    return collectionView.gkSkeletonStatus == GKSkeletonStatusNone;
 }
 
-- (BOOL)gk_skeleton_collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)gkSkeleton_collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(collectionView.gk_skeletonStatus != GKSkeletonStatusNone){
+    if(collectionView.gkSkeletonStatus != GKSkeletonStatusNone){
         return NO;
     }
-    return [self gk_skeleton_collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
+    return [self gkSkeleton_collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
 }
 
-- (UICollectionViewCell*)gk_skeleton_collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell*)gkSkeleton_collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [self gk_skeleton_collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    UICollectionViewCell *cell = [self gkSkeleton_collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    GKSkeletonStatus status = collectionView.gk_skeletonStatus;
+    GKSkeletonStatus status = collectionView.gkSkeletonStatus;
     switch (status) {
         case GKSkeletonStatusShowing : {
             
-            [cell gk_showSkeleton];
+            [cell gkShowSkeleton];
         }
             break;
         case GKSkeletonStatusWillHide: {
             
             __weak UICollectionView *weakSelf = collectionView;
-            [cell gk_hideSkeletonWithAnimate:collectionView.gk_skeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gk_skeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gk_skeletonLayer = nil;
+            [cell gkHideSkeletonWithAnimate:collectionView.gkSkeletonHideAnimate completion:^(BOOL finished) {
+                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
+                    weakSelf.gkSkeletonLayer = nil;
                 }
             }];
         }
@@ -119,23 +119,23 @@ static char GKSkeletonHideAnimateKey;
     return cell;
 }
 
-- (UICollectionReusableView *)gk_skeleton_collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionReusableView *)gkSkeleton_collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionReusableView *view = [self gk_skeleton_collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
+    UICollectionReusableView *view = [self gkSkeleton_collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     
-    GKSkeletonStatus status = collectionView.gk_skeletonStatus;
+    GKSkeletonStatus status = collectionView.gkSkeletonStatus;
     switch (status) {
         case GKSkeletonStatusShowing : {
             
-            [view gk_showSkeleton];
+            [view gkShowSkeleton];
         }
             break;
         case GKSkeletonStatusWillHide: {
             
             __weak UICollectionView *weakSelf = collectionView;
-            [view gk_hideSkeletonWithAnimate:collectionView.gk_skeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gk_skeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gk_skeletonLayer = nil;
+            [view gkHideSkeletonWithAnimate:collectionView.gkSkeletonHideAnimate completion:^(BOOL finished) {
+                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
+                    weakSelf.gkSkeletonLayer = nil;
                 }
             }];
         }
@@ -147,14 +147,14 @@ static char GKSkeletonHideAnimateKey;
     return view;
 }
 
-- (void)gk_skeleton_collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)gkSkeleton_collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(collectionView.gk_skeletonStatus != GKSkeletonStatusNone){
+    if(collectionView.gkSkeletonStatus != GKSkeletonStatusNone){
         [collectionView deselectItemAtIndexPath:indexPath animated:NO];
         return;
     }
     
-    [self gk_skeleton_collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+    [self gkSkeleton_collectionView:collectionView didSelectItemAtIndexPath:indexPath];
 }
 
 @end

@@ -1,9 +1,9 @@
 //
 //  GKContainer.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/14.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKContainer.h"
@@ -59,12 +59,6 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     self.safeLayoutGuide = GKSafeLayoutGuideTop;
-}
-
-///布局的item
-- (id)item
-{
-    return self.viewController ? self.viewController : self;
 }
 
 - (void)layoutSubviews

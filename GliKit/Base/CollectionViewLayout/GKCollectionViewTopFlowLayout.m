@@ -1,9 +1,9 @@
 //
 //  GKCollectionViewTopFlowLayout.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/5/10.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKCollectionViewTopFlowLayout.h"

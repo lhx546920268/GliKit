@@ -1,13 +1,15 @@
 //
 //  GKEmptyView.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/14.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKEmptyView.h"
 #import "UIView+GKAutoLayout.h"
+#import "GKBaseDefines.h"
+#import "UIColor+GKUtils.h"
 
 @interface GKEmptyView ()
 
@@ -75,8 +77,8 @@
     if(!_textLabel){
         _textLabel = [[UILabel alloc] init];
         _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.textColor = [UIColor gk_colorFromHex:@"aeaeae"];
-        _textLabel.font = [UIFont appFontWithSize:14];
+        _textLabel.textColor = [UIColor gkColorFromHex:@"aeaeae"];
+        _textLabel.font = [UIFont systemFontOfSize:14];
         _textLabel.textAlignment = NSTextAlignmentCenter;
         _textLabel.numberOfLines = 0;
         [self.contentView addSubview:_textLabel];
@@ -85,7 +87,7 @@
         BOOL exist = _iconImageView != nil;
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             if(exist){
-                [self.contentView removeConstraint:self.iconImageView.gk_bottomLayoutConstraint];
+                [self.contentView removeConstraint:self.iconImageView.gkBottomLayoutConstraint];
                 make.top.equalTo(self.iconImageView.mas_bottom).offset(@(10));
             }else{
                 make.top.equalTo(self.contentView);

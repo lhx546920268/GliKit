@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, GKDataControlState)
  *@param scrollView x
  *@return 一个实例，frame和 scrollView的frame一样
  */
-- (id)initWithScrollView:(UIScrollView*) scrollView;
+- (instancetype)initWithScrollView:(UIScrollView*) scrollView;
 
 /**
  开始加载

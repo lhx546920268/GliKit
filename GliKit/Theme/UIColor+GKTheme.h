@@ -31,6 +31,12 @@
 ///app背景颜色 灰色那个
 @property(class, nonatomic, strong) UIColor *gkGrayBackgroundColor;
 
+///骨架层背景颜色
+@property(class, nonatomic, strong) UIColor *gkSkeletonBackgroundColor;
+
+///输入框placeholder 颜色
+@property(class, nonatomic, strong) UIColor *gkPlaceholderColor;
+
 @end
 
 

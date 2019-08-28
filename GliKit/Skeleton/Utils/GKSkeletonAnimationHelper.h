@@ -12,13 +12,13 @@
 typedef void(^GKSkeletonAnimationCompletion)(BOOL finished);
 
 ///骨架动画帮助类
-@interface GKSkeletonAnimationHelper : NSObject<GKAnimationDelegate>
+@interface GKSkeletonAnimationHelper : NSObject<CAAnimationDelegate>
 
 ///动画完成回调
 @property(nonatomic, copy) GKSkeletonAnimationCompletion completion;
 
 ///执行透明度渐变动画
-- (void)executeOpacityAnimationForLayer:(GKLayer*) layer completion:(GKSkeletonAnimationCompletion) completion;
+- (void)executeOpacityAnimationForLayer:(CALayer*) layer completion:(GKSkeletonAnimationCompletion) completion;
 
 @end
 

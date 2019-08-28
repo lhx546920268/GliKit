@@ -1,9 +1,9 @@
 //
 //  GKMenuBar.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKMenuBar.h"
@@ -174,13 +174,13 @@
     
     CGFloat totalWidth = 0;
     int i = 0;
-    for(GKMenuBarItem *info in self.items){
-        info.itemWidth = [info.title gkStringSizeWithFont:_normalFont].width + self.itemPadding;
-        if(info.icon != nil){
-            info.itemWidth += info.icon.size.width + info.iconPadding;
+    for(GKMenuBarItem *item in self.items){
+        item.itemWidth = [item.title gkStringSizeWithFont:_normalFont].width + self.itemPadding;
+        if(item.icon != nil){
+            item.itemWidth += item.icon.size.width + item.iconPadding;
         }
         
-        totalWidth += info.itemWidth;
+        totalWidth += item.itemWidth;
         if(i != self.items.count){
             totalWidth += self.itemInterval;
         }
@@ -206,8 +206,8 @@
     if(self.items.count == 0)
         return 0;
     CGFloat width = _contentInset.left + _contentInset.right + (self.items.count - 1) * self.itemInterval;
-    for(GKMenuBarItem *info in self.items){
-        width += ceil([info.title gkStringSizeWithFont:self.normalFont].width) + self.itemPadding;
+    for(GKMenuBarItem *item in self.items){
+        width += ceil([item.title gkStringSizeWithFont:self.normalFont].width) + self.itemPadding;
     }
     
     return width;
@@ -232,8 +232,8 @@
 {
     switch(_style){
         case GKMenuBarStyleFit : {
-            GKMenuBarItem *info = [_items objectAtIndex:indexPath.item];
-            return CGSizeMake(info.itemWidth, collectionView.gkHeight);
+            GKMenuBarItem *item = [_items objectAtIndex:indexPath.item];
+            return CGSizeMake(item.itemWidth, collectionView.gkHeight);
         }
             break;
         case GKMenuBarStyleFill :{
@@ -250,25 +250,25 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKMenuBarCell *item = [collectionView dequeueReusableCellWithReuseIdentifier:[GKMenuBarCell gkNameOfClass] forIndexPath:indexPath];
+    GKMenuBarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[GKMenuBarCell gkNameOfClass] forIndexPath:indexPath];
     
-    GKMenuBarItem *info = [self.items objectAtIndex:indexPath.item];
-    [item.button setTitleColor:_selectedTextColor forState:UIControlStateSelected];
-    [item.button setTitleColor:_normalTextColor forState:UIControlStateNormal];
-    [item.button.titleLabel setFont:_selectedIndex == indexPath.item ? _selectedFont : _normalFont];
-    item.info = info;
-    item.tick = self.selectedIndex == indexPath.item;
-    item.separator.hidden = !self.showSeparator || indexPath.item == _items.count - 1 || _style == GKMenuBarStyleFit;
+    GKMenuBarItem *item = [self.items objectAtIndex:indexPath.item];
+    [cell.button setTitleColor:_selectedTextColor forState:UIControlStateSelected];
+    [cell.button setTitleColor:_normalTextColor forState:UIControlStateNormal];
+    [cell.button.titleLabel setFont:_selectedIndex == indexPath.item ? _selectedFont : _normalFont];
+    cell.item = item;
+    cell.tick = self.selectedIndex == indexPath.item;
+    cell.separator.hidden = !self.showSeparator || indexPath.item == _items.count - 1 || _style == GKMenuBarStyleFit;
     
-    return item;
+    return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKMenuBarItem *info = self.items[indexPath.item];
-    if(info.customView){
+    GKMenuBarItem *item = self.items[indexPath.item];
+    if(item.customView){
         if([self.delegate respondsToSelector:@selector(menuBar:willDisplayCustomView:atIndex:)]){
-            [self.delegate menuBar:self willDisplayCustomView:info.customView atIndex:indexPath.item];
+            [self.delegate menuBar:self willDisplayCustomView:item.customView atIndex:indexPath.item];
         }
     }
 }
@@ -295,23 +295,23 @@
 - (void)setTitles:(NSArray *)titles
 {
     if(_titles != titles){
-        NSMutableArray *infos = [NSMutableArray arrayWithCapacity:titles.count];
+        NSMutableArray *items = [NSMutableArray arrayWithCapacity:titles.count];
         
         for(NSString *title in titles){
-            [infos addObject:[GKMenuBarItem infoWithTitle:title]];
+            [items addObject:[GKMenuBarItem itemWithTitle:title]];
         }
-        self.items = infos;
+        self.items = items;
     }
 }
 
-- (void)setItems:(NSArray *)itmeInfos
+- (void)setItems:(NSArray *)items
 {
-    if(_items != itmeInfos){
-        _items = [itmeInfos copy];
+    if(_items != items){
+        _items = [items copy];
         
         NSMutableArray *titles = [NSMutableArray arrayWithCapacity:_items.count];
-        for(GKMenuBarItem *info in _items){
-            NSString *title = info.title;
+        for(GKMenuBarItem *item in _items){
+            NSString *title = item.title;
             if(title == nil){
                 title = @"";
             }
@@ -397,8 +397,8 @@
         CGFloat oldPadding = _itemPadding;
         _itemPadding = padding;
         
-        for(GKMenuBarItem *info in self.items){
-            info.itemWidth += _itemPadding - oldPadding;
+        for(GKMenuBarItem *item in self.items){
+            item.itemWidth += _itemPadding - oldPadding;
         }
         
         [self.collectionView reloadData];
@@ -479,23 +479,23 @@
 ///获取下划线x轴位置
 - (CGFloat)indicatorXForIndex:(NSUInteger) index
 {
-    GKMenuBarCell *item = [self itemForIndex:index];
-    GKMenuBarItem *info = [self.items objectAtIndex:index];
+    GKMenuBarCell *cell = [self itemForIndex:index];
+    GKMenuBarItem *item = [self.items objectAtIndex:index];
     
     CGFloat x = 0;
-    if(!CGRectEqualToRect(CGRectZero, item.frame)){
-        x = item.gkLeft + (item.gkWidth - info.itemWidth) / 2.0;
+    if(!CGRectEqualToRect(CGRectZero, cell.frame)){
+        x = cell.gkLeft + (cell.gkWidth - item.itemWidth) / 2.0;
     }else{
         switch (_style) {
             case GKMenuBarStyleFit :
                 x = _contentInset.left;
                 for(NSInteger i = 0;i < index;i ++){
-                    info = [self.items objectAtIndex:i];
-                    x += info.itemWidth + self.itemInterval;
+                    item = [self.items objectAtIndex:i];
+                    x += item.itemWidth + self.itemInterval;
                 }
                 break;
             case GKMenuBarStyleFill :
-                x = _contentInset.left + (_fillItemWidth - info.itemWidth) / 2;;
+                x = _contentInset.left + (_fillItemWidth - item.itemWidth) / 2;;
                 for(NSInteger i = 0;i < index;i ++){
                     x += _fillItemWidth;
                 }
@@ -524,8 +524,8 @@
             frame.origin.x = _fillItemWidth * _selectedIndex;
         }
     }else{
-        GKMenuBarItem *info = [self.items objectAtIndex:_selectedIndex];
-        frame.size.width = info.itemWidth;
+        GKMenuBarItem *item = [self.items objectAtIndex:_selectedIndex];
+        frame.size.width = item.itemWidth;
     }
     
     if(flag){
@@ -557,11 +557,11 @@
     CGFloat x = [self indicatorXForIndex:_selectedIndex];
     CGFloat offset = percent * ([self indicatorXForIndex:index] - x);
     
-    GKMenuBarItem *info1 = [self.items objectAtIndex:_selectedIndex];
-    GKMenuBarItem *info2 = [self.items objectAtIndex:index];
+    GKMenuBarItem *item1 = [self.items objectAtIndex:_selectedIndex];
+    GKMenuBarItem *item2 = [self.items objectAtIndex:index];
     
     frame.origin.x = x + offset;
-    frame.size.width = info1.itemWidth + (info2.itemWidth - info1.itemWidth) * percent;
+    frame.size.width = item1.itemWidth + (item2.itemWidth - item1.itemWidth) * percent;
     _indicator.frame = frame;
 }
 
@@ -579,8 +579,8 @@
     NSAssert(index < self.items.count, @"GKMenuBar setBadgeValue: forIndex:，index %ld 已越界", (long)index);
 #endif
     
-    GKMenuBarItem *info = [self.items objectAtIndex:index];
-    info.badgeNumber = badgeValue;
+    GKMenuBarItem *item = [self.items objectAtIndex:index];
+    item.badgeNumber = badgeValue;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
 }
@@ -591,8 +591,8 @@
     NSAssert(index < self.items.count, @"GKMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
 #endif
     
-    GKMenuBarItem *info = [self.items objectAtIndex:index];
-    info.title = title;
+    GKMenuBarItem *item = [self.items objectAtIndex:index];
+    item.title = title;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
 }
@@ -603,8 +603,8 @@
     NSAssert(index < self.items.count, @"GKMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
 #endif
     
-    GKMenuBarItem *info = [self.items objectAtIndex:index];
-    info.icon = icon;
+    GKMenuBarItem *item = [self.items objectAtIndex:index];
+    item.icon = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
 }
@@ -615,26 +615,26 @@
     NSAssert(index < self.items.count, @"GKMenuBar setSelectedIcon: forIndex:，index %ld 已越界", (long)index);
 #endif
     
-    GKMenuBarItem *info = [self.items objectAtIndex:index];
-    info.selectedIcon = icon;
+    GKMenuBarItem *item = [self.items objectAtIndex:index];
+    item.selectedIcon = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
 }
 
 ///通过下标获取按钮
-- (id)itemForIndex:(NSUInteger) index
+- (GKMenuBarCell*)itemForIndex:(NSUInteger) index
 {
     if(index >= _items.count || !self.mesureEnable)
         return nil;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    UICollectionViewCell *item = (GKMenuBarCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
+    GKMenuBarCell *cell = (GKMenuBarCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
     
-    if(item == nil){
-        item = [self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+    if(cell == nil){
+        cell = (GKMenuBarCell*)[self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     }
     
-    return item;
+    return cell;
 }
 
 

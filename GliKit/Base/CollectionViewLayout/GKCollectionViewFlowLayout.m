@@ -1,12 +1,13 @@
 //
 //  GKCollectionViewFlowLayout.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/11.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKCollectionViewFlowLayout.h"
+#import "UIScreen+GKUtils.h"
 
 ///装饰key
 static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewBackgroundDecorator";
@@ -252,7 +253,7 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
                 if(headerItem || firstItem || lastItem || footerItem || insets.top > 0 || insets.bottom > 0){
                     
                     CGRect rect = CGRectZero;
-                    rect.size.width = UIScreen.gk_screenWidth;
+                    rect.size.width = UIScreen.gkScreenWidth;
                     if(headerItem){
                         rect.origin.y = headerItem.frame.origin.y;
                     }else if (firstItem){

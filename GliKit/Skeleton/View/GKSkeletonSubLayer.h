@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 ///骨架子图层
-@interface GKSkeletonSubLayer : GKLayer
+@interface GKSkeletonSubLayer : CALayer
 
 ///复制属性
-- (void)copyPropertiesFromLayer:(GKLayer*) layer;
+- (void)copyPropertiesFromLayer:(CALayer*) layer;
 
 @end
 

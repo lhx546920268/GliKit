@@ -11,7 +11,7 @@
 @class GKSkeletonSubLayer;
 
 ///骨架图层
-@interface GKSkeletonLayer : GKLayer
+@interface GKSkeletonLayer : CALayer
 
 ///骨架背景
 @property(nonatomic, strong) UIColor *skeletonBackgroundColor;

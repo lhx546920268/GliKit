@@ -24,7 +24,7 @@ static NSString *const GKDataControlContentSize = @"contentSize";
 
 @implementation GKLoadMoreControl
 
-- (id)initWithScrollView:(UIScrollView *)scrollView
+- (instancetype)initWithScrollView:(UIScrollView *)scrollView
 {
     self = [super initWithScrollView:scrollView];
     if(self){

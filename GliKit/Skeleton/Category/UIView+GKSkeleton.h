@@ -33,30 +33,30 @@ typedef NS_ENUM(NSInteger, GKSkeletonStatus){
 @interface UIView (GKSkeleton)
 
 ///是否需要添加为骨架图层 子视图用的
-@property(nonatomic, assign) BOOL gk_shouldBecomeSkeleton;
+@property(nonatomic, assign) BOOL gkShouldBecomeSkeleton;
 
 ///骨架显示状态 根视图用 内部使用 不要直接设置这个值
-@property(nonatomic, assign) GKSkeletonStatus gk_skeletonStatus;
+@property(nonatomic, assign) GKSkeletonStatus gkSkeletonStatus;
 
 ///骨架图层
-@property(nonatomic, strong) GKSkeletonLayer *gk_skeletonLayer;
+@property(nonatomic, strong) GKSkeletonLayer *gkSkeletonLayer;
 
 ///显示骨架
-- (void)gk_showSkeleton;
+- (void)gkShowSkeleton;
 
 ///显示骨架 0.5s 延迟
-- (void)gk_showSkeletonWithCompletion:(GKShowSkeletonCompletionHandler) completion;
+- (void)gkShowSkeletonWithCompletion:(GKShowSkeletonCompletionHandler) completion;
 
 ///显示骨架
-- (void)gk_showSkeletonWithDuration:(NSTimeInterval) duration completion:(GKShowSkeletonCompletionHandler) completion;
+- (void)gkShowSkeletonWithDuration:(NSTimeInterval) duration completion:(GKShowSkeletonCompletionHandler) completion;
 
 ///隐藏骨架
-- (void)gk_hideSkeletonWithAnimate:(BOOL) animate;
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate;
 
 ///隐藏骨架
-- (void)gk_hideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion;
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion;
 
 ///是否需要添加骨架图层 某些视图会自己处理 默认YES
-- (BOOL)shouldAddSkeletonLayer;
+- (BOOL)gkShouldAddSkeletonLayer;
 
 @end

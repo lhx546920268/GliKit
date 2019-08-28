@@ -1,9 +1,9 @@
 //
 //  GKPresentTransitionDelegate.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKPresentTransitionDelegate.h"
@@ -139,17 +139,17 @@
     if(flag){
         
         UINavigationController *nav = [vc gkCreateWithNavigationController];
-        nav.gk_transitioningDelegate = delegate;
+        nav.gkTransitioningDelegate = delegate;
         vc.gkShowBackItem = YES;
-        [parentedViewConttroller.gk_topestPresentedViewController presentViewController:nav animated:YES completion:^(void){
+        [parentedViewConttroller.gkTopestPresentedViewController presentViewController:nav animated:YES completion:^(void){
 
             if(vc.navigationController){
                 [delegate addInteractiveTransitionToViewController:vc];
             }
         }];
     }else{
-        vc.gk_transitioningDelegate = delegate;
-        [parentedViewConttroller.gk_topestPresentedViewController presentViewController:vc animated:YES completion:^(void){
+        vc.gkTransitioningDelegate = delegate;
+        [parentedViewConttroller.gkTopestPresentedViewController presentViewController:vc animated:YES completion:^(void){
 
             [delegate addInteractiveTransitionToViewController:vc];
         }];

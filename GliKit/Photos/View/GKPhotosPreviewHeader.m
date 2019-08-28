@@ -8,8 +8,8 @@
 
 #import "GKPhotosPreviewHeader.h"
 #import "GKPhotosCheckBox.h"
-#import "UIView+GKAutoLayout.h"
-#import "GKBasic.h"
+#import "GKBaseDefines.h"
+#import "UIApplication+GKTheme.h"
 
 @implementation GKPhotosPreviewHeader
 
@@ -27,22 +27,23 @@
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_backButton setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
         _backButton.tintColor = UIColor.whiteColor;
-        _backButton.contentEdgeInsets = UIEdgeInsetsMake(0, GKNavigationBarMargin, 0, GKNavigationBarMargin);
+        _backButton.contentEdgeInsets = UIEdgeInsetsMake(0, UIApplication.gkNavigationBarMargin, 0, UIApplication.gkNavigationBarMargin);
         [self addSubview:_backButton];
         
-        [_backButton gk_leftToSuperview];
-        [_backButton gk_topToSuperview:statusHeight];
-        [_backButton gk_bottomToSuperview];
+        [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.bottom.equalTo(0);
+            make.top.equalTo(statusHeight);
+        }];
         
         _checkBox = [GKPhotosCheckBox new];
-        _checkBox.contentInsets = UIEdgeInsetsMake(10, GKNavigationBarMargin, 10, GKNavigationBarMargin);
+        _checkBox.contentInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
         [self addSubview:_checkBox];
 
-        
-        [_checkBox gk_aspectRatio:1.0];
-        [_checkBox gk_rightToSuperview];
-        [_checkBox gk_topToSuperview:statusHeight];
-        [_checkBox gk_bottomToSuperview];
+        [_checkBox mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.bottom.equalTo(0);
+            make.top.equalTo(statusHeight);
+            make.width.equalTo(self.checkBox.height);
+        }];
     }
     
     return self;
@@ -57,9 +58,10 @@
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:_titleLabel];
         
-        [_titleLabel gk_centerXInSuperview];
-        [_titleLabel gk_topToSuperview:UIApplication.sharedApplication.statusBarFrame.size.height];
-        [_titleLabel gk_bottomToSuperview];
+        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(UIApplication.gkStatusBarHeight);
+            make.centerX.bottom.equalTo(0);
+        }];
     }
     
     return _titleLabel;

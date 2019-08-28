@@ -1,12 +1,17 @@
 //
 //  UIViewController+GKTransition.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "UIViewController+GKTransition.h"
+#import "UIViewController+GKUtils.h"
+#import <objc/runtime.h>
+#import "UIScreen+GKUtils.h"
+#import "UIView+GKUtils.h"
+#import "NSObject+GKUtils.h"
 
 /**
  过渡代理
@@ -37,7 +42,7 @@ static char GKTransitioningDelegateKey;
 
 - (void)gk_presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
-    if([viewControllerToPresent.gk_transitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
+    if([viewControllerToPresent.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
         //让后面的视图不在动画完成后移除
         viewControllerToPresent.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
@@ -46,27 +51,27 @@ static char GKTransitioningDelegateKey;
     if(self.parentViewController){
         viewController = self.parentViewController;
     }
-    if([viewController.gk_transitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
+    if([viewController.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
         viewControllerToPresent.modalPresentationStyle = UIModalPresentationCustom;
     }
     [self gk_presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
 
-- (void)setCa_transitioningDelegate:(id<UIViewControllerTransitioningDelegate>)gk_transitioningDelegate
+- (void)setGkTransitioningDelegate:(id<UIViewControllerTransitioningDelegate>)gkTransitioningDelegate
 {
 #ifdef DEBUG
-    NSAssert(![gk_transitioningDelegate isEqual:self], @"gk_transitioningDelegate 不能设置为self，如果要设置成self，使用 transitioningDelegate");
+    NSAssert(![gkTransitioningDelegate isEqual:self], @"gk_transitioningDelegate 不能设置为self，如果要设置成self，使用 transitioningDelegate");
 #endif
-    objc_setAssociatedObject(self, &GKTransitioningDelegateKey, gk_transitioningDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.transitioningDelegate = gk_transitioningDelegate;
+    objc_setAssociatedObject(self, &GKTransitioningDelegateKey, gkTransitioningDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.transitioningDelegate = gkTransitioningDelegate;
 }
 
 //MARK: present
 
 - (CGSize)partialContentSize
 {
-    return UIScreen.gk_screenSize;
+    return UIScreen.gkScreenSize;
 }
 
 - (UIViewController*)partialViewController
@@ -77,14 +82,14 @@ static char GKTransitioningDelegateKey;
 - (void)partialPresentFromBottom
 {
     CGSize size = self.partialContentSize;
-    size.height += self.gk_currentViewController.view.gk_safeAreaInsets.bottom;
+    size.height += self.gkCurrentViewController.view.gkSafeAreaInsets.bottom;
     [self partialPresentWithStyle:GKPresentTransitionStyleCoverVerticalFromBottom contentSize:size];
 }
 
 - (void)partialPresentFromTop
 {
     CGSize size = self.partialContentSize;
-    size.height += self.gk_statusBarHeight;
+    size.height += self.gkStatusBarHeight;
     [self partialPresentWithStyle:GKPresentTransitionStyleCoverVerticalFromTop contentSize:size];
 }
 
@@ -101,22 +106,22 @@ static char GKTransitioningDelegateKey;
 
 //MARK: push
 
-- (id<UIViewControllerTransitioningDelegate>)gk_transitioningDelegate
+- (id<UIViewControllerTransitioningDelegate>)gkTransitioningDelegate
 {
     return objc_getAssociatedObject(self, &GKTransitioningDelegateKey);
 }
 
-- (void)gk_pushViewController:(UIViewController*) viewController
+- (void)gkPushViewController:(UIViewController*) viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)gk_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController
 {
-    [self gk_pushViewControllerUseTransitionDelegate:viewController useNavigationBar:YES];
+    [self gkPushViewControllerUseTransitionDelegate:viewController useNavigationBar:YES];
 }
 
-- (void)gk_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use
 {
     [GKPresentTransitionDelegate pushViewController:viewController useNavigationBar:use parentedViewConttroller:self];
 }

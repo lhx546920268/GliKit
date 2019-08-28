@@ -16,7 +16,7 @@
 
 @implementation GKRefreshControl
 
-- (id)initWithScrollView:(UIScrollView*) scrollView
+- (instancetype)initWithScrollView:(UIScrollView*) scrollView
 {
     self = [super initWithScrollView:scrollView];
     if(self){

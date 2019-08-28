@@ -1,9 +1,9 @@
 //
 //  GKMenuBarCell.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -33,7 +33,7 @@
 /**
  按钮信息
  */
-@property(nonatomic,strong) GKMenuBarItem *info;
+@property(nonatomic,strong) GKMenuBarItem *item;
 
 /**
  自定义视图

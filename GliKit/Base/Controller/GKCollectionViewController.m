@@ -1,9 +1,9 @@
 //
 //  GKCollectionViewController.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKCollectionViewController.h"
@@ -19,7 +19,7 @@
 @synthesize collectionView = _collectionView;
 @synthesize flowLayout = _flowLayout;
 
-- (id)initWithFlowLayout:(UICollectionViewFlowLayout*) layout
+- (instancetype)initWithFlowLayout:(UICollectionViewFlowLayout*) layout
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self){
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     return [self initWithFlowLayout:nil];
 }

@@ -1,17 +1,19 @@
 //
 //  GKMenuBarCell.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKMenuBarCell.h"
-#import "GKMenuBarItemInfo.h"
+#import "GKMenuBarItem.h"
+#import "GKBaseDefines.h"
+#import "UIButton+GKUtils.h"
 
 @implementation GKMenuBarCell
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self){
@@ -40,29 +42,29 @@
     return self;
 }
 
-- (void)setInfo:(GKMenuBarItemInfo *)info
+- (void)setItem:(GKMenuBarItem *)item
 {
-    _info = info;
-    [_button setTitle:info.title forState:UIControlStateNormal];
-    [_button setImage:info.icon forState:UIControlStateNormal];
-    [_button setImage:info.selectedIcon forState:UIControlStateSelected];
-    [_button setBackgroundImage:info.backgroundImage forState:UIControlStateNormal];
+    _item = item;
+    [_button setTitle:_item.title forState:UIControlStateNormal];
+    [_button setImage:_item.icon forState:UIControlStateNormal];
+    [_button setImage:_item.selectedIcon forState:UIControlStateSelected];
+    [_button setBackgroundImage:_item.backgroundImage forState:UIControlStateNormal];
     
-    [_button gk_setImagePosition:info.iconPosition margin:info.iconPadding];
+    [_button gkSetImagePosition:_item.iconPosition margin:_item.iconPadding];
     
     UIEdgeInsets insets = _button.titleEdgeInsets;
-    insets.left += _info.titleInsets.left;
-    insets.right += _info.titleInsets.right;
-    insets.bottom += _info.titleInsets.bottom;
-    insets.top += _info.titleInsets.top;
+    insets.left += _item.titleInsets.left;
+    insets.right += _item.titleInsets.right;
+    insets.bottom += _item.titleInsets.bottom;
+    insets.top += _item.titleInsets.top;
     _button.titleEdgeInsets = insets;
     
-    self.customView = _info.customView;
+    self.customView = _item.customView;
 }
 
-- (void)setTick:(BOOL)item_selected
+- (void)setTick:(BOOL) tick
 {
-    _tick = item_selected;
+    _tick = tick;
     _button.selected = _tick;
     _button.tintColor = [_button titleColorForState:_tick ? UIControlStateSelected : UIControlStateNormal];
 }

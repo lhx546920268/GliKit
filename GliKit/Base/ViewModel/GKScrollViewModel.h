@@ -1,9 +1,9 @@
 //
 //  GKScrollViewModel.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/20.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKBaseViewModel.h"
@@ -42,7 +42,7 @@
 
 /**
  刷新完成
- *@param 是否成功
+ *@param success 是否成功
  */
 - (void)onRefreshComplete:(BOOL) success NS_REQUIRES_SUPER;
 

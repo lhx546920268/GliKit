@@ -58,4 +58,9 @@ static UIStatusBarStyle appStatusBarStyle = UIStatusBarStyleDefault;
     appStatusBarStyle = gkStatusBarStyle;
 }
 
++ (CGFloat)gkStatusBarHeight
+{
+    return UIApplication.sharedApplication.statusBarFrame.size.height;
+}
+
 @end

@@ -1,9 +1,9 @@
 //
 //  GKBaseWebViewController.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/16.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKBaseViewController.h"
@@ -71,14 +71,14 @@
  *@param URL 将要打开的链接
  *@return 一个实例
  */
-- (id)initWithURL:(NSString*) URL;
+- (instancetype)initWithURL:(NSString*) URL;
 
 /**
  构造方法
  *@param htmlString 将要打开的html
  *@return 一个实例
  */
-- (id)initWithHtmlString:(NSString*) htmlString;
+- (instancetype)initWithHtmlString:(NSString*) htmlString;
 
 /**后退
  */

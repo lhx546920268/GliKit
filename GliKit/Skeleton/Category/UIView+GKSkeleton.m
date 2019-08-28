@@ -8,7 +8,7 @@
 
 #import "UIView+GKSkeleton.h"
 #import <objc/runtime.h>
-#import <NSObject+Utils.h>
+#import "NSObject+GKUtils.h"
 #import "GKSkeletonHelper.h"
 #import "GKSkeletonLayer.h"
 #import "GKSkeletonAnimationHelper.h"
@@ -22,16 +22,16 @@ static char GKSkeletonAnimationHelperKey;
 
 + (void)load
 {
-    [self gk_exchangeImplementations:@selector(layoutSubviews) prefix:@"gk_skeleton_"];
+    [self gkExchangeImplementations:@selector(layoutSubviews) prefix:@"gkSkeleton_"];
 }
 
-- (void)gk_skeleton_layoutSubviews
+- (void)gkSkeleton_layoutSubviews
 {
-    [self gk_skeleton_layoutSubviews];
+    [self gkSkeleton_layoutSubviews];
     
-    if([self shouldAddSkeletonLayer] && self.gk_skeletonStatus == GKSkeletonStatusWillShow){
+    if([self gkShouldAddSkeletonLayer] && self.gkSkeletonStatus == GKSkeletonStatusWillShow){
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.gk_skeletonStatus = GKSkeletonStatusShowing;
+            self.gkSkeletonStatus = GKSkeletonStatusShowing;
             
             GKSkeletonLayer *layer = [GKSkeletonLayer layer];
             NSMutableArray *layers = [NSMutableArray array];
@@ -39,17 +39,17 @@ static char GKSkeletonAnimationHelperKey;
             layer.skeletonSubLayers = layers;
             
             [self.layer addSublayer:layer];
-            self.gk_skeletonLayer = layer;
+            self.gkSkeletonLayer = layer;
         });
     }
 }
 
-- (void)setGk_shouldBecomeSkeleton:(BOOL)gk_shouldBecomeSkeleton
+- (void)setGkShouldBecomeSkeleton:(BOOL)gkShouldBecomeSkeleton
 {
-    objc_setAssociatedObject(self, &GKShouldBecomeSkeletonKey, @(GKShouldBecomeSkeletonKey), OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldBecomeSkeletonKey, @(gkShouldBecomeSkeleton), OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (BOOL)gk_shouldBecomeSkeleton
+- (BOOL)gkShouldBecomeSkeleton
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldBecomeSkeletonKey);
     if(number){
@@ -59,50 +59,50 @@ static char GKSkeletonAnimationHelperKey;
     }
 }
 
-- (GKSkeletonStatus)gk_skeletonStatus
+- (GKSkeletonStatus)gkSkeletonStatus
 {
     return [objc_getAssociatedObject(self, &GKSkeletonStatusKey) integerValue];
 }
 
-- (void)setGk_skeletonStatus:(GKSkeletonStatus)gk_skeletonStatus
+- (void)setGkSkeletonStatus:(GKSkeletonStatus)gkSkeletonStatus
 {
-    objc_setAssociatedObject(self, &GKSkeletonStatusKey, @(gk_skeletonStatus), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKSkeletonStatusKey, @(gkSkeletonStatus), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setGk_skeletonLayer:(GKSkeletonLayer *)gk_skeletonLayer
+- (void)setGkSkeletonLayer:(GKSkeletonLayer *)gkSkeletonLayer
 {
-    GKSkeletonLayer *layer = self.gk_skeletonLayer;
+    GKSkeletonLayer *layer = self.gkSkeletonLayer;
     if(layer){
         [layer removeFromSuperlayer];
     }
-    if(!gk_skeletonLayer){
+    if(!gkSkeletonLayer){
         self.userInteractionEnabled = YES;
-        self.gk_skeletonStatus = GKSkeletonStatusNone;
-        [self setGk_skeletonAnimationHelper:nil];
+        self.gkSkeletonStatus = GKSkeletonStatusNone;
+        [self setGkSkeletonAnimationHelper:nil];
     }
-    objc_setAssociatedObject(self, &GKSkeletonLayerKey, gk_skeletonLayer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKSkeletonLayerKey, gkSkeletonLayer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (GKSkeletonLayer *)gk_skeletonLayer
+- (GKSkeletonLayer *)gkSkeletonLayer
 {
     return objc_getAssociatedObject(self, &GKSkeletonLayerKey);
 }
 
-- (void)gk_showSkeleton
+- (void)gkShowSkeleton
 {
-    [self gk_showSkeletonWithDuration:0 completion:nil];
+    [self gkShowSkeletonWithDuration:0 completion:nil];
 }
 
-- (void)gk_showSkeletonWithCompletion:(GKShowSkeletonCompletionHandler) completion
+- (void)gkShowSkeletonWithCompletion:(GKShowSkeletonCompletionHandler) completion
 {
-    [self gk_showSkeletonWithDuration:0.5 completion:completion];
+    [self gkShowSkeletonWithDuration:0.5 completion:completion];
 }
 
-- (void)gk_showSkeletonWithDuration:(NSTimeInterval) duration completion:(GKShowSkeletonCompletionHandler) completion
+- (void)gkShowSkeletonWithDuration:(NSTimeInterval) duration completion:(GKShowSkeletonCompletionHandler) completion
 {
-    if(self.gk_skeletonStatus == GKSkeletonStatusNone){
-        self.gk_skeletonStatus = GKSkeletonStatusWillShow;
-        if([self shouldAddSkeletonLayer]){
+    if(self.gkSkeletonStatus == GKSkeletonStatusNone){
+        self.gkSkeletonStatus = GKSkeletonStatusWillShow;
+        if([self gkShouldAddSkeletonLayer]){
             self.userInteractionEnabled = NO;
             [self setNeedsLayout];
         }
@@ -115,49 +115,49 @@ static char GKSkeletonAnimationHelperKey;
     }
 }
 
-- (void)gk_hideSkeletonWithAnimate:(BOOL)animate
+- (void)gkHideSkeletonWithAnimate:(BOOL)animate
 {
-    [self gk_hideSkeletonWithAnimate:animate completion:nil];
+    [self gkHideSkeletonWithAnimate:animate completion:nil];
 }
 
-- (void)gk_hideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion
 {
-    GKSkeletonStatus status = self.gk_skeletonStatus;
+    GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing || status == GKSkeletonStatusWillShow){
-        self.gk_skeletonStatus = GKSkeletonStatusWillHide;
+        self.gkSkeletonStatus = GKSkeletonStatusWillHide;
         
         if(animate){
             
             __weak UIView *weakSelf = self;
-            [self.gk_skeletonAnimationHelper executeOpacityAnimationForLayer:self.gk_skeletonLayer completion:^(BOOL finished) {
-                weakSelf.gk_skeletonLayer = nil;
+            [self.gkSkeletonAnimationHelper executeOpacityAnimationForLayer:self.gkSkeletonLayer completion:^(BOOL finished) {
+                weakSelf.gkSkeletonLayer = nil;
                 !completion ?: completion(finished);
             }];
             
         }else{
-            self.gk_skeletonLayer = nil;
+            self.gkSkeletonLayer = nil;
             !completion ?: completion(YES);
         }
     }
 }
 
-- (GKSkeletonAnimationHelper*)gk_skeletonAnimationHelper
+- (GKSkeletonAnimationHelper*)gkSkeletonAnimationHelper
 {
     GKSkeletonAnimationHelper *helper = objc_getAssociatedObject(self, &GKSkeletonAnimationHelperKey);
     if(!helper){
         helper = [GKSkeletonAnimationHelper new];
-        [self setGk_skeletonAnimationHelper:helper];
+        [self setGkSkeletonAnimationHelper:helper];
     }
     
     return helper;
 }
 
-- (void)setGk_skeletonAnimationHelper:(GKSkeletonAnimationHelper*) helper
+- (void)setGkSkeletonAnimationHelper:(GKSkeletonAnimationHelper*) helper
 {
     objc_setAssociatedObject(self, &GKSkeletonAnimationHelperKey, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)shouldAddSkeletonLayer
+- (BOOL)gkShouldAddSkeletonLayer
 {
     //列表 和 集合视图 使用他们的cell header footer 来生成
     if([self isKindOfClass:UITableView.class] || [self isKindOfClass:UICollectionView.class])

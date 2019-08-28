@@ -1,9 +1,9 @@
 //
 //  UIViewController+GKTransition.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -12,7 +12,7 @@
 @interface UIViewController (GKTransition)
 
 ///过渡动画代理 设置这个可防止 transitioningDelegate 提前释放，不要设置为 self，否则会抛出异常
-@property(nonatomic,strong) id<UIViewControllerTransitioningDelegate> gk_transitioningDelegate;
+@property(nonatomic,strong) id<UIViewControllerTransitioningDelegate> gkTransitioningDelegate;
 
 //MARK: present
 
@@ -39,13 +39,13 @@
 /**
  [self.navigationController pushViewController:viewController animated:YES]
  */
-- (void)gk_pushViewController:(UIViewController*) viewController;
+- (void)gkPushViewController:(UIViewController*) viewController;
 
 /**
  使用自定义过渡方式
  */
-- (void)gk_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController;
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController;
 
-- (void)gk_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use;
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use;
 
 @end

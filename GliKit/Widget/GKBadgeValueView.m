@@ -1,13 +1,15 @@
 //
 //  GKBadgeValueView.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/2.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKBadgeValueView.h"
 #import "UIColor+GKUtils.h"
+#import "UIFont+GKUtils.h"
+#import "NSString+GKUtils.h"
 
 @interface GKBadgeValueView()
 
@@ -21,7 +23,7 @@
 
 @implementation GKBadgeValueView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self){
@@ -30,7 +32,7 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if(self){

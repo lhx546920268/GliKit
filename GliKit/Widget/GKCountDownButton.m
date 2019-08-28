@@ -1,13 +1,17 @@
 //
 //  GKCountDownButton.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/5/16.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKCountDownButton.h"
 #import "GKCountDownTimer.h"
+#import "UIApplication+GKTheme.h"
+#import "UIColor+GKTheme.h"
+#import "UIColor+GKUtils.h"
+#import "GKBaseDefines.h"
 
 @interface GKCountDownButton ()
 
@@ -18,7 +22,7 @@
 
 @implementation GKCountDownButton
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self){
@@ -52,14 +56,14 @@
     self.countdownTimeInterval = 60;
     self.normalBackgroundColor = [UIColor clearColor];
     self.disableBackgroundColor = [UIColor clearColor];
-    [self setTitleColor:UIColor.appThemeColor forState:UIControlStateNormal];
-    self.titleLabel.font = [UIFont appFontWithSize:14];
+    [self setTitleColor:UIColor.gkThemeColor forState:UIControlStateNormal];
+    self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.numberOfLines = 0;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     
-    self.layer.borderColor = UIColor.appThemeColor.CGColor;
+    self.layer.borderColor = UIColor.gkThemeColor.CGColor;
     
-    [self setTitle:@"get_sms_code".zegoLocalizedString forState:UIControlStateNormal];
+    [self setTitle:@"获取验证码" forState:UIControlStateNormal];
     [self setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
 }
 
@@ -69,7 +73,7 @@
 {
     if(![_normalBackgroundColor isEqualToColor:normalBackgroundColor]){
         if(normalBackgroundColor == nil)
-            normalBackgroundColor = UIColor.appThemeColor;
+            normalBackgroundColor = UIColor.gkThemeColor;
         _normalBackgroundColor = normalBackgroundColor;
         if(!self.timing){
             self.backgroundColor = _normalBackgroundColor;
@@ -81,7 +85,7 @@
 {
     if(![_disableBackgroundColor isEqualToColor:disableBackgroundColor]){
         if(disableBackgroundColor == nil)
-            disableBackgroundColor = UIColor.appThemeColor;
+            disableBackgroundColor = UIColor.gkThemeColor;
         _disableBackgroundColor = disableBackgroundColor;
         if(self.timing){
             self.backgroundColor = _disableBackgroundColor;
@@ -126,7 +130,7 @@
 
 - (void)countDown:(NSTimeInterval) timeLeft
 {
-    [self setTitle:[NSString stringWithFormat:@"%@(%ds)", @"reacquire".zegoLocalizedString, (int)timeLeft] forState:UIControlStateDisabled];
+    [self setTitle:[NSString stringWithFormat:@"重新获取(%ds)", (int)timeLeft] forState:UIControlStateDisabled];
     !self.countDownHandler ?: self.countDownHandler(timeLeft);
 }
 
@@ -141,7 +145,7 @@
 ///倒计时完成
 - (void)onFinish
 {
-    [self setTitle:@"reacquire".zegoLocalizedString forState:UIControlStateNormal];
+    [self setTitle:@"重新获取" forState:UIControlStateNormal];
     self.enabled = YES;
     self.backgroundColor = self.normalBackgroundColor;
     self.layer.borderColor = self.currentTitleColor.CGColor;

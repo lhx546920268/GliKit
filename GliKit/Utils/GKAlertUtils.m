@@ -1,12 +1,14 @@
 //
 //  GKAlertUtils.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/9.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKAlertUtils.h"
+#import "GKAlertController.h"
+#import "NSObject+GKUtils.h"
 
 @implementation GKAlertUtils
 
@@ -50,7 +52,7 @@
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
 {
-    [GKAlertUtils showAlertWithTitle:title message:message buttonTitles:@[@"no".zegoLocalizedString, @"yes".zegoLocalizedString] destructiveButtonIndex:destructiveButtonIndex handler:^(NSInteger buttonIndex, NSString *title) {
+    [GKAlertUtils showAlertWithTitle:title message:message buttonTitles:@[@"取消", @"确定"] destructiveButtonIndex:destructiveButtonIndex handler:^(NSInteger buttonIndex, NSString *title) {
         if(buttonIndex == 1){
             !handler ?: handler();
         }
@@ -80,7 +82,7 @@
         }]];
     }
     
-    [NSObject.gk_currentViewController presentViewController:controlelr animated:YES completion:nil];
+    [NSObject.gkCurrentViewController presentViewController:controlelr animated:YES completion:nil];
 }
 
 @end

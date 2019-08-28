@@ -1,9 +1,9 @@
 //
 //  GKAlertUtils.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/9.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -30,7 +30,6 @@ typedef void(^GKAlertConfirmHandler)(void);
 + (void)showAlertWithTitle:(NSString *)title destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler;
 + (void)showAlertWithMessage:(NSString *)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler;
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler;
-
 
 
 

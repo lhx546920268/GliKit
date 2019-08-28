@@ -1,9 +1,9 @@
 //
 //  GKTableViewController.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKTableViewController.h"
@@ -20,7 +20,7 @@
 
 @synthesize tableView = _tableView;
 
-- (id)initWithStyle:(UITableViewStyle) style
+- (instancetype)initWithStyle:(UITableViewStyle) style
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self)
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     return [self initWithStyle:UITableViewStylePlain];
 }

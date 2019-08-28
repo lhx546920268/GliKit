@@ -17,7 +17,7 @@
 
 @implementation GKDataControl
 
-- (id)initWithScrollView:(UIScrollView*) scrollView
+- (instancetype)initWithScrollView:(UIScrollView*) scrollView
 {
     CGRect frame = scrollView.bounds;
     frame.size.height = 0;

@@ -1,14 +1,15 @@
 //
 //  GKBaseViewModel.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/20.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKBaseViewModel.h"
 #import "GKHttpTask.h"
 #import "GKHttpMultiTasks.h"
+#import "UIViewController+GKLoading.h"
 
 @interface GKBaseViewModel()
 
@@ -70,14 +71,14 @@
 - (void)reloadData
 {
     if(self.shouldShowPageLoading){
-        self.viewController.gk_showPageLoading = YES;
+        self.viewController.gkShowPageLoading = YES;
     }
 }
 
 - (void)onLoadData
 {
     if(self.shouldShowPageLoading){
-        self.viewController.gk_showPageLoading = NO;
+        self.viewController.gkShowPageLoading = NO;
     }
     [self.viewController onLoadData];
 }

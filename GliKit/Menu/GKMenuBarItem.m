@@ -1,21 +1,21 @@
 //
 //  GKMenuBarItem.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/18.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKMenuBarItem.h"
 
 @implementation GKMenuBarItem
 
-+ (id)infoWithTitle:(NSString*) title
++ (instancetype)itemWithTitle:(NSString*) title
 {
-    GKMenuBarItem *info = [[GKMenuBarItem alloc] init];
-    info.title = title;
+    GKMenuBarItem *item = [[GKMenuBarItem alloc] init];
+    item.title = title;
     
-    return info;
+    return item;
 }
 
 

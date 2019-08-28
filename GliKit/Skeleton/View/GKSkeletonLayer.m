@@ -8,6 +8,7 @@
 
 #import "GKSkeletonLayer.h"
 #import "GKSkeletonSubLayer.h"
+#import "UIColor+GKTheme.h"
 
 @implementation GKSkeletonLayer
 
@@ -15,7 +16,7 @@
 {
     self = [super init];
     if (self) {
-        self.skeletonBackgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        self.skeletonBackgroundColor = UIColor.gkSkeletonBackgroundColor;
     }
     return self;
 }

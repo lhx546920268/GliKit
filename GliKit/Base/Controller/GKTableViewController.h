@@ -1,9 +1,9 @@
 //
 //  GKTableViewController.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKScrollViewController.h"
@@ -35,7 +35,7 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
  *@param style 列表风格
  *@return 一个初始化的 GKTableViewController 对象
  */
-- (id)initWithStyle:(UITableViewStyle) style;
+- (instancetype)initWithStyle:(UITableViewStyle) style;
 
 ///注册cell
 - (void)registerNib:(Class) clazz;

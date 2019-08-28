@@ -1,9 +1,9 @@
 //
 //  GKAlertViewController.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/5/14.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKAlertController.h"
@@ -457,7 +457,7 @@
                 
                 self.dialogBackgroundView.alpha = 1.0;
                 self.container.alpha = 1.0;
-                GKBasicAnimation *animation = [GKBasicAnimation animationWithKeyPath:@"transform.scale"];
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
                 animation.fromValue = [NSNumber numberWithFloat:1.3];
                 animation.toValue = [NSNumber numberWithFloat:1.0];
                 animation.duration = 0.25;

@@ -1,12 +1,14 @@
 //
 //  GKTextView.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/22.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKTextView.h"
+#import "UIColor+GKTheme.h"
+#import "NSString+GKUtils.h"
 
 @protocol UITextPasteConfigurationSupporting;
 
@@ -18,7 +20,7 @@
 
 //MARK: init
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if(self){
@@ -27,7 +29,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self){
@@ -44,7 +46,7 @@
     _maxLength = NSUIntegerMax;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gkTextDidChange:) name:UITextViewTextDidChangeNotification object:self];
     
-    self.font = [UIFont appFontWithSize:14];
+    self.font = [UIFont systemFontOfSize:14];
     self.placeholderTextColor = nil;
     self.placeholderOffset = CGPointMake(8.0f, 8.0f);
     self.textLengthAttributes = nil;
@@ -95,7 +97,7 @@
 - (void)setPlaceholderTextColor:(UIColor *) textColor
 {
     if(!textColor)
-        textColor = UIColor.appPlaceholderColor;
+        textColor = UIColor.gkPlaceholderColor;
     _placeholderTextColor = textColor;
     [self updatePlaceholder];
 }
@@ -127,7 +129,7 @@
 - (void)setTextLengthAttributes:(NSDictionary *)textLengthAttributes
 {
     if(textLengthAttributes.count == 0)
-        textLengthAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont appFontWithSize:13] , NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
+        textLengthAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13] , NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
     _textLengthAttributes = textLengthAttributes;
     [self updatePlaceholder];
 }
@@ -196,7 +198,7 @@
 }
 
 ///文字输入改变
-- (void)gk_textDidChange:(NSNotification *)notification
+- (void)gkTextDidChange:(NSNotification *)notification
 {
     [self updatePlaceholder];
     

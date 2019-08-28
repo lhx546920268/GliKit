@@ -7,7 +7,7 @@
 //
 
 #import "UITableView+GKSkeleton.h"
-#import <NSObject+Utils.h>
+#import "NSObject+GKUtils.h"
 #import "UIView+GKSkeleton.h"
 #import <objc/runtime.h>
 #import "GKSkeletonHelper.h"
@@ -18,11 +18,11 @@ static char GKSkeletonHideAnimateKey;
 
 + (void)load
 {
-    [self gk_exchangeImplementations:@selector(setDelegate:) prefix:@"gk_skeleton_"];
-    [self gk_exchangeImplementations:@selector(setDataSource:) prefix:@"gk_skeleton_"];
+    [self gkExchangeImplementations:@selector(setDelegate:) prefix:@"gkSkeleton_"];
+    [self gkExchangeImplementations:@selector(setDataSource:) prefix:@"gkSkeleton_"];
 }
 
-- (void)gk_skeleton_setDelegate:(id<UITableViewDelegate>)delegate
+- (void)gkSkeleton_setDelegate:(id<UITableViewDelegate>)delegate
 {
     if(delegate){
         [GKSkeletonHelper replaceImplementations:@selector(tableView:didSelectRowAtIndexPath:) owner:delegate implementer:self];
@@ -31,22 +31,22 @@ static char GKSkeletonHideAnimateKey;
         [GKSkeletonHelper replaceImplementations:@selector(tableView:shouldHighlightRowAtIndexPath:) owner:delegate implementer:self];
     }
     
-    [self gk_skeleton_setDelegate:delegate];
+    [self gkSkeleton_setDelegate:delegate];
 }
 
-- (void)gk_skeleton_setDataSource:(id<UITableViewDataSource>)dataSource
+- (void)gkSkeleton_setDataSource:(id<UITableViewDataSource>)dataSource
 {
     if(dataSource){
         [GKSkeletonHelper replaceImplementations:@selector(tableView:cellForRowAtIndexPath:) owner:dataSource implementer:self];
     }
     
-    [self gk_skeleton_setDataSource:dataSource];
+    [self gkSkeleton_setDataSource:dataSource];
 }
 
-- (void)gk_showSkeletonWithDuration:(NSTimeInterval)duration completion:(GKShowSkeletonCompletionHandler)completion
+- (void)gkShowSkeletonWithDuration:(NSTimeInterval)duration completion:(GKShowSkeletonCompletionHandler)completion
 {
-    if(self.gk_skeletonStatus == GKSkeletonStatusNone){
-        self.gk_skeletonStatus = GKSkeletonStatusShowing;
+    if(self.gkSkeletonStatus == GKSkeletonStatusNone){
+        self.gkSkeletonStatus = GKSkeletonStatusShowing;
         [self reloadData];
         
         if(duration > 0 && completion){
@@ -57,22 +57,22 @@ static char GKSkeletonHideAnimateKey;
     }
 }
 
-- (void)setGk_skeletonHideAnimate:(BOOL) animate
+- (void)setGkSkeletonHideAnimate:(BOOL) animate
 {
     objc_setAssociatedObject(self, &GKSkeletonHideAnimateKey, @(animate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gk_skeletonHideAnimate
+- (BOOL)gkSkeletonHideAnimate
 {
     return [objc_getAssociatedObject(self, &GKSkeletonHideAnimateKey) boolValue];
 }
 
-- (void)gk_hideSkeletonWithAnimate:(BOOL)animate completion:(void (^)(BOOL))completion
+- (void)gkHideSkeletonWithAnimate:(BOOL)animate completion:(void (^)(BOOL))completion
 {
-    GKSkeletonStatus status = self.gk_skeletonStatus;
+    GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing){
-        self.gk_skeletonStatus = GKSkeletonStatusWillHide;
-        [self setGk_skeletonHideAnimate:animate];
+        self.gkSkeletonStatus = GKSkeletonStatusWillHide;
+        [self setGkSkeletonHideAnimate:animate];
         [self reloadData];
     }
 }
@@ -81,35 +81,35 @@ static char GKSkeletonHideAnimateKey;
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return tableView.gk_skeletonStatus == GKSkeletonStatusNone;
+    return tableView.gkSkeletonStatus == GKSkeletonStatusNone;
 }
 
-- (BOOL)gk_skeleton_tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)gkSkeleton_tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(tableView.gk_skeletonStatus != GKSkeletonStatusNone){
+    if(tableView.gkSkeletonStatus != GKSkeletonStatusNone){
         return NO;
     }
     
-    return [self gk_skeleton_tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
+    return [self gkSkeleton_tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
 }
 
-- (UIView*)gk_skeleton_tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (UIView*)gkSkeleton_tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *view = [self gk_skeleton_tableView:tableView viewForFooterInSection:section];
+    UIView *view = [self gkSkeleton_tableView:tableView viewForFooterInSection:section];
     
-    GKSkeletonStatus status = tableView.gk_skeletonStatus;
+    GKSkeletonStatus status = tableView.gkSkeletonStatus;
     switch (status) {
         case GKSkeletonStatusShowing : {
             
-            [view gk_showSkeleton];
+            [view gkShowSkeleton];
         }
             break;
         case GKSkeletonStatusWillHide: {
             
             __weak UITableView *weakSelf = tableView;
-            [view gk_hideSkeletonWithAnimate:tableView.gk_skeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gk_skeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gk_skeletonLayer = nil;
+            [view gkHideSkeletonWithAnimate:tableView.gkSkeletonHideAnimate completion:^(BOOL finished) {
+                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
+                    weakSelf.gkSkeletonLayer = nil;
                 }
             }];
         }
@@ -121,23 +121,23 @@ static char GKSkeletonHideAnimateKey;
     return view;
 }
 
-- (UIView*)gk_skeleton_tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UIView*)gkSkeleton_tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [self gk_skeleton_tableView:tableView viewForHeaderInSection:section];
+    UIView *view = [self gkSkeleton_tableView:tableView viewForHeaderInSection:section];
     
-    GKSkeletonStatus status = tableView.gk_skeletonStatus;
+    GKSkeletonStatus status = tableView.gkSkeletonStatus;
     switch (status) {
         case GKSkeletonStatusShowing : {
             
-            [view gk_showSkeleton];
+            [view gkShowSkeleton];
         }
             break;
         case GKSkeletonStatusWillHide: {
             
             __weak UITableView *weakSelf = tableView;
-            [view gk_hideSkeletonWithAnimate:tableView.gk_skeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gk_skeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gk_skeletonLayer = nil;
+            [view gkHideSkeletonWithAnimate:tableView.gkSkeletonHideAnimate completion:^(BOOL finished) {
+                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
+                    weakSelf.gkSkeletonLayer = nil;
                 }
             }];
         }
@@ -149,23 +149,23 @@ static char GKSkeletonHideAnimateKey;
     return view;
 }
 
-- (UITableViewCell*)gk_skeleton_tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)gkSkeleton_tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self gk_skeleton_tableView:tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *cell = [self gkSkeleton_tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    GKSkeletonStatus status = tableView.gk_skeletonStatus;
+    GKSkeletonStatus status = tableView.gkSkeletonStatus;
     switch (status) {
         case GKSkeletonStatusShowing : {
             
-            [cell.contentView gk_showSkeleton];
+            [cell.contentView gkShowSkeleton];
         }
             break;
         case GKSkeletonStatusWillHide: {
             
             __weak UITableView *weakSelf = tableView;
-            [cell.contentView gk_hideSkeletonWithAnimate:tableView.gk_skeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gk_skeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gk_skeletonLayer = nil;
+            [cell.contentView gkHideSkeletonWithAnimate:tableView.gkSkeletonHideAnimate completion:^(BOOL finished) {
+                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
+                    weakSelf.gkSkeletonLayer = nil;
                 }
             }];
         }
@@ -177,14 +177,14 @@ static char GKSkeletonHideAnimateKey;
     return cell;
 }
 
-- (void)gk_skeleton_tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)gkSkeleton_tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(tableView.gk_skeletonStatus != GKSkeletonStatusNone){
+    if(tableView.gkSkeletonStatus != GKSkeletonStatusNone){
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
     }
     
-    [self gk_skeleton_tableView:tableView didSelectRowAtIndexPath:indexPath];
+    [self gkSkeleton_tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 

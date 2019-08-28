@@ -1,13 +1,14 @@
 //
 //  UIButton+GKUtils.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/18.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "UIButton+GKUtils.h"
 #import "NSString+GKUtils.h"
+#import "NSObject+GKUtils.h"
 #import <objc/runtime.h>
 
 ///保存背景颜色的key

@@ -1,9 +1,9 @@
 //
 //  GKAlertHeader.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/7/18.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKAlertHeader.h"
@@ -14,7 +14,7 @@
 @synthesize imageView = _imageView;
 @synthesize messageLabel = _messageLabel;
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self){

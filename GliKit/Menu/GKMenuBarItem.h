@@ -1,9 +1,9 @@
 //
 //  GKMenuBarItem.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/18.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -69,7 +69,7 @@
  *@param title 标题
  *@return 已初始化的 GKMenuBarItem
  */
-+ (id)infoWithTitle:(NSString*) title;
++ (instancetype)itemWithTitle:(NSString*) title;
 
 @end
 

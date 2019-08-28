@@ -1,20 +1,24 @@
 //
 //  GKProgressView.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/16.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKProgressView.h"
+#import "UIApplication+GKTheme.h"
+#import "UIColor+GKTheme.h"
+#import "UIColor+GKUtils.h"
+#import "GKBaseDefines.h"
 
-@interface GKProgressView ()<GKAnimationDelegate>
+@interface GKProgressView ()<CAAnimationDelegate>
 
 ///原来的进度
 @property(nonatomic,assign) float previousProgress;
 
 ///进度条layer
-@property(nonatomic,strong) GKShapeLayer *progressLayer;
+@property(nonatomic,strong) CAShapeLayer *progressLayer;
 
 @end
 
@@ -36,7 +40,7 @@
     return [self initWithFrame:CGRectZero style:style];
 }
 
-- (id)initWithFrame:(CGRect)frame style:(GKProgressViewStyle) style
+- (instancetype)initWithFrame:(CGRect)frame style:(GKProgressViewStyle) style
 {
     self = [super initWithFrame:frame];
     if(self){
@@ -73,16 +77,16 @@
     self.hideAfterFinish = YES;
     self.hideWidthAnimated = YES;
     
-    self.progressLayer = [GKShapeLayer layer];
+    self.progressLayer = [CAShapeLayer layer];
     self.progressLayer.fillColor = [UIColor clearColor].CGColor;
     [self.layer addSublayer:self.progressLayer];
     
-    [(GKShapeLayer*)self.layer setFillColor:[UIColor clearColor].CGColor];
+    [(CAShapeLayer*)self.layer setFillColor:[UIColor clearColor].CGColor];
 }
 
 + (Class)layerClass
 {
-    return [GKShapeLayer class];
+    return [CAShapeLayer class];
 }
 
 - (void)layoutSubviews
@@ -151,7 +155,7 @@
             if(!self.percentLabel){
                 _percentLabel = [UILabel new];
                 _percentLabel.textColor = [UIColor blackColor];
-                _percentLabel.font = [UIFont appFontWithSize:20];
+                _percentLabel.font = [UIFont systemFontOfSize:20];
                 _percentLabel.textAlignment = NSTextAlignmentCenter;
                 [self addSubview:_percentLabel];
                 
@@ -197,7 +201,7 @@
 {
     if(CGSizeEqualToSize(self.bounds.size, CGSizeZero))
         return;
-    GKShapeLayer *layer = (GKShapeLayer*)self.layer;
+    CAShapeLayer *layer = (CAShapeLayer*)self.layer;
     
     switch (_style){
         case GKProgressViewStyleCircle : {
@@ -242,8 +246,8 @@
             self.progressLayer.strokeEnd = _progress;
             
             //动画显示进度条
-            GKBasicAnimation *pathAnimation = [GKBasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathAnimation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseOut];
+            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
             pathAnimation.duration = 0.25;
             pathAnimation.fromValue = @(_previousProgress);
             pathAnimation.toValue = @(_progress);
@@ -284,9 +288,9 @@
             //添加动画
             self.progressLayer.path = (__bridge CGPathRef)[animatedPaths lastObject];
             
-            GKKeyframeAnimation *animation = [GKKeyframeAnimation animationWithKeyPath:@"path"];
+            CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"path"];
             animation.values = animatedPaths;
-            animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseOut];
+            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
             animation.duration = 0.25;
             animation.removedOnCompletion = YES;
             //进度条圆满隐藏
@@ -323,9 +327,9 @@
             //添加动画
             self.progressLayer.path = (__bridge CGPathRef)[animatedPaths lastObject];
             
-            GKKeyframeAnimation *animation = [GKKeyframeAnimation animationWithKeyPath:@"path"];
+            CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"path"];
             animation.values = animatedPaths;
-            animation.timingFunction = [GKMediaTimingFunction functionWithName:kGKMediaTimingFunctionEaseOut];
+            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
             animation.duration = 0.25;
             animation.removedOnCompletion = YES;
             //进度条圆满隐藏
@@ -341,7 +345,7 @@
 }
 
 //动画结束，隐藏进度条
-- (void)animationDidStop:(GKAnimation *)anim finished:(BOOL)flag
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     if(self.hideAfterFinish){
         if(self.hideWidthAnimated){
@@ -403,7 +407,7 @@
         self.progressLayer.path = path.CGPath;
     }
     
-    [(GKShapeLayer*)self.layer setPath:path.CGPath];
+    [(CAShapeLayer*)self.layer setPath:path.CGPath];
     [self updateProgress];
 }
 

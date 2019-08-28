@@ -23,6 +23,9 @@
 ///状态栏样式
 @property (class, nonatomic, assign) UIStatusBarStyle gkStatusBarStyle;
 
+///状态栏高度
+@property (class, nonatomic, readonly) CGFloat gkStatusBarHeight;
+
 
 @end
 

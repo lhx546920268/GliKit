@@ -1,9 +1,9 @@
 //
 //  GKAlertStyle.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/7/18.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKAlertProps.h"
@@ -18,12 +18,12 @@
         self.titleFont = [UIFont boldSystemFontOfSize:17.0];
         self.titleTextColor = [UIColor blackColor];
         self.titleTextAlignment = NSTextAlignmentCenter;
-        self.messageFont = [UIFont appFontWithSize:13];
+        self.messageFont = [UIFont systemFontOfSize:13];
         self.messageTextColor = [UIColor blackColor];
         self.messageTextAlignment = NSTextAlignmentCenter;
-        self.butttonFont = [UIFont appFontWithSize:17];;
+        self.butttonFont = [UIFont systemFontOfSize:17];;
         self.buttonTextColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
-        self.destructiveButtonFont = [UIFont appFontWithSize:17];
+        self.destructiveButtonFont = [UIFont systemFontOfSize:17];
         self.destructiveButtonTextColor = [UIColor redColor];
         self.cancelButtonFont = [UIFont boldSystemFontOfSize:17.0];
         self.cancelButtonTextColor = self.buttonTextColor;

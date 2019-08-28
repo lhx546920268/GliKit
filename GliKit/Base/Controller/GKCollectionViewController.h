@@ -1,9 +1,9 @@
 //
 //  GKCollectionViewController.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKScrollViewController.h"
@@ -18,7 +18,7 @@
  *@param layout 布局方式，传nil会使用默认的布局
  *@return 一个初始化的 GKCollectionViewController 对象
  */
-- (id)initWithFlowLayout:(UICollectionViewLayout*) layout;
+- (instancetype)initWithFlowLayout:(UICollectionViewLayout*) layout;
 
 /**
  信息列表

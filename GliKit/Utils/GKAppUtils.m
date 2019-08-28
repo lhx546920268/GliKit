@@ -1,9 +1,9 @@
 //
 //  GKAppUtils.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/26.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKAppUtils.h"
@@ -15,21 +15,16 @@
 #import "GKAlertUtils.h"
 #import "GKSSKeychain.h"
 #import <sys/utsname.h>
+#import "NSString+GKUtils.h"
 
 ///当前设备唯一标识符
 static NSString *sharedUUID = nil;
-
-//存放uuid的钥匙串
-static NSString *GKKeychainService = @"com.zegobird.my";
-static NSString *GKKeychainUUIDKey = @"zegobirdUUID";
 
 @implementation GKAppUtils
 
 + (NSString*)appVersion
 {
-    NSDictionary *dic = [[NSBundle mainBundle] infoDictionary];
-    
-    return [dic objectForKey:@"CFBundleShortVersionString"];
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 + (BOOL)isTestApp
@@ -39,20 +34,7 @@ static NSString *GKKeychainUUIDKey = @"zegobirdUUID";
 
 + (NSString*)appName
 {
-    static NSDictionary *infoStringsDictionary = nil;
-    static dispatch_once_t once = 0;
-    
-    dispatch_once(&once, ^(void){
-        
-        infoStringsDictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"InfoPlist" ofType:@"strings"]];
-    });
-    
-    NSString *name = [infoStringsDictionary objectForKey:@"CFBundleDisplayName"];
-    if([NSString isEmpty:name]){
-        name = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    }
-    
-    return name;
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 }
 
 + (UIImage*)appIcon
@@ -63,13 +45,20 @@ static NSString *GKKeychainUUIDKey = @"zegobirdUUID";
     return [UIImage imageNamed:iconName];
 }
 
++ (NSString *)bundleId
+{
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+}
+
 + (NSString*)uuid
 {
     if([NSString isEmpty:sharedUUID]){
+        NSString *service = self.bundleId;
+        NSString *account = @"lhxUUID";
         
-        NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"%@%@", GKKeychainService, GKKeychainUUIDKey]];
+        NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"%@%@", service, account]];
         if([NSString isEmpty:uuid]){
-            uuid = [GKSSKeychain passwordForService:GKKeychainService account:GKKeychainUUIDKey error:nil];
+            uuid = [GKSSKeychain passwordForService:service account:account error:nil];
         }
         
         if([NSString isEmpty:uuid]){
@@ -79,8 +68,8 @@ static NSString *GKKeychainUUIDKey = @"zegobirdUUID";
             uuid = [NSString stringWithString:(__bridge NSString*)uuidStringRef];
             CFRelease(uuidStringRef);
             
-            [GKSSKeychain setPassword:uuid forService:GKKeychainService account:GKKeychainUUIDKey error:nil];
-            [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:[NSString stringWithFormat:@"%@%@", GKKeychainService, GKKeychainUUIDKey]];
+            [GKSSKeychain setPassword:uuid forService:service account:account error:nil];
+            [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:[NSString stringWithFormat:@"%@%@", service, account]];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         

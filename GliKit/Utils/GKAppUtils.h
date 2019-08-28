@@ -1,9 +1,9 @@
 //
 //  GKAppUtils.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/26.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -22,6 +22,9 @@
 
 ///app图标
 @property(class, nonatomic, readonly) UIImage *appIcon;
+
+///bundle id
+@property(class, nonatomic, readonly) NSString *bundleId;
 
 ///获取唯一标识符
 @property(class, nonatomic, readonly) NSString *uuid;

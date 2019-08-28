@@ -1,9 +1,9 @@
 //
 //  NSObject+GKUtils.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/14.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "NSObject+GKUtils.h"
@@ -54,7 +54,7 @@
     UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
     UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
     
-    if([parentViewControlelr.gk_transitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
+    if([parentViewControlelr.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
         parentViewControlelr = parentViewControlelr.presentingViewController;
     }
     
@@ -284,7 +284,7 @@
         }
            
     }else{
-        [parentViewControlelr gk_pushViewControllerUseTransitionDelegate:viewController];
+        [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
     }
 }
 
@@ -313,7 +313,7 @@
         
         [nav setViewControllers:viewControllers animated:YES];
     }else{
-        [parentViewControlelr gk_pushViewControllerUseTransitionDelegate:viewController];
+        [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
     }
 }
 

@@ -1,12 +1,12 @@
 //
 //  GKPresentTransitionDelegate.h
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 ///动画样式
 typedef NS_ENUM(NSInteger, GKPresentTransitionStyle)
@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, GKPresentTransitionStyle)
     ///垂直覆盖
     GKPresentTransitionStyleCoverVerticalFromBottom,
     
+    ///从顶部开始
     GKPresentTransitionStyleCoverVerticalFromTop,
 };
 

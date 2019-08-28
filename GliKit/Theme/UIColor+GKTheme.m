@@ -16,6 +16,8 @@ static UIColor *appNavigationBarTitleColor = nil;
 static UIColor *appNavigationBarTintColor = nil;
 static UIColor *appSeparatorColor = nil;
 static UIColor *appGrayBackgroundColor = nil;
+static UIColor *appSkeletonBackgroundColor = nil;
+static UIColor *appPlaceholderColor = nil;
 
 @implementation UIColor (GKTheme)
 
@@ -108,6 +110,32 @@ static UIColor *appGrayBackgroundColor = nil;
 + (void)setGkGrayBackgroundColor:(UIColor *)gkGrayBackgroundColor
 {
     appGrayBackgroundColor = gkGrayBackgroundColor;
+}
+
++ (UIColor *)gkSkeletonBackgroundColor
+{
+    if(!appSkeletonBackgroundColor){
+        appSkeletonBackgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    }
+    return appSkeletonBackgroundColor;
+}
+
++ (void)setGkSkeletonBackgroundColor:(UIColor *)gkSkeletonBackgroundColor
+{
+    appSkeletonBackgroundColor = gkSkeletonBackgroundColor;
+}
+
++ (UIColor *)gkPlaceholderColor
+{
+    if(!appPlaceholderColor){
+        appPlaceholderColor = [UIColor colorWithWhite:0.702f alpha:0.7];
+    }
+    return appPlaceholderColor;
+}
+
++ (void)setGkPlaceholderColor:(UIColor *)gkPlaceholderColor
+{
+    appPlaceholderColor = gkPlaceholderColor;
 }
 
 @end

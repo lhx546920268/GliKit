@@ -1,15 +1,16 @@
 //
 //  GKPartialPresentTransitionDelegate.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKPartialPresentTransitionDelegate.h"
 #import "UIViewController+GKTransition.h"
 #import "UIImage+GKUtils.h"
 #import "UIViewController+GKUtils.h"
+#import "UIView+GKUtils.h"
 
 ///自定义Present类型的过度动画实现 通过init初始化
 @interface GKPresentTransitionAnimator : NSObject<UIViewControllerAnimatedTransitioning>
@@ -88,9 +89,8 @@
 {
     GKPartialPresentTransitionDelegate *delegate = [[GKPartialPresentTransitionDelegate alloc] init];
     delegate.transitionStyle = style;
-    child.gk_transitioningDelegate = delegate;
-    AppDelegate *appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    [appDelegate.window.rootViewController.gk_topestPresentedViewController presentViewController:child animated:YES completion:nil];
+    child.gkTransitioningDelegate = delegate;
+    [UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController presentViewController:child animated:YES completion:nil];
 }
 
 @end
@@ -162,19 +162,19 @@
                 
             case GKPresentTransitionStyleCoverVerticalFromTop : {
                 toFrame.origin.y = 0;
-                toFrame.origin.x = (containerView.mj_w - toFrame.size.width) / 2.0;
+                toFrame.origin.x = (containerView.gkWidth - toFrame.size.width) / 2.0;
                 toView.frame = CGRectOffset(toFrame, 0, -toFrame.size.height);
             }
                 break;
             case GKPresentTransitionStyleCoverVerticalFromBottom : {
-                toFrame.origin.y = containerView.mj_h - toFrame.size.height;
-                toFrame.origin.x = (containerView.mj_w - toFrame.size.width) / 2.0;
+                toFrame.origin.y = containerView.gkHeight - toFrame.size.height;
+                toFrame.origin.x = (containerView.gkWidth - toFrame.size.width) / 2.0;
                 toView.frame = CGRectOffset(toFrame, 0, toFrame.size.height);
             }
                 break;
             case GKPresentTransitionStyleCoverHorizontal : {
-                toFrame.origin.y = (containerView.mj_h - toFrame.size.height) / 2.0;
-                toFrame.origin.x = containerView.mj_w - toFrame.size.width;
+                toFrame.origin.y = (containerView.gkHeight - toFrame.size.height) / 2.0;
+                toFrame.origin.x = containerView.gkWidth - toFrame.size.width;
                 toView.frame = CGRectOffset(toFrame, toFrame.size.width, 0);
             }
                 break;

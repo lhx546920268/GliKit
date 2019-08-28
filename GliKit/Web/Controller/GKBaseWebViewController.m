@@ -1,9 +1,9 @@
 //
 //  GKBaseWebViewController.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/16.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKBaseWebViewController.h"
@@ -14,6 +14,8 @@
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "GKNavigationBar.h"
 #import "GKNavigationItemHelper.h"
+#import "NSString+GKUtils.h"
+#import "GKBaseDefines.h"
 
 ///当前系统默认的 userAgent
 static NSString *GKSystemUserAgent = nil;
@@ -42,7 +44,7 @@ static WKProcessPool *sharedProcessPool;
     return self;
 }
 
-- (id)initWithURL:(NSString*) URL
+- (instancetype)initWithURL:(NSString*) URL
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self){
@@ -59,7 +61,7 @@ static WKProcessPool *sharedProcessPool;
     return self;
 }
 
-- (id)initWithHtmlString:(NSString*) htmlString
+- (instancetype)initWithHtmlString:(NSString*) htmlString
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self){
@@ -196,7 +198,7 @@ static WKProcessPool *sharedProcessPool;
     [_progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.equalTo(contentView);
         make.height.equalTo(2.5);
-        make.top.equalTo(self.gk_safeAreaLayoutGuideTop);
+        make.top.equalTo(self.gkSafeAreaLayoutGuideTop);
     }];
     
     [_webView mas_makeConstraints:^(MASConstraintMaker *make) {

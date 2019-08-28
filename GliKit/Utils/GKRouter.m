@@ -1,20 +1,18 @@
 //
 //  GKRouter.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/6/6.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKRouter.h"
 #import <objc/runtime.h>
 #import "GKBaseViewController.h"
-#import "GKOrderConfirmViewController.h"
 #import "GKObject.h"
-#import "GKHomePageViewController.h"
-#import "GKMeViewController.h"
-#import "GKCateContainerViewController.h"
-#import "GKShopcartViewController.h"
+#import "NSObject+GKUtils.h"
+#import "NSDictionary+GKUtils.h"
+#import "NSString+GKUtils.h"
 
 @implementation GKRouter
 
@@ -23,7 +21,7 @@
     if(![data isKindOfClass:NSDictionary.class] || data.count == 0)
         return;
     
-    NSString *className = [data gk_stringForKey:@"className"];
+    NSString *className = [data gkStringForKey:@"className"];
     if([NSString isEmpty:className])
         return;
     
@@ -32,69 +30,23 @@
     if(!clazz)
         return;
     
-    GKTabBarIndex tabBarIndex = GKTabBarIndexNotKnow;
-    //如果是首页那4个标签 则直接返回
-    if(clazz == GKHomePageViewController.class){
-        tabBarIndex = GKTabBarIndexHome;
-    }else if (clazz == GKCateContainerViewController.class){
-        tabBarIndex = GKTabBarIndexCategory;
-    }else if (clazz == GKShopcartViewController.class){
-        tabBarIndex = GKTabBarIndexShopcart;
-    }else if (clazz == GKMeViewController.class){
-        tabBarIndex = GKTabBarIndexMe;
+    GKBaseViewController *vc = [clazz new];
+    if(![vc isKindOfClass:GKBaseViewController.class])
+        return;
+    
+    NSDictionary *propertyData = [data gkDictionaryForKey:@"data"];
+    if(propertyData.count > 0){
+        [self setPropertyForViewController:vc data:propertyData];
     }
-    
-    
-    switch (tabBarIndex) {
-        case GKTabBarIndexMe :
-        case GKTabBarIndexCategory :
-        case GKTabBarIndexHome : {
-            
-            UIViewController *vc = self.gk_currentViewController;
-            [vc gk_backAnimated:NO completion:^{
-                [GKTabBarController setSelectedIndex:tabBarIndex];
-            }];
-        }
-            break;
-        case GKTabBarIndexShopcart : {
-            
-            //购物车要登录
-            if(GKUserModel.isLogin){
-                UIViewController *vc = self.gk_currentViewController;
-                [vc gk_backAnimated:NO completion:^{
-                    [GKTabBarController setSelectedIndex:tabBarIndex];
-                }];
-            }else{
-                [AppDelegate showLoginWithCompletionHandler:^(NSString *userId) {
-                    UIViewController *vc = self.gk_currentViewController;
-                    [vc gk_backAnimated:NO completion:^{
-                        [GKTabBarController setSelectedIndex:tabBarIndex];
-                    }];
-                }];
-            }
-        }
-            break;
-        default: {
-            GKBaseViewController *vc = [clazz new];
-            if(![vc isKindOfClass:GKBaseViewController.class])
-                return;
-            
-            NSDictionary *propertyData = [data gk_dictionaryForKey:@"data"];
-            if(propertyData.count > 0){
-                [self setPropertyForViewController:vc data:propertyData];
-            }
-            UINavigationController *nav = self.gk_currentNavigationController;
-            BOOL closeCurrent = [data gk_boolForKey:@"closeCurrent"];
-            if(closeCurrent && nav){
-                NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
-                [viewControllers removeLastObject];
-                [viewControllers addObject:vc];
-                [nav pushViewController:vc animated:YES];
-            }else{
-                [NSObject gk_pushViewController:vc];
-            }
-        }
-            break;
+    UINavigationController *nav = self.gkCurrentNavigationController;
+    BOOL closeCurrent = [data gkBoolForKey:@"closeCurrent"];
+    if(closeCurrent && nav){
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
+        [viewControllers removeLastObject];
+        [viewControllers addObject:vc];
+        [nav pushViewController:vc animated:YES];
+    }else{
+        [NSObject gkPushViewController:vc];
     }
 }
 
@@ -129,7 +81,7 @@
             if([value isKindOfClass:NSString.class] || [value isKindOfClass:NSNumber.class]){
                 
                 if([attr containsString:@"NSString"]){
-                    [vc setValue:[data gk_stringForKey:name] forKey:name];
+                    [vc setValue:[data gkStringForKey:name] forKey:name];
                 }else{
                     [vc setValue:value forKey:name];
                 }
@@ -137,7 +89,7 @@
                 
                 //把字典转换成对应模型
                 NSDictionary *dic = (NSDictionary*)value;
-                NSString *className = [dic gk_stringForKey:@"className"];
+                NSString *className = [dic gkStringForKey:@"className"];
                 Class clazz = NSClassFromString(className);
                 GKObject *obj = [clazz new];
                 if([obj isKindOfClass:GKObject.class]){

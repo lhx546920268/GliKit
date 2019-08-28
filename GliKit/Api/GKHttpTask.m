@@ -1,16 +1,16 @@
 //
 //  GKHttpTask.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/3/14.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKHttpTask.h"
 #import "GKBaseDefines.h"
 #import "GKHttpSessionManager.h"
 #import "NSDictionary+GKUtils.h"
-#import "GKApiConstant.h"
+#import "UIView+GKLoading.h"
 
 ///保存请求队列的单例
 static NSMutableSet* GKSharedTasks()
@@ -157,9 +157,14 @@ static NSMutableSet* GKSharedTasks()
     [GKSharedTasks() addObject:self];
     if(self.shouldShowloadingHUD){
         if(self.view != nil){
-            [self.view gk_showProgressWithText:nil delay:self.loadingHUDDelay];
+            [self.view gkShowProgressWithText:nil delay:self.loadingHUDDelay];
         }
     }
+}
+
+- (BOOL)onLoadData:(NSDictionary *)data
+{
+    return YES;
 }
 
 - (void)onSuccess
@@ -169,38 +174,12 @@ static NSMutableSet* GKSharedTasks()
 
 - (void)onFail
 {
-    if(self.shouldAlertErrorMsg){
-        //服务端错误
-        NSString *error = nil;
-        switch (_code) {
-            case GKHttpCodeFail : {
-                error = self.message;
-            }
-                break;
-            case GKHttpCodeTokenOutOfDate : {
-                error = self.message;
-                [[NSNotificationCenter defaultCenter] postNotificationName:GKUserDidLogoutNotification object:nil];
-            }
-                break;
-            default:
-                break;
-        }
-        
-        if([NSString isEmpty:error]){
-            error = @"network_error".zegoLocalizedString;
-        }
-        
-        if(self.view){
-            [self.view gk_showErrorWithText:error];
-        }else{
-            [[UIApplication sharedApplication].keyWindow gk_showErrorWithText:error];
-        }
-    }
+   
 }
 
 - (void)onComplete
 {
-    [self.view gk_dismissProgress];
+    [self.view gkDismissProgress];
     if([self.delegate respondsToSelector:@selector(taskDidComplete:)]){
         [self.delegate taskDidComplete:self];
     }

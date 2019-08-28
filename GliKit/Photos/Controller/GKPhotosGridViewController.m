@@ -375,7 +375,7 @@
             vc.selectedAssets = self.selectedAssets;
             vc.photosOptions = self.photosOptions;
             vc.visiableIndex = indexPath.item;
-            [self gk_pushViewControllerUseTransitionDelegate:vc useNavigationBar:NO];
+            [self gkPushViewControllerUseTransitionDelegate:vc useNavigationBar:NO];
         }
             break;
         case GKPhotosIntentionCrop : {

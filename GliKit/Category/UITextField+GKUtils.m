@@ -1,13 +1,19 @@
 //
 //  UITextField+GKUtils.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "UITextField+GKUtils.h"
 #import <objc/runtime.h>
+#import "UIView+GKUtils.h"
+#import "UIColor+GKTheme.h"
+#import "UIApplication+GKTheme.h"
+#import "UIView+GKAutoLayout.h"
+#import "GKBaseDefines.h"
+#import "UIColor+GKUtils.h"
 
 static char GKForbiddenActionsKey;
 static char GKMaxLengthKey;
@@ -24,7 +30,7 @@ static char GKExtraStringKey;
 {
     self.leftViewMode = UITextFieldViewModeAlways;
     UIImage *image = [UIImage imageNamed:imageName];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (self.mj_h - image.size.height) / 2.0, image.size.width + padding, image.size.height)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (self.gkHeight - image.size.height) / 2.0, image.size.width + padding, image.size.height)];
     imageView.contentMode = UIViewContentModeCenter;
     imageView.image = image;
     self.leftView = imageView;
@@ -34,7 +40,7 @@ static char GKExtraStringKey;
 {
     self.rightViewMode = UITextFieldViewModeAlways;
     UIImage *image = [UIImage imageNamed:imageName];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (self.mj_h - image.size.height) / 2.0, image.size.width + padding, image.size.height)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (self.gkHeight - image.size.height) / 2.0, image.size.width + padding, image.size.height)];
     imageView.contentMode = UIViewContentModeCenter;
     imageView.image = image;
     self.rightView = imageView;
@@ -42,14 +48,14 @@ static char GKExtraStringKey;
 
 - (UIView*)gkSetDefaultSeparator
 {
-    return [self gk_setSeparatorWithColor:UIColor.appSeparatorColor height:GKSeparatorHeight];
+    return [self gkSetSeparatorWithColor:UIColor.gkSeparatorColor height:UIApplication.gkSeparatorHeight];
 }
 
 - (UIView*)gkSetSeparatorWithColor:(UIColor *)color height:(CGFloat)height
 {
     UIView *separator = self.gk_separator;
     separator.backgroundColor = color;
-    separator.gk_heightLayoutConstraint.constant = height;
+    separator.gkHeightLayoutConstraint.constant = height;
     
     return separator;
 }
@@ -63,7 +69,7 @@ static char GKExtraStringKey;
         
         [separator mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.bottom.equalTo(self);
-            make.height.equalTo(GKSeparatorHeight);
+            make.height.equalTo(UIApplication.gkSeparatorHeight);
         }];
         
         objc_setAssociatedObject(self, _cmd, separator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -89,20 +95,20 @@ static char GKExtraStringKey;
 - (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString *)title target:(id)target action:(SEL)action
 {
     if([NSString isEmpty:title]){
-        title = @"ok".zegoLocalizedString;
+        title = @"确定";
     }
     UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), 35)];
-    toolbar.backgroundColor = [UIColor gk_colorFromHex:@"dbdbdb"];
+    toolbar.backgroundColor = [UIColor gkColorFromHex:@"dbdbdb"];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setTitle:title forState:UIControlStateNormal];
-    [btn setTitleColor:UIColor.appThemeColor forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont appFontWithSize:16];
+    [btn setTitleColor:UIColor.gkThemeColor forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:16];
     btn.contentEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
     if(target && action){
         [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     }else{
-        [btn addTarget:self action:@selector(gk_handleConfirm) forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(gkHandleConfirm) forControlEvents:UIControlEventTouchUpInside];
     }
     [toolbar addSubview:btn];
     
@@ -113,7 +119,7 @@ static char GKExtraStringKey;
     self.inputAccessoryView = toolbar;
 }
 
-- (void)gk_handleConfirm
+- (void)gkHandleConfirm
 {
     [self resignFirstResponder];
 }
@@ -131,7 +137,7 @@ static char GKExtraStringKey;
     return YES;
 }
 
-- (void)setCa_maxLength:(NSUInteger) length
+- (void)setGkMaxLength:(NSUInteger) length
 {
     objc_setAssociatedObject(self, &GKMaxLengthKey, @(length), OBJC_ASSOCIATION_RETAIN);
     [self gkShouldObserveEditingChange];
@@ -143,7 +149,7 @@ static char GKExtraStringKey;
     return number ? [number unsignedIntegerValue] : NSUIntegerMax;
 }
 
-- (void)setCa_textType:(GKTextType) textType
+- (void)setGkTextType:(GKTextType) textType
 {
     objc_setAssociatedObject(self, &GKTextTypeKey, @(textType), OBJC_ASSOCIATION_RETAIN);
     [self gkShouldObserveEditingChange];
@@ -155,9 +161,9 @@ static char GKExtraStringKey;
     return number ? [number unsignedIntegerValue] : GKTextTypeAll;
 }
 
-- (void)setCa_textDidChange:(void (^)(void))gk_textDidChange
+- (void)setGkTextDidChange:(void (^)(void))gkTextDidChange
 {
-    objc_setAssociatedObject(self, &GKTextDidChangeKey, gk_textDidChange, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, &GKTextDidChangeKey, gkTextDidChange, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 - (void (^)(void))gkTextDidChange
@@ -165,7 +171,7 @@ static char GKExtraStringKey;
     return objc_getAssociatedObject(self, &GKTextDidChangeKey);
 }
 
-- (void)setCa_extraString:(NSString *) extraString
+- (void)setGkExtraString:(NSString *) extraString
 {
     objc_setAssociatedObject(self, &GKExtraStringKey, extraString, OBJC_ASSOCIATION_COPY_NONATOMIC);
     [self gkShouldObserveEditingChange];
@@ -276,7 +282,7 @@ static char GKExtraStringKey;
         
         //小数
         if(type == GKTextTypeDecimal){
-            NSUInteger pointIndex = [text gk_lastIndexOfCharacter:'.'];
+            NSUInteger pointIndex = [text gkLastIndexOfCharacter:'.'];
             if(pointIndex != NSNotFound){
                 //有多个点，删除前面的点
                 NSRange pointRange = [text rangeOfString:@"."];
@@ -305,7 +311,7 @@ static char GKExtraStringKey;
             }
         }
         
-        text = [text gk_stringByFilterWithType:type];
+        text = [text gkStringByFilterWithType:type];
         if(range.location > text.length){
             range.location = text.length;
         }

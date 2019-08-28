@@ -8,6 +8,7 @@
 
 #import "GKPhotosListCell.h"
 #import "GKBaseDefines.h"
+#import "GKDivider.h"
 
 @implementation GKPhotosListCell
 
@@ -55,15 +56,13 @@
         }];
         
         
-        UIView *divider = [UIView new];
-        divider.backgroundColor = GKSeparatorColor;
+        GKDivider *divider = [GKDivider new];
         [self.contentView addSubview:divider];
         
-        [divider gk_rightToSuperview];
-        [divider gk_leftToItem:_titleLabel];
-        [divider gk_bottomToSuperview];
-        [divider gk_heightToSelf:GKSeparatorWidth];
-        
+        [divider mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(self.titleLabel);
+            make.trailing.bottom.equalTo(0);
+        }];
     }
     return self;
 }

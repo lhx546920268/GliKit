@@ -10,7 +10,7 @@
 
 @implementation GKSkeletonSubLayer
 
-- (void)copyPropertiesFromLayer:(GKLayer *)layer
+- (void)copyPropertiesFromLayer:(CALayer *)layer
 {
     self.cornerRadius = layer.cornerRadius;
     self.masksToBounds = layer.masksToBounds;

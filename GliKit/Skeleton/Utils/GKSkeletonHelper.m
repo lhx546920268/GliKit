@@ -9,7 +9,7 @@
 #import "GKSkeletonHelper.h"
 #import "GKSkeletonSubLayer.h"
 #import "UIView+GKSkeleton.h"
-#import "UIColor+Utils.h"
+#import "UIColor+GKUtils.h"
 #import <objc/runtime.h>
 
 @implementation GKSkeletonHelper
@@ -38,7 +38,7 @@
         }
     }else if(view != rootView){
         
-        if(!view.gk_shouldBecomeSkeleton)
+        if(!view.gkShouldBecomeSkeleton)
             return;
         
         CGRect rect;
@@ -60,13 +60,13 @@
 + (void)replaceImplementations:(SEL) selector owner:(NSObject *)owner implementer:(NSObject *)implementer
 {
     if([owner respondsToSelector:selector]){
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gk_skeleton_%@", NSStringFromSelector(selector)]);
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkSkeleton_%@", NSStringFromSelector(selector)]);
         Method method1 = class_getInstanceMethod(owner.class, selector);
         
-        //给代理 添加一个 方法名为 gk_skeleton_ 前缀的，但是实现还是 代理的实现的方法
+        //给代理 添加一个 方法名为 gkSkeleton_ 前缀的，但是实现还是 代理的实现的方法
         if(class_addMethod(owner.class, selector2, method_getImplementation(method1), method_getTypeEncoding(method1))){
             
-            //替换代理中的方法为 gk_skeleton_ 前缀的方法
+            //替换代理中的方法为 gkSkeleton_ 前缀的方法
             Method method2 = class_getInstanceMethod(implementer.class, selector2);
             class_replaceMethod(owner.class, selector, method_getImplementation(method2), method_getTypeEncoding(method2));
         }

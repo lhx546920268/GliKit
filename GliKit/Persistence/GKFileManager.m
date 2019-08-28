@@ -1,14 +1,15 @@
 //
 //  GKFileManager.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/5/10.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKFileManager.h"
 #import "NSDate+GKUtils.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "NSString+GKUtils.h"
 
 @implementation GKFileManager
 
@@ -141,7 +142,7 @@
 
 + (NSString*)fileNameForURL:(NSString*) url suffix:(NSString *)suffix
 {
-    NSString *fileName = [url gk_MD5String];
+    NSString *fileName = [url gkMD5String];
     
     if(![NSString isEmpty:suffix]){
         fileName = [fileName stringByAppendingFormat:@".%@",suffix];
@@ -218,10 +219,10 @@
             }
         }
         else{
-            return [NSString stringWithFormat:@"%ldK", kb];
+            return [NSString stringWithFormat:@"%ldK", (long)kb];
         }
     }else{
-        return [NSString stringWithFormat:@"%ldB", bytes];
+        return [NSString stringWithFormat:@"%ldB", (long)bytes];
     }
 }
 

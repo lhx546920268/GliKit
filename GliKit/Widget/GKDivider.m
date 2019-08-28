@@ -1,12 +1,16 @@
 //
 //  GKDivider.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/5/15.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "GKDivider.h"
+#import "GKBaseDefines.h"
+#import "UIView+GKAutoLayout.h"
+#import "UIColor+GKTheme.h"
+#import "UIApplication+GKTheme.h"
 
 @interface GKDivider ()
 
@@ -22,7 +26,7 @@
     self = [super initWithCoder:aDecoder];
     if(self){
         
-        NSLayoutConstraint *constraint = self.gk_widthLayoutConstraint;
+        NSLayoutConstraint *constraint = self.gkWidthLayoutConstraint;
         self.isVertical = constraint != nil;
         
         [self initialization];
@@ -55,26 +59,26 @@
 ///初始化
 - (void)initialization
 {
-    self.backgroundColor = UIColor.appSeparatorColor;
+    self.backgroundColor = UIColor.gkSeparatorColor;
     if(self.isVertical){
         
-        NSLayoutConstraint *constraint = self.gk_widthLayoutConstraint;
+        NSLayoutConstraint *constraint = self.gkWidthLayoutConstraint;
         if(!constraint){
             [self mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(GKSeparatorHeight);
+                make.width.equalTo(UIApplication.gkSeparatorHeight);
             }];
             
         }else{
-            constraint.constant = GKSeparatorHeight;
+            constraint.constant = UIApplication.gkSeparatorHeight;
         }
     }else{
-        NSLayoutConstraint *constraint = self.gk_heightLayoutConstraint;
+        NSLayoutConstraint *constraint = self.gkHeightLayoutConstraint;
         if(!constraint){
             [self mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(GKSeparatorHeight);
+                make.height.equalTo(UIApplication.gkSeparatorHeight);
             }];
         }else{
-            constraint.constant = GKSeparatorHeight;
+            constraint.constant = UIApplication.gkSeparatorHeight;
         }
     }
 }

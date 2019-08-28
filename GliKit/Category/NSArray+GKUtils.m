@@ -1,16 +1,16 @@
 //
 //  NSArray+GKUtils.m
-//  Zegobird
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/4/22.
-//  Copyright © 2019 xiaozhai. All rights reserved.
+//  Copyright © 2019 罗海雄. All rights reserved.
 //
 
 #import "NSArray+GKUtils.h"
 
 @implementation NSArray (GKUtils)
 
-- (id)gkObjectAtIndex:(NSUInteger) index
+- (instancetype)gkObjectAtIndex:(NSUInteger) index
 {
     if(index < self.count){
         return [self objectAtIndex:index];
@@ -18,7 +18,7 @@
     return nil;
 }
 
-- (id)gkObjectAtIndex:(NSUInteger) index class:(Class) clazz
+- (instancetype)gkObjectAtIndex:(NSUInteger) index class:(Class) clazz
 {
     id obj = [self gkObjectAtIndex:index];
     if([obj isKindOfClass:clazz]){
