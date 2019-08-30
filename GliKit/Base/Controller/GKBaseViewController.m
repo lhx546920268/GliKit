@@ -118,7 +118,7 @@
 - (void)loadView
 {
     //如果有 xib 则加载对应的xib
-    if([[NSBundle mainBundle] pathForResource:self.gkNameOfClass ofType:@"nib"]){
+    if([NSBundle.mainBundle pathForResource:self.gkNameOfClass ofType:@"nib"]){
         self.view = [[[NSBundle mainBundle] loadNibNamed:self.gkNameOfClass owner:self options:nil] lastObject];
     }else{
         _container = [[GKContainer alloc] initWithViewController:self];

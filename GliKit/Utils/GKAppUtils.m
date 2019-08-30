@@ -24,7 +24,7 @@ static NSString *sharedUUID = nil;
 
 + (NSString*)appVersion
 {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    return [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleShortVersionString"];
 }
 
 + (BOOL)isTestApp
@@ -34,12 +34,17 @@ static NSString *sharedUUID = nil;
 
 + (NSString*)appName
 {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *name = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleDisplayName"];
+    if([NSString isEmpty:name]){
+        name = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleName"];
+    }
+    
+    return name;
 }
 
 + (UIImage*)appIcon
 {
-    NSDictionary *dic = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *dic = NSBundle.mainBundle.infoDictionary;
     NSString *iconName = [[dic valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
     
     return [UIImage imageNamed:iconName];
@@ -47,7 +52,7 @@ static NSString *sharedUUID = nil;
 
 + (NSString *)bundleId
 {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    return [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleIdentifier"];
 }
 
 + (NSString*)uuid

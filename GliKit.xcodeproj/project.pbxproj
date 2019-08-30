@@ -123,6 +123,7 @@
 		CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A800230D44EE00C304B3 /* GKLoadMoreControl.m */; };
 		CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */; };
 		CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */; };
+		CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */; };
 		CEFE907F230F795C006A0EBD /* GKSSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE907E230F794D006A0EBD /* GKSSKeychain.m */; };
 		CEFE9084230F9D47006A0EBD /* GKImageCropSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */; };
 		CEFE9087230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9086230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m */; };
@@ -377,6 +378,9 @@
 		CED3A807230D44EE00C304B3 /* GKDefaultRefreshControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDefaultRefreshControl.m; sourceTree = "<group>"; };
 		CED3A808230D44EE00C304B3 /* GKDefaultLoadMoreControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDefaultLoadMoreControl.m; sourceTree = "<group>"; };
 		CED3A809230D44EE00C304B3 /* GKRefreshStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRefreshStyle.h; sourceTree = "<group>"; };
+		CEE8C8832319066700E7CA75 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
+		CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
+		CEE8C8B323191A6400E7CA75 /* GliKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliKit.h; sourceTree = "<group>"; };
 		CEFE907D230F794D006A0EBD /* GKSSKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKSSKeychain.h; sourceTree = "<group>"; };
 		CEFE907E230F794D006A0EBD /* GKSSKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSSKeychain.m; sourceTree = "<group>"; };
 		CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropSettings.m; sourceTree = "<group>"; };
@@ -772,6 +776,8 @@
 		CED0D28E230BC6250057D405 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CEE8C8832319066700E7CA75 /* GKImageCropViewController.h */,
+				CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */,
 				CED0D28F230BC6250057D405 /* GKPhotosGridViewController.h */,
 				CED0D292230BC6250057D405 /* GKPhotosGridViewController.m */,
 				CED0D294230BC6250057D405 /* GKPhotosPreviewViewController.h */,
@@ -946,6 +952,7 @@
 			isa = PBXGroup;
 			children = (
 				CED0D44C230BF7020057D405 /* GKBaseDefines.h */,
+				CEE8C8B323191A6400E7CA75 /* GliKit.h */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -1175,6 +1182,7 @@
 				CED0D386230BC8790057D405 /* GKPhotosViewController.m in Sources */,
 				CED0D43F230BED690057D405 /* UIView+GKSkeleton.m in Sources */,
 				CED0D3DF230BCC110057D405 /* GKCollectionViewFlowFillLayout.m in Sources */,
+				CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */,
 				CED0D387230BC8790057D405 /* GKPhotosPreviewViewController.m in Sources */,
 				CED0D388230BC8790057D405 /* GKPhotosGridViewController.m in Sources */,
 				CED0D38D230BC8790057D405 /* GKPhotosCollection.m in Sources */,

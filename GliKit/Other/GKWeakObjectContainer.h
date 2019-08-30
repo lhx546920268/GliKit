@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 ///主要用于类目中设置 weak的属性， 因为 objc_setAssociatedObject 是没有weak的
-@interface GKWeakObjectContainer : NSObject
+@interface GKWeakObjectContainer<__covariant ObjectType> : NSObject
 
 ///需要weak引用的对象
-@property(nonatomic,weak) id weakObject;
+@property(nonatomic,weak) ObjectType weakObject;
 
-+ (instancetype)containerWithObject:(id) object;
++ (instancetype)containerWithObject:(ObjectType) object;
 
 @end

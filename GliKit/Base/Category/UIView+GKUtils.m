@@ -119,7 +119,7 @@
 
 + (instancetype)loadFromNib
 {
-    return [[[NSBundle mainBundle] loadNibNamed:[self gkNameOfClass] owner:nil options:nil] lastObject];
+    return [[NSBundle.mainBundle loadNibNamed:[self gkNameOfClass] owner:nil options:nil] lastObject];
 }
 
 - (void)gkRemoveAllSubviews

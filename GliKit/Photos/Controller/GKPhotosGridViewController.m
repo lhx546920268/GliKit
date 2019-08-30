@@ -23,6 +23,8 @@
 #import "GKBaseDefines.h"
 #import "NSObject+GKUtils.h"
 #import "UIViewController+GKTransition.h"
+#import "GKImageCropViewController.h"
+#import "UIImage+GKUtils.h"
 
 @interface GKPhotosGridViewController ()<PHPhotoLibraryChangeObserver, GKPhotosGridCellDelegate>
 
@@ -187,6 +189,32 @@
             [selfWeak handleCancel];
         });
     });
+}
+
+///裁剪图片
+- (void)cropImageWithAsset:(PHAsset*) asset
+{
+    [self gkShowProgressWithText:nil];
+    self.gkBackItem.userInteractionEnabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    WeakObj(self)
+    [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        if(imageData){
+            [selfWeak gkDismissProgress];
+            selfWeak.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:GKImageScale];
+            [selfWeak goToCropImage];
+        }else{
+            [selfWeak gkShowErrorWithText:@"加载图片失败"];
+        }
+    }];
+}
+
+///跳转去图片裁剪界面
+- (void)goToCropImage
+{
+    GKImageCropViewController *vc = [[GKImageCropViewController alloc] initWithOptions:self.photosOptions];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 //MARK: 操作
@@ -380,6 +408,8 @@
             break;
         case GKPhotosIntentionCrop : {
             
+            PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
+            [self cropImageWithAsset:asset];
         }
             break;
         case GKPhotosIntentionSingleSelection : {
