@@ -210,13 +210,34 @@
 
 - (void)setNavigatonBarHidden:(BOOL)hidden animate:(BOOL)animate
 {
-    self.navigatonBar.hidden = hidden;
-    GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
-    if(navigationBar){
-        navigationBar.enable = !hidden;
-        self.navigationItemHelper.hiddenItem = hidden;
-    }else{
+    if(animate){
+        if(!hidden){
+            self.navigatonBar.hidden = hidden;
+            GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
+            if(navigationBar){
+                navigationBar.enable = !hidden;
+                self.navigationItemHelper.hiddenItem = hidden;
+            }
+        }
+        [UIView animateWithDuration:0.25 animations:^{
+            [self.navigatonBar mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(hidden ? -_navigatonBar.gkHeight : 0);
+            }];
+            [self.view layoutIfNeeded];
+        }completion:^(BOOL finished) {
+            self.navigatonBar.hidden = YES;
+        }];
+        
         [self.navigationController setNavigationBarHidden:hidden animated:animate];
+    }else{
+        self.navigatonBar.hidden = hidden;
+        GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
+        if(navigationBar){
+            navigationBar.enable = !hidden;
+            self.navigationItemHelper.hiddenItem = hidden;
+        }else{
+            [self.navigationController setNavigationBarHidden:hidden animated:animate];
+        }
     }
 }
 

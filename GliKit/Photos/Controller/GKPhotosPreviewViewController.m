@@ -21,6 +21,8 @@
 #import "UIViewController+GKLoading.h"
 #import "GKBaseDefines.h"
 #import "UIImage+GKUtils.h"
+#import "GKNavigationBar.h"
+#import "UIApplication+GKTheme.h"
 
 @interface GKPhotosPreviewViewController ()<GKPhotosPreviewCellDelegate>
 
@@ -42,14 +44,25 @@
 ///加载图片选项
 @property(nonatomic, strong) PHImageRequestOptions *imageRequestOptions;
 
+///选中
+@property(nonatomic, readonly) GKPhotosCheckBox *checkBox;
+
 @end
 
 @implementation GKPhotosPreviewViewController
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self setNavigatonBarHidden:NO animate:NO];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.gkBackBarButtonItem.tintColor = UIColor.whiteColor;
+    self.navigatonBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
     self.view.backgroundColor = UIColor.blackColor;
     
     PHImageRequestOptions *options = [PHImageRequestOptions new];
@@ -58,10 +71,10 @@
     
     self.previousPrecachingIndex = NSNotFound;
     
-    [self initialization];
+    [self initViews];
 }
 
-- (void)initialization
+- (void)initViews
 {
     self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
     
@@ -73,15 +86,11 @@
     self.collectionView.pagingEnabled = YES;
     [super initViews];
     
-    self.header = [GKPhotosPreviewHeader new];
-    [self.header.backButton addTarget:self action:@selector(gkBack) forControlEvents:UIControlEventTouchUpInside];
+    CGFloat size = self.gkNavigationBarHeight;
+    _checkBox = [[GKPhotosCheckBox alloc] initWithFrame:CGRectMake(0, 0, size, size)];
     [self.header.checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
-    [self.view addSubview:self.header];
-    
-    [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.top.trailing.equalTo(0);
-        make.height.equalTo(self.gkStatusBarHeight + 44);
-    }];
+    _checkBox.contentInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
+    [self gkSetRightItemWithCustomView:_checkBox];
     
     self.photosToolBar = [GKPhotosToolBar new];
     self.photosToolBar.backgroundColor = self.header.backgroundColor;
@@ -119,9 +128,10 @@
         self.header.hidden = hidden;
         self.photosToolBar.hidden = hidden;
     }
+    [self setNavigatonBarHidden:hidden animate:YES];
     [UIView animateWithDuration:0.25 animations:^{
         self.header.gkTopLayoutConstraint.constant = hidden ? -self.header.frame.size.height : 0;
-        self.photosToolBar.gkBottomLayoutConstraint.constant = hidden ? -self.photosToolBar.frame.size.height : 0;
+        self.photosToolBar.gkBottomLayoutConstraint.constant = hidden ? self.photosToolBar.frame.size.height : 0;
         [self.view layoutIfNeeded];
     }completion:^(BOOL finished) {
         self.header.hidden = hidden;
@@ -163,7 +173,7 @@
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
     [self gkShowProgressWithText:nil];
-    self.gkBackItem.userInteractionEnabled = NO;
+    self.gkBackBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)

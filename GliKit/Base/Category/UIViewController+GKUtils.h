@@ -52,8 +52,11 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///显示返回按钮
 @property(nonatomic, assign) BOOL gkShowBackItem;
 
+///是否返回按钮标题 当上一个标题长度超过80时，使用 ‘返回’
+@property(nonatomic, copy) NSString *gkBackItemTitle;
+
 ///返回按钮
-@property(nonatomic, readonly) UIView *gkBackItem;
+@property(nonatomic, readonly) UIBarButtonItem *gkBackBarButtonItem;
 
 ///返回 动画
 - (void)gkBack;

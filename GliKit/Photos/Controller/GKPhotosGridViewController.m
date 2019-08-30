@@ -148,7 +148,7 @@
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
     [self gkShowProgressWithText:nil];
-    self.gkBackItem.userInteractionEnabled = NO;
+    self.gkBackBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)
@@ -195,7 +195,7 @@
 - (void)cropImageWithAsset:(PHAsset*) asset
 {
     [self gkShowProgressWithText:nil];
-    self.gkBackItem.userInteractionEnabled = NO;
+    self.gkBackBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)
@@ -403,7 +403,7 @@
             vc.selectedAssets = self.selectedAssets;
             vc.photosOptions = self.photosOptions;
             vc.visiableIndex = indexPath.item;
-            [self gkPushViewControllerUseTransitionDelegate:vc useNavigationBar:NO];
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
         case GKPhotosIntentionCrop : {

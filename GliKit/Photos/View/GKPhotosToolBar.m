@@ -43,7 +43,7 @@
         
         [_previewButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.top.equalTo(0);
-            make.bottom.equalTo(bottom);
+            make.bottom.equalTo(-bottom);
         }];
         
         _useButton = [UIButton new];
@@ -58,7 +58,7 @@
         
         [_useButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.trailing.top.equalTo(0);
-            make.bottom.equalTo(bottom);
+            make.bottom.equalTo(-bottom);
         }];
         
         _countLabel = [UILabel new];
@@ -68,7 +68,7 @@
         
         [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.centerX.equalTo(0);
-            make.bottom.equalTo(bottom);
+            make.bottom.equalTo(-bottom);
         }];
         
         [self mas_makeConstraints:^(MASConstraintMaker *make) {

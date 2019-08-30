@@ -19,6 +19,10 @@
 @property(nonatomic, copy) NSString *viewControllerTitle;
 @property(nonatomic, strong) UIView *titleView;
 
+//返回按钮
+@property(nonatomic, strong) UIBarButtonItem *backBarButtonItem;
+@property(nonatomic, assign) BOOL hidesBackButton;
+
 ///左边item
 @property(nonatomic, strong) UIBarButtonItem *leftBarButtonItem;
 @property(nonatomic, strong) NSArray<UIBarButtonItem*> *leftBarButtonItems;

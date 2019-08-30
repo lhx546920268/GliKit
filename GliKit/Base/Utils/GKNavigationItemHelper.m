@@ -46,6 +46,9 @@
     self.viewControllerTitle = self.viewController.title;
     self.titleView = item.titleView;
     
+    self.backBarButtonItem = item.backBarButtonItem;
+    self.hidesBackButton = item.hidesBackButton;
+    
     self.leftBarButtonItem = item.leftBarButtonItem;
     self.leftBarButtonItems = item.leftBarButtonItems;
     
@@ -55,6 +58,9 @@
     self.viewController.title = nil;
     item.title = nil;
     item.titleView = nil;
+    
+    item.backBarButtonItem = nil;
+    item.hidesBackButton = YES;
     
     item.leftBarButtonItem = nil;
     item.leftBarButtonItems = nil;
@@ -71,6 +77,9 @@
     self.viewController.title = self.viewControllerTitle;
     item.title = self.title;
     item.titleView = self.titleView;
+    
+    item.backBarButtonItem = self.backBarButtonItem;
+    item.hidesBackButton = self.hidesBackButton;
     
     if(self.leftBarButtonItems.count > 0){
         item.leftBarButtonItems = self.leftBarButtonItems;
