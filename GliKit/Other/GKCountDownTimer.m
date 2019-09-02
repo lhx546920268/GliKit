@@ -8,6 +8,7 @@
 
 #import "GKCountDownTimer.h"
 #import <UIKit/UIKit.h>
+#import "GKWeakProxy.h"
 
 @interface GKCountDownTimer()
 
@@ -31,18 +32,14 @@
  */
 @property(nonatomic, strong) NSDate *date;
 
+/**
+ 代理
+ */
+@property(nonatomic, strong) GKWeakProxy *weakProxy;
+
 @end
 
 @implementation GKCountDownTimer
-
-- (instancetype)init
-{
-    self = [super init];
-    if(self){
-        
-    }
-    return self;
-}
 
 + (instancetype)timerWithTime:(NSTimeInterval) timeToCountDown interval:(NSTimeInterval) timeInterval
 {
@@ -55,10 +52,11 @@
 
 - (void)dealloc
 {
+    [self stopTimer];
     [self removeNotifications];
 }
 
-//MARK:- property
+//MARK: property
 
 - (void)setTimeToCountDown:(NSTimeInterval)timeToCountDown
 {
@@ -76,7 +74,7 @@
     }
 }
 
-//MARK:- timer
+//MARK: timer
 
 - (void)start
 {
@@ -100,7 +98,10 @@
     [self stopTimer];
     [self addNotifications];
     
-    self.timer = [NSTimer timerWithTimeInterval:self.timeInterval target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    if(!self.weakProxy){
+        self.weakProxy = [GKWeakProxy weakProxyWithTarget:self];
+    }
+    self.timer = [NSTimer timerWithTimeInterval:self.timeInterval target:self.weakProxy selector:@selector(timerFired:) userInfo:nil repeats:YES];
     if(self.shouldStartImmediately){
         [self timerFired:self.timer];
     }
@@ -154,7 +155,7 @@
     !self.completionHandler ?: self.completionHandler();
 }
 
-//MARK:- 通知
+//MARK: 通知
 
 ///添加通知 app进入后台 手机锁屏后 来电 计时器会停止
 - (void)addNotifications

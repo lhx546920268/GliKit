@@ -9,6 +9,8 @@
 #import "GKPhotosToolBar.h"
 #import "GKBaseDefines.h"
 #import "GKDivider.h"
+#import "UIFont+GKTheme.h"
+#import "UIApplication+GKTheme.h"
 
 @implementation GKPhotosToolBar
 
@@ -31,10 +33,11 @@
             bottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
         }
         
+        CGFloat margin = UIApplication.gkNavigationBarMargin;
         _previewButton = [UIButton new];
         [_previewButton setTitle:@"预览" forState:UIControlStateNormal];
-        _previewButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        _previewButton.contentEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
+        _previewButton.titleLabel.font = UIFont.gkNavigationBarItemFont;
+        _previewButton.contentEdgeInsets = UIEdgeInsetsMake(0, margin, 0, margin);
         _previewButton.enabled = NO;
         [_previewButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
         [_previewButton setTitleColor:UIColor.grayColor forState:UIControlStateDisabled];
@@ -48,8 +51,8 @@
         
         _useButton = [UIButton new];
         [_useButton setTitle:@"使用" forState:UIControlStateNormal];
-        _useButton.titleLabel.font = [UIFont systemFontOfSize:14];
-        _useButton.contentEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
+        _useButton.titleLabel.font = UIFont.gkNavigationBarItemFont;
+        _useButton.contentEdgeInsets = UIEdgeInsetsMake(0, margin, 0, margin);
         _useButton.enabled = NO;
         [_useButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
         [_useButton setTitleColor:UIColor.grayColor forState:UIControlStateDisabled];

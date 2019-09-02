@@ -67,8 +67,7 @@ NSString *const GKColorAlpha = @"alpha";
 - (NSString*)gkColorHex
 {
     NSDictionary *dic = [self gkColorARGB];
-    if(dic != nil)
-    {
+    if(dic != nil){
         int R = [[dic objectForKey:GKColorRed] floatValue] * 255;
         int G = [[dic objectForKey:GKColorGreen] floatValue] * 255;
         int B = [[dic objectForKey:GKColorBlue] floatValue] * 255;
@@ -77,6 +76,19 @@ NSString *const GKColorAlpha = @"alpha";
         return [UIColor gkColorHexFromRed:R green:G blue:B alpha:A];
     }
     return @"ff000000";
+}
+
+- (UIColor*)gkColorWithAlpha:(CGFloat) alpha
+{
+    NSDictionary *dic = [self gkColorARGB];
+    if(dic != nil){
+        int R = [[dic objectForKey:GKColorRed] floatValue] * 255;
+        int G = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+        int B = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+        
+        return [UIColor gkColorWithRed:R green:G blue:B alpha:alpha];
+    }
+    return nil;
 }
 
 + (NSDictionary<NSString*, NSNumber*>*)gkColorARGBFromHex:(NSString*) hex

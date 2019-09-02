@@ -20,7 +20,7 @@ static char GKProgressHUDKey;
 
 @implementation UIView (CaLoading)
 
-//MARK:- page loading
+//MARK: page loading
 
 - (void)setGkShowPageLoading:(BOOL)gkShowPageLoading
 {

@@ -125,7 +125,7 @@
     return item.width == 0 && !item.image && !item.customView && !item.title;
 }
 
-//MARK:- getter
+//MARK: getter
 
 - (UIBarButtonItem*)gk_leftBarButtonItem
 {

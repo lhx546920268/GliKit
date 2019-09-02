@@ -13,9 +13,6 @@
 
 @interface GKNavigationBar ()
 
-///背景
-@property(nonatomic, readonly) UIView *backgroundView;
-
 @end
 
 @implementation GKNavigationBar

@@ -79,7 +79,7 @@ static WKProcessPool *sharedProcessPool;
     _shouldDisplayProgress = YES;
 }
 
-//MARK:- property
+//MARK: property
 
 - (void)setHtmlString:(NSString *)htmlString
 {

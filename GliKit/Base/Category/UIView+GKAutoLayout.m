@@ -30,7 +30,7 @@
     return NO;
 }
 
-//MARK:- 获取约束 constraint
+//MARK: 获取约束 constraint
 
 - (void)gkRemoveAllContraints
 {
@@ -204,7 +204,7 @@
     return [constraint isMemberOfClass:NSLayoutConstraint.class] || [constraint isMemberOfClass:MASLayoutConstraint.class];
 }
 
-//MARK:- AutoLayout 计算大小
+//MARK: AutoLayout 计算大小
 
 - (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalculateType) type
 {

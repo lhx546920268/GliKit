@@ -9,7 +9,6 @@
 #import "GKPhotosPreviewViewController.h"
 #import "GKPhotosOptions.h"
 #import "GKPhotosPreviewCell.h"
-#import "GKPhotosPreviewHeader.h"
 #import "GKPhotosToolBar.h"
 #import <Photos/Photos.h>
 #import "GKContainer.h"
@@ -25,9 +24,6 @@
 #import "UIApplication+GKTheme.h"
 
 @interface GKPhotosPreviewViewController ()<GKPhotosPreviewCellDelegate>
-
-///头部
-@property(nonatomic, strong) GKPhotosPreviewHeader *header;
 
 ///上一个预缓存的中心下标
 @property(nonatomic, assign) NSInteger previousPrecachingIndex;
@@ -47,6 +43,9 @@
 ///选中
 @property(nonatomic, readonly) GKPhotosCheckBox *checkBox;
 
+///标题
+@property(nonatomic, strong) UILabel *titleLabel;
+
 @end
 
 @implementation GKPhotosPreviewViewController
@@ -61,7 +60,7 @@
 {
     [super viewDidLoad];
     
-    self.gkBackBarButtonItem.tintColor = UIColor.whiteColor;
+    self.gkBackBarButtonItem.customView.tintColor = UIColor.whiteColor;
     self.navigatonBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
     self.view.backgroundColor = UIColor.blackColor;
     
@@ -72,6 +71,11 @@
     self.previousPrecachingIndex = NSNotFound;
     
     [self initViews];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)initViews
@@ -87,13 +91,19 @@
     [super initViews];
     
     CGFloat size = self.gkNavigationBarHeight;
-    _checkBox = [[GKPhotosCheckBox alloc] initWithFrame:CGRectMake(0, 0, size, size)];
-    [self.header.checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
+    _checkBox = [[GKPhotosCheckBox alloc] initWithFrame:CGRectMake(0, 0, size - UIApplication.gkNavigationBarMargin * 2, size)];
+    [_checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
     _checkBox.contentInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
     [self gkSetRightItemWithCustomView:_checkBox];
     
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, self.gkNavigationBarHeight)];
+    _titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    _titleLabel.textColor = UIColor.whiteColor;
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.navigationItem.titleView = _titleLabel;
+    
     self.photosToolBar = [GKPhotosToolBar new];
-    self.photosToolBar.backgroundColor = self.header.backgroundColor;
+    self.photosToolBar.backgroundColor = self.navigatonBar.backgroundView.backgroundColor;
     self.photosToolBar.previewButton.hidden = YES;
     self.photosToolBar.divider.hidden = YES;
     self.photosToolBar.countLabel.textColor = UIColor.whiteColor;
@@ -125,17 +135,14 @@
 - (void)setToolBarAndHeaderHidden:(BOOL) hidden
 {
     if(!hidden){
-        self.header.hidden = hidden;
         self.photosToolBar.hidden = hidden;
     }
     [self setNavigatonBarHidden:hidden animate:YES];
-    [UIView animateWithDuration:0.25 animations:^{
-        self.header.gkTopLayoutConstraint.constant = hidden ? -self.header.frame.size.height : 0;
+    [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
         self.photosToolBar.gkBottomLayoutConstraint.constant = hidden ? self.photosToolBar.frame.size.height : 0;
         [self.view layoutIfNeeded];
     }completion:^(BOOL finished) {
-        self.header.hidden = hidden;
-        self.header.hidden = hidden;
+        self.photosToolBar.hidden = hidden;
     }];
 }
 
@@ -143,8 +150,8 @@
 - (void)handleCheck
 {
     PHAsset *asset = self.assets[self.selectedIndex];
-    if(self.header.checkBox.checked){
-        self.header.checkBox.checked = NO;
+    if(self.checkBox.checked){
+        self.checkBox.checked = NO;
         [self removeAsset:asset];
     }else{
         if(self.selectedAssets.count >= self.photosOptions.maxCount){
@@ -156,8 +163,8 @@
             
         }else{
             [self.selectedAssets addObject:asset];
-            self.header.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)self.selectedAssets.count];
-            [self.header.checkBox setChecked:YES animated:YES];
+            self.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)self.selectedAssets.count];
+            [self.checkBox setChecked:YES animated:YES];
         }
     }
     self.photosToolBar.count = (int)self.selectedAssets.count;
@@ -212,7 +219,7 @@
             [selfWeak gkDismissProgress];
             !selfWeak.photosOptions.completion ?: selfWeak.photosOptions.completion(results);
    
-            [selfWeak.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            [selfWeak dismissViewControllerAnimated:YES completion:nil];
         });
     });
 }
@@ -264,13 +271,13 @@
 ///更新标题
 - (void)updateTitle
 {
-    self.header.titleLabel.text = [NSString stringWithFormat:@"%d/%d", (int)(self.selectedIndex + 1), (int)self.assets.count];
+    self.titleLabel.text = [NSString stringWithFormat:@"%d/%d", (int)(self.selectedIndex + 1), (int)self.assets.count];
     PHAsset *asset = self.assets[self.selectedIndex];
     if([self containAsset:asset]){
-        self.header.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self indexOfAsset:asset] + 1];
-        self.header.checkBox.checked = YES;
+        self.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self indexOfAsset:asset] + 1];
+        self.checkBox.checked = YES;
     }else{
-        self.header.checkBox.checked = NO;
+        self.checkBox.checked = NO;
     }
 }
 
@@ -323,7 +330,7 @@
 
 - (void)photosPreviewCellDidClick:(GKPhotosPreviewCell *)cell
 {
-    [self setToolBarAndHeaderHidden:!self.header.hidden];
+    [self setToolBarAndHeaderHidden:!self.photosToolBar.hidden];
 }
 
 @end

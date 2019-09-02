@@ -96,7 +96,7 @@
     [self updateProgressLayer];
 }
 
-//MARK:- property setup
+//MARK: property setup
 
 - (void)setOpenProgress:(BOOL)openProgress
 {
@@ -364,7 +364,7 @@
     }
 }
 
-//MARK:- private method
+//MARK: private method
 
 //重新设置
 - (void)reset

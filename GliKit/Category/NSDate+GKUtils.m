@@ -184,7 +184,7 @@
     return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, second];
 }
 
-//MARK:- 时间比较
+//MARK: 时间比较
 
 + (BOOL)gkTimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval
 {
@@ -222,7 +222,7 @@
     return [date1 isEqualToDate:date2];
 }
 
-//MARK:- other
+//MARK: other
 
 + (NSString*)gkRandom
 {

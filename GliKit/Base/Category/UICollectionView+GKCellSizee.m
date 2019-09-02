@@ -165,7 +165,7 @@
     [self gkCellSize_reloadData];
 }
 
-//MARK:- 计算
+//MARK: 计算
 
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(GKCellConfiguration) configuration
 {
@@ -250,7 +250,7 @@
     }
 }
 
-//MARK:- 注册的 cells
+//MARK: 注册的 cells
 
 ///注册的 class nib
 - (NSMutableDictionary*)gkRegisterObjects

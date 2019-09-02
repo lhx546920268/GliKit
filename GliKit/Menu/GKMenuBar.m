@@ -213,7 +213,7 @@
     return width;
 }
 
-//MARK:- UICollectionView delegate
+//MARK: UICollectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -290,7 +290,7 @@
     }
 }
 
-//MARK:- property
+//MARK: property
 
 - (void)setTitles:(NSArray *)titles
 {
@@ -431,7 +431,7 @@
     }
 }
 
-//MARK:- public method
+//MARK: public method
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {

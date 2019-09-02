@@ -51,7 +51,7 @@
     return NO;
 }
 
-//MARK:- 获取
+//MARK: 获取
 
 - (char)gkFirstCharacter
 {

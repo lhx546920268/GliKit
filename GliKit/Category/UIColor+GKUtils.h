@@ -47,6 +47,13 @@ UIKIT_EXTERN NSString *const GKColorAlpha;
 - (NSString*)gkColorHex;
 
 /**
+ 为某个颜色设置透明度
+ *@param alpha 透明度 0 ~ 1.0
+ *@return 设置了透明度的颜色
+ */
+- (UIColor*)gkColorWithAlpha:(CGFloat) alpha;
+
+/**
  通过16进制值获取颜色 rgb，如果hex里面没有包含rgb，则透明度为1.0
  @param hex 16进制
  @return 颜色 ARBG

@@ -44,7 +44,7 @@
     self.selector = nil;
 }
 
-//MARK:- public method
+//MARK: public method
 
 /**开始点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
  */
@@ -69,7 +69,7 @@
 }
 
 
-//MARK:- touch
+//MARK: touch
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

@@ -36,7 +36,7 @@
 }
 
 
-//MARK:- public method
+//MARK: public method
 
 - (UICollectionViewFlowLayout*)flowLayout
 {

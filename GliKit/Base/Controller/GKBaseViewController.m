@@ -219,18 +219,24 @@
                 self.navigationItemHelper.hiddenItem = hidden;
             }
         }
-        [UIView animateWithDuration:0.25 animations:^{
-            [self.navigatonBar mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(hidden ? -_navigatonBar.gkHeight : 0);
-            }];
-            [self.view layoutIfNeeded];
-        }completion:^(BOOL finished) {
-            self.navigatonBar.hidden = YES;
-        }];
         
+        CGFloat height = self.gkStatusBarHeight + self.gkNavigationBarHeight;
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+        if(hidden){
+            animation.fromValue = @(height / 2.0);
+            animation.toValue = @(-height / 2.0);
+        }else{
+            animation.fromValue = @(-height / 2.0);
+            animation.toValue = @(height / 2.0);
+        }
+        animation.duration = UINavigationControllerHideShowBarDuration;
+        animation.removedOnCompletion = NO;
+        animation.fillMode = kCAFillModeForwards;
+        [self.navigatonBar.layer addAnimation:animation forKey:@"position"];
         [self.navigationController setNavigationBarHidden:hidden animated:animate];
     }else{
         self.navigatonBar.hidden = hidden;
+        [self.navigatonBar.layer removeAnimationForKey:@"position"];
         GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
         if(navigationBar){
             navigationBar.enable = !hidden;

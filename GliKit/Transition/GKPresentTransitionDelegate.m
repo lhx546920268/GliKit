@@ -94,7 +94,7 @@
     }
 }
 
-//MARK:- UIViewControllerTransitioningDelegate
+//MARK: UIViewControllerTransitioningDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
@@ -131,7 +131,7 @@
     }
 }
 
-//MARK:- Class method
+//MARK: Class method
 
 + (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller
 {
@@ -330,7 +330,7 @@
     [self.delegate.panGestureRecognizer removeTarget:self action:@selector(handlePan:)];
 }
 
-//MARK:- super method
+//MARK: super method
 
 - (void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {

@@ -14,8 +14,9 @@
 #import "UIView+GKUtils.h"
 #import "UIScreen+GKUtils.h"
 #import "GKBaseDefines.h"
-#import <SDWebImageCompat.h>
 #import "GKPhotosGridViewController.h"
+#import "UIApplication+GKTheme.h"
+#import "UIViewController+GKSafeAreaCompatible.h"
 
 @interface GKImageCropViewController ()
 
@@ -85,10 +86,11 @@
     
     [self setNavigatonBarHidden:YES animate:NO];
     self.view.clipsToBounds = YES;
-    self.title = @"裁剪图片";
     self.view.backgroundColor = [UIColor blackColor];
     
-    [self initControlBtn];
+    if(self.photosOptions.cropSettings.cropSize.width <= 0 || self.photosOptions.cropSettings.cropSize.height <= 0){
+        @throw [NSException exceptionWithName:@"Invalid CropSize" reason:@"GKImageCropSettings cropSize must greater than zero" userInfo:nil];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -136,11 +138,11 @@
     self.largeFrame = CGRectMake(0, 0, self.photosOptions.cropSettings.limitRatio * self.oldFrame.size.width, self.photosOptions.cropSettings.limitRatio * self.oldFrame.size.height);
     
     //添加捏合缩放手势
-    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
+    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     [self.view addGestureRecognizer:pinchGestureRecognizer];
     
     //添加平移手势
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [self.view addGestureRecognizer:panGestureRecognizer];
     
     [self.view addSubview:self.showImgView];
@@ -164,6 +166,8 @@
     
     //
     [self overlayClipping];
+    
+    [self initControlBtn];
 }
 
 ///裁剪框大小
@@ -188,34 +192,35 @@
 //初始化控制按钮
 - (void)initControlBtn
 {
-    CGFloat buttonHeight = 50.0f;
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - buttonHeight, UIScreen.gkScreenWidth, buttonHeight)];
-    bgView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-    [self.view addSubview:bgView];
-    
-    
-    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, buttonHeight)];
-    cancelBtn.backgroundColor = [UIColor clearColor];
-    cancelBtn.titleLabel.textColor = [UIColor whiteColor];
+    UIButton *cancelBtn = [UIButton new];
+    [cancelBtn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [cancelBtn setTitleShadowColor:UIColor.blackColor forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+    cancelBtn.contentEdgeInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
-    [cancelBtn.titleLabel setNumberOfLines:0];
-    [cancelBtn setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
     [cancelBtn addTarget:self action:@selector(handleCancel) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:cancelBtn];
+    [self.view addSubview:cancelBtn];
     self.cancelButton = cancelBtn;
     
-    UIButton *confirmBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 100.0f, 0, 100, buttonHeight)];
-    confirmBtn.backgroundColor = [UIColor clearColor];
-    confirmBtn.titleLabel.textColor = [UIColor whiteColor];
+    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(0);
+        make.bottom.equalTo(self.gkSafeAreaLayoutGuideBottom);
+    }];
+    
+    UIButton *confirmBtn = [UIButton new];
     [confirmBtn setTitle:@"使用" forState:UIControlStateNormal];
-    [confirmBtn.titleLabel setFont:[UIFont systemFontOfSize:18.0f]];
-    confirmBtn.titleLabel.textColor = [UIColor whiteColor];
-    [confirmBtn.titleLabel setNumberOfLines:0];
-    [confirmBtn setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+    [confirmBtn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [confirmBtn setTitleShadowColor:UIColor.blackColor forState:UIControlStateNormal];
+    confirmBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+    confirmBtn.contentEdgeInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
     [confirmBtn addTarget:self action:@selector(handleConfirm) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:confirmBtn];
+    [self.view addSubview:confirmBtn];
     self.confirmButton = confirmBtn;
+    
+    [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(0);
+        make.bottom.equalTo(cancelBtn.bottom);
+    }];
 }
 
 //MARK: private method
@@ -227,8 +232,6 @@
     }else{
         [self gkDismissProgress];
     }
-    self.navigationItem.leftBarButtonItem.enabled = !show;
-    self.navigationItem.rightBarButtonItem.enabled = !show;
 }
 
 ///取消
@@ -256,7 +259,9 @@
                 result.thumbnail = [(result.compressedImage ? result.originalImage : result.originalImage) gkAspectFillWithSize:selfWeak.photosOptions.thumbnailSize];
             }
             
-            [selfWeak onCropImage:result];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [selfWeak onCropImage:result];
+            });
         });
     }else{
         [self onCropImage:result];
@@ -266,24 +271,20 @@
 ///裁剪完成
 - (void)onCropImage:(GKPhotosPickResult*) result
 {
-    dispatch_main_async_safe(^{
-        [self setShowProgress:NO];
-        !self.photosOptions.completion ?: self.photosOptions.completion(@[result]);
-        
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-        if(viewControllers.count >= 2){
-            UIViewController *vc = [viewControllers objectAtIndex:viewControllers.count - 2];
-            if([vc isKindOfClass:[GKPhotosGridViewController class]]){
-                if(viewControllers.count > 3){
-                    [self.navigationController popToViewController:[viewControllers objectAtIndex:viewControllers.count - 3] animated:YES];
-                }else{
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-            }
+    [self setShowProgress:NO];
+    !self.photosOptions.completion ?: self.photosOptions.completion(@[result]);
+
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    UIViewController *vc = [viewControllers objectAtIndex:viewControllers.count - 2];
+    if([vc isKindOfClass:[GKPhotosGridViewController class]]){
+        if(viewControllers.count > 3){
+            [self.navigationController popToViewController:[viewControllers objectAtIndex:viewControllers.count - 3] animated:YES];
         }else{
-            [self handleCancel];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
-    })
+    }else{
+        [self handleCancel];
+    }
 }
 
 //绘制裁剪区分图层
@@ -345,7 +346,7 @@
 //MARK: Gesture
 
 //图片捏合缩放
-- (void)pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer
+- (void)handlePinch:(UIPinchGestureRecognizer *)pinchGestureRecognizer
 {
     UIView *view = self.showImgView;
     if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged){
@@ -363,7 +364,7 @@
 }
 
 //图片平移
-- (void)panView:(UIPanGestureRecognizer *)panGestureRecognizer
+- (void)handlePan:(UIPanGestureRecognizer *)panGestureRecognizer
 {
     UIView *view = self.showImgView;
     if(panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged){
@@ -437,7 +438,8 @@
     //隐藏编辑框和控制按钮
     self.overlayView.hidden = YES;
     self.ratioView.hidden = YES;
-    self.cancelButton.superview.hidden = YES;
+    self.cancelButton.hidden = YES;
+    self.confirmButton.hidden = YES;
     
     //如果图片小于编辑框，使用白色背景替代
     if(self.showImgView.gkWidth < self.cropFrame.size.width || self.showImgView.gkHeight < self.cropFrame.size.height){

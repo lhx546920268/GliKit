@@ -40,7 +40,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 + (BOOL)isNull:(NSString*) str;
 
-//MARK:- 获取
+//MARK: 获取
 
 /**
  第一个字符

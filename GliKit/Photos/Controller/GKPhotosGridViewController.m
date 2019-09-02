@@ -200,6 +200,10 @@
     
     WeakObj(self)
     [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        
+        selfWeak.gkBackBarButtonItem.enabled = YES;
+        selfWeak.navigationItem.rightBarButtonItem.enabled = YES;
+        
         if(imageData){
             [selfWeak gkDismissProgress];
             selfWeak.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:GKImageScale];

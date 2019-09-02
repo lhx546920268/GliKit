@@ -13,6 +13,10 @@
 #import "UIView+GKUtils.h"
 #import "UIApplication+GKTheme.h"
 #import "NSString+GKUtils.h"
+#import "UIColor+GKTheme.h"
+#import "UIFont+GKTheme.h"
+#import "UIColor+GKUtils.h"
+#import "UIImage+GKTheme.h"
 
 ///是否可以活动返回
 static char GKInteractivePopEnableKey;
@@ -64,22 +68,9 @@ static char GKBackItemTitleKey;
 - (void)setGkShowBackItem:(BOOL)gkShowBackItem
 {
     if(gkShowBackItem != self.gkShowBackItem){
-        UIBarButtonItem *item = nil;
         if(gkShowBackItem){
-            UIImage *image = [UIImage imageNamed:@"back_icon"];
-            if(image){
-                //Template
-                if(image.renderingMode != UIImageRenderingModeAlwaysTemplate){
-                    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                }
-                
-                item = [[self class] gkBarItemWithImage:image target:self action:@selector(gkBack)];
-            }else{
-                self.navigationItem.hidesBackButton = NO;
-                self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.gkBackItemTitle style:UIBarButtonItemStyleDone target:nil action:nil];
-                self.navigationItem.backBarButtonItem.tintColor = UIColor.redColor;
-            }
-            
+            UIImage *image = UIImage.gkNavigationBarBackIcon;
+            UIBarButtonItem *item = [[self class] gkBarItemWithImage:image target:self action:@selector(gkBack)];
             [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
         }else{
             self.navigationItem.leftBarButtonItem = nil;
@@ -87,7 +78,6 @@ static char GKBackItemTitleKey;
             self.navigationItem.hidesBackButton = YES;
         }
         objc_setAssociatedObject(self, &GKShowBackItemKey, @(gkShowBackItem), OBJC_ASSOCIATION_RETAIN);
-        
     }
 }
 
@@ -96,34 +86,9 @@ static char GKBackItemTitleKey;
     return [objc_getAssociatedObject(self, &GKShowBackItemKey) boolValue];
 }
 
-- (NSString*)gkBackItemTitle
-{
-    NSString *title = objc_getAssociatedObject(self, &GKBackItemTitleKey);
-    if([NSString isEmpty:title]){
-        if(self.navigationController.viewControllers.count > 1){
-            UIViewController *vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
-            title = vc.navigationItem.title;
-            if([NSString isEmpty:title] && [title gkStringSizeWithFont:[UIFont systemFontOfSize:16]].width <= 80){
-                title = vc.title;
-            }
-        }
-    }
-    
-    if([NSString isEmpty:title]){
-        title = @"返回";
-    }
-    
-    return title;
-}
-
-- (void)setGkBackItemTitle:(NSString *)gkBackItemTitle
-{
-    objc_setAssociatedObject(self, &GKBackItemTitleKey, gkBackItemTitle, OBJC_ASSOCIATION_COPY);
-}
-
 - (UIBarButtonItem *)gkBackBarButtonItem
 {
-    return self.navigationItem.backBarButtonItem ? self.navigationItem.backBarButtonItem : self.navigationItem.leftBarButtonItem;
+    return self.navigationItem.leftBarButtonItem;
 }
 
 - (void)gkBack
@@ -316,7 +281,9 @@ static char GKBackItemTitleKey;
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setTitle:title forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [btn setTitleColor:UIColor.gkNavigationBarTintColor forState:UIControlStateNormal];
+    btn.titleLabel.font = UIFont.gkNavigationBarItemFont;
+    [btn setTitleColor:[UIColor.gkNavigationBarTintColor gkColorWithAlpha:0.3] forState:UIControlStateHighlighted];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     CGSize size = [title gkStringSizeWithFont:btn.titleLabel.font];
     btn.frame = CGRectMake(0, 0, size.width, 44);

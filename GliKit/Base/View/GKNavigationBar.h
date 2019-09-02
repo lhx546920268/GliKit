@@ -14,5 +14,8 @@
 ///阴影
 @property(nonatomic, readonly) UIView *shadowView;
 
+///背景
+@property(nonatomic, readonly) UIView *backgroundView;
+
 @end
 

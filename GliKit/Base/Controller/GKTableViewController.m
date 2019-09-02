@@ -116,7 +116,7 @@
     }
 }
 
-//MARK:- tableView 代理
+//MARK: tableView 代理
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -190,7 +190,7 @@
     }
 }
 
-//MARK:- 屏幕旋转
+//MARK: 屏幕旋转
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
