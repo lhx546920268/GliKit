@@ -1,6 +1,6 @@
 //
 //  UIImage+GKTheme.m
-//  AFNetworking
+//  GliKit
 //
 //  Created by 罗海雄 on 2019/9/2.
 //
