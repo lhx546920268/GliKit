@@ -17,7 +17,6 @@ static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
  倒计时 单位（秒）
  当不使用倒计时，需要自己手动停止倒计时，或者在时间到后会自己停止
  UIView 可在 - (void)willMoveToWindow:newWindow 中，newWindow不为空时开始倒计时，空时结束倒计时
- UIViewController dealloc 时结束倒计时
  */
 @interface GKCountDownTimer : NSObject
 

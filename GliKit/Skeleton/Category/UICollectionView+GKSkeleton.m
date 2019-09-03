@@ -49,9 +49,7 @@ static char GKSkeletonHideAnimateKey;
         [self reloadData];
         
         if(duration > 0 && completion){
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                completion();
-            });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), completion);
         }
     }
 }

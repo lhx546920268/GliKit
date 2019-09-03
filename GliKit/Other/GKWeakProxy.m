@@ -31,4 +31,9 @@
     return [_target methodSignatureForSelector:sel];
 }
 
+- (BOOL)isProxy
+{
+    return YES;
+}
+
 @end
