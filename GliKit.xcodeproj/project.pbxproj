@@ -111,6 +111,7 @@
 		CED0D446230BED900057D405 /* NSString+GKWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D444230BED900057D405 /* NSString+GKWeb.m */; };
 		CED0D44A230BF2210057D405 /* UIApplication+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D449230BF2210057D405 /* UIApplication+GKTheme.m */; };
 		CED0D44F230BF9E80057D405 /* GKKeyboardHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D44D230BF9E80057D405 /* GKKeyboardHelper.m */; };
+		CED1B13B2320F4BE009C4D6C /* GKPartialPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED1B13A2320F4BE009C4D6C /* GKPartialPresentationController.m */; };
 		CED3A7F4230D443200C304B3 /* UIViewController+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EA230D443100C304B3 /* UIViewController+GKEmptyView.m */; };
 		CED3A7F5230D443200C304B3 /* UICollectionView+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EB230D443200C304B3 /* UICollectionView+GKEmptyView.m */; };
 		CED3A7F6230D443200C304B3 /* UITableView+GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7EC230D443200C304B3 /* UITableView+GKEmptyView.m */; };
@@ -354,6 +355,8 @@
 		CED0D44C230BF7020057D405 /* GKBaseDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseDefines.h; sourceTree = "<group>"; };
 		CED0D44D230BF9E80057D405 /* GKKeyboardHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKKeyboardHelper.m; sourceTree = "<group>"; };
 		CED0D44E230BF9E80057D405 /* GKKeyboardHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKKeyboardHelper.h; sourceTree = "<group>"; };
+		CED1B1392320F4BE009C4D6C /* GKPartialPresentationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPartialPresentationController.h; sourceTree = "<group>"; };
+		CED1B13A2320F4BE009C4D6C /* GKPartialPresentationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPartialPresentationController.m; sourceTree = "<group>"; };
 		CED3A7EA230D443100C304B3 /* UIViewController+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GKEmptyView.m"; sourceTree = "<group>"; };
 		CED3A7EB230D443200C304B3 /* UICollectionView+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+GKEmptyView.m"; sourceTree = "<group>"; };
 		CED3A7EC230D443200C304B3 /* UITableView+GKEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+GKEmptyView.m"; sourceTree = "<group>"; };
@@ -454,6 +457,8 @@
 				CED0D1E1230BC6250057D405 /* GKPresentTransitionDelegate.m */,
 				CED0D442230BED7F0057D405 /* UIViewController+GKTransition.h */,
 				CED0D441230BED7F0057D405 /* UIViewController+GKTransition.m */,
+				CED1B1392320F4BE009C4D6C /* GKPartialPresentationController.h */,
+				CED1B13A2320F4BE009C4D6C /* GKPartialPresentationController.m */,
 			);
 			path = Transition;
 			sourceTree = "<group>";
@@ -1152,6 +1157,7 @@
 				CED0D32D230BC8780057D405 /* GKBaseViewController.m in Sources */,
 				CED0D429230BECF20057D405 /* UIView+GKOptimize.m in Sources */,
 				CED0D42A230BECF20057D405 /* UIScreen+GKUtils.m in Sources */,
+				CED1B13B2320F4BE009C4D6C /* GKPartialPresentationController.m in Sources */,
 				CED0D32F230BC8780057D405 /* GKScrollViewController.m in Sources */,
 				CED0D437230BED160057D405 /* UIViewController+GKLoading.m in Sources */,
 				CED0D330230BC8780057D405 /* GKPageViewController.m in Sources */,

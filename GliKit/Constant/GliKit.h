@@ -40,9 +40,14 @@
 #import <SDImageCache.h>
 
 //MARK: Theme
+
 #import "UIApplication+GKTheme.h"
 #import "UIColor+GKTheme.h"
 #import "UIImage+GKTheme.h"
 #import "UIFont+GKTheme.h"
+
+//MARK: Transition
+
+#import "UIViewController+GKTransition.h"
 
 #endif /* GliKit_h */

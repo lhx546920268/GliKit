@@ -18,6 +18,11 @@
  */
 static char GKTransitioningDelegateKey;
 
+/**
+ 部分显示大小
+ */
+static char GKPartialContentSizeKey;
+
 @implementation UIViewController (GKTransition)
 
 //MARK: swwizle
@@ -44,7 +49,7 @@ static char GKTransitioningDelegateKey;
 {
     if([viewControllerToPresent.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
         //让后面的视图不在动画完成后移除
-        viewControllerToPresent.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        viewControllerToPresent.modalPresentationStyle = UIModalPresentationCustom;
     }
     //主要用于 当使用 GKPartialPresentTransitionDelegate 部分显示某个UIViewController A时，在A中 preset UIViewController B，B dismiss时，A会变成全屏，设置UIModalPresentationCustom将不影响 A的大小
     UIViewController *viewController = self;
@@ -67,11 +72,21 @@ static char GKTransitioningDelegateKey;
     self.transitioningDelegate = gkTransitioningDelegate;
 }
 
+- (id<UIViewControllerTransitioningDelegate>)gkTransitioningDelegate
+{
+    return objc_getAssociatedObject(self, &GKTransitioningDelegateKey);
+}
+
 //MARK: present
+
+- (void)setPartialContentSize:(CGSize)partialContentSize
+{
+    objc_setAssociatedObject(self, &GKPartialContentSizeKey, @(partialContentSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (CGSize)partialContentSize
 {
-    return UIScreen.gkScreenSize;
+    return [objc_getAssociatedObject(self, &GKPartialContentSizeKey) CGSizeValue];
 }
 
 - (UIViewController*)partialViewController
@@ -100,16 +115,13 @@ static char GKTransitioningDelegateKey;
 
 - (void)partialPresentViewController:(UIViewController*) viewController style:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize
 {
-    viewController.view.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
-    [GKPartialPresentTransitionDelegate showViewController:viewController style:style];
+    GKPartialPresentTransitionDelegate *delegate = [GKPartialPresentTransitionDelegate new];
+    delegate.transitionStyle = style;
+    delegate.partialContentSize = contentSize;
+    [delegate showViewController:viewController];
 }
 
 //MARK: push
-
-- (id<UIViewControllerTransitioningDelegate>)gkTransitioningDelegate
-{
-    return objc_getAssociatedObject(self, &GKTransitioningDelegateKey);
-}
 
 - (void)gkPushViewController:(UIViewController*) viewController
 {

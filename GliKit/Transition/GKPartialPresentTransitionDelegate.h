@@ -31,11 +31,11 @@
  */
 @interface GKPartialPresentTransitionDelegate : NSObject<UIViewControllerTransitioningDelegate>
 
+///部分显示大小
+@property(nonatomic, assign) CGSize partialContentSize;
+
 ///背景颜色
 @property(nonatomic,strong) UIColor *backgroundColor;
-
-///后面的viewController 动画效果
-@property(nonatomic,assign) CGAffineTransform backTransform;
 
 ///点击背景是否会关闭当前显示的viewController，default is 'YES'
 @property(nonatomic,assign) BOOL dismissWhenTapBackground;
@@ -52,14 +52,8 @@
 ///消失时的回调
 @property(nonatomic,copy) void(^dismissHandler)(void);
 
-///显示一个 视图 垂直 可以设置 child.view 的大小
-+ (void)presentViewController:(UIViewController*) child;
-
-///显示一个 视图 水平 可以设置 child.view 的大小
-+ (void)pushViewController:(UIViewController*) child;
-
-///显示一个 视图  可以设置 child.view 的大小
-+ (void)showViewController:(UIViewController*) child style:(GKPresentTransitionStyle) style;
+///显示一个 视图
+- (void)showViewController:(UIViewController*) viewController;
 
 @end
 

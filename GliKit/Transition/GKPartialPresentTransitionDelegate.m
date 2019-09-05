@@ -11,22 +11,7 @@
 #import "UIImage+GKUtils.h"
 #import "UIViewController+GKUtils.h"
 #import "UIView+GKUtils.h"
-
-///自定义Present类型的过度动画实现 通过init初始化
-@interface GKPresentTransitionAnimator : NSObject<UIViewControllerAnimatedTransitioning>
-
-///关联的 GKPresentTransitionDelegate
-@property(nonatomic,weak) GKPresentTransitionDelegate *delegate;
-
-@end
-
-///自定义Present类型的过度动画，用于用户滑动屏幕触发的过度动画
-@interface GKPresentInteractiveTransition : UIPercentDrivenInteractiveTransition
-
-///关联的 GKPresentTransitionDelegate
-@property(nonatomic,weak) GKPresentTransitionDelegate *delegate;
-
-@end
+#import "GKPartialPresentationController.h"
 
 @interface GKPartialPresentTransitionAnimator : NSObject<UIViewControllerAnimatedTransitioning>
 
@@ -51,7 +36,6 @@
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         self.duration = 0.25;
         self.dismissWhenTapBackground = YES;
-        self.backTransform = CGAffineTransformIdentity;
         self.transitionStyle = GKPresentTransitionStyleCoverVerticalFromBottom;
     }
     
@@ -75,33 +59,22 @@
     return self.animator;
 }
 
-+ (void)pushViewController:(UIViewController *)child
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
 {
-    [self showViewController:child style:GKPresentTransitionStyleCoverHorizontal];
+    GKPartialPresentationController *controller = [[GKPartialPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
+    controller.delegate = self;
+    return controller;
 }
 
-+ (void)presentViewController:(UIViewController *)child
+- (void)showViewController:(UIViewController *)viewController
 {
-    [self showViewController:child style:GKPresentTransitionStyleCoverVerticalFromBottom];
-}
-
-+ (void)showViewController:(UIViewController*) child style:(GKPresentTransitionStyle) style
-{
-    GKPartialPresentTransitionDelegate *delegate = [[GKPartialPresentTransitionDelegate alloc] init];
-    delegate.transitionStyle = style;
-    child.gkTransitioningDelegate = delegate;
-    [UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController presentViewController:child animated:YES completion:nil];
+    viewController.gkTransitioningDelegate = self;
+    [UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:nil];
 }
 
 @end
 
-@interface GKPartialPresentTransitionAnimator ()<UIGestureRecognizerDelegate>
-
-///弹出来的视图
-@property(nonatomic,weak) UIViewController *presentedViewController;
-
-///背景视图
-@property(nonatomic,strong) UIView *backgroundView;
+@interface GKPartialPresentTransitionAnimator ()
 
 @end
 
@@ -119,75 +92,48 @@
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     UIView *containerView = transitionContext.containerView;
-    UIView *fromView;
-    UIView *toView;
-    
-    ///ios 8 才有的api
-    if([transitionContext respondsToSelector:@selector(viewForKey:)]){
-        fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    }else{
-        fromView = fromViewController.view;
-        toView = toViewController.view;
-    }
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     
     ///是否是弹出
     BOOL isPresenting = toViewController.presentingViewController == fromViewController;
     
-    ///背景视图
-    if(isPresenting){
-        self.backgroundView = [[UIView alloc] initWithFrame:containerView.bounds];
-        self.backgroundView.backgroundColor = self.delegate.backgroundColor;
-        if(self.delegate.dismissWhenTapBackground){
-            ///防止手势冲突
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-            tap.delegate = self;
-            self.presentedViewController = toViewController;
-            [self.backgroundView addGestureRecognizer:tap];
-            self.backgroundView.userInteractionEnabled = YES;
-        }else{
-            self.backgroundView.userInteractionEnabled = NO;
-        }
-        self.backgroundView.alpha = 0;
-    }
-    
     CGRect fromFrame = fromView.frame;
     CGRect toFrame = toView.frame;
     
+    CGSize size = self.delegate.partialContentSize;
+    
     if(isPresenting){
         fromView.frame = fromFrame;
-        fromView.hidden = YES;
         
         switch (self.delegate.transitionStyle){
                 
             case GKPresentTransitionStyleCoverVerticalFromTop : {
                 toFrame.origin.y = 0;
-                toFrame.origin.x = (containerView.gkWidth - toFrame.size.width) / 2.0;
-                toView.frame = CGRectOffset(toFrame, 0, -toFrame.size.height);
+                toFrame.origin.x = (containerView.gkWidth - size.width) / 2.0;
+                toView.frame = CGRectOffset(toFrame, 0, -size.height);
             }
                 break;
             case GKPresentTransitionStyleCoverVerticalFromBottom : {
-                toFrame.origin.y = containerView.gkHeight - toFrame.size.height;
-                toFrame.origin.x = (containerView.gkWidth - toFrame.size.width) / 2.0;
-                toView.frame = CGRectOffset(toFrame, 0, toFrame.size.height);
+                toFrame.origin.y = containerView.gkHeight - size.height;
+                toFrame.origin.x = (containerView.gkWidth - size.width) / 2.0;
+                toView.frame = CGRectOffset(toFrame, 0, size.height);
             }
                 break;
             case GKPresentTransitionStyleCoverHorizontal : {
-                toFrame.origin.y = (containerView.gkHeight - toFrame.size.height) / 2.0;
-                toFrame.origin.x = containerView.gkWidth - toFrame.size.width;
-                toView.frame = CGRectOffset(toFrame, toFrame.size.width, 0);
+                toFrame.origin.y = (containerView.gkHeight - size.height) / 2.0;
+                toFrame.origin.x = containerView.gkWidth - size.width;
+                toView.frame = CGRectOffset(toFrame, size.width, 0);
             }
                 break;
         }
         
         [containerView addSubview:toView];
-        [containerView insertSubview:self.backgroundView belowSubview:toView];
     }else{
         
         fromView.frame = fromFrame;
         //当 fromViewController.modalPresentationStyle = UIModalPresentationCustom, UIModalPresentationOverCurrentContext 时， toView 为nil
         if(toView){
-            toView.hidden = YES;
             toView.frame = toFrame;
             [containerView insertSubview:toView belowSubview:fromView];
         }else{
@@ -200,25 +146,23 @@
         
         if(isPresenting){
             toView.frame = toFrame;
-            self.backgroundView.alpha = 1.0;
         }else{
             switch (self.delegate.transitionStyle){
                 case GKPresentTransitionStyleCoverHorizontal : {
-                    fromView.frame = CGRectOffset(fromFrame, toFrame.size.width, 0);
+                    fromView.frame = CGRectOffset(fromFrame, size.width, 0);
                 }
                     break;
                 case GKPresentTransitionStyleCoverVerticalFromBottom : {
-                    fromView.frame = CGRectOffset(fromFrame, 0, toFrame.size.height);
+                    fromView.frame = CGRectOffset(fromFrame, 0, size.height);
                 }
                     break;
                 case GKPresentTransitionStyleCoverVerticalFromTop : {
-                    fromView.frame = CGRectOffset(fromFrame, 0, -toFrame.size.height);
+                    fromView.frame = CGRectOffset(fromFrame, 0, -size.height);
                 }
                     break;
                 default:
                     break;
             }
-            self.backgroundView.alpha = 0;
         }
     }completion:^(BOOL finish){
         
@@ -226,39 +170,10 @@
         
         ///移除背景视图
         if(!isPresenting){
-            [self.backgroundView removeFromSuperview];
             toView.hidden = NO;
         }
     }];
     
-}
-
-- (void)dealloc
-{
-    [self.backgroundView removeFromSuperview];
-}
-
-///点击背景视图
-- (void)handleTap:(UITapGestureRecognizer*) tap
-{
-    if(self.delegate.dismissWhenTapBackground){
-        if(self.delegate.tapBackgroundHandler){
-            self.delegate.tapBackgroundHandler();
-        }else{
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:self.delegate.dismissHandler];
-        }
-    }
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    CGPoint point = [gestureRecognizer locationInView:gestureRecognizer.view];
-    
-    if(CGRectContainsPoint(self.presentedViewController.view.frame, point)){
-        return NO;
-    }
-    
-    return YES;
 }
 
 @end
