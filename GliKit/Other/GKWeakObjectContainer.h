@@ -12,7 +12,7 @@
 @interface GKWeakObjectContainer<__covariant ObjectType> : NSObject
 
 ///需要weak引用的对象
-@property(nonatomic,weak) ObjectType weakObject;
+@property(nonatomic, weak) ObjectType weakObject;
 
 + (instancetype)containerWithObject:(ObjectType) object;
 

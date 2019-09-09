@@ -1,0 +1,33 @@
+//
+//  GKNestedScrollHelper.h
+//  GliKit
+//
+//  Created by 罗海雄 on 2019/9/9.
+//  Copyright © 2019 luohaixiong. All rights reserved.
+//
+
+#import <UIKit/UIkit.h>
+
+///嵌套滑动帮助类
+@interface GKNestedScrollHelper : NSObject<UIScrollViewDelegate>
+
+///父scrollView 是否可以滑动
+@property(nonatomic, assign) BOOL parentScrollEnable;
+
+///子scrollView 是否可以滑动
+@property(nonatomic, assign) BOOL childScrollEnable;
+
+///父容器
+@property(nonatomic, weak) UIScrollView *parentScrollView;
+
+/**
+ 替换某个方法的实现 新增的方法要加一个前缀gk_skeleton_
+ 
+ @param selector 要替换的方法
+ @param owner 方法的拥有者
+ @param implementer 新方法的实现者
+ */
++ (void)replaceImplementations:(SEL) selector owner:(NSObject*) owner implementer:(NSObject*) implementer;
+
+@end
+

@@ -77,8 +77,9 @@ static char GKSkeletonHideAnimateKey;
 
 //MARK: UITableViewDelegate
 
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)gkSkeletonAdd_tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //这是添加的方法
     return tableView.gkSkeletonStatus == GKSkeletonStatusNone;
 }
 

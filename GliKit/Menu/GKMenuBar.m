@@ -554,14 +554,22 @@
     
     CGRect frame = _indicator.frame;
     
-    CGFloat x = [self indicatorXForIndex:_selectedIndex];
-    CGFloat offset = percent * ([self indicatorXForIndex:index] - x);
+    if(_style == GKMenuBarStyleFill && self.indicatorShouldFill){
+        CGFloat x = _contentInset.left + _fillItemWidth * _selectedIndex;
+        CGFloat offset = percent * (_contentInset.left + _fillItemWidth * index - x);
+        frame.origin.x = x + offset;
+        frame.size.width = _fillItemWidth;
+    }else{
+        CGFloat x = [self indicatorXForIndex:_selectedIndex];
+        CGFloat offset = percent * ([self indicatorXForIndex:index] - x);
+        
+        GKMenuBarItem *item1 = [self.items objectAtIndex:_selectedIndex];
+        GKMenuBarItem *item2 = [self.items objectAtIndex:index];
+        
+        frame.origin.x = x + offset;
+        frame.size.width = item1.itemWidth + (item2.itemWidth - item1.itemWidth) * percent;
+    }
     
-    GKMenuBarItem *item1 = [self.items objectAtIndex:_selectedIndex];
-    GKMenuBarItem *item2 = [self.items objectAtIndex:index];
-    
-    frame.origin.x = x + offset;
-    frame.size.width = item1.itemWidth + (item2.itemWidth - item1.itemWidth) * percent;
     _indicator.frame = frame;
 }
 

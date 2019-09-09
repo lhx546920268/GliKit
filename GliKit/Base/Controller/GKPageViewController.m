@@ -94,7 +94,7 @@
         self.scrollViewSize = self.scrollView.frame.size;
         [self layoutPages];
         
-        if((self.willScrollToPage > 0 && self.willScrollToPage < [self numberOfPage]) || self.menuBar.selectedIndex != 0){
+        if((self.willScrollToPage > 0 && self.willScrollToPage < self.numberOfPage) || self.menuBar.selectedIndex != 0){
             
             if(self.menuBar.selectedIndex != 0){
                 _currentPage = self.menuBar.selectedIndex;
@@ -110,7 +110,7 @@
 - (void)layoutPages
 {
     if(!CGSizeEqualToSize(self.scrollViewSize, CGSizeZero)){
-        self.scrollView.contentSize = CGSizeMake(self.scrollViewSize.width * _pageViewControllers.count, self.scrollViewSize.height);
+        self.scrollView.contentSize = CGSizeMake(self.scrollViewSize.width * self.numberOfPage, self.scrollViewSize.height);
         [self layoutVisiablePages];
     }
 }

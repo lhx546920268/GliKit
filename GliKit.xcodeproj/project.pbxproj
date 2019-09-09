@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */; };
+		CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */; };
+		CEB85F452326021A0045CB38 /* GKNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */; };
+		CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F47232622DA0045CB38 /* GKWeakProxy.m */; };
 		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
 		CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertController.m */; };
 		CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22E230BC6250057D405 /* GKAlertProps.m */; };
@@ -146,6 +149,12 @@
 		0BEDB41C20325014EA1F86BB /* Pods-GliKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.release.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.release.xcconfig"; sourceTree = "<group>"; };
 		13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
+		CEB85F402325FCF70045CB38 /* UIScrollView+GKNestedScroll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+GKNestedScroll.h"; sourceTree = "<group>"; };
+		CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+GKNestedScroll.m"; sourceTree = "<group>"; };
+		CEB85F432326021A0045CB38 /* GKNestedScrollHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNestedScrollHelper.h; sourceTree = "<group>"; };
+		CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNestedScrollHelper.m; sourceTree = "<group>"; };
+		CEB85F46232622DA0045CB38 /* GKWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKWeakProxy.h; sourceTree = "<group>"; };
+		CEB85F47232622DA0045CB38 /* GKWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKWeakProxy.m; sourceTree = "<group>"; };
 		CEBFAA48230CD5DD007B8D47 /* UIColor+GKTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+GKTheme.h"; sourceTree = "<group>"; };
 		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
 		CED0D1CE230BC5BE0057D405 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -404,6 +413,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CEB85F3C2325FB5C0045CB38 /* NestedScroll */ = {
+			isa = PBXGroup;
+			children = (
+				CEB85F402325FCF70045CB38 /* UIScrollView+GKNestedScroll.h */,
+				CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */,
+				CEB85F432326021A0045CB38 /* GKNestedScrollHelper.h */,
+				CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */,
+			);
+			path = NestedScroll;
+			sourceTree = "<group>";
+		};
 		CED0D1C5230BC5BE0057D405 = {
 			isa = PBXGroup;
 			children = (
@@ -425,6 +445,7 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
+				CEB85F3C2325FB5C0045CB38 /* NestedScroll */,
 				CEFE907B230F794D006A0EBD /* Vendors */,
 				CED3A7F9230D44EE00C304B3 /* Refresh */,
 				CED0D44B230BF6DA0057D405 /* Constant */,
@@ -670,6 +691,8 @@
 		CED0D254230BC6250057D405 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				CEB85F46232622DA0045CB38 /* GKWeakProxy.h */,
+				CEB85F47232622DA0045CB38 /* GKWeakProxy.m */,
 				CED0D256230BC6250057D405 /* GKCountDownTimer.h */,
 				CED0D258230BC6250057D405 /* GKCountDownTimer.m */,
 				CED0D257230BC6250057D405 /* GKObject.h */,
@@ -1158,6 +1181,7 @@
 				CED0D429230BECF20057D405 /* UIView+GKOptimize.m in Sources */,
 				CED0D42A230BECF20057D405 /* UIScreen+GKUtils.m in Sources */,
 				CED1B13B2320F4BE009C4D6C /* GKPartialPresentationController.m in Sources */,
+				CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */,
 				CED0D32F230BC8780057D405 /* GKScrollViewController.m in Sources */,
 				CED0D437230BED160057D405 /* UIViewController+GKLoading.m in Sources */,
 				CED0D330230BC8780057D405 /* GKPageViewController.m in Sources */,
@@ -1228,11 +1252,13 @@
 				CED0D3D3230BC8790057D405 /* GKProgressView.m in Sources */,
 				CED0D446230BED900057D405 /* NSString+GKWeb.m in Sources */,
 				CED0D443230BED7F0057D405 /* UIViewController+GKTransition.m in Sources */,
+				CEB85F452326021A0045CB38 /* GKNestedScrollHelper.m in Sources */,
 				CED0D42F230BECF20057D405 /* UITableView+GKRowHeight.m in Sources */,
 				CED0D42B230BECF20057D405 /* UIView+GKXibUtils.m in Sources */,
 				CED0D3D4230BC8790057D405 /* GKTextView.m in Sources */,
 				CED0D3D5230BC8790057D405 /* GKTextField.m in Sources */,
 				CED0D3DB230BC8790057D405 /* GKBadgeValueView.m in Sources */,
+				CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */,
 				CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */,
 				CED0D400230BECD00057D405 /* NSAttributedString+GKUtils.m in Sources */,
 				CED0D436230BED160057D405 /* UIView+GKLoading.m in Sources */,

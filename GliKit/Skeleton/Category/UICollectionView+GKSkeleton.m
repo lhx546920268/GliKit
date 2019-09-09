@@ -76,7 +76,7 @@ static char GKSkeletonHideAnimateKey;
 
 //MARK: UICollectionViewDelegate
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)gkSkeletonAdd_collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return collectionView.gkSkeletonStatus == GKSkeletonStatusNone;
 }

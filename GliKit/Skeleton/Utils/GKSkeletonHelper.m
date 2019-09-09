@@ -60,8 +60,8 @@
 + (void)replaceImplementations:(SEL) selector owner:(NSObject *)owner implementer:(NSObject *)implementer
 {
     if([owner respondsToSelector:selector]){
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkSkeleton_%@", NSStringFromSelector(selector)]);
         Method method1 = class_getInstanceMethod(owner.class, selector);
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkSkeleton_%@", NSStringFromSelector(selector)]);
         
         //给代理 添加一个 方法名为 gkSkeleton_ 前缀的，但是实现还是 代理的实现的方法
         if(class_addMethod(owner.class, selector2, method_getImplementation(method1), method_getTypeEncoding(method1))){
@@ -74,7 +74,8 @@
         
         //让UITableView UICollectionView 在显示骨架过程中不能点击 cell
         if(selector == @selector(tableView:shouldHighlightRowAtIndexPath:) || selector == @selector(collectionView:shouldHighlightItemAtIndexPath:)){
-            Method method = class_getInstanceMethod(implementer.class, selector);
+            SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkSkeletonAdd_%@", NSStringFromSelector(selector)]);
+            Method method = class_getInstanceMethod(implementer.class, selector2);
             class_addMethod(owner.class, selector, method_getImplementation(method), method_getTypeEncoding(method));
         }
     }
