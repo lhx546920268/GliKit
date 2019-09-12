@@ -19,6 +19,9 @@
 @property(nonatomic, assign) NSInteger count;
 @property(nonatomic, assign) CGFloat ac;
 
+///xx
+@property(nonatomic, assign) GKNestedScrollContentOffsetStatus status;
+
 @end
 
 @implementation GKDChildPageViewController
@@ -78,7 +81,7 @@
     self.count ++;
     if(self.count > 6){
         self.count = 0;
-        if(self.tableView.contentOffset.y + self.speed * 17 + self.tableView.gkHeight > self.tableView.contentSize.height){
+        if(self.tableView.contentOffset.y + self.tableView.gkHeight > self.tableView.contentSize.height){
             self.ac *= 0.5;
         }
         self.speed *= self.ac;

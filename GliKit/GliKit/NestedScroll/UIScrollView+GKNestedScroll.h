@@ -10,6 +10,22 @@
 
 @class GKNestedScrollHelper;
 
+///手动设置contentOffset状态
+typedef NS_ENUM(NSInteger, GKNestedScrollContentOffsetStatus){
+    
+    ///什么都没
+    GKNestedScrollContentOffsetStatusNone,
+    
+    ///开始自动设置contentOffset
+    GKNestedScrollContentOffsetStatusBegan,
+    
+    ///offset的范围已经超出contentSize了， 慢慢向前进，达到一定值回弹
+    GKNestedScrollContentOffsetStatusBounceForward,
+    
+    ///回弹了
+    GKNestedScrollContentOffsetStatusBounceBack,
+};
+
 ///嵌套滚动扩展
 @interface UIScrollView (GKNestedScroll)
 
