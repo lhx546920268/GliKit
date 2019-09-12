@@ -1,0 +1,1 @@
+../../../../../GliKit/GliKit/Photos/Model/GKImageCropSettings.h

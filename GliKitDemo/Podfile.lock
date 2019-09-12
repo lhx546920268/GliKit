@@ -1,0 +1,53 @@
+PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GliKit (0.0.1):
+    - AFNetworking
+    - FMDB
+    - Masonry
+    - SDWebImage
+  - Masonry (1.1.0)
+  - SDWebImage (5.0.5):
+    - SDWebImage/Core (= 5.0.5)
+  - SDWebImage/Core (5.0.5)
+
+DEPENDENCIES:
+  - GliKit (from `../GliKit`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - FMDB
+    - Masonry
+    - SDWebImage
+
+EXTERNAL SOURCES:
+  GliKit:
+    :path: "../GliKit"
+
+SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GliKit: f2d8d96dada58b12f87aec32bff4b5b2a0381fad
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDWebImage: f86b0a0713195d1c734335d010697d44af10d165
+
+PODFILE CHECKSUM: 1b6f78da8937efce218d75e84e5b05645f7f52f9
+
+COCOAPODS: 1.6.0.beta.2

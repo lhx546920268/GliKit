@@ -1,0 +1,585 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9D579E2A746EA0B9579B1F7C /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A5D8FBA0C349B9F190F7C10 /* libPods-GliKitDemo.a */; };
+		CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F4D232630210045CB38 /* GKDNestedParentViewController.m */; };
+		CEB85F52232630560045CB38 /* GKDNestedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F50232630560045CB38 /* GKDNestedTableViewCell.m */; };
+		CEB85F53232630560045CB38 /* GKDNestedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB85F51232630560045CB38 /* GKDNestedTableViewCell.xib */; };
+		CEB85F56232630DA0045CB38 /* GKDNestedPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F55232630DA0045CB38 /* GKDNestedPageViewController.m */; };
+		CEB85F59232630FA0045CB38 /* GKDChildPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F58232630FA0045CB38 /* GKDChildPageViewController.m */; };
+		CEC3C842231E5612003ADE7A /* GKDSkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C841231E5612003ADE7A /* GKDSkeletonViewController.m */; };
+		CEC3C846231E5971003ADE7A /* GKDNormalSkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C844231E5971003ADE7A /* GKDNormalSkeletonViewController.m */; };
+		CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C845231E5971003ADE7A /* GKDNormalSkeletonViewController.xib */; };
+		CEC3C84A231E5990003ADE7A /* GKDTableViewSkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C849231E5990003ADE7A /* GKDTableViewSkeletonViewController.m */; };
+		CEC3C84D231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C84C231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m */; };
+		CEC3C851231E59CD003ADE7A /* GKDTableViewSkeletonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C84F231E59CD003ADE7A /* GKDTableViewSkeletonCell.m */; };
+		CEC3C852231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C850231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib */; };
+		CEC3C855231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C854231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.m */; };
+		CEC3C858231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C857231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m */; };
+		CEC3C85C231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C85A231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m */; };
+		CEC3C85D231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */; };
+		CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */; };
+		CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */; };
+		CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C893231911E900E7CA75 /* AppDelegate.m */; };
+		CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE8C89B231911EB00E7CA75 /* Assets.xcassets */; };
+		CEE8C89F231911EB00E7CA75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */; };
+		CEE8C8A2231911EB00E7CA75 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8A1231911EB00E7CA75 /* main.m */; };
+		CEE8C8AD231915DB00E7CA75 /* GKDRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8AC231915DB00E7CA75 /* GKDRootViewController.m */; };
+		CEE8C8B1231917AB00E7CA75 /* GKDPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8AF231917AB00E7CA75 /* GKDPhotosViewController.m */; };
+		CEE8C8B723191CE400E7CA75 /* GKDPhotosCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8B623191CE400E7CA75 /* GKDPhotosCollectionViewCell.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7A5D8FBA0C349B9F190F7C10 /* libPods-GliKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitDemo.release.xcconfig"; path = "Target Support Files/Pods-GliKitDemo/Pods-GliKitDemo.release.xcconfig"; sourceTree = "<group>"; };
+		CEB85F4C232630210045CB38 /* GKDNestedParentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNestedParentViewController.h; sourceTree = "<group>"; };
+		CEB85F4D232630210045CB38 /* GKDNestedParentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNestedParentViewController.m; sourceTree = "<group>"; };
+		CEB85F4F232630560045CB38 /* GKDNestedTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNestedTableViewCell.h; sourceTree = "<group>"; };
+		CEB85F50232630560045CB38 /* GKDNestedTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNestedTableViewCell.m; sourceTree = "<group>"; };
+		CEB85F51232630560045CB38 /* GKDNestedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDNestedTableViewCell.xib; sourceTree = "<group>"; };
+		CEB85F54232630DA0045CB38 /* GKDNestedPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNestedPageViewController.h; sourceTree = "<group>"; };
+		CEB85F55232630DA0045CB38 /* GKDNestedPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNestedPageViewController.m; sourceTree = "<group>"; };
+		CEB85F57232630FA0045CB38 /* GKDChildPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDChildPageViewController.h; sourceTree = "<group>"; };
+		CEB85F58232630FA0045CB38 /* GKDChildPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDChildPageViewController.m; sourceTree = "<group>"; };
+		CEC3C840231E5612003ADE7A /* GKDSkeletonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDSkeletonViewController.h; sourceTree = "<group>"; };
+		CEC3C841231E5612003ADE7A /* GKDSkeletonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDSkeletonViewController.m; sourceTree = "<group>"; };
+		CEC3C843231E5971003ADE7A /* GKDNormalSkeletonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNormalSkeletonViewController.h; sourceTree = "<group>"; };
+		CEC3C844231E5971003ADE7A /* GKDNormalSkeletonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNormalSkeletonViewController.m; sourceTree = "<group>"; };
+		CEC3C845231E5971003ADE7A /* GKDNormalSkeletonViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDNormalSkeletonViewController.xib; sourceTree = "<group>"; };
+		CEC3C848231E5990003ADE7A /* GKDTableViewSkeletonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTableViewSkeletonViewController.h; sourceTree = "<group>"; };
+		CEC3C849231E5990003ADE7A /* GKDTableViewSkeletonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTableViewSkeletonViewController.m; sourceTree = "<group>"; };
+		CEC3C84B231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDCollectionViewSkeletonViewController.h; sourceTree = "<group>"; };
+		CEC3C84C231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDCollectionViewSkeletonViewController.m; sourceTree = "<group>"; };
+		CEC3C84E231E59CD003ADE7A /* GKDTableViewSkeletonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTableViewSkeletonCell.h; sourceTree = "<group>"; };
+		CEC3C84F231E59CD003ADE7A /* GKDTableViewSkeletonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTableViewSkeletonCell.m; sourceTree = "<group>"; };
+		CEC3C850231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDTableViewSkeletonCell.xib; sourceTree = "<group>"; };
+		CEC3C853231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTableViewSkeletonHeader.h; sourceTree = "<group>"; };
+		CEC3C854231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTableViewSkeletonHeader.m; sourceTree = "<group>"; };
+		CEC3C856231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDCollectionViewSkeletonCell.h; sourceTree = "<group>"; };
+		CEC3C857231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDCollectionViewSkeletonCell.m; sourceTree = "<group>"; };
+		CEC3C859231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDCollectionViewSkeletonHeader.h; sourceTree = "<group>"; };
+		CEC3C85A231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDCollectionViewSkeletonHeader.m; sourceTree = "<group>"; };
+		CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDCollectionViewSkeletonHeader.xib; sourceTree = "<group>"; };
+		CED1B13E2320FAC1009C4D6C /* GKDTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTransitionViewController.h; sourceTree = "<group>"; };
+		CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTransitionViewController.m; sourceTree = "<group>"; };
+		CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDTransitionViewController.xib; sourceTree = "<group>"; };
+		CEE8C88F231911E900E7CA75 /* GliKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GliKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE8C892231911E900E7CA75 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CEE8C893231911E900E7CA75 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CEE8C89B231911EB00E7CA75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CEE8C89E231911EB00E7CA75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CEE8C8A0231911EB00E7CA75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEE8C8A1231911EB00E7CA75 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CEE8C8AB231915DB00E7CA75 /* GKDRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDRootViewController.h; sourceTree = "<group>"; };
+		CEE8C8AC231915DB00E7CA75 /* GKDRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDRootViewController.m; sourceTree = "<group>"; };
+		CEE8C8AE231917AB00E7CA75 /* GKDPhotosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDPhotosViewController.h; sourceTree = "<group>"; };
+		CEE8C8AF231917AB00E7CA75 /* GKDPhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDPhotosViewController.m; sourceTree = "<group>"; };
+		CEE8C8B423191BAE00E7CA75 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		CEE8C8B523191CE400E7CA75 /* GKDPhotosCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDPhotosCollectionViewCell.h; sourceTree = "<group>"; };
+		CEE8C8B623191CE400E7CA75 /* GKDPhotosCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDPhotosCollectionViewCell.m; sourceTree = "<group>"; };
+		DD740E3E13DC2B05CC565386 /* Pods-GliKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitDemo.debug.xcconfig"; path = "Target Support Files/Pods-GliKitDemo/Pods-GliKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CEE8C88C231911E900E7CA75 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D579E2A746EA0B9579B1F7C /* libPods-GliKitDemo.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6D08CDCE58D62FB58D901258 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DD740E3E13DC2B05CC565386 /* Pods-GliKitDemo.debug.xcconfig */,
+				C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		9BB3C0682925525264F42BDB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A5D8FBA0C349B9F190F7C10 /* libPods-GliKitDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CEB85F49232630000045CB38 /* NestedScroll */ = {
+			isa = PBXGroup;
+			children = (
+				CEB85F4A232630000045CB38 /* Controller */,
+				CEB85F4B232630000045CB38 /* View */,
+			);
+			path = NestedScroll;
+			sourceTree = "<group>";
+		};
+		CEB85F4A232630000045CB38 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CEB85F4C232630210045CB38 /* GKDNestedParentViewController.h */,
+				CEB85F4D232630210045CB38 /* GKDNestedParentViewController.m */,
+				CEB85F54232630DA0045CB38 /* GKDNestedPageViewController.h */,
+				CEB85F55232630DA0045CB38 /* GKDNestedPageViewController.m */,
+				CEB85F57232630FA0045CB38 /* GKDChildPageViewController.h */,
+				CEB85F58232630FA0045CB38 /* GKDChildPageViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CEB85F4B232630000045CB38 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEB85F4F232630560045CB38 /* GKDNestedTableViewCell.h */,
+				CEB85F50232630560045CB38 /* GKDNestedTableViewCell.m */,
+				CEB85F51232630560045CB38 /* GKDNestedTableViewCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CEC3C83D231E55F1003ADE7A /* Skeleton */ = {
+			isa = PBXGroup;
+			children = (
+				CEC3C83E231E55F1003ADE7A /* Controller */,
+				CEC3C83F231E55F1003ADE7A /* View */,
+			);
+			path = Skeleton;
+			sourceTree = "<group>";
+		};
+		CEC3C83E231E55F1003ADE7A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CEC3C840231E5612003ADE7A /* GKDSkeletonViewController.h */,
+				CEC3C841231E5612003ADE7A /* GKDSkeletonViewController.m */,
+				CEC3C843231E5971003ADE7A /* GKDNormalSkeletonViewController.h */,
+				CEC3C844231E5971003ADE7A /* GKDNormalSkeletonViewController.m */,
+				CEC3C845231E5971003ADE7A /* GKDNormalSkeletonViewController.xib */,
+				CEC3C848231E5990003ADE7A /* GKDTableViewSkeletonViewController.h */,
+				CEC3C849231E5990003ADE7A /* GKDTableViewSkeletonViewController.m */,
+				CEC3C84B231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.h */,
+				CEC3C84C231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CEC3C83F231E55F1003ADE7A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEC3C84E231E59CD003ADE7A /* GKDTableViewSkeletonCell.h */,
+				CEC3C84F231E59CD003ADE7A /* GKDTableViewSkeletonCell.m */,
+				CEC3C850231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib */,
+				CEC3C853231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.h */,
+				CEC3C854231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.m */,
+				CEC3C856231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.h */,
+				CEC3C857231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m */,
+				CEC3C859231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.h */,
+				CEC3C85A231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m */,
+				CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CED1B13C2320FA54009C4D6C /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				CED1B13D2320FA54009C4D6C /* Controller */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		CED1B13D2320FA54009C4D6C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CED1B13E2320FAC1009C4D6C /* GKDTransitionViewController.h */,
+				CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */,
+				CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CEE8C886231911E900E7CA75 = {
+			isa = PBXGroup;
+			children = (
+				CEE8C891231911E900E7CA75 /* GliKitDemo */,
+				CEE8C890231911E900E7CA75 /* Products */,
+				6D08CDCE58D62FB58D901258 /* Pods */,
+				9BB3C0682925525264F42BDB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CEE8C890231911E900E7CA75 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CEE8C88F231911E900E7CA75 /* GliKitDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
+			isa = PBXGroup;
+			children = (
+				CEB85F49232630000045CB38 /* NestedScroll */,
+				CED1B13C2320FA54009C4D6C /* Transition */,
+				CEC3C83D231E55F1003ADE7A /* Skeleton */,
+				CEE8C8A8231915A300E7CA75 /* Photos */,
+				CEE8C892231911E900E7CA75 /* AppDelegate.h */,
+				CEE8C893231911E900E7CA75 /* AppDelegate.m */,
+				CEE8C8AB231915DB00E7CA75 /* GKDRootViewController.h */,
+				CEE8C8AC231915DB00E7CA75 /* GKDRootViewController.m */,
+				CEE8C89B231911EB00E7CA75 /* Assets.xcassets */,
+				CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */,
+				CEE8C8A0231911EB00E7CA75 /* Info.plist */,
+				CEE8C8A1231911EB00E7CA75 /* main.m */,
+				CEE8C8B423191BAE00E7CA75 /* PrefixHeader.pch */,
+			);
+			path = GliKitDemo;
+			sourceTree = "<group>";
+		};
+		CEE8C8A8231915A300E7CA75 /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				CEE8C8A9231915A300E7CA75 /* Controller */,
+				CEE8C8AA231915A300E7CA75 /* View */,
+			);
+			path = Photos;
+			sourceTree = "<group>";
+		};
+		CEE8C8A9231915A300E7CA75 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CEE8C8AE231917AB00E7CA75 /* GKDPhotosViewController.h */,
+				CEE8C8AF231917AB00E7CA75 /* GKDPhotosViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CEE8C8AA231915A300E7CA75 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEE8C8B523191CE400E7CA75 /* GKDPhotosCollectionViewCell.h */,
+				CEE8C8B623191CE400E7CA75 /* GKDPhotosCollectionViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CEE8C88E231911E900E7CA75 /* GliKitDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE8C8A5231911EB00E7CA75 /* Build configuration list for PBXNativeTarget "GliKitDemo" */;
+			buildPhases = (
+				F193B464ACE3FFBD1015FF20 /* [CP] Check Pods Manifest.lock */,
+				CEE8C88B231911E900E7CA75 /* Sources */,
+				CEE8C88C231911E900E7CA75 /* Frameworks */,
+				CEE8C88D231911E900E7CA75 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GliKitDemo;
+			productName = GliKitDemo;
+			productReference = CEE8C88F231911E900E7CA75 /* GliKitDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CEE8C887231911E900E7CA75 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = GKD;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = luohaixiong;
+				TargetAttributes = {
+					CEE8C88E231911E900E7CA75 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = CEE8C88A231911E900E7CA75 /* Build configuration list for PBXProject "GliKitDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CEE8C886231911E900E7CA75;
+			productRefGroup = CEE8C890231911E900E7CA75 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CEE8C88E231911E900E7CA75 /* GliKitDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CEE8C88D231911E900E7CA75 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE8C89F231911EB00E7CA75 /* LaunchScreen.storyboard in Resources */,
+				CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */,
+				CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */,
+				CEB85F53232630560045CB38 /* GKDNestedTableViewCell.xib in Resources */,
+				CEC3C85D231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib in Resources */,
+				CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */,
+				CEC3C852231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F193B464ACE3FFBD1015FF20 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GliKitDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CEE8C88B231911E900E7CA75 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEC3C84D231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m in Sources */,
+				CEB85F56232630DA0045CB38 /* GKDNestedPageViewController.m in Sources */,
+				CEC3C846231E5971003ADE7A /* GKDNormalSkeletonViewController.m in Sources */,
+				CEB85F59232630FA0045CB38 /* GKDChildPageViewController.m in Sources */,
+				CEE8C8A2231911EB00E7CA75 /* main.m in Sources */,
+				CEC3C855231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.m in Sources */,
+				CEE8C8AD231915DB00E7CA75 /* GKDRootViewController.m in Sources */,
+				CEC3C85C231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m in Sources */,
+				CEE8C8B1231917AB00E7CA75 /* GKDPhotosViewController.m in Sources */,
+				CEC3C84A231E5990003ADE7A /* GKDTableViewSkeletonViewController.m in Sources */,
+				CEE8C8B723191CE400E7CA75 /* GKDPhotosCollectionViewCell.m in Sources */,
+				CEC3C858231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m in Sources */,
+				CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */,
+				CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */,
+				CEC3C851231E59CD003ADE7A /* GKDTableViewSkeletonCell.m in Sources */,
+				CEC3C842231E5612003ADE7A /* GKDSkeletonViewController.m in Sources */,
+				CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */,
+				CEB85F52232630560045CB38 /* GKDNestedTableViewCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEE8C89E231911EB00E7CA75 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CEE8C8A3231911EB00E7CA75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CEE8C8A4231911EB00E7CA75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CEE8C8A6231911EB00E7CA75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD740E3E13DC2B05CC565386 /* Pods-GliKitDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
+				INFOPLIST_FILE = GliKitDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.luohaixiong.GliKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		CEE8C8A7231911EB00E7CA75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
+				INFOPLIST_FILE = GliKitDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.luohaixiong.GliKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CEE8C88A231911E900E7CA75 /* Build configuration list for PBXProject "GliKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE8C8A3231911EB00E7CA75 /* Debug */,
+				CEE8C8A4231911EB00E7CA75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEE8C8A5231911EB00E7CA75 /* Build configuration list for PBXNativeTarget "GliKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE8C8A6231911EB00E7CA75 /* Debug */,
+				CEE8C8A7231911EB00E7CA75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CEE8C887231911E900E7CA75 /* Project object */;
+}

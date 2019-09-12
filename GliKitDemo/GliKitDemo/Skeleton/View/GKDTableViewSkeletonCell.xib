@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="79" id="FMa-1C-LYv" customClass="GKDTableViewSkeletonCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FMa-1C-LYv" id="ZtW-hK-HEt">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="78.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test_1" translatesAutoresizingMaskIntoConstraints="NO" id="h0l-TI-PnB">
+                        <rect key="frame" x="15" y="10" width="60" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="Nf6-8d-EvP"/>
+                            <constraint firstAttribute="width" constant="60" id="cvE-G7-Koc"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是列表内容" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4SV-pY-ZEV">
+                        <rect key="frame" x="85" y="10" width="104" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是列表内容" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGm-hc-UyA">
+                        <rect key="frame" x="85" y="39" width="104" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="XGm-hc-UyA" firstAttribute="leading" secondItem="4SV-pY-ZEV" secondAttribute="leading" id="1Z4-Hf-2RT"/>
+                    <constraint firstItem="4SV-pY-ZEV" firstAttribute="top" secondItem="h0l-TI-PnB" secondAttribute="top" id="3AD-bW-4zH"/>
+                    <constraint firstItem="h0l-TI-PnB" firstAttribute="leading" secondItem="ZtW-hK-HEt" secondAttribute="leading" constant="15" id="7ys-VH-8eB"/>
+                    <constraint firstItem="h0l-TI-PnB" firstAttribute="top" secondItem="ZtW-hK-HEt" secondAttribute="top" constant="10" id="FfS-SB-6it"/>
+                    <constraint firstItem="XGm-hc-UyA" firstAttribute="top" secondItem="4SV-pY-ZEV" secondAttribute="bottom" constant="8" id="LPH-Yi-srw"/>
+                    <constraint firstItem="4SV-pY-ZEV" firstAttribute="leading" secondItem="h0l-TI-PnB" secondAttribute="trailing" constant="10" id="qRl-XX-J3B"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="132.80000000000001" y="73.313343328335833"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="test_1" width="500" height="504"/>
+    </resources>
+</document>
