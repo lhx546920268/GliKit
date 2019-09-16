@@ -9,20 +9,20 @@
 #import "UINavigationBar+GKUtils.h"
 #import <objc/runtime.h>
 #import "UIApplication+GKTheme.h"
+#import "NSObject+GKUtils.h"
 
 @implementation UINavigationBar (GKUtils)
 
 + (void)load
 {
-    Method method1 = class_getInstanceMethod(self, @selector(layoutSubviews));
-    Method method2 = class_getInstanceMethod(self, @selector(gkLayoutSubviews));
+    Method method1 = class_getInstanceMethod(self.class, @selector(layoutSubviews));
+    Method method2 = class_getInstanceMethod(self.class, @selector(gkLayoutSubviews));
     method_exchangeImplementations(method1, method2);
 }
 
 - (void)gkLayoutSubviews
 {
     [self gkLayoutSubviews];
-    
     CGFloat margin = UIApplication.gkNavigationBarMargin;
     [self gkSetNavigationItemMargin:UIEdgeInsetsMake(0, margin, 0, margin)];
 }

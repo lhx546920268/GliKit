@@ -20,6 +20,12 @@
 ///父容器
 @property(nonatomic, weak) UIScrollView *parentScrollView;
 
+///是否在模拟系统自动滑动
+@property(nonatomic, readonly) BOOL gkAutoScrolling;
+
+///用户触摸屏幕了
+- (void)onTouchScreen;
+
 /**
  替换某个方法的实现 新增的方法要加一个前缀gk_skeleton_
  

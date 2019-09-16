@@ -41,8 +41,21 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    //设置parent
     UIScrollView *child = self.subPages[self.currentPage].scrollView;
-    child.gkNestedParentScrollView.gkNestedChildScrollView = child;
+    UIScrollView *parent = child.gkNestedParentScrollView;
+    parent.gkNestedChildScrollView = child;
+    if(!parent.gkChildDidScrollToParent){
+        WeakObj(self)
+        parent.gkChildDidScrollToParent = ^{
+            for(GKDChildPageViewController *page in selfWeak.pageViewControllers){
+                if(page.isInit){
+                    page.scrollView.contentOffset = CGPointZero;
+                }
+            }
+        };
+    }
 }
 
 - (UIViewController*)viewControllerForIndex:(NSUInteger)index

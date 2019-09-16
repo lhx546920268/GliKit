@@ -8,6 +8,48 @@
 
 #import "GKNestedScrollHelper.h"
 #import <objc/runtime.h>
+#import "GKWeakProxy.h"
+#import "UIView+GKUtils.h"
+#import "UIScrollView+GKNestedScroll.h"
+#import "UIScrollView+GKRefresh.h"
+
+///手动设置contentOffset状态
+typedef NS_ENUM(NSInteger, GKNestedScrollContentOffsetStatus){
+    
+    ///什么都没
+    GKNestedScrollContentOffsetStatusNone,
+    
+    ///开始自动设置contentOffset
+    GKNestedScrollContentOffsetStatusBegan,
+    
+    ///offset的范围已经超出contentSize了， 慢慢向前进，达到一定值回弹
+    GKNestedScrollContentOffsetStatusBounceForward,
+    
+    ///回弹了
+    GKNestedScrollContentOffsetStatusBounceBack,
+};
+
+///减速筛检比例
+static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
+
+@interface GKNestedScrollHelper ()
+
+///监听屏幕刷新
+@property(nonatomic, strong) CADisplayLink *displayLink;
+
+///当前滑动状态
+@property(nonatomic, assign) GKNestedScrollContentOffsetStatus status;
+
+///父容器最大滑动位置
+@property(nonatomic, assign) CGFloat parentMaxOffset;
+
+///每帧 毫秒数
+@property(nonatomic, assign) NSTimeInterval timePerFrame;
+
+@property(nonatomic, assign) CGFloat currentSpeed;
+@property(nonatomic, assign) int frames;
+
+@end
 
 @implementation GKNestedScrollHelper
 
@@ -19,6 +61,174 @@
         self.childScrollEnable = YES;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [self stopDisplayLink];
+}
+
+- (BOOL)gkAutoScrolling
+{
+    return self.displayLink != nil;
+}
+
+- (void)onTouchScreen
+{
+    [self stopDisplayLink];
+}
+
+//MARK: UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    BOOL isParent = scrollView == self.parentScrollView;
+    CGPoint contentOffset = scrollView.contentOffset;
+    
+    CGFloat maxOffsetY = floor(self.parentScrollView.contentSize.height - self.parentScrollView.gkHeight);
+    if(isParent){
+    
+        UIScrollView *child = self.parentScrollView.gkNestedChildScrollView;
+        BOOL childRefreshEnable = child.gkRefreshControl != nil;
+        
+        //下拉刷新中
+        if(child.contentOffset.y < 0 && childRefreshEnable){
+            scrollView.contentOffset = CGPointZero;
+            return;
+        }
+        
+        CGFloat offset = contentOffset.y - maxOffsetY;
+        
+        //已经滑出顶部范围了，让子容器滑动
+        if(offset >= 0){
+            scrollView.contentOffset = CGPointMake(0, maxOffsetY);
+            if(self.parentScrollEnable){
+                self.parentScrollEnable = NO;
+                self.childScrollEnable = YES;
+            }
+        }else{
+            //不能让父容器继续滑动了
+            if(!self.parentScrollEnable){
+                scrollView.contentOffset = CGPointMake(0, maxOffsetY);
+            }
+        }
+        
+        //到顶部了，应该要下拉刷新了
+        if(scrollView.contentOffset.y <= 0){
+    
+            if(childRefreshEnable){
+                self.childScrollEnable = YES;
+                scrollView.contentOffset = CGPointZero;
+            }
+        }
+        
+    }else{
+        
+        BOOL enable = scrollView.gkRefreshControl != nil ? self.parentScrollView.contentOffset.y > 0 : YES;
+        //滚动容器还在滑动中
+        if(!self.childScrollEnable || (enable && self.parentScrollView.contentOffset.y < maxOffsetY)){
+            scrollView.contentOffset = CGPointZero;
+            return;
+        }
+        
+        //滑到滚动容器了滚动容器
+        if(contentOffset.y <= 0 && self.parentScrollView.contentOffset.y > 0){
+            scrollView.contentOffset = CGPointZero;
+            self.childScrollEnable = NO;
+            self.parentScrollEnable = YES;
+            if(self.parentScrollView.gkChildDidScrollToParent){
+                self.parentScrollView.gkChildDidScrollToParent();
+            }
+        }
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    //主要是为了 滑动父容器时 可以促使child滑动 只有向下滑动时才需要
+    CGFloat maxOffsetY = floor(scrollView.contentSize.height - scrollView.gkHeight);
+    if(velocity.y <= 0 || scrollView.contentOffset.y >= maxOffsetY){
+        return;
+    }
+    
+    NSInteger i = 0;
+    CGFloat speed = velocity.y;
+    while (speed > 0.01) {
+        
+        speed *= 0.81;
+        i ++;
+    }
+    
+    //估算滑动距离超过容器可滑动距离的最大值时，模拟系统的滑动
+    
+    if(floor(i * 100.0f * velocity.y + scrollView.contentOffset.y) > maxOffsetY){
+        //模拟系统的滑动减速衰减
+        self.parentMaxOffset = maxOffsetY;
+        self.status = GKNestedScrollContentOffsetStatusBegan;
+        self.frames = 0;
+        self.currentSpeed = velocity.y;
+        *targetContentOffset = scrollView.contentOffset;
+        
+        [self startDisplayLink];
+    }
+}
+
+//MARK: Display Link
+
+///开始监听屏幕刷新
+- (void)startDisplayLink
+{
+    [self stopDisplayLink];
+    
+    self.displayLink = [CADisplayLink displayLinkWithTarget:[GKWeakProxy weakProxyWithTarget:self] selector:@selector(handleLink)];
+    //60FPS
+    self.timePerFrame = 17;
+    [self.displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
+}
+
+///停止监听
+- (void)stopDisplayLink
+{
+    if(self.displayLink){
+        [self.displayLink invalidate];
+        self.displayLink = nil;
+    }
+}
+
+///处理屏幕刷新
+- (void)handleLink
+{
+    //每帧 毫秒数
+    self.frames ++;
+    if(self.frames * self.timePerFrame >= 100){
+        //没100毫秒衰减一次
+        self.frames = 0;
+        self.currentSpeed *= GKNestedScrollSlowDampingRaito;
+    }
+    
+    //速度低于这个值就停止了
+    if(self.currentSpeed <= 0.01){
+        [self stopDisplayLink];
+        return;
+    }
+    
+    //父容器滑动到最大值后就滑动child
+    if(self.parentScrollView.contentOffset.y >= self.parentMaxOffset){
+        UIScrollView *scrollView = self.parentScrollView.gkNestedChildScrollView;
+        CGFloat y = scrollView.contentOffset.y + self.currentSpeed * self.timePerFrame;
+        CGPoint contentOffset = scrollView.contentOffset;
+        if(y + scrollView.gkHeight >= scrollView.contentSize.height){
+            y = scrollView.contentSize.height - scrollView.gkHeight;
+            [self stopDisplayLink];
+        }
+        contentOffset.y = y;
+        scrollView.contentOffset = contentOffset;
+    }else{
+        CGFloat y = self.parentScrollView.contentOffset.y + self.currentSpeed * self.timePerFrame;
+        CGPoint contentOffset = self.parentScrollView.contentOffset;
+        contentOffset.y = MIN(self.parentMaxOffset, y);
+        self.parentScrollView.contentOffset = contentOffset;
+    }
 }
 
 //MARK: 替换实现
@@ -38,55 +248,10 @@
             class_replaceMethod(owner.class, selector, method_getImplementation(method2), method_getTypeEncoding(method2));
         }
     }else{
-
+        
         SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkNestedScrollAdd_%@", NSStringFromSelector(selector)]);
         Method method = class_getInstanceMethod(implementer.class, selector2);
         class_addMethod(owner.class, selector, method_getImplementation(method), method_getTypeEncoding(method));
-    }
-}
-
-//MARK: UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    BOOL isParent = scrollView == self.parentScrollView;
-    CGPoint contentOffset = scrollView.contentOffset;
-    
-    CGFloat maxOffsetY = floor(self.parentScrollView.contentSize.height - self.parentScrollView.frame.size.height);
-    if(isParent){
-    
-        CGFloat offset = contentOffset.y - maxOffsetY;
-        
-        //已经滑出顶部范围了，让子容器滑动
-        if(offset >= 0){
-            scrollView.contentOffset = CGPointMake(0, maxOffsetY);
-            if(self.parentScrollEnable){
-                self.parentScrollEnable = NO;
-                self.childScrollEnable = YES;
-            }
-        }else{
-            //不能让父容器继续滑动了
-            if(!self.parentScrollEnable){
-                scrollView.contentOffset = CGPointMake(0, maxOffsetY);
-            }
-        }
-        
-    }else{
-        
-        //滚动容器还在滑动中
-        if(!self.childScrollEnable || (self.parentScrollView.contentOffset.y > 0 && self.parentScrollView.contentOffset.y < maxOffsetY)){
-            scrollView.contentOffset = CGPointZero;
-            return;
-        }
-        
-        //滑到滚动容器了滚动容器
-        if(contentOffset.y <= 0){
-            scrollView.contentOffset = CGPointZero;
-            if(self.parentScrollView.contentOffset.y > 0){
-                self.childScrollEnable = NO;
-                self.parentScrollEnable = YES;
-            }
-        }
     }
 }
 

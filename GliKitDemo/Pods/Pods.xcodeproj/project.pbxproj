@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -338,7 +338,6 @@
 		B56DC402C83749A503D82E9E068118B9 /* UIImage+GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = AB672EC3BCEB2988DCB3037ED3D4D5AA /* UIImage+GIF.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B586509F29EDC2F6CEB8B3160835984E /* UITableView+GKSkeleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9437151F1B719A09F3A58968EB6A1 /* UITableView+GKSkeleton.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		B5E773D4490A2B062256A69EB943BE71 /* GKPhotosGridViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8322A1CE70A875F53D3FC7C7EB6F24C1 /* GKPhotosGridViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B5E93A7F662E9C9EDAAFE49401E5746B /* GKNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4017BF790BD29665D97B4B473CF63EEB /* GKNestedScrollHelper.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		B657498C17EDB3D006D493698C4E9A58 /* UIView+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 479022E97651622CC4E8F9D3E78CDBC9 /* UIView+GKUtils.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		B6721594BC03CF4AD5982D0512CC063B /* GKAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = AC3C01ACF2D16F2FAFD4179CD03F9F57 /* GKAlertAction.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B6D7D29537A9817E267EAC77B08A87A1 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2152E740257C7A890BE9FBB9F2B22426 /* UIView+WebCacheOperation.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -377,6 +376,7 @@
 		CB4E707D45CDC2FB1F1828ED5752A119 /* SDImageCachesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FDF1805472C5D43464F3CBDA9A56803B /* SDImageCachesManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CB9C2F52536E6833132FE570566C572C /* SDImageAPNGCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F8B4E147F737991A0A6402F22DD50DB /* SDImageAPNGCoder.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CBE882F682D3730BD5373633754BAAC7 /* GKBaseViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FFFB911F87114BA151EB1923BC692F3 /* GKBaseViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		CEB5D69A232F255900D1492C /* GKNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4017BF790BD29665D97B4B473CF63EEB /* GKNestedScrollHelper.m */; };
 		CF41BCACAD7114B916D951845D4C5CA1 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAEDD61F507EFA8BFC17D4B2C992046 /* UIFont+GKTheme.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		D2DD8BD13B9522E1327999D967701729 /* GKCollectionViewLayoutInvalidationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150B8366350D646489F4A074558C6B /* GKCollectionViewLayoutInvalidationContext.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D35A6DEB48B880B4D6ED97FC4ACAD8E3 /* GKSkeletonAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9A431688FAEDE9FA8A715DE2ABF40D /* GKSkeletonAnimationHelper.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -525,7 +525,7 @@
 		0295183CDE368152C2BC34FABCB5B675 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "UIKit+AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		032F8EF3CFFAF24AA00DCE6FA654C3D2 /* SDImageLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageLoader.h; path = SDWebImage/SDImageLoader.h; sourceTree = "<group>"; };
 		04689317754A61E6375092ADDDEB9336 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIRefreshControl+AFNetworking.m"; path = "UIKit+AFNetworking/UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
-		065A1D9CFD7404FF78FD789CBA9C5C11 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libFMDB.a; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		065A1D9CFD7404FF78FD789CBA9C5C11 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		072A22757688298428952152BA09638D /* SDImageCoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageCoder.m; path = SDWebImage/SDImageCoder.m; sourceTree = "<group>"; };
 		078FC1F611A54ACF3039415DB9EC5909 /* UIScrollView+GKEmptyView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+GKEmptyView.m"; sourceTree = "<group>"; };
 		07C1FE40EFB2A84F0F6E4936EC6D659D /* NSDictionary+GKUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+GKUtils.m"; sourceTree = "<group>"; };
@@ -616,7 +616,7 @@
 		36F3590377F84DB9D9E48D8997F5C478 /* UICollectionReusableView+GKUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UICollectionReusableView+GKUtils.h"; sourceTree = "<group>"; };
 		36F37A359122F1E241FF32579FDF032B /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
 		3710D860C5F15E39CE41F0DD12652445 /* GKAlertButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKAlertButton.h; sourceTree = "<group>"; };
-		37549A5D7524E4E13510176BC726CA45 /* libPods-GliKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-GliKitDemo.a"; path = "libPods-GliKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		37549A5D7524E4E13510176BC726CA45 /* libPods-GliKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		377A5BA7AFE438613AA8730E686C9C70 /* GKProgressView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKProgressView.h; sourceTree = "<group>"; };
 		384753DD417F746FF3267E3E401E7C53 /* UIFont+GKUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKUtils.h"; sourceTree = "<group>"; };
 		39F8C21794260E869CE4D9EBAB48F457 /* GKPhotosGridViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKPhotosGridViewController.m; sourceTree = "<group>"; };
@@ -719,7 +719,7 @@
 		6C715313A4740CD1728FCDC2566EBF32 /* GKNavigationBarTitleView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKNavigationBarTitleView.m; sourceTree = "<group>"; };
 		6CE070DAE2C7D3C2F62EFA879533B1B3 /* GKTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKTableViewController.m; sourceTree = "<group>"; };
 		6D868498D540ECE020F28C017E376601 /* GKImageCropSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKImageCropSettings.h; sourceTree = "<group>"; };
-		6DB15EF35D2BB1A8C3AAFDAE76DFE18B /* libSDWebImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSDWebImage.a; path = libSDWebImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DB15EF35D2BB1A8C3AAFDAE76DFE18B /* libSDWebImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDWebImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E14F09737956E2141491689039A1C0E /* UICollectionView+GKCellSize.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+GKCellSize.h"; sourceTree = "<group>"; };
 		6EA08B06821F7A8995CC6E4A9D068E8C /* NSJSONSerialization+GKUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSJSONSerialization+GKUtils.h"; sourceTree = "<group>"; };
 		6F0F6E0A1C65F8AF0F5AC2957D8373B4 /* GKSkeletonHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKSkeletonHelper.h; sourceTree = "<group>"; };
@@ -734,7 +734,7 @@
 		7469DA48A2EF1A99625BA3E7BB6D48CD /* UIView+GKLoading.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIView+GKLoading.h"; sourceTree = "<group>"; };
 		747A957DA62A5E10E6E2CB6B9C95231B /* UICollectionView+GKSkeleton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+GKSkeleton.m"; sourceTree = "<group>"; };
 		7708A50CBA735228ADD554F18A3B2054 /* GKImageCropViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
-		78AB0D0C3BEE5B570933E847B68DAEC4 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		78AB0D0C3BEE5B570933E847B68DAEC4 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		78AC8A1E5CC528B8624B29A65A4CBCD4 /* MASConstraintMaker.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASConstraintMaker.h; path = Masonry/MASConstraintMaker.h; sourceTree = "<group>"; };
 		79032CAEA5F3595AD6F1BB1317E2D369 /* SDImageGIFCoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageGIFCoder.h; path = SDWebImage/SDImageGIFCoder.h; sourceTree = "<group>"; };
 		79D3B20C289E003B12319DE323CFA113 /* GKNavigationItemHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKNavigationItemHelper.h; sourceTree = "<group>"; };
@@ -769,7 +769,7 @@
 		869DB87889D2605BEC8F1EDCBABFF062 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFSecurityPolicy.h; path = AFNetworking/AFSecurityPolicy.h; sourceTree = "<group>"; };
 		86B664B6B1990D6F90555654E3F1C690 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASCompositeConstraint.h; path = Masonry/MASCompositeConstraint.h; sourceTree = "<group>"; };
 		878EBAAD7E81CA8B232EE78F945004A9 /* MASViewAttribute.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASViewAttribute.h; path = Masonry/MASViewAttribute.h; sourceTree = "<group>"; };
-		87F1C79CC699E71EA774C247669E2B1A /* GliKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = GliKit.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		87F1C79CC699E71EA774C247669E2B1A /* GliKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = GliKit.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		88BF79ADE79A80813A8566C4343A4719 /* GKScrollViewModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKScrollViewModel.m; sourceTree = "<group>"; };
 		88CC50F9FA0072B591E75088499C68F4 /* SDWebImageTransition.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageTransition.h; path = SDWebImage/SDWebImageTransition.h; sourceTree = "<group>"; };
 		89ED7663D182AB11A7BEBA0A1F96E60C /* UIView+GKAutoLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIView+GKAutoLayout.h"; sourceTree = "<group>"; };
@@ -825,7 +825,7 @@
 		A2CBE13A94BB42E5A93FEA2BBF0B21DD /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MASAdditions.m"; path = "Masonry/NSArray+MASAdditions.m"; sourceTree = "<group>"; };
 		A30761CB0EA801C91FBD21A8FB22D763 /* GKHttpTaskDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKHttpTaskDelegate.h; sourceTree = "<group>"; };
 		A38EE9F144C3444CA4499076F75C3326 /* GKPhotosPreviewViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKPhotosPreviewViewController.m; sourceTree = "<group>"; };
-		A412C0F337A28008CAB1D5572CA48168 /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFNetworking.a; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A412C0F337A28008CAB1D5572CA48168 /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A43C0BF1DC473453BFF4F29C0F1A1A77 /* GKNavigationBarTitleView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKNavigationBarTitleView.h; sourceTree = "<group>"; };
 		A4AF0B0EC7CD81FEC2A97579575CE848 /* UIView+GKOptimize.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIView+GKOptimize.h"; sourceTree = "<group>"; };
 		A53768003CB8C686C411ECF61369B16F /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "View+MASShorthandAdditions.h"; path = "Masonry/View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
@@ -856,7 +856,7 @@
 		B0C52127EA77737861C6993D0FF3EA48 /* GKHttpMultiTasks.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKHttpMultiTasks.h; sourceTree = "<group>"; };
 		B20A1A9A73C041B321A85E5895DAD291 /* AFAutoPurgingImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFAutoPurgingImageCache.m; path = "UIKit+AFNetworking/AFAutoPurgingImageCache.m"; sourceTree = "<group>"; };
 		B2399124378D7A4839036D0B13AFBF93 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+WebCache.m"; path = "SDWebImage/UIImageView+WebCache.m"; sourceTree = "<group>"; };
-		B36AB396275697EEE1A5B13BA8A38FE3 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B36AB396275697EEE1A5B13BA8A38FE3 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B3C4136657961FA207269BC68C8F06AD /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkReachabilityManager.h; path = AFNetworking/AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		B51C2179A0C3908D1BE2D3F630F5E9DC /* UIView+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+WebCache.h"; path = "SDWebImage/UIView+WebCache.h"; sourceTree = "<group>"; };
 		B551E8F096FCB549F2DA452B40AE52E4 /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImagePrefetcher.m; path = SDWebImage/SDWebImagePrefetcher.m; sourceTree = "<group>"; };
@@ -922,7 +922,7 @@
 		D7ED7F9B9D29E2592C115254DA39D7C9 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSData+ImageContentType.h"; path = "SDWebImage/NSData+ImageContentType.h"; sourceTree = "<group>"; };
 		D8623B9086ADCF78FBFE3797A100D674 /* UITextField+GKUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UITextField+GKUtils.m"; sourceTree = "<group>"; };
 		D8AC5F92DDD6DF0B68853255A360AC83 /* GKPhotosGridCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKPhotosGridCell.m; sourceTree = "<group>"; };
-		D8BEBF8F48E85B6ADEB56CFD1F485129 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libGliKit.a; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8BEBF8F48E85B6ADEB56CFD1F485129 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA0420423E78E41FE41D3344186BEC85 /* UIColor+GKUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIColor+GKUtils.h"; sourceTree = "<group>"; };
 		DA51B34A2BB3660A2B97211B252E22F8 /* GKDivider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKDivider.h; sourceTree = "<group>"; };
 		DB5AC8E2679A82ADC9939613A6A3D6EE /* UITableViewCell+GKUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+GKUtils.h"; sourceTree = "<group>"; };
@@ -936,7 +936,7 @@
 		E4E6685412776C0CF4527FEC1873EB9E /* UITableView+GKUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UITableView+GKUtils.m"; sourceTree = "<group>"; };
 		E502A932DFA6C01C90838350322D1BBB /* GKPageLoadingContainer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKPageLoadingContainer.h; sourceTree = "<group>"; };
 		E5B83323AF26BE88F43ECA073BF59016 /* GKPhotosViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GKPhotosViewController.h; sourceTree = "<group>"; };
-		E5CD953793B38724712CAADB70588C20 /* libMasonry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libMasonry.a; path = libMasonry.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5CD953793B38724712CAADB70588C20 /* libMasonry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMasonry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6313E5C4F6659AA9D6EECB90F112F7E /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = "UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m"; sourceTree = "<group>"; };
 		E65A9FC5FDA3042B3453B2B958B089E0 /* NSJSONSerialization+GKUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSJSONSerialization+GKUtils.m"; sourceTree = "<group>"; };
 		E7516008F2377B3FB79B2B06C2769C9E /* MASConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASConstraint.h; path = Masonry/MASConstraint.h; sourceTree = "<group>"; };
@@ -1137,7 +1137,6 @@
 				2035DC095AB7815C03C48D73EE91720A /* GKCollectionViewTopFlowLayout.h */,
 				D7DCDEE54E039F45520CA3A0848E5D46 /* GKCollectionViewTopFlowLayout.m */,
 			);
-			name = CollectionViewLayout;
 			path = CollectionViewLayout;
 			sourceTree = "<group>";
 		};
@@ -1202,7 +1201,6 @@
 				3174143FEF457244364FFB4E53415671 /* ViewController+MASAdditions.m */,
 				A18F0DA391E1B771FF7B63A56E335098 /* Support Files */,
 			);
-			name = Masonry;
 			path = Masonry;
 			sourceTree = "<group>";
 		};
@@ -1235,7 +1233,6 @@
 				5BFFFB19C3ECAFC631177974BD4D9E2A /* UIView+GKSkeleton.h */,
 				B0147E452BEECFA24362358398977E9A /* UIView+GKSkeleton.m */,
 			);
-			name = Category;
 			path = Category;
 			sourceTree = "<group>";
 		};
@@ -1259,7 +1256,6 @@
 				2793AC1977E5D691BB2B71BB1AF4D986 /* UIScrollView+GKRefresh.h */,
 				47D311E2754EE978C6CB41B160645231 /* UIScrollView+GKRefresh.m */,
 			);
-			name = Category;
 			path = Category;
 			sourceTree = "<group>";
 		};
@@ -1271,7 +1267,6 @@
 				22895A3318414BBBF8DF3FC9BACB8ABC /* GKScrollViewModel.h */,
 				88BF79ADE79A80813A8566C4343A4719 /* GKScrollViewModel.m */,
 			);
-			name = ViewModel;
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
@@ -1285,7 +1280,6 @@
 				C0C911E9C601E3EEA3D27FC80828EF0C /* GKSystemNavigationBar.h */,
 				1F8B17EDA291D2BC1DA85A72EB90187F /* GKSystemNavigationBar.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1306,7 +1300,6 @@
 				D33C9BD11FF6A39A174263A3ACFFFD53 /* NSString+GKWeb.h */,
 				55BB13533F57E1256E0005F8A1EEEB52 /* NSString+GKWeb.m */,
 			);
-			name = Category;
 			path = Category;
 			sourceTree = "<group>";
 		};
@@ -1320,7 +1313,6 @@
 				A9ACACF1C4E5C224EC8A23AD2208D98F /* GKAlertHeader.h */,
 				ED2D20E2DBD43DA4677E8CDA26A0B56C /* GKAlertHeader.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1332,7 +1324,6 @@
 				7CE3AE0774B0FA4C489364D12A2706D9 /* UIViewController+GKLoading.h */,
 				598B6E9C1139451E21B098C0CB973F44 /* UIViewController+GKLoading.m */,
 			);
-			name = Category;
 			path = Category;
 			sourceTree = "<group>";
 		};
@@ -1344,7 +1335,6 @@
 				AB701C9DA242B77F14CAD691C8CAC72C /* GKProgressHUD.h */,
 				8F6F2E8563EB76D5969363C39E55B7DD /* GKProgressHUD.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1354,7 +1344,6 @@
 				79D3B20C289E003B12319DE323CFA113 /* GKNavigationItemHelper.h */,
 				EF158759AB3504DFB19A6AEDC4395356 /* GKNavigationItemHelper.m */,
 			);
-			name = Utils;
 			path = Utils;
 			sourceTree = "<group>";
 		};
@@ -1364,7 +1353,6 @@
 				0EC9EE3FE92A9B97E8C6C98E921489ED /* standard */,
 				081052EE2334C0B3C496414207B3D259 /* Support Files */,
 			);
-			name = FMDB;
 			path = FMDB;
 			sourceTree = "<group>";
 		};
@@ -1395,7 +1383,6 @@
 				074E6C65310C80593986B6DF1779E336 /* Support Files */,
 				004EC99C5789CBDDE0068B9F2C437DDA /* UIKit */,
 			);
-			name = AFNetworking;
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
@@ -1460,7 +1447,6 @@
 				74483C2013CA73DD5C9B36AC883471C0 /* GKEmptyView.h */,
 				69A7BF371D7DBEEBC79C64C684534532 /* GKEmptyView.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1472,7 +1458,6 @@
 				6F0F6E0A1C65F8AF0F5AC2957D8373B4 /* GKSkeletonHelper.h */,
 				97B0652395EB9BFBEE1174935398EB67 /* GKSkeletonHelper.m */,
 			);
-			name = Utils;
 			path = Utils;
 			sourceTree = "<group>";
 		};
@@ -1494,7 +1479,6 @@
 				B9F100A2DC7900C40BFF388A42B09610 /* GKAlertController.h */,
 				6513E4B1C2D1DBEA724AE34AD9C0F9AE /* GKAlertController.m */,
 			);
-			name = Controller;
 			path = Controller;
 			sourceTree = "<group>";
 		};
@@ -1514,7 +1498,6 @@
 				3F4983B2D8352D3DF425843395B8AEBE /* GKRefreshStyle.h */,
 				5FF8F3BDEABD9FC8395CAA929CB3F3F9 /* GKRefreshStyle.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1545,7 +1528,6 @@
 				C5AC0C039AC170F7C00A10B3E6F323A5 /* GKTableViewController.h */,
 				6CE070DAE2C7D3C2F62EFA879533B1B3 /* GKTableViewController.m */,
 			);
-			name = Controller;
 			path = Controller;
 			sourceTree = "<group>";
 		};
@@ -1563,7 +1545,6 @@
 				85E80241F112F5B71F5EC175826B397F /* GKPhotosToolBar.h */,
 				0F90DD10A8A7C40EB29259477C9E4E3D /* GKPhotosToolBar.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1712,7 +1693,6 @@
 				E5B83323AF26BE88F43ECA073BF59016 /* GKPhotosViewController.h */,
 				CE97BDB294AE8D29D8F9F46B6DB13147 /* GKPhotosViewController.m */,
 			);
-			name = Controller;
 			path = Controller;
 			sourceTree = "<group>";
 		};
@@ -1772,7 +1752,6 @@
 				EB78FF1FB51D4BF50A0F7A87103445A7 /* UIViewController+GKUtils.h */,
 				608F96EBADB3387FCFEDCB2A19FFF517 /* UIViewController+GKUtils.m */,
 			);
-			name = Category;
 			path = Category;
 			sourceTree = "<group>";
 		};
@@ -1799,7 +1778,6 @@
 				CE542973AC75C3A2A37241F72F8DA00A /* GKAlertProps.h */,
 				97236B7E68DA20306BA0847FE7653DEA /* GKAlertProps.m */,
 			);
-			name = Model;
 			path = Model;
 			sourceTree = "<group>";
 		};
@@ -1988,7 +1966,6 @@
 				8F7C61C24F607226BDA2793586BB4DA0 /* GKSSKeychain.h */,
 				1FE2B3D4700708DC420DEE35D7C8F8EE /* GKSSKeychain.m */,
 			);
-			name = KeyChain;
 			path = KeyChain;
 			sourceTree = "<group>";
 		};
@@ -1998,7 +1975,6 @@
 				97B3202A18B353A88CA6FE7F30C4C283 /* Core */,
 				4B0FEAC481A6DF6ABF1F8D7CC29C1D87 /* Support Files */,
 			);
-			name = SDWebImage;
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
@@ -2016,7 +1992,6 @@
 				699BEAC295380E943B339CA2D711F894 /* UIViewController+GKEmptyView.h */,
 				9EEF3D714B348D3B53FA1F8C0E2CBCC1 /* UIViewController+GKEmptyView.m */,
 			);
-			name = Category;
 			path = Category;
 			sourceTree = "<group>";
 		};
@@ -2035,7 +2010,6 @@
 				4130BC950B857DA342044AA02699FCC1 /* GKBaseWebViewController.h */,
 				EFE6CE2A89B944C53B5B663D7A07A65D /* GKBaseWebViewController.m */,
 			);
-			name = Controller;
 			path = Controller;
 			sourceTree = "<group>";
 		};
@@ -2083,7 +2057,6 @@
 				CF81B9DD20B45A0B807A773677C5F697 /* GKSkeletonSubLayer.h */,
 				3D4B15CC844804B7C605C8156FA9BC41 /* GKSkeletonSubLayer.m */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -2097,7 +2070,6 @@
 				C854189783C0057071224978C188A739 /* GKPhotosOptions.h */,
 				47A21D7A16C84296F074E78973FA9A62 /* GKPhotosOptions.m */,
 			);
-			name = Model;
 			path = Model;
 			sourceTree = "<group>";
 		};
@@ -2635,6 +2607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB5D69A232F255900D1492C /* GKNestedScrollHelper.m in Sources */,
 				67BD11F38645C4A279D38F3E1A4FF810 /* CAMenuBarCell.m in Sources */,
 				06AD541EDAC6308F4CC30F7282302CFD /* CKAlertCell.m in Sources */,
 				A746D22B022D2516F3B080CED8BF1144 /* GKAlertAction.m in Sources */,
@@ -2677,7 +2650,6 @@
 				346BDD1E580C85FA132F9FB6A9C02FE5 /* GKNavigationBar.m in Sources */,
 				2117D6D0EB1D3374707276DDD4FB2C1E /* GKNavigationBarTitleView.m in Sources */,
 				ADCD4F7879E84EEF0158206A45E20C9B /* GKNavigationItemHelper.m in Sources */,
-				B5E93A7F662E9C9EDAAFE49401E5746B /* GKNestedScrollHelper.m in Sources */,
 				2D2FCEF911246719D87977A5C82135DB /* GKObject.m in Sources */,
 				C190466058F170752208341D5A059FDF /* GKPageLoadingContainer.m in Sources */,
 				18464BEF130C5B8BC4749D47237867DD /* GKPageViewController.m in Sources */,
@@ -3143,8 +3115,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.2;
 				SYMROOT = "${SRCROOT}/../build";
 			};
