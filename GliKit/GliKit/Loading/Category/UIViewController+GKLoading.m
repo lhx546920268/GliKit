@@ -9,37 +9,44 @@
 #import "UIViewController+GKLoading.h"
 #import "UIView+GKLoading.h"
 #import "GKBaseDefines.h"
+#import "UIViewController+GKDialog.h"
 
 @implementation UIViewController (GKLoading)
 
-//MARK: loading
+///获取当前内容视图
+- (UIView*)gkContentView
+{
+    return self.isShowAsDialog ? self.dialog : self.view;
+}
+
+// MARK: - loading
 
 - (void)setGkShowPageLoading:(BOOL)gkShowPageLoading
 {
-    self.view.gkShowPageLoading = gkShowPageLoading;
+    self.gkContentView.gkShowPageLoading = gkShowPageLoading;
 }
 
 - (BOOL)gkShowPageLoading
 {
-    return [self.view gkShowPageLoading];
+    return [self.gkContentView gkShowPageLoading];
 }
 
 - (void)setGkPageLoadingView:(UIView<GKPageLoadingContainer> *)gkPageLoadingView
 {
-    self.view.gkPageLoadingView = gkPageLoadingView;
+    self.gkContentView.gkPageLoadingView = gkPageLoadingView;
 }
 
 - (UIView<GKPageLoadingContainer> *)gkPageLoadingView
 {
-    return self.view.gkPageLoadingView;
+    return self.gkContentView.gkPageLoadingView;
 }
 
 - (void)setGkShowFailPage:(BOOL)gkShowFailPage
 {
-    self.view.gkShowFailPage = gkShowFailPage;
+    self.gkContentView.gkShowFailPage = gkShowFailPage;
     if(gkShowFailPage){
         WeakObj(self);
-        self.view.gkReloadDataHandler = ^(void){
+        self.gkContentView.gkReloadDataHandler = ^(void){
             [selfWeak gkReloadData];
         };
     }
@@ -47,7 +54,7 @@
 
 - (BOOL)gkShowFailPage
 {
-    return [self.view gkShowFailPage];
+    return [self.gkContentView gkShowFailPage];
 }
 
 - (void)gkReloadData
@@ -55,41 +62,41 @@
     
 }
 
-//MARK: hud
+// MARK: - hud
 
 - (void)gkShowProgressWithText:(NSString*) text
 {
-    [self.view gkShowProgressWithText:text];
+    [self.gkContentView gkShowProgressWithText:text];
 }
 
 - (void)gkDismissProgress
 {
-    [self.view gkDismissProgress];
+    [self.gkContentView gkDismissProgress];
 }
 
 - (void)gkDismissText
 {
-    [self.view gkDismissText];
+    [self.gkContentView gkDismissText];
 }
 
 - (void)gkShowProgressWithText:(NSString*) text delay:(NSTimeInterval) delay
 {
-    [self.view gkShowProgressWithText:text delay:delay];
+    [self.gkContentView gkShowProgressWithText:text delay:delay];
 }
 
 - (void)gkShowSuccessWithText:(NSString*) text
 {
-    [self.view gkShowSuccessWithText:text];
+    [self.gkContentView gkShowSuccessWithText:text];
 }
 
 - (void)gkShowErrorWithText:(NSString*) text
 {
-    [self.view gkShowErrorWithText:text];
+    [self.gkContentView gkShowErrorWithText:text];
 }
 
 - (void)gkShowWarningWithText:(NSString *)text
 {
-    [self.view gkShowWarningWithText:text];
+    [self.gkContentView gkShowWarningWithText:text];
 }
 
 @end

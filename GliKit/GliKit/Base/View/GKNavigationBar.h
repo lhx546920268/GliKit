@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///导航栏
 @interface GKNavigationBar : UIView
 
@@ -19,3 +21,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

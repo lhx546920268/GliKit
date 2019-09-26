@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///大写的Y会导致时间多出一年
 
 //yyyy-MM-dd HH:mm:ss
@@ -26,7 +28,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  */
 + (NSDateFormatter*)sharedDateFormatter;
 
-//MARK: 单个时间
+// MARK: - 单个时间
 
 ///获取当前时间的 秒
 @property(nonatomic, readonly) int gkSecond;
@@ -49,7 +51,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
 ///获取当前时间的 星期几 1-7 星期日 到星期六
 @property(nonatomic, readonly) NSInteger gkWeekday;
 
-//MARK: 时间获取
+// MARK: - 时间获取
 
 /**
  获取当前时间格式为 YYYY-MM-dd HH:mm:ss
@@ -68,7 +70,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param timeInterval 时间间隔 大于0时，获取以后的时间,小于0时，获取以前的时间
  *@return 时间
  */
-+ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval) timeInterval;
++ (nullable NSString*)gkTimeWithTimeInterval:(NSTimeInterval) timeInterval;
 
 /**
  以当前时间为准，获取以后或以前的时间
@@ -76,7 +78,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式为，如YYYY-MM-dd HH:mm:ss
  *@return 时间
  */
-+ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format;
++ (nullable NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format;
 
 /**
  通过给定时间，获取以后或以前的时间
@@ -85,9 +87,9 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param fromTime 以该时间为准
  *@return 时间
  */
-+ (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime;
++ (nullable NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(nullable NSString*) fromTime;
 
-//MARK: 时间转换
+// MARK: - 时间转换
 
 /**
  时间格式转换 从@"YYYY-MM-dd HH:mm:ss" 转换成给定格式
@@ -95,7 +97,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 要转换成的格式
  *@retrun 转换后的时间
  */
-+ (NSString*)gkFormatTime:(NSString*) time format:(NSString*) format;
++ (nullable NSString*)gkFormatTime:(NSString*) time format:(NSString*) format;
 
 /**
  时间格式转换
@@ -104,7 +106,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param toFormat 要转换成的格式
  *@retrun 转换后的时间
  */
-+ (NSString*)gkFormatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat;
++ (nullable NSString*)gkFormatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat;
 
 /**
  通过时间戳获取具体时间
@@ -112,7 +114,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 要返回的时间格式
  *@return 具体时间
  */
-+ (NSString*)gkFormatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format;
++ (nullable NSString*)gkFormatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format;
 
 /**
  通过时间获取时间戳
@@ -128,7 +130,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式
  *@return 时间date
  */
-+ (NSDate*)gkDateFromTime:(NSString*) time format:(NSString*) format;
++ (nullable NSDate*)gkDateFromTime:(NSString*) time format:(NSString*) format;
 
 /**
  从date获取时间字符串
@@ -136,7 +138,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param format 时间格式
  *@return 格式化的时间
  */
-+ (NSString*)gkTimeFromDate:(NSDate*) date format:(NSString*) format;
++ (nullable NSString*)gkTimeFromDate:(NSDate*) date format:(NSString*) format;
 
 /**
  格式化秒
@@ -145,7 +147,7 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  */
 + (NSString*)gkFormatSeconds:(long) seconds;
 
-//MARK: 时间比较
+// MARK: - 时间比较
 
 /**
  time - 当前时间 > timeInterval
@@ -160,13 +162,13 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
  *@param time2 要比较的时间2
  *@param timeInterval 要大于的值
  */
-+ (BOOL)gkTimeMinus:(NSString *) time1 time:(NSString*) time2 greaterThan:(NSTimeInterval) timeInterval;
++ (BOOL)gkTimeMinus:(NSString*) time1 time:(NSString*) time2 greaterThan:(NSTimeInterval) timeInterval;
 
 /**比较两个时间是否相等
  */
 + (BOOL)gkTime:(NSString*) time1 equalToTime:(NSString*) time2;
 
-//MARK: other
+// MARK: - other
 
 /**当前时间和随机数生成的字符串
  *@return 如 1989072407080998
@@ -179,4 +181,5 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
 + (NSTimeInterval)gkTimeIntervalFromNow:(NSString*) time;
 
 @end
+NS_ASSUME_NONNULL_END
 

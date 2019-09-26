@@ -8,19 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class FMDatabaseQueue;
 
 ///数据库
 @interface GKDataBase : NSObject
 
 ///数据库队列
-@property(nonatomic,readonly) FMDatabaseQueue *dbQueue;
+@property(nonatomic, readonly) FMDatabaseQueue *dbQueue;
 
 ///数据库地址
-@property(nonatomic,readonly) NSString *sqlitePath;
+@property(nonatomic, readonly) NSString *sqlitePath;
 
 ///数据库单例
 + (instancetype)sharedInstance;
 
 @end
 
+NS_ASSUME_NONNULL_END

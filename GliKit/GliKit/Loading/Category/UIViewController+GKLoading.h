@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol GKPageLoadingContainer;
 
 ///loading相关类目
@@ -17,13 +19,13 @@
 @property(nonatomic, assign) BOOL gkShowPageLoading;
 
 ///页面第一次加载视图
-@property(nonatomic, strong) UIView<GKPageLoadingContainer> *gkPageLoadingView;
+@property(nonatomic, strong, nullable) UIView<GKPageLoadingContainer> *gkPageLoadingView;
 
 ///显示加载失败页面
 @property(nonatomic, assign) BOOL gkShowFailPage;
 
 ///显示hud
-- (void)gkShowProgressWithText:(NSString*) text;
+- (void)gkShowProgressWithText:(nullable NSString*) text;
 
 ///隐藏hud
 - (void)gkDismissProgress;
@@ -32,19 +34,21 @@
 - (void)gkDismissText;
 
 ///延迟显示hud
-- (void)gkShowProgressWithText:(NSString*) text delay:(NSTimeInterval) delay;
+- (void)gkShowProgressWithText:(nullable NSString*) text delay:(NSTimeInterval) delay;
 
 ///显示成功hud
-- (void)gkShowSuccessWithText:(NSString*) text;
+- (void)gkShowSuccessWithText:(nullable NSString*) text;
 
 ///显示失败hud
-- (void)gkShowErrorWithText:(NSString*) text;
+- (void)gkShowErrorWithText:(nullable NSString*) text;
 
 ///显示警告的hud
-- (void)gkShowWarningWithText:(NSString*) text;
+- (void)gkShowWarningWithText:(nullable NSString*) text;
 
 ///重新加载数据 默认不做任何事，子类可以重写该方法
 - (void)gkReloadData;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

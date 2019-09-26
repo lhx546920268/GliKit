@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "GKImageCropSettings.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKPhotosOptions;
 
 ///打开相册的意图
@@ -28,16 +30,17 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 @interface GKPhotosPickResult : NSObject
 
 ///图片缩略图
-@property(nonatomic, strong) UIImage *thumbnail;
+@property(nonatomic, strong, nullable) UIImage *thumbnail;
 
 ///压缩后的图片
-@property(nonatomic, strong) UIImage *compressedImage;
+@property(nonatomic, strong, nullable) UIImage *compressedImage;
 
 ///原图
-@property(nonatomic, strong) UIImage *originalImage;
+@property(nonatomic, strong, nullable) UIImage *originalImage;
 
 ///通过相册选项 图片数据创建 创建失败返回nil
-+ (instancetype)resultWithData:(NSData*) data options:(GKPhotosOptions*) options;
++ (nullable instancetype)resultWithData:(nullable NSData*) data options:(GKPhotosOptions*) options;
++ (nullable instancetype)resultWithImage:(nullable UIImage*) image options:(GKPhotosOptions*) options;
 
 @end
 
@@ -46,13 +49,13 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 @interface GKPhotosOptions : NSObject
 
 ///选择图片完成回调
-@property(nonatomic, copy) void(^completion)(NSArray<GKPhotosPickResult*> *results);
+@property(nonatomic, copy, nullable) void(^completion)(NSArray<GKPhotosPickResult*> *results);
 
 ///意图
 @property(nonatomic, assign) GKPhotosIntention intention;
 
 ///裁剪选项
-@property(nonatomic, strong) GKImageCropSettings *cropSettings;
+@property(nonatomic, strong, nullable) GKImageCropSettings *cropSettings;
 
 ///缩略图大小 default zero
 @property(nonatomic, assign) CGSize thumbnailSize;
@@ -85,4 +88,6 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 @property(nonatomic, assign) CGFloat scale;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

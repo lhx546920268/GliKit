@@ -20,7 +20,7 @@
 #import "GKAppUtils.h"
 #import "UIApplication+GKTheme.h"
 
-@interface GKPhotosViewController ()<PHPhotoLibraryChangeObserver>
+@interface GKPhotosViewController ()
 
 ///所有图片
 @property(nonatomic, strong) PHFetchResult<PHAsset*> *allPhotos;
@@ -65,13 +65,11 @@
     }
     
     self.navigationItem.title = @"相册";
-    [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
     [self gkReloadData];
 }
 
 - (void)dealloc
 {
-    [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self];
     [self.imageManager stopCachingImagesForAllAssets];
 }
 
@@ -89,7 +87,7 @@
     [super initViews];
 }
 
-//MARK: action
+// MARK: - action
 
 ///取消
 - (void)handleCancel
@@ -97,38 +95,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-//MARK: PHPhotoLibraryChangeObserver
-
-- (void)photoLibraryDidChange:(PHChange *)changeInstance
-{
-    //相册内容改变了
-    BOOL shouldRelad = NO;
-    if(self.allPhotos){
-        PHFetchResultChangeDetails *details = [changeInstance changeDetailsForFetchResult:self.allPhotos];
-        if(details){
-            self.allPhotos = details.fetchResultAfterChanges;
-            shouldRelad = YES;
-        }
-    }
-    
-    PHFetchResultChangeDetails *details = [changeInstance changeDetailsForFetchResult:self.smartAlbums];
-    if(details){
-        self.smartAlbums = details.fetchResultAfterChanges;
-        shouldRelad = YES;
-    }
-    
-    details = [changeInstance changeDetailsForFetchResult:self.userAlbums];
-    if(details){
-        self.userAlbums = details.fetchResultAfterChanges;
-        shouldRelad = YES;
-    }
-    
-    if(shouldRelad){
-        [self generateDatas];
-    }
-}
-
-//MARK: GKEmptyViewDelegate
+// MARK: - GKEmptyViewDelegate
 
 - (void)emptyViewWillAppear:(GKEmptyView *)view
 {
@@ -141,7 +108,7 @@
     view.textLabel.text = msg;
 }
 
-//MARK: load
+// MARK: - load
 
 - (void)gkReloadData
 {
@@ -228,7 +195,7 @@
     }
 }
 
-//MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

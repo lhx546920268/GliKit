@@ -11,7 +11,7 @@
 
 #import "GKBaseDefines.h"
 
-//MARK: Base
+// MARK: - Base
 
 #import "UIView+GKUtils.h"
 #import "UIScreen+GKUtils.h"
@@ -22,7 +22,7 @@
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "UIViewController+GKUtils.h"
 
-//MARK: Category
+// MARK: - Category
 
 #import "NSArray+GKUtils.h"
 #import "NSDictionary+GKUtils.h"
@@ -35,18 +35,18 @@
 #import "UIImage+GKUtils.h"
 #import "UITableViewCell+GKUtils.h"
 
-//MARK: Image
+// MARK: - Image
 
 #import <SDImageCache.h>
 
-//MARK: Theme
+// MARK: - Theme
 
 #import "UIApplication+GKTheme.h"
 #import "UIColor+GKTheme.h"
 #import "UIImage+GKTheme.h"
 #import "UIFont+GKTheme.h"
 
-//MARK: Transition
+// MARK: - Transition
 
 #import "UIViewController+GKTransition.h"
 

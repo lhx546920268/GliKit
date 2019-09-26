@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///弹窗动画类型
 typedef NS_ENUM(NSInteger, GKDialogAnimate)
 {
@@ -37,53 +39,53 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 /**
  是否以弹窗的样式显示 default is 'NO'
  */
-@property(nonatomic,readonly) BOOL isShowAsDialog;
+@property(nonatomic, readonly) BOOL isShowAsDialog;
 
 /**
  弹窗 子类可在 viewDidLoad中设置，设置后会不会自动添加到view中，要自己设置对应的约束
  如果 UIViewController 是 GKBaseViewController 或者其子类，并且没有使用xib，dialog属性将自动设置为 GKContainer
  */
-@property(nonatomic,strong) UIView *dialog;
+@property(nonatomic, strong, nullable) UIView *dialog;
 
 /**
  是否要点击透明背景dismiss default is 'YES'
  */
-@property(nonatomic,assign) BOOL shouldDismissDialogOnTapTranslucent;
+@property(nonatomic, assign) BOOL shouldDismissDialogOnTapTranslucent;
 
 /**
  背景视图
  */
-@property(nonatomic,readonly) UIView *dialogBackgroundView;
+@property(nonatomic, readonly, nullable) UIView *dialogBackgroundView;
 
 /**
  点击背景手势
  */
-@property(nonatomic,readonly) UITapGestureRecognizer *tapDialogBackgroundGestureRecognizer;
+@property(nonatomic, readonly, nullable) UITapGestureRecognizer *tapDialogBackgroundGestureRecognizer;
 
 /**
  出现动画 default is 'GKDialogAnimateNone'
  */
-@property(nonatomic,assign) GKDialogAnimate dialogShowAnimate;
-
+@property(nonatomic, assign) GKDialogAnimate dialogShowAnimate;
+ 
 /**
  消失动画 default is 'GKDialogAnimateNone'
  */
-@property(nonatomic,assign) GKDialogAnimate dialogDismissAnimate;
+@property(nonatomic, assign) GKDialogAnimate dialogDismissAnimate;
 
 /**
  弹窗是否已显示
  */
-@property(nonatomic,readonly) BOOL isDialogShowing;
+@property(nonatomic, readonly) BOOL isDialogShowing;
 
 /**
  显示动画完成回调
  */
-@property(nonatomic,copy) void(^dialogShowCompletionHandler)(void);
+@property(nonatomic, copy, nullable) void(^dialogShowCompletionHandler)(void);
 
 /**
  消失动画完成回调
  */
-@property(nonatomic,copy) void(^dialogDismissCompletionHandler)(void);
+@property(nonatomic, copy, nullable) void(^dialogDismissCompletionHandler)(void);
 
 /**
  显示 在 window.rootViewController.topest 通过present方式显示
@@ -101,7 +103,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
  *@param inPresentWay 是否通过present方式显示
  *@param layoutHandler 布局回调 ， inPresentWay = NO时有用
  */
-- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void(^)(UIView *view, UIView *superview)) layoutHandler;
+- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void(^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
 
 /**
  隐藏
@@ -111,12 +113,12 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 /**
  执行自定义显示动画 子类重写
  */
-- (void)didExecuteDialogShowCustomAnimate:(void(^)(BOOL finish)) completion;
+- (void)didExecuteDialogShowCustomAnimate:(void(^_Nullable)(BOOL finish)) completion;
 
 /**
  执行自定义消失动画 子类重写
  */
-- (void)didExecuteDialogDismissCustomAnimate:(void(^)(BOOL finish)) completion;
+- (void)didExecuteDialogDismissCustomAnimate:(void(^_Nullable)(BOOL finish)) completion;
 
 /**
  键盘弹出来，调整弹窗位置，子类可重写
@@ -124,5 +126,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 - (void)adjustDialogPosition;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 

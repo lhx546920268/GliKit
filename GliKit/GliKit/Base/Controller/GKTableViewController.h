@@ -10,6 +10,8 @@
 #import "UITableView+GKEmptyView.h"
 #import "UITableView+GKRowHeight.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///section header footer 不显示时的高度 estimatedHeightForHeaderInSection 不能小于1 否则会ios9,10闪退
 static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
 
@@ -59,4 +61,6 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section NS_REQUIRES_SUPER;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

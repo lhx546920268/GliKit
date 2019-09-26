@@ -9,6 +9,8 @@
 #import "GKTableViewController.h"
 #import "GKPhotosOptions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///相册
 @interface GKPhotosViewController : GKTableViewController
 
@@ -16,4 +18,6 @@
 @property(nonatomic, readonly) GKPhotosOptions *photosOptions;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

@@ -8,18 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  刷新样式
  */
 @interface GKRefreshStyle : NSObject
 
 ///下拉刷新
-@property(nonatomic, strong, nonnull) Class refreshClass;
+@property(nonatomic, strong) Class refreshClass;
 
 ///加载更多
-@property(nonatomic, strong, nonnull) Class loadMoreClass;
+@property(nonatomic, strong) Class loadMoreClass;
 
 ///单例
-+ (nonnull instancetype)sharedInstance;
++ (instancetype)sharedInstance;
 
 @end
+
+NS_ASSUME_NONNULL_END

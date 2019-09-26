@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKCollectionViewFlowFillLayout;
 
 ///改进系统的流布局，每一行尽量填充满 代理
@@ -48,24 +50,26 @@
 @interface GKCollectionViewFlowFillLayout : UICollectionViewLayout
 
 ///item上下间距，default is '5.0'，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) CGFloat minimumLineSpacing;
+@property (nonatomic, assign) CGFloat minimumLineSpacing;
 
 ///item左右间距，default is '5.0'，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) CGFloat minimumInteritemSpacing;
+@property (nonatomic, assign) CGFloat minimumInteritemSpacing;
 
 ///区域头部视图，default is '0'，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) CGFloat sectionHeaderHeight;
+@property (nonatomic, assign) CGFloat sectionHeaderHeight;
 
 ///区域底部视图，default is '0'，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) CGFloat sectionFooterHeight;
+@property (nonatomic, assign) CGFloat sectionFooterHeight;
 
 ///区域头部视图和item之间的间距 default is '5.0'，只有当item时，此值才有效，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) CGFloat sectionHeaderItemSpace;
+@property (nonatomic, assign) CGFloat sectionHeaderItemSpace;
 
 ///区域底部视图和item之间的间距 default is '5.0'，只有当item时，此值才有效，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) CGFloat sectionFooterItemSpace;
+@property (nonatomic, assign) CGFloat sectionFooterItemSpace;
 
 ///section 偏移量，default is 'UIEdgeInsetZero'，如果实现相应的代理，则忽略此值
-@property (nonatomic,assign) UIEdgeInsets sectionInset;
+@property (nonatomic, assign) UIEdgeInsets sectionInset;
 
 @end
+
+NS_ASSUME_NONNULL_END

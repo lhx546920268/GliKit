@@ -31,11 +31,13 @@
 {
     BOOL isEqual = NO;
     
-    for (NSString *str in self) {
-        
-        if ([str isEqualToString:string]) {
-            isEqual = YES;
-            break;
+    if(string){
+        for (NSString *str in self) {
+            
+            if ([str isEqualToString:string]) {
+                isEqual = YES;
+                break;
+            }
         }
     }
     

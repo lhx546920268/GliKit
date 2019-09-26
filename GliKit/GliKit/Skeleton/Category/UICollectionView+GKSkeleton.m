@@ -74,7 +74,7 @@ static char GKSkeletonHideAnimateKey;
     }
 }
 
-//MARK: UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
 - (BOOL)gkSkeletonAdd_collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {

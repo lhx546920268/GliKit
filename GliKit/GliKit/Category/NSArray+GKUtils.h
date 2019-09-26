@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///数组扩展
 @interface NSArray<__covariant ObjectType> (GKUtils)
 
@@ -17,7 +19,7 @@
  @param index 下标
  @return 对应 object
  */
-- (ObjectType)gkObjectAtIndex:(NSUInteger) index;
+- (nullable ObjectType)gkObjectAtIndex:(NSUInteger) index;
 
 /**
  objectAtIndex 如果index 越界，返回nil 并且判断返回的值是否是对应类型
@@ -26,7 +28,7 @@
  @param clazz 要获取值得类型
  @return object
  */
-- (ObjectType)gkObjectAtIndex:(NSUInteger) index class:(Class) clazz;
+- (nullable ObjectType)gkObjectAtIndex:(NSUInteger) index class:(Class) clazz;
 
 /**
  判断数组中是否存在某个字符串
@@ -34,7 +36,7 @@
  @param string 要判断的字符串
  @return 是否存在
  */
-- (BOOL)gkContainString:(NSString *)string;
+- (BOOL)gkContainString:(nullable NSString *)string;
 
 @end
 
@@ -46,7 +48,7 @@
  @param obj 要加入的对象
  @return 是否加入成功 不成功则表示已存在
  */
-- (BOOL)gkAddNotExistObject:(ObjectType) obj;
+- (BOOL)gkAddNotExistObject:(nullable ObjectType) obj;
 
 /**
  添加前会判断数组中是否已存在
@@ -55,14 +57,16 @@
  @param index 插入的位置
  @return 是否加入成功 不成功则表示已存在
  */
-- (BOOL)gkInsertNotExistObject:(ObjectType) obj atIndex:(NSInteger) index;
+- (BOOL)gkInsertNotExistObject:(nullable ObjectType) obj atIndex:(NSInteger) index;
 
 /**
  添加不为空的对象
  
  @param obj 要加入的对象
  */
-- (void)gkAddNotNilObject:(ObjectType) obj;
+- (void)gkAddNotNilObject:(nullable ObjectType) obj;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

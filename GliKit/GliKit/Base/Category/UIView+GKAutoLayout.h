@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///autoLayout 计算大小方式
 typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
 {
@@ -29,7 +31,7 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
  */
 @property(nonatomic, readonly) BOOL gkExistConstraints;
 
-//MARK: 获取约束 constraint
+// MARK: - 获取约束 constraint
 
 /**
  清空约束
@@ -44,49 +46,49 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
 /**
  获取高度约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkHeightLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkHeightLayoutConstraint;
 
 /**
  获取宽度约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkWidthLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkWidthLayoutConstraint;
 
 /**
  获取左边距约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkLeftLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkLeftLayoutConstraint;
 
 /**
  获取右边距约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkRightLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkRightLayoutConstraint;
 
 /**
  获取顶部距约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkTopLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkTopLayoutConstraint;
 
 /**
  获取底部距约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkBottomLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkBottomLayoutConstraint;
 
 /**
  获取水平居中约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkCenterXLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkCenterXLayoutConstraint;
 
 /**
  获取垂直居中约束 返回当前优先级最高的
  */
-@property (nonatomic,readonly) NSLayoutConstraint *gkCenterYLayoutConstraint;
+@property (nonatomic, readonly, nullable) NSLayoutConstraint *gkCenterYLayoutConstraint;
 
 
 ///获取对应约束
-- (NSLayoutConstraint*)gkLayoutConstraintForAttribute:(NSLayoutAttribute) attribute;
-- (NSLayoutConstraint*)gkLayoutConstraintForAttribute:(NSLayoutAttribute) attribute withSecondItem:(id) secondItem;
+- (nullable NSLayoutConstraint*)gkLayoutConstraintForAttribute:(NSLayoutAttribute) attribute;
+- (nullable NSLayoutConstraint*)gkLayoutConstraintForAttribute:(NSLayoutAttribute) attribute withSecondItem:(nullable id) secondItem;
 
-//MARK: AutoLayout 计算大小
+// MARK: - AutoLayout 计算大小
 
 /**根据给定的 size 计算当前view的大小，要使用auto layout
  *@param fitsSize 大小范围 0 则不限制范围
@@ -102,4 +104,6 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
 - (void)gkSetHorizontalHugAndCompressionPriority:(UILayoutPriority) priority;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

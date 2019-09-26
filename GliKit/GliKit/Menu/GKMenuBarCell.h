@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKMenuBarItem;
 
 /**
@@ -18,27 +20,29 @@
 /**
  按钮
  */
-@property(nonatomic,readonly) UIButton *button;
+@property(nonatomic, readonly) UIButton *button;
 
 /**
  分隔符
  */
-@property(nonatomic,readonly) UIView *separator;
+@property(nonatomic, readonly) UIView *separator;
 
 /**
  是否选中
  */
-@property(nonatomic,assign) BOOL tick;
+@property(nonatomic, assign) BOOL tick;
 
 /**
  按钮信息
  */
-@property(nonatomic,strong) GKMenuBarItem *item;
+@property(nonatomic, strong) GKMenuBarItem *item;
 
 /**
  自定义视图
  */
-@property(nonatomic,strong) UIView *customView;
+@property(nonatomic, strong, nullable) UIView *customView;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

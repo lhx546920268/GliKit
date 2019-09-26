@@ -118,7 +118,7 @@
     method_exchangeImplementations(method1, method2);
 }
 
-//MARK: coder
+// MARK: - coder
 
 - (void)gkEncodeWithCoder:(NSCoder *)coder
 {
@@ -210,7 +210,7 @@
     [self gkInitWithCoder:decoder clazz:[clazz superclass]];
 }
 
-//MARK: copy
+// MARK: - copy
 
 - (void)gkCopyObject:(NSObject*) object
 {
@@ -247,7 +247,7 @@
     [self gk_copyObject:object clazz:[clazz superclass]];
 }
 
-//MARK: push
+// MARK: - push
 
 + (void)gkPushViewController:(UIViewController*) viewController
 {

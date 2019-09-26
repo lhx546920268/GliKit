@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///图片等比例缩小方式
 typedef NS_ENUM(NSInteger, GKImageFitType)
 {
@@ -38,7 +40,7 @@ static const CGFloat GKImageScale = 2.0;
 ///图片扩展
 @interface UIImage (GKUtils)
 
-//MARK: 创建图片
+// MARK: - 创建图片
 
 /**
  通过view生成图片
@@ -55,7 +57,7 @@ static const CGFloat GKImageScale = 2.0;
  */
 + (UIImage*)gkImageWithColor:(UIColor*) color size:(CGSize) size;
 
-//MARK: resize
+// MARK: - resize
 
 /**
  通过给定的大小，获取等比例缩小后的图片尺寸
@@ -96,4 +98,6 @@ static const CGFloat GKImageScale = 2.0;
 - (UIImage*)gkSubImageWithRect:(CGRect) rect;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

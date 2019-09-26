@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  导航条按钮位置
  */
@@ -47,13 +49,13 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///创建导航栏并返回
 @property(nonatomic, readonly) __kindof UINavigationController *gkCreateWithNavigationController;
 
-//MARK: 返回
+// MARK: - 返回
 
 ///显示返回按钮
 @property(nonatomic, assign) BOOL gkShowBackItem;
 
 ///返回按钮
-@property(nonatomic, readonly) UIBarButtonItem *gkBackBarButtonItem;
+@property(nonatomic, readonly, nullable) UIBarButtonItem *gkBackBarButtonItem;
 
 ///返回 动画
 - (void)gkBack;
@@ -62,9 +64,9 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 - (void)gkBackAnimated:(BOOL) flag;
 
 ///返回 是否动画 返回完成回调
-- (void)gkBackAnimated:(BOOL) flag completion:(void (^)(void))completion;
+- (void)gkBackAnimated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
 
-//MARK: 导航栏按钮
+// MARK: - 导航栏按钮
 
 /**
  设置导航栏按钮
@@ -72,7 +74,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param item 按钮
  @param position 位置
  */
-- (void)gkSetNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position;
+- (void)gkSetNavigationBarItem:(nullable UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position;
 
 /**
  设置导航栏左边按钮
@@ -81,7 +83,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gkSetLeftItemWithTitle:(NSString*) title action:(SEL) action;
+- (UIBarButtonItem*)gkSetLeftItemWithTitle:(NSString*) title action:(nullable SEL) action;
 
 /**
  设置导航栏左边按钮
@@ -90,7 +92,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gkSetLeftItemWithImage:(UIImage*) image action:(SEL) action;
+- (UIBarButtonItem*)gkSetLeftItemWithImage:(UIImage*) image action:(nullable SEL) action;
 
 /**
  设置导航栏左边按钮
@@ -99,7 +101,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gkSetLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
+- (UIBarButtonItem*)gkSetLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(nullable SEL) action;
 
 /**
  设置导航栏左边按钮
@@ -116,7 +118,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gkSetRightItemWithTitle:(NSString*) title action:(SEL) action;
+- (UIBarButtonItem*)gkSetRightItemWithTitle:(NSString*) title action:(nullable SEL) action;
 
 /**
  设置导航栏右边按钮
@@ -125,7 +127,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gkSetRightItemWithImage:(UIImage*) image action:(SEL) action;
+- (UIBarButtonItem*)gkSetRightItemWithImage:(UIImage*) image action:(nullable SEL) action;
 
 /**
  设置导航栏右边按钮
@@ -134,7 +136,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  @param action 点击方法
  @return 按钮
  */
-- (UIBarButtonItem*)gkSetRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
+- (UIBarButtonItem*)gkSetRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(nullable SEL) action;
 
 /**
  设置导航栏右边按钮
@@ -144,13 +146,14 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
  */
 - (UIBarButtonItem*)gkSetRightItemWithCustomView:(UIView*) customView;
 
-//MARK: Class Method
+// MARK: - Class Method
 
-+ (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(id) target action:(SEL) action;
-+ (UIBarButtonItem*)gkBarItemWithTitle:(NSString*) title target:(id) target action:(SEL) action;
++ (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(nullable id) target action:(nullable SEL) action;
++ (UIBarButtonItem*)gkBarItemWithTitle:(NSString*) title target:(nullable id) target action:(nullable SEL) action;
 + (UIBarButtonItem*)gkBarItemWithCustomView:(UIView*) customView;
-+ (UIBarButtonItem*)gkBarItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action;
-
++ (UIBarButtonItem*)gkBarItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(nullable id) target action:(nullable SEL) action;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

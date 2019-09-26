@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///键盘帮助类
 @interface GKKeyboardHelper : NSObject
 
@@ -24,3 +26,5 @@
 @property(nonatomic, readonly) BOOL keyboardShowed;
 
 @end
+
+NS_ASSUME_NONNULL_END

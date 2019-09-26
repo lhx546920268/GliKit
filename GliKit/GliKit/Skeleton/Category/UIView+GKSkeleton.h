@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKSkeletonLayer;
 
 //显示骨架延迟回调
@@ -39,24 +41,26 @@ typedef NS_ENUM(NSInteger, GKSkeletonStatus){
 @property(nonatomic, assign) GKSkeletonStatus gkSkeletonStatus;
 
 ///骨架图层
-@property(nonatomic, strong) GKSkeletonLayer *gkSkeletonLayer;
+@property(nonatomic, strong, nullable) GKSkeletonLayer *gkSkeletonLayer;
 
 ///显示骨架
 - (void)gkShowSkeleton;
 
 ///显示骨架 0.5s 延迟
-- (void)gkShowSkeletonWithCompletion:(GKShowSkeletonCompletionHandler) completion;
+- (void)gkShowSkeletonWithCompletion:(nullable GKShowSkeletonCompletionHandler) completion;
 
 ///显示骨架
-- (void)gkShowSkeletonWithDuration:(NSTimeInterval) duration completion:(GKShowSkeletonCompletionHandler) completion;
+- (void)gkShowSkeletonWithDuration:(NSTimeInterval) duration completion:(nullable GKShowSkeletonCompletionHandler) completion;
 
 ///隐藏骨架
 - (void)gkHideSkeletonWithAnimate:(BOOL) animate;
 
 ///隐藏骨架
-- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion;
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^ __nullable)(BOOL finished)) completion;
 
 ///是否需要添加骨架图层 某些视图会自己处理 默认YES
 - (BOOL)gkShouldAddSkeletonLayer;
 
 @end
+
+NS_ASSUME_NONNULL_END

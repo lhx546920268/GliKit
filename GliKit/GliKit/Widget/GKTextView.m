@@ -18,7 +18,7 @@
 
 @implementation GKTextView
 
-//MARK: init
+// MARK: - init
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
@@ -47,7 +47,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gkTextDidChange:) name:UITextViewTextDidChangeNotification object:self];
     
     self.font = [UIFont systemFontOfSize:14];
-    self.placeholderTextColor = nil;
+    self.placeholderTextColor = UIColor.gkPlaceholderColor;
     self.placeholderOffset = CGPointMake(8.0f, 8.0f);
     self.textLengthAttributes = nil;
     
@@ -56,7 +56,7 @@
     }
 }
 
-//MARK: property
+// MARK: - property
 
 - (void)setText:(NSString *)text
 {
@@ -134,14 +134,14 @@
     [self updatePlaceholder];
 }
 
-//MARK: dealloc
+// MARK: - dealloc
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:self];
 }
 
-//MARK: draw
+// MARK: - draw
 
 ///ios 9 在 iphone5s 上会出现一条横线
 - (void)drawRect:(CGRect)rect
@@ -189,7 +189,7 @@
     return text;
 }
 
-//MARK: private method
+// MARK: - private method
 
 ///更新placeholder
 - (void)updatePlaceholder
@@ -227,7 +227,7 @@
     }
 }
 
-//MARK: UITextPasteDelegate
+// MARK: - UITextPasteDelegate
 
 ///ios 11才有
 - (BOOL)textPasteConfigurationSupporting:(id<UITextPasteConfigurationSupporting>)textPasteConfigurationSupporting shouldAnimatePasteOfAttributedString:(NSAttributedString *)attributedString toRange:(UITextRange *)textRange NS_AVAILABLE_IOS(11_0)

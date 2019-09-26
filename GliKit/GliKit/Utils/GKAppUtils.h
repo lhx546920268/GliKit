@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///与app有关的工具类
 @interface GKAppUtils : NSObject
 
@@ -33,7 +35,7 @@
 @property(class, nonatomic, readonly) NSString *currentIP;
 
 ///拨打电话 是否显示提示框
-+ (void)makePhoneCall:(NSString*) mobile shouldAlert:(BOOL) alert;
++ (void)makePhoneCall:(nullable NSString*) mobile shouldAlert:(BOOL) alert;
 
 ///打开一个URL 兼容所有版本
 + (void)openCompatURL:(NSURL*) URL;
@@ -42,4 +44,6 @@
 + (void)openSettings;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

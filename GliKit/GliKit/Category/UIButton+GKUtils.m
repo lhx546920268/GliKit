@@ -312,7 +312,7 @@ static char GKButtonBackgroundColorKey;
     self.contentEdgeInsets = contentInsets;
 }
 
-//MARK: 背景颜色
+// MARK: - 背景颜色
 
 ///状态背景
 - (NSMutableDictionary<NSNumber*,UIColor*>*)gk_backgroundColorsForState

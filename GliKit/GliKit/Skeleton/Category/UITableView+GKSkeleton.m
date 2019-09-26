@@ -75,7 +75,7 @@ static char GKSkeletonHideAnimateKey;
     }
 }
 
-//MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 - (BOOL)gkSkeletonAdd_tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///扩展
 @interface UITableView (GKUtils)
 
@@ -25,4 +27,6 @@
 - (void)registerClassForHeaderFooterView:(Class) clazz;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

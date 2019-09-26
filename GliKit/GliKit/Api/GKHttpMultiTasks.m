@@ -151,7 +151,7 @@ static NSMutableSet* GKSharedContainers()
     }
 }
 
-//MARK: GKHttpTaskDelegate
+// MARK: - GKHttpTaskDelegate
 
 - (void)taskDidComplete:(__kindof GKHttpTask *)task
 {

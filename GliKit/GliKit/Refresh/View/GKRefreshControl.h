@@ -8,6 +8,8 @@
 
 #import "GKDataControl.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  下拉刷新控制视图
  */
@@ -16,7 +18,8 @@
 /**
  加载完成的提示信息 default is '刷新成功'
  */
-@property(nonatomic,copy) NSString *finishText;
+@property(nonatomic, copy, nullable) NSString *finishText;
 
 @end
 
+NS_ASSUME_NONNULL_END

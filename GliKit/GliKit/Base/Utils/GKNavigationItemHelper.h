@@ -8,28 +8,30 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///导航栏item帮助类
 @interface GKNavigationItemHelper : NSObject
 
 ///关联的viewController
-@property(nonatomic, weak, readonly) UIViewController *viewController;
+@property(nonatomic, weak, readonly, nullable) UIViewController *viewController;
 
 ///标题
-@property(nonatomic, copy) NSString *title;
-@property(nonatomic, copy) NSString *viewControllerTitle;
-@property(nonatomic, strong) UIView *titleView;
+@property(nonatomic, copy, nullable) NSString *title;
+@property(nonatomic, copy, nullable) NSString *viewControllerTitle;
+@property(nonatomic, strong, nullable) UIView *titleView;
 
 //返回按钮
-@property(nonatomic, strong) UIBarButtonItem *backBarButtonItem;
+@property(nonatomic, strong, nullable) UIBarButtonItem *backBarButtonItem;
 @property(nonatomic, assign) BOOL hidesBackButton;
 
 ///左边item
-@property(nonatomic, strong) UIBarButtonItem *leftBarButtonItem;
-@property(nonatomic, strong) NSArray<UIBarButtonItem*> *leftBarButtonItems;
+@property(nonatomic, strong, nullable) UIBarButtonItem *leftBarButtonItem;
+@property(nonatomic, strong, nullable) NSArray<UIBarButtonItem*> *leftBarButtonItems;
 
 ///右边item
-@property(nonatomic, strong) UIBarButtonItem *rightBarButtonItem;
-@property(nonatomic, strong) NSArray<UIBarButtonItem*> *rightBarButtonItems;
+@property(nonatomic, strong, nullable) UIBarButtonItem *rightBarButtonItem;
+@property(nonatomic, strong, nullable) NSArray<UIBarButtonItem*> *rightBarButtonItems;
 
 ///设置导航栏隐藏item
 @property(nonatomic, assign) BOOL hiddenItem;
@@ -38,4 +40,6 @@
 - (instancetype)initWithViewController:(UIViewController*) viewController;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

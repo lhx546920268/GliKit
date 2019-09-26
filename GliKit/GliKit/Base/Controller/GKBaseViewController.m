@@ -44,8 +44,14 @@
     if (self){
         self.hidesBottomBarWhenPushed = YES;
         self.shouldCreateNavigationBar = YES;
+        self.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     return self;
+}
+
+- (UIUserInterfaceStyle)overrideUserInterfaceStyle
+{
+    return UIUserInterfaceStyleLight;
 }
 
 - (CGFloat)compatiableStatusHeight
@@ -70,7 +76,7 @@
     return statusHeight;
 }
 
-//MARK: 内容视图
+// MARK: - 内容视图
 
 - (void)setTopView:(UIView *)topView
 {
@@ -112,8 +118,7 @@
     return _container.contentView;
 }
 
-//MARK: View Life Cycle
-
+// MARK: - View Life Cycle
 
 - (void)loadView
 {
@@ -201,7 +206,7 @@
     }
 }
 
-//MARK: 导航栏
+// MARK: - 导航栏
 
 - (Class)navigationBarClass
 {
@@ -265,7 +270,7 @@
     return _navigationItemHelper;
 }
 
-//MARK: GKEmptyViewDelegate
+// MARK: - GKEmptyViewDelegate
 
 - (void)emptyViewWillAppear:(GKEmptyView *)view
 {
@@ -273,7 +278,7 @@
     view.textLabel.text = @"暂无数据";
 }
 
-//MARK: 加载数据
+// MARK: - 加载数据
 
 - (void)gkReloadData
 {
@@ -287,7 +292,7 @@
     
 }
 
-//MARK: UIStatusBar
+// MARK: - UIStatusBar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -307,7 +312,7 @@
     }
 }
 
-//MARK: Task
+// MARK: - Task
 
 - (void)addCanceledTask:(GKHttpTask*) task
 {
@@ -371,7 +376,7 @@
     }
 }
 
-//MARK: 键盘
+// MARK: - 键盘
 
 - (void)setShouldDismissKeyboardWhileTap:(BOOL)shouldDismissKeyboardWhileTap
 {
@@ -404,7 +409,7 @@
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
 }
 
-//MARK: UIGestureRecognizerDelegate
+// MARK: - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKHttpTask;
 
 ///代理
@@ -25,3 +27,5 @@
 - (void)taskDidComplete:(__kindof GKHttpTask*) task;
 
 @end
+
+NS_ASSUME_NONNULL_END

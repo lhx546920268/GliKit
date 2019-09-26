@@ -53,7 +53,7 @@
     }
 }
 
-//MARK: Super Method
+// MARK: - Super Method
 
 - (void)onStateChange:(GKDataControlState)state
 {

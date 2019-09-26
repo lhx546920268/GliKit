@@ -9,26 +9,28 @@
 #import "GKBaseViewModel.h"
 #import "GKScrollViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///带有下拉划线的基础视图逻辑处理
 @interface GKScrollViewModel : GKBaseViewModel;
 
 ///绑定的viewController
-@property(nonatomic, weak) __kindof GKScrollViewController *viewController;
+@property(nonatomic, weak, nullable) __kindof GKScrollViewController *viewController;
 
 /**
  当前第几页 default is 'GKHttpFirstPage'
  */
-@property(nonatomic,assign) int curPage;
+@property(nonatomic, assign) int curPage;
 
 /**
  是否正在刷新数据
  */
-@property(nonatomic,readonly) BOOL refreshing;
+@property(nonatomic, readonly) BOOL refreshing;
 
 /**
  是否正在加载更多
  */
-@property(nonatomic,readonly) BOOL loadingMore;
+@property(nonatomic, readonly) BOOL loadingMore;
 
 /**
  触发下拉刷新
@@ -67,4 +69,6 @@
 - (void)onLoadMoreCancel;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

@@ -10,10 +10,11 @@
 #import "GKDNormalSkeletonViewController.h"
 #import "GKDTableViewSkeletonViewController.h"
 #import "GKDCollectionViewSkeletonViewController.h"
+#import "GKDRowModel.h"
 
 @interface GKDSkeletonViewController ()
 
-@property(nonatomic, strong) NSArray *datas;
+@property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
 
 @end
 
@@ -23,7 +24,9 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"骨架";
-    self.datas = @[@"普通视图", @"TableView", @"CollectionView"];
+    self.datas = @[[GKDRowModel modelWithTitle:@"普通视图" clazz:GKDNormalSkeletonViewController.class],
+                   [GKDRowModel modelWithTitle:@"TableView" clazz:GKDTableViewSkeletonViewController.class],
+                   [GKDRowModel modelWithTitle:@"CollectionView" clazz:GKDCollectionViewSkeletonViewController.class]];
     
     self.style = UITableViewStyleGrouped;
     [self initViews];
@@ -44,7 +47,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = self.datas[indexPath.row];
+    cell.textLabel.text = self.datas[indexPath.row].title;
     
     return cell;
 }
@@ -52,19 +55,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    switch (indexPath.row) {
-        case 0 :
-            [self.navigationController pushViewController:[GKDNormalSkeletonViewController new] animated:YES];
-            break;
-        case 1 :
-            [self.navigationController pushViewController:[GKDTableViewSkeletonViewController new] animated:YES];
-            break;
-        case 2 :
-            [self.navigationController pushViewController:[GKDCollectionViewSkeletonViewController new] animated:YES];
-            break;
-        default:
-            break;
-    }
+    [self.navigationController pushViewController:self.datas[indexPath.row].clazz.new animated:YES];
 }
 
 @end

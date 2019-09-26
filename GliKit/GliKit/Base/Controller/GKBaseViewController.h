@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIView+GKEmptyView.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 @class GKContainer,
 GKHttpTask,
@@ -22,7 +23,7 @@ GKNavigationItemHelper;
 @interface GKBaseViewController : UIViewController<GKEmptyViewDelegate>
 
 ///关联的viewModel 如果有关联 调用viewModel对应方法
-@property(nonatomic, strong) __kindof GKBaseViewModel *viewModel;
+@property(nonatomic, strong, nullable) __kindof GKBaseViewModel *viewModel;
 
 ///获取兼容的状态栏高度 比如有连接个人热点的时候状态栏的高度是不一样的 viewDidLayoutSubviews 获取
 @property(nonatomic, readonly) CGFloat compatiableStatusHeight;
@@ -33,19 +34,19 @@ GKNavigationItemHelper;
 ///设置点击self.view 回收键盘
 @property(nonatomic, assign) BOOL shouldDismissKeyboardWhileTap;
 
-//MARK: 内容视图
+// MARK: - 内容视图
 
 ///固定在顶部的视图 xib不要用
-@property(nonatomic, strong) UIView *topView;
+@property(nonatomic, strong, nullable) UIView *topView;
 
 ///固定在底部的视图 xib不要用
-@property(nonatomic, strong) UIView *bottomView;
+@property(nonatomic, strong, nullable) UIView *bottomView;
 
 ///内容视图 xib 不要用
-@property(nonatomic, strong) UIView *contentView;
+@property(nonatomic, strong, nullable) UIView *contentView;
 
 ///视图容器 self.view xib 不要用，如果 showAsDialog = YES，self.view将不再是 container 且 要自己设置container的约束
-@property(nonatomic, readonly) GKContainer *container;
+@property(nonatomic, readonly, nullable) GKContainer *container;
 
 /**
  设置顶部视图
@@ -53,7 +54,7 @@ GKNavigationItemHelper;
  @param topView 顶部视图
  @param height 视图高度，GKWrapContent 为自适应
  */
-- (void)setTopView:(UIView *)topView height:(CGFloat) height;
+- (void)setTopView:(nullable UIView *)topView height:(CGFloat) height;
 
 /**
  设置底部视图
@@ -61,18 +62,18 @@ GKNavigationItemHelper;
  @param bottomView 底部视图
  @param height 视图高度，GKWrapContent 为自适应
  */
-- (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
+- (void)setBottomView:(nullable UIView *)bottomView height:(CGFloat) height;
 
-//MARK: 导航栏
+// MARK: - 导航栏
 
 ///导航栏
-@property(nonatomic, readonly) GKNavigationBar *navigatonBar;
+@property(nonatomic, readonly, nullable) GKNavigationBar *navigatonBar;
 
 ///item帮助类
 @property(nonatomic, readonly) GKNavigationItemHelper *navigationItemHelper;
 
 ///系统导航栏
-@property(nonatomic, readonly) GKSystemNavigationBar *systemNavigationBar;
+@property(nonatomic, readonly, nullable) GKSystemNavigationBar *systemNavigationBar;
 
 ///是否要创建自定义导航栏 default YES
 @property(nonatomic, assign) BOOL shouldCreateNavigationBar;
@@ -88,7 +89,7 @@ GKNavigationItemHelper;
  */
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
-//MARK: Task
+// MARK: - Task
 
 /**
  添加需要取消的请求 在dealloc
@@ -124,5 +125,7 @@ GKNavigationItemHelper;
 - (void)onLoadData;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 

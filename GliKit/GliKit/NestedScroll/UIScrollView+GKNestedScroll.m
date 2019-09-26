@@ -15,6 +15,7 @@
 
 static char GKNestedScrollEnableKey;
 static char GKNestedParentKey;
+static char GKChildDidScrollToParentKey;
 static char GKNestedParentScrollViewKey;
 static char GKNestedChildScrollViewKey;
 static char GKNestedScrollHelperKey;
@@ -42,7 +43,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     [self gkExchangeImplementations:@selector(touchesShouldBegin:withEvent:inContentView:) prefix:prefix];
 }
 
-//MARK: Runtime
+// MARK: - Runtime
 
 - (void)gkNestedScroll_setDelegate:(id<UIScrollViewDelegate>)delegate
 {
@@ -70,7 +71,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     }
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (void)gkNestedScrollAdd_scrollViewDidScroll:(UIScrollView*) scrollView
 {
@@ -104,7 +105,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     [self gkNestedScroll_scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
 }
 
-//MARK: Gesture
+// MARK: - Gesture
 
 ///允许手势冲突
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -116,7 +117,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     return NO;
 }
 
-//MARK: Props
+// MARK: - Props
 
 - (void)setGkNestedScrollEnable:(BOOL)gkNestedScrollEnable
 {
@@ -136,6 +137,16 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 - (BOOL)gkNestedParent
 {
     return [objc_getAssociatedObject(self, &GKNestedParentKey) boolValue];
+}
+
+- (void (^)(void))gkChildDidScrollToParent
+{
+    return objc_getAssociatedObject(self, &GKChildDidScrollToParentKey);
+}
+
+- (void)setGkChildDidScrollToParent:(void (^)(void))gkChildDidScrollToParent
+{
+    objc_setAssociatedObject(self, &GKChildDidScrollToParentKey, gkChildDidScrollToParent, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 - (void)setGkNestedParentScrollView:(UIScrollView *)gkNestedParentScrollView

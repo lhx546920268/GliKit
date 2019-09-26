@@ -23,8 +23,7 @@
 - (instancetype)initWithStyle:(UITableViewStyle) style
 {
     self = [super initWithNibName:nil bundle:nil];
-    if(self)
-    {
+    if(self){
         _style = style;
     }
     return self;
@@ -47,7 +46,7 @@
     return _tableView;
 }
 
-//MARK: public method
+// MARK: - Init
 
 - (void)initViews
 {
@@ -83,6 +82,20 @@
     }
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if(_tableView){
+        [_tableView setSeparatorInset:self.separatorEdgeInsets];
+        
+        if([_tableView respondsToSelector:@selector(setLayoutMargins:)]){
+            [_tableView setLayoutMargins:self.separatorEdgeInsets];
+        }
+    }
+}
+
+// MARK: - Register Cell
+
 ///注册cell
 - (void)registerNib:(Class)clazz
 {
@@ -116,7 +129,7 @@
     }
 }
 
-//MARK: tableView 代理
+// MARK: - UITableViewDelegate
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -178,19 +191,7 @@
     [tableView gkSetFooterHeight:@(view.gkHeight) forSection:section];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    if(_tableView){
-        [_tableView setSeparatorInset:self.separatorEdgeInsets];
-        
-        if([_tableView respondsToSelector:@selector(setLayoutMargins:)]){
-            [_tableView setLayoutMargins:self.separatorEdgeInsets];
-        }
-    }
-}
-
-//MARK: 屏幕旋转
+// MARK: - 屏幕旋转
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///行扩展
 @interface UITableViewCell (GKUtils)
 
@@ -32,4 +34,6 @@
 @property(class, nonatomic, readonly) CGFloat gkEstimatedRowHeight;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

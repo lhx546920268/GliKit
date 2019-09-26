@@ -98,7 +98,7 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     [super removeFromSuperview];
 }
 
-//MARK: KVO
+// MARK: - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -163,7 +163,7 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     }
 }
 
-//MARK: Super Method
+// MARK: - Super Method
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
@@ -304,7 +304,7 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     [self setState:GKDataControlStateFail];
 }
 
-//MARK: Action
+// MARK: - Action
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {

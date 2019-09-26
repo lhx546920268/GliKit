@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class MASViewAttribute;
 
 ///安全区域兼容 iOS11
@@ -26,4 +28,6 @@
 @property (nonatomic, strong, readonly) MASViewAttribute *gkSafeAreaLayoutGuideRight;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

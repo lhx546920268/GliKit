@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  UITextView的子类，支持像UITextField那样的placeholder.
  */
@@ -16,7 +18,7 @@
 /**
  当文本框中没有内容时，显示placeholder, default is 'nil'.
  */
-@property(nonatomic, copy) NSString *placeholder;
+@property(nonatomic, copy, nullable) NSString *placeholder;
 
 /**
  placeholder 的字体颜色. default is 'UIColor.appPlaceholderColor'
@@ -46,7 +48,8 @@
 /**
  输入限制文字 属性
  */
-@property(nonatomic, copy) NSDictionary *textLengthAttributes;
+@property(nonatomic, copy, nullable) NSDictionary *textLengthAttributes;
 
 @end
 
+NS_ASSUME_NONNULL_END

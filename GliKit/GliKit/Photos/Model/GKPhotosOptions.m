@@ -12,6 +12,31 @@
 
 @implementation GKPhotosPickResult
 
++ (instancetype)resultWithImage:(UIImage*) image options:(GKPhotosOptions*) options
+{
+    if(!image)
+        return nil;
+    
+    GKPhotosPickResult *result = [GKPhotosPickResult new];
+    if(options.needOriginalImage){
+        result.originalImage = image;
+    }
+    
+    if(!CGSizeEqualToSize(CGSizeZero, options.compressedImageSize)){
+        
+        UIImage *compressedImage = [image gkAspectFitWithSize:options.compressedImageSize];
+        result.compressedImage = compressedImage;
+        image = compressedImage;
+    }
+    
+    if(!CGSizeEqualToSize(CGSizeZero, options.thumbnailSize)){
+        
+        result.thumbnail = [image gkAspectFitWithSize:options.thumbnailSize];
+    }
+    
+    return result;
+}
+
 + (instancetype)resultWithData:(NSData*) data options:(GKPhotosOptions*) options
 {
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)@{(NSString*) kCGImageSourceShouldAllowFloat : @YES});
@@ -19,8 +44,10 @@
         return nil;
     
     CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
-    if(!properties)
+    if(!properties){
+        CFRelease(source);
         return nil;
+    }
     
     NSNumber *width = CFDictionaryGetValue(properties, kCGImagePropertyPixelWidth);
     NSNumber *height = CFDictionaryGetValue(properties, kCGImagePropertyPixelHeight);

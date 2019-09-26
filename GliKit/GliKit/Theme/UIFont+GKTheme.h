@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///app字体
 @interface UIFont (GKTheme)
 
@@ -14,4 +16,6 @@
 @property(class, nonatomic, strong) UIFont *gkNavigationBarItemFont;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

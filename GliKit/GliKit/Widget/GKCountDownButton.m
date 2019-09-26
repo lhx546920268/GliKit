@@ -67,7 +67,7 @@
     [self setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
 }
 
-//MARK: property
+// MARK: - property
 
 - (void)setNormalBackgroundColor:(UIColor *)normalBackgroundColor
 {
@@ -93,7 +93,7 @@
     }
 }
 
-//MARK: 计时器
+// MARK: - 计时器
 
 - (BOOL)timing
 {

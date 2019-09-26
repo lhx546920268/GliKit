@@ -6,7 +6,7 @@
 //
 
 #import "UIImage+GKTheme.h"
-#import "UIColor+GKTheme.m"
+#import "UIColor+GKTheme.h"
 
 static UIImage *appNavigationBarBackIcon = nil;
 

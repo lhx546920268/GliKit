@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  缓存行高的
  
@@ -29,10 +31,10 @@
 @interface UITableView (GKRowHeight)
 
 ///获取行高
-- (NSNumber*)gkRowHeightForIndexPath:(NSIndexPath*) indexPath;
+- (nullable NSNumber*)gkRowHeightForIndexPath:(NSIndexPath*) indexPath;
 
 ///设置行高
-- (void)gkSetRowHeight:(NSNumber*) rowHeight forIndexPath:(NSIndexPath*) indexPath;
+- (void)gkSetRowHeight:(nullable NSNumber*) rowHeight forIndexPath:(NSIndexPath*) indexPath;
 
 ///获取区域头部
 - (NSNumber*)gkHeaderHeightForSection:(NSInteger) section;
@@ -48,3 +50,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

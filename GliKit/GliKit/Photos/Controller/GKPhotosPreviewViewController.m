@@ -129,7 +129,7 @@
     }
 }
 
-//MARK: action
+// MARK: - action
 
 ///设置工具条隐藏
 - (void)setToolBarAndHeaderHidden:(BOOL) hidden
@@ -224,7 +224,7 @@
     });
 }
 
-//MARK: 操作
+// MARK: - 操作
 
 ///是否选中asset
 - (BOOL)containAsset:(PHAsset*) asset
@@ -281,7 +281,7 @@
     }
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
@@ -295,7 +295,7 @@
     [self updateTitle];
 }
 
-//MARK: UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

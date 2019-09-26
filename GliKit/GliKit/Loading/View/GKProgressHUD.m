@@ -136,7 +136,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     [self adjustViews];
 }
 
-//MARK: timer
+// MARK: - timer
 
 ///开始计时器
 - (void)startTimerWithInterval:(NSTimeInterval) interval
@@ -174,7 +174,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     }
 }
 
-//MARK: property
+// MARK: - property
 
 - (void)setText:(NSString *)text
 {
@@ -283,7 +283,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     }
 }
 
-//MARK: Public
+// MARK: - Public
 
 - (void)show
 {

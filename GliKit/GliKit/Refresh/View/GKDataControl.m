@@ -59,14 +59,14 @@
     [super removeFromSuperview];
 }
 
-//MARK: dealloc
+// MARK: - dealloc
 
 - (void)dealloc
 {
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
 }
 
-//MARK: public method
+// MARK: - public method
 
 - (void)startLoading
 {

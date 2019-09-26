@@ -90,7 +90,7 @@
     }
 }
 
-//MARK: action
+// MARK: - action
 
 ///双击
 - (void)handleDoubleTap:(UITapGestureRecognizer*) tap
@@ -110,7 +110,7 @@
     }
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {

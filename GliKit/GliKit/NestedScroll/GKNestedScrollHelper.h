@@ -8,6 +8,8 @@
 
 #import <UIKit/UIkit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///嵌套滑动帮助类
 @interface GKNestedScrollHelper : NSObject<UIScrollViewDelegate>
 
@@ -18,7 +20,7 @@
 @property(nonatomic, assign) BOOL childScrollEnable;
 
 ///父容器
-@property(nonatomic, weak) UIScrollView *parentScrollView;
+@property(nonatomic, weak, nullable) UIScrollView *parentScrollView;
 
 ///是否在模拟系统自动滑动
 @property(nonatomic, readonly) BOOL gkAutoScrolling;
@@ -36,4 +38,6 @@
 + (void)replaceImplementations:(SEL) selector owner:(NSObject*) owner implementer:(NSObject*) implementer;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

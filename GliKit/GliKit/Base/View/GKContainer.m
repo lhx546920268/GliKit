@@ -19,7 +19,7 @@
 @interface GKContainer()
 
 ///页面加载中
-@property(nonatomic, strong) GKPageLoadingContainer *pageLoadingView;
+@property(nonatomic, strong) UIView<GKPageLoadingContainer> *pageLoadingView;
 
 @end
 
@@ -75,7 +75,7 @@
     }
 }
 
-//MARK: topView
+// MARK: - topView
 
 - (void)setTopView:(UIView *)topView
 {
@@ -173,7 +173,7 @@
     }
 }
 
-//MARK: contentView
+// MARK: - contentView
 
 
 - (void)setContentView:(UIView *)contentView
@@ -227,7 +227,7 @@
     }
 }
 
-//MARK: bottomView
+// MARK: - bottomView
 
 - (void)setBottomView:(UIView *)bottomView
 {
@@ -325,7 +325,7 @@
     }
 }
 
-//MARK: emptyView
+// MARK: - emptyView
 
 - (void)layoutEmtpyView
 {
@@ -376,54 +376,55 @@
     }
 }
 
-//MARK: page loading
+// MARK: - page loading
 
-- (GKPageLoadingContainer*)gkPageLoadingView
+- (UIView<GKPageLoadingContainer> *)gkPageLoadingView
 {
     return self.pageLoadingView;
 }
 
-- (void)setCa_pageLoadingView:(GKPageLoadingContainer*) gk_pageLoadingView
+- (void)setGkPageLoadingView:(UIView<GKPageLoadingContainer> *)gkPageLoadingView
 {
-    if(gk_pageLoadingView == nil){
+    if(gkPageLoadingView == nil){
         [self.pageLoadingView removeFromSuperview];
         self.pageLoadingView = nil;
     }else{
-        self.pageLoadingView = gk_pageLoadingView;
-        if(!gk_pageLoadingView.superview){
-            [self addSubview:gk_pageLoadingView];
+        self.pageLoadingView = gkPageLoadingView;
+        if(!gkPageLoadingView.superview){
+            [self addSubview:gkPageLoadingView];
 
-            [gk_pageLoadingView makeConstraints:^(MASConstraintMaker *make) {
+            UIEdgeInsets insets = self.gkPageLoadingViewInsets;
+            [gkPageLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
                
                 if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
-                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft);
+                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft).offset(insets.left);
                 }else{
-                    make.leading.equalTo(self);
+                    make.leading.equalTo(self).offset(insets.left);
                 }
                 
                 if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
-                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight);
+                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight).offset(-insets.right);
                 }else{
-                    make.trailing.equalTo(self);
+                    make.trailing.equalTo(self).offset(-insets.right);
                 }
                 
                 if(self.topView && !(self.overlayArea & GKOverlayAreaPageLoadingTop)){
-                    make.top.equalTo(self.topView.mas_bottom);
+                    make.top.equalTo(self.topView.mas_bottom).offset(insets.top);
                 }else{
                     if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
-                        make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop);
+                        make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop).offset(insets.top);
                     }else{
-                        make.top.equalTo(self);
+                        make.top.equalTo(self).offset(insets.top);
                     }
                 }
                 
                 if(self.bottomView && !(self.overlayArea & GKOverlayAreaPageLoadingBottom)){
-                    make.bottom.equalTo(self.bottomView.mas_top);
+                    make.bottom.equalTo(self.bottomView.mas_top).offset(-insets.bottom);
                 }else{
                     if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom);
+                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom).offset(-insets.bottom);
                     }else{
-                        make.bottom.equalTo(self);
+                        make.bottom.equalTo(self).offset(-insets.bottom);
                     }
                 }
             }];

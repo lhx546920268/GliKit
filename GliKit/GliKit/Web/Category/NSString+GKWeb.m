@@ -10,7 +10,7 @@
 
 @implementation NSString (GKWeb)
 
-+ (NSString*)adjustScreenHtmlString
++ (NSString*)gkAdjustScreenHtmlString
 {
     return @"<style>img {width:100%;}</style><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>";
 }

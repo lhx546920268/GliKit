@@ -8,6 +8,8 @@
 
 #import "GKCollectionViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PHAsset, GKPhotosOptions;
 
 ///相册预览
@@ -26,4 +28,6 @@
 @property(nonatomic, assign) NSInteger visiableIndex;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

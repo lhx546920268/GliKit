@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "GKBaseViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///基础视图逻辑处理
 @interface GKBaseViewModel : NSObject
 
 ///绑定的viewController
-@property(nonatomic, weak) __kindof GKBaseViewController *viewController;
+@property(nonatomic, weak, nullable) __kindof GKBaseViewController *viewController;
 
 ///加载数据是否需要显示 pageLoading default is 'YES'
 @property(nonatomic, assign) BOOL shouldShowPageLoading;
@@ -67,4 +69,6 @@
 - (void)onLoadData NS_REQUIRES_SUPER;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

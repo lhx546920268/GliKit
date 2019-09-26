@@ -8,6 +8,8 @@
 
 #import "GKDataControl.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  上拉加载视图，如果contentSize.height 小于frame.size.height 将无法上拉加载
  */
@@ -44,3 +46,5 @@
 - (void)loadFail;
 
 @end
+
+NS_ASSUME_NONNULL_END

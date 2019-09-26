@@ -9,9 +9,6 @@
 #ifndef GKBaseDefines_h
 #define GKBaseDefines_h
 
-// 定义这个常量，就可以不用在开发过程中使用"mas_"前缀。
-#define MAS_SHORTHAND
-
 // 定义这个常量，就可以让Masonry帮我们自动把基础数据类型的数据，自动装箱为对象类型。
 #define MAS_SHORTHAND_GLOBALS
 

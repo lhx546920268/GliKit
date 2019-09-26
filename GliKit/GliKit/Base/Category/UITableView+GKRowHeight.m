@@ -64,7 +64,7 @@
     }
 }
 
-//MARK: - data change
+// MARK: - - data change
 
 - (void)gkRowHeight_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
@@ -162,7 +162,7 @@
     [self gkRowHeight_reloadData];
 }
 
-//MARK: get and set
+// MARK: - get and set
 
 - (NSNumber*)gkRowHeightForIndexPath:(NSIndexPath *)indexPath
 {
@@ -205,7 +205,7 @@
     return info.footerHeight;
 }
 
-//MARK: cell大小缓存
+// MARK: - cell大小缓存
 
 ///缓存cell大小的数组
 - (NSMutableDictionary<NSNumber*, GKTableViewSectionInfo* >*)gk_rowHeightCaches

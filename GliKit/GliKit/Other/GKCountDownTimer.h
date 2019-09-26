@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  倒计时没有限制
  */
@@ -50,12 +52,12 @@ static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
 /**
  触发倒计时回调，timeLeft 剩余倒计时时间
  */
-@property(nonatomic, copy) void(^tickHandler)(NSTimeInterval timeLeft);
+@property(nonatomic, copy, nullable) void(^tickHandler)(NSTimeInterval timeLeft);
 
 /**
  倒计时完成回调
  */
-@property(nonatomic, copy) void(^completionHandler)(void);
+@property(nonatomic, copy, nullable) void(^completionHandler)(void);
 
 /**
  创建一个倒计时
@@ -77,3 +79,5 @@ static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
 - (void)stop;
 
 @end
+
+NS_ASSUME_NONNULL_END

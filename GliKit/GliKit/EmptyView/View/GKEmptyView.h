@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKEmptyView;
 
 ///空视图代理
@@ -24,12 +26,14 @@
 @interface GKEmptyView : UIView
 
 ///图标
-@property(nonatomic,readonly) UIImageView *iconImageView;
+@property(nonatomic, readonly) UIImageView *iconImageView;
 
 ///文字信息
-@property(nonatomic,readonly) UILabel *textLabel;
+@property(nonatomic, readonly) UILabel *textLabel;
 
 ///自定义视图 如果设置将忽略以上两个，并且会重新设置customView的约束，高度约束和frame.size.height一样
-@property(nonatomic,strong) UIView *customView;
+@property(nonatomic, strong, nullable) UIView *customView;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -42,7 +42,7 @@
         [self addSubview:_textLabel];
         
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(self.indicatorView.trailing).offset(5);
+            make.leading.equalTo(self.indicatorView.mas_trailing).offset(5);
             make.trailing.top.bottom.equalTo(0);
         }];
     }
@@ -75,7 +75,7 @@
         _imageView.image = [UIImage imageNamed:@"network_error_icon"];
         [self addSubview:_imageView];
         
-        [_imageView makeConstraints:^(MASConstraintMaker *make) {
+        [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.top.equalTo(0);
         }];
         
@@ -87,9 +87,9 @@
         _textLabel.numberOfLines = 0;
         [self addSubview:_textLabel];
         
-        [_textLabel makeConstraints:^(MASConstraintMaker *make) {
+        [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.bottom.equalTo(0);
-            make.top.equalTo(self.imageView.bottom).offset(25);
+            make.top.equalTo(self.imageView.mas_bottom).offset(25);
         }];
     }
     
@@ -195,7 +195,7 @@
     self.errorContentView.hidden = NO;
 }
 
-//MARK: action
+// MARK: - action
 
 //刷新
 - (void)handleRefresh

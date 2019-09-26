@@ -20,18 +20,20 @@
 
 - (instancetype)init
 {
-    return [self initWithRootViewController:nil];
+    self = [super initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
+    if (self) {
+        self.modalPresentationStyle = UIModalPresentationFullScreen;
+    }
+    return self;
 }
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
-    self = [self initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
+    self = [super initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
     if(self){
-        if(rootViewController){
-            self.viewControllers = @[rootViewController];
-        }
+        self.modalPresentationStyle = UIModalPresentationFullScreen;
+        self.viewControllers = @[rootViewController];
     }
-    
     return self;
 }
 
@@ -50,7 +52,12 @@
     self.delegate = weakSelf;
 }
 
-//MARK: Push
+- (UIUserInterfaceStyle)overrideUserInterfaceStyle
+{
+    return UIUserInterfaceStyleLight;
+}
+
+// MARK: - Push
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -77,7 +84,7 @@
     return [super popToViewController:viewController animated:animated];
 }
 
-//MARK: UINavigationControllerDelegate
+// MARK: - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController

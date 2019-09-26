@@ -33,7 +33,7 @@
     return self;
 }
 
-//MARK: property
+// MARK: - property
 
 - (void)setScrollView:(UIScrollView *)scrollView
 {
@@ -45,7 +45,7 @@
     }
 }
 
-//MARK: 加载视图
+// MARK: - 加载视图
 
 - (BOOL)isInit
 {
@@ -62,7 +62,7 @@
     
 }
 
-//MARK: Refresh
+// MARK: - Refresh
 
 - (void)setRefreshEnable:(BOOL) refreshEnable
 {
@@ -118,7 +118,7 @@
     }
 }
 
-//MARK: Load More
+// MARK: - Load More
 
 - (void)setLoadMoreEnable:(BOOL)loadMoreEnable
 {
@@ -214,7 +214,7 @@
     }
 }
 
-//MARK: 键盘
+// MARK: - 键盘
 
 ///键盘高度改变
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
@@ -239,7 +239,7 @@
     }
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

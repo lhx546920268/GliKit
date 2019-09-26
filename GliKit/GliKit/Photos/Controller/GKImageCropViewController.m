@@ -78,7 +78,7 @@
     return self;
 }
 
-//MARK: 加载视图
+// MARK: - 加载视图
 
 - (void)viewDidLoad
 {
@@ -219,11 +219,11 @@
     
     [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(0);
-        make.bottom.equalTo(cancelBtn.bottom);
+        make.bottom.equalTo(cancelBtn.mas_bottom);
     }];
 }
 
-//MARK: private method
+// MARK: - private method
 
 - (void)setShowProgress:(BOOL) show
 {
@@ -343,7 +343,7 @@
     CGPathRelease(path);
 }
 
-//MARK: Gesture
+// MARK: - Gesture
 
 //图片捏合缩放
 - (void)handlePinch:(UIPinchGestureRecognizer *)pinchGestureRecognizer
@@ -441,15 +441,15 @@
     self.cancelButton.hidden = YES;
     self.confirmButton.hidden = YES;
     
-    //如果图片小于编辑框，使用白色背景替代
-    if(self.showImgView.gkWidth < self.cropFrame.size.width || self.showImgView.gkHeight < self.cropFrame.size.height){
-        self.view.backgroundColor = [UIColor whiteColor];
-    }
-    
     //裁剪图片
     CGFloat height = self.view.gkHeight;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(UIScreen.gkScreenWidth, height), NO, 2.0);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    //如果图片小于编辑框，使用白色背景替代
+    if(self.showImgView.gkWidth < self.cropFrame.size.width || self.showImgView.gkHeight < self.cropFrame.size.height){
+        [UIColor.whiteColor setFill];
+    }
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();

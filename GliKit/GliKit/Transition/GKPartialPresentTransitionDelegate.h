@@ -9,19 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "GKPresentTransitionDelegate.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///使用方法
 
 /*
- UIViewController *viewController = [[UIViewController alloc] init];
- UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+ UIViewController *vc = [UIViewController new];
+ vc.navigationItem.title = sender.currentTitle;
+ vc.view.backgroundColor = UIColor.whiteColor;
  
- viewController.view.backgroundColor = [UIColor whiteColor];
- 
- nav.view.frame = CGRectMake(0, 0, GKScreenWidth, GKScreenHeight - 200.0);
- self.p_delegate = [[GKPartialPresentTransitionDelegate alloc] init]; ///delegate要保存起来
- nav.transitioningDelegate = self.p_delegate;
- 
- [self.navigationController presentViewController:nav animated:YES completion:nil];
+ UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+ nav.partialContentSize = CGSizeMake(UIScreen.gkScreenWidth, 400);
+ [nav partialPresentFromBottom];
  */
 
 /**
@@ -35,25 +34,27 @@
 @property(nonatomic, assign) CGSize partialContentSize;
 
 ///背景颜色
-@property(nonatomic,strong) UIColor *backgroundColor;
+@property(nonatomic, strong) UIColor *backgroundColor;
 
 ///点击背景是否会关闭当前显示的viewController，default is 'YES'
-@property(nonatomic,assign) BOOL dismissWhenTapBackground;
+@property(nonatomic, assign) BOOL dismissWhenTapBackground;
 
 ///动画时间 default is '0.25'
-@property(nonatomic,assign) NSTimeInterval duration;
+@property(nonatomic, assign) NSTimeInterval duration;
 
 ///动画样式 default is 'GKPresentTransitionStyleCoverVerticalFromBottom'
-@property(nonatomic,assign) GKPresentTransitionStyle transitionStyle;
+@property(nonatomic, assign) GKPresentTransitionStyle transitionStyle;
 
 ///点击半透明背景回调 设置这个时，弹窗不会关闭
-@property(nonatomic, copy) void(^tapBackgroundHandler)(void);
+@property(nonatomic, copy, nullable) void(^tapBackgroundHandler)(void);
 
 ///消失时的回调
-@property(nonatomic,copy) void(^dismissHandler)(void);
+@property(nonatomic, copy, nullable) void(^dismissHandler)(void);
 
 ///显示一个 视图
 - (void)showViewController:(UIViewController*) viewController;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

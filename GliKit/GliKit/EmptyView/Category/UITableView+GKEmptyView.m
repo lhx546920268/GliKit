@@ -19,7 +19,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 
 @implementation UITableView (GKEmptyView)
 
-//MARK: Super Method
+// MARK: - Super Method
 
 - (void)layoutEmtpyView
 {
@@ -61,7 +61,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         frame.origin.y = y;
-        frame.size.height = self.gkHeight - y;
+        frame.size.height -= y;
         if(frame.size.height <= 0){
             [emptyView removeFromSuperview];
         }else{
@@ -125,7 +125,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return empty;
 }
 
-//MARK: Property
+// MARK: - Property
 
 - (void)setGkShouldShowEmptyViewWhenExistTableHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistTableHeaderView
 {
@@ -190,7 +190,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return NO;
 }
 
-//MARK: Swizzle
+// MARK: - Swizzle
 
 + (void)load
 {
@@ -202,7 +202,6 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         @selector(insertSections:withRowAnimation:),
         @selector(deleteRowsAtIndexPaths:withRowAnimation:),
         @selector(deleteSections:withRowAnimation:),
-        @selector(layoutSubviews) //使用约束时 frame会在layoutSubviews得到
     };
     
     int count = sizeof(selectors) / sizeof(SEL);
@@ -253,16 +252,5 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
     [self gkEmpty_deleteSections:sections withRowAnimation:animation];
     [self layoutEmtpyView];
 }
-
-///用于使用约束时没那么快得到 frame
-- (void)gkEmpty_layoutSubviews
-{
-    [self gkEmpty_layoutSubviews];
-    if(!CGSizeEqualToSize(self.gkOldSize, self.frame.size)){
-        self.gkOldSize = self.frame.size;
-        [self layoutEmtpyView];
-    }
-}
-
 
 @end

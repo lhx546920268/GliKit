@@ -62,7 +62,7 @@
     }
 }
 
-//MARK: action
+// MARK: - action
 
 ///选中
 - (void)handleCheck

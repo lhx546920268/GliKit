@@ -9,13 +9,15 @@
 #import "GKScrollViewController.h"
 #import "GKMenuBar.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///翻页容器
 @interface GKPageViewController : GKScrollViewController<GKMenuBarDelegate>
 
 /**
  顶部菜单 当 shouldUseMenuBar = NO，return nil
  */
-@property(nonatomic, readonly) GKMenuBar *menuBar;
+@property(nonatomic, readonly, nullable) GKMenuBar *menuBar;
 
 /**
  是否需要用菜单 menuBar default is 'YES'
@@ -85,4 +87,6 @@
 - (void)onScrollTopPage:(NSInteger) page;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

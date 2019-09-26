@@ -10,6 +10,8 @@
 #import "UIScrollView+GKEmptyView.h"
 #import "UIScrollView+GKRefresh.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKScrollViewModel, GKRefreshControl, GKLoadMoreControl;
 
 /**
@@ -20,74 +22,32 @@
 /**
  滚动视图 default is 'nil'
  */
-@property(nonatomic,strong) UIScrollView *scrollView;
+@property(nonatomic, strong, nullable) UIScrollView *scrollView;
 
 /**
  滑动时是否隐藏键盘 default is 'YES'
  */
-@property(nonatomic,assign) BOOL shouldDismissKeyboardWhileScroll;
+@property(nonatomic, assign) BOOL shouldDismissKeyboardWhileScroll;
 
 /**
  键盘弹出是否需要调整contentInsets default is 'YES'
  */
-@property(nonatomic,assign) BOOL shouldAdjustContentInsetsForKeyboard;
-
+@property(nonatomic, assign) BOOL shouldAdjustContentInsetsForKeyboard;
 
 /**
  scroll view 原始的contentInsets
  */
-@property(nonatomic,assign) UIEdgeInsets contentInsets;
-
-/**
- 是否可以下拉刷新数据
- */
-@property(nonatomic,assign) BOOL refreshEnable;
-
-/**
- 下拉刷新视图
- */
-@property(nonatomic,readonly) GKRefreshControl *refreshControl;
+@property(nonatomic, assign) UIEdgeInsets contentInsets;
 
 /**
  加载更多和下拉刷是否可以共存 default is 'NO'
  */
-@property(nonatomic,assign) BOOL coexistRefreshAndLoadMore;
-
-/**
- 加载更多时的指示视图
- */
-@property(nonatomic,readonly) GKLoadMoreControl *loadMoreControl;
-
-/**
- 是否可以加载更多数据 default is 'NO'
- */
-@property(nonatomic,assign) BOOL loadMoreEnable;
-
-
-/**
- 当前第几页 default is 'GKHttpFirstPage'
- */
-@property(nonatomic,assign) int curPage;
-
-/**
- 是否还有更多
- */
-@property(nonatomic,assign) BOOL hasMore;
-
-/**
- 是否正在刷新数据
- */
-@property(nonatomic,readonly) BOOL refreshing;
-
-/**
- 是否正在加载更多
- */
-@property(nonatomic,readonly) BOOL loadingMore;
+@property(nonatomic, assign) BOOL coexistRefreshAndLoadMore;
 
 /**
  是否已初始化
  */
-@property(nonatomic,readonly) BOOL isInit;
+@property(nonatomic, readonly) BOOL isInit;
 
 /**
  初始化视图 默认不做任何事 ，子类按需实现该方法
@@ -99,7 +59,22 @@
  */
 - (void)reloadListData;
 
-///以下的两个方法默认不做任何事，子类按需实现
+//MARK: - Refresh
+
+/**
+ 是否可以下拉刷新数据
+ */
+@property(nonatomic, assign) BOOL refreshEnable;
+
+/**
+ 下拉刷新视图
+ */
+@property(nonatomic, readonly, nullable) GKRefreshControl *refreshControl;
+
+/**
+ 是否正在刷新数据
+ */
+@property(nonatomic, readonly) BOOL refreshing;
 
 /**
  触发下拉刷新
@@ -111,9 +86,54 @@
  */
 - (void)onLoadMore NS_REQUIRES_SUPER;
 
-///以下的两个方法，刷新结束或加载结束时调用，如果子类重写，必须调用 super方法
-
+/**
+ 结束下拉刷新
+ */
 - (void)stopRefresh NS_REQUIRES_SUPER;
+
+/**
+ 手动调用下拉刷新，会有下拉动画
+ */
+- (void)startRefresh NS_REQUIRES_SUPER;
+
+/**
+ 刷新完成
+ *@param success 是否成功
+ */
+- (void)onRefreshComplete:(BOOL) success NS_REQUIRES_SUPER;
+
+/**
+ 下拉刷新取消
+ */
+- (void)onRefeshCancel NS_REQUIRES_SUPER;
+
+//MARK: - Load More
+
+/**
+ 加载更多时的指示视图
+ */
+@property(nonatomic, readonly, nullable) GKLoadMoreControl *loadMoreControl;
+
+/**
+ 是否可以加载更多数据 default is 'NO'
+ */
+@property(nonatomic, assign) BOOL loadMoreEnable;
+
+
+/**
+ 当前第几页 default is 'GKHttpFirstPage'
+ */
+@property(nonatomic, assign) int curPage;
+
+/**
+ 是否还有更多
+ */
+@property(nonatomic, assign) BOOL hasMore;
+
+/**
+ 是否正在加载更多
+ */
+@property(nonatomic, readonly) BOOL loadingMore;
 
 /**
  结束加载更多
@@ -127,22 +147,9 @@
 - (void)stopLoadMoreWithFail NS_REQUIRES_SUPER;
 
 /**
- 手动调用下拉刷新，会有下拉动画
- */
-- (void)startRefresh NS_REQUIRES_SUPER;
-
-/**
  手动加载更多，会有上拉动画
  */
 - (void)startLoadMore NS_REQUIRES_SUPER;
-
-///以下3个子类按需重写 viewModel中刷新完成会执行对应方法
-
-/**
- 刷新完成
- *@param success 是否成功
- */
-- (void)onRefreshComplete:(BOOL) success NS_REQUIRES_SUPER;
 
 /**
  加载更多完成 是否还有更多
@@ -154,23 +161,20 @@
  */
 - (void)onloadMoreFail NS_REQUIRES_SUPER;
 
-///以下2个子类按需重写
-
-/**
- 下拉刷新取消
- */
-- (void)onRefeshCancel NS_REQUIRES_SUPER;
-
 /**
  加载更多取消
  */
 - (void)onLoadMoreCancel NS_REQUIRES_SUPER;
 
+// MARK: - UIScrollViewDelegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset NS_REQUIRES_SUPER;
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint*)targetContentOffset NS_REQUIRES_SUPER;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

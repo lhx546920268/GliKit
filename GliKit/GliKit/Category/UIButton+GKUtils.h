@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  UIButton 图标位置
  */
@@ -46,5 +48,7 @@ typedef NS_ENUM(NSInteger, GKButtonImagePosition){
 - (void)gkSetBackgroundColor:(UIColor*) backgroundColor forState:(UIControlState) state;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 

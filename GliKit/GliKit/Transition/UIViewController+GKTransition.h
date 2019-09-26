@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "GKPartialPresentTransitionDelegate.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIViewController (GKTransition)
 
 ///过渡动画代理 设置这个可防止 transitioningDelegate 提前释放，不要设置为 self，否则会抛出异常
-@property(nonatomic,strong) id<UIViewControllerTransitioningDelegate> gkTransitioningDelegate;
+@property(nonatomic, weak, nullable) id<UIViewControllerTransitioningDelegate> gkTransitioningDelegate;
 
-//MARK: present
+// MARK: - present
 
 ///部分显示大小 会自己加上安全区域高度 子类可重写
 @property(nonatomic, assign) CGSize partialContentSize;
@@ -34,7 +36,7 @@
 ///部分显示 可设置要显示的viewController、样式和大小
 - (void)partialPresentViewController:(UIViewController*) viewController style:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize;
 
-//MARK: push
+// MARK: - push
 
 /**
  [self.navigationController pushViewController:viewController animated:YES]
@@ -49,3 +51,5 @@
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use;
 
 @end
+
+NS_ASSUME_NONNULL_END

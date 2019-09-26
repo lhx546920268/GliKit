@@ -8,13 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKPartialPresentTransitionDelegate;
 
 ///部分弹窗显示
 @interface GKPartialPresentationController : UIPresentationController
 
 ///关联的
-@property(nonatomic, weak) GKPartialPresentTransitionDelegate *delegate;
+@property(nonatomic, weak, nullable) GKPartialPresentTransitionDelegate *transitionDelegate;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

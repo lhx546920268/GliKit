@@ -11,7 +11,7 @@
 
 @implementation NSDate (Utils)
 
-//MARK: 单例
+// MARK: - 单例
 
 + (NSDateFormatter*)sharedDateFormatter
 {
@@ -20,12 +20,13 @@
     dispatch_once(&once, ^(void){
         
         dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = NSLocale.currentLocale;
     });
     
     return dateFormatter;
 }
 
-//MARK: 单个时间
+// MARK: - 单个时间
 
 - (int)gkSecond
 {
@@ -77,7 +78,7 @@
     return components.weekday;
 }
 
-//MARK: 时间获取
+// MARK: - 时间获取
 
 + (NSString*)gkCurrentTime
 {
@@ -116,7 +117,7 @@
     return [dateFormatter stringFromDate:date];
 }
 
-//MARK: 时间转换
+// MARK: - 时间转换
 
 + (NSString*)gkFormatTime:(NSString*) time format:(NSString*) format
 {
@@ -184,7 +185,7 @@
     return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, second];
 }
 
-//MARK: 时间比较
+// MARK: - 时间比较
 
 + (BOOL)gkTimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval
 {
@@ -222,7 +223,7 @@
     return [date1 isEqualToDate:date2];
 }
 
-//MARK: other
+// MARK: - other
 
 + (NSString*)gkRandom
 {

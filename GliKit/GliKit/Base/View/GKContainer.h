@@ -77,7 +77,7 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
 @property(nonatomic, strong, nullable) UIView *contentView;
 
 ///关联的viewController
-@property(nonatomic, weak, readonly) GKBaseViewController *viewController;
+@property(nonatomic, weak, readonly, nullable) GKBaseViewController *viewController;
 
 ///自动布局 安全区域 default is 'GKSafeLayoutGuideTop' 如果是以弹窗的形式显示 必须设为none
 @property(nonatomic, assign) GKSafeLayoutGuide safeLayoutGuide;
@@ -86,7 +86,7 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
 @property(nonatomic, assign) GKOverlayArea overlayArea;
 
 ///布局完成回调
-@property(nonatomic, copy, nullable) void(^layoutSubviewsHandler)(void);
+@property(nullable, nonatomic, copy) void(^layoutSubviewsHandler)(void);
 
 ///初始化
 - (void)initialization;
@@ -94,14 +94,14 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
 /**
  通过 UIViewController初始化
  */
-- (instancetype)initWithViewController:(GKBaseViewController*) viewController;
+- (instancetype)initWithViewController:(nullable GKBaseViewController*) viewController;
 
 /**
  设置顶部视图
  @param topView 顶部视图
  @param height 视图高度，GKWrapContent 为自适应
  */
-- (void)setTopView:(UIView *)topView height:(CGFloat) height;
+- (void)setTopView:(nullable UIView *)topView height:(CGFloat) height;
 
 /**
  设置底部视图
@@ -109,7 +109,7 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
  @param bottomView 底部视图
  @param height 视图高度，GKWrapContent 为自适应
  */
-- (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
+- (void)setBottomView:(nullable UIView *)bottomView height:(CGFloat) height;
 
 /**
  设置顶部视图隐藏 视图必须有高度约束
@@ -125,7 +125,7 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
  */
 - (void)setBottomViewHidden:(BOOL) hidden animate:(BOOL) animate;
 
-
 @end
 
 NS_ASSUME_NONNULL_END
+

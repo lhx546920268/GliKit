@@ -47,7 +47,7 @@
     self.frame = frame;
 }
 
-//MARK: kvo
+// MARK: - kvo
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -81,7 +81,7 @@
     }
 }
 
-//MARK: super method
+// MARK: - super method
 
 - (void)startLoading
 {

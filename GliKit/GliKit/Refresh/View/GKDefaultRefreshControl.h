@@ -8,6 +8,8 @@
 
 #import "GKRefreshControl.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  默认的下拉刷新控件
  */
@@ -16,12 +18,12 @@
 /**
  刷新控制的状态信息视图
  */
-@property(nonatomic,readonly) UILabel *statusLabel;
+@property(nonatomic, readonly) UILabel *statusLabel;
 
 /**
  刷新指示器
  */
-@property(nonatomic,readonly) UIActivityIndicatorView *indicatorView;
+@property(nonatomic, readonly) UIActivityIndicatorView *indicatorView;
 
 /**
  是否要显示菊花 默认显示
@@ -34,3 +36,5 @@
 - (void)updatePosition;
 
 @end
+
+NS_ASSUME_NONNULL_END

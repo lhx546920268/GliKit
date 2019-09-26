@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///动画完成回调
 typedef void(^GKSkeletonAnimationCompletion)(BOOL finished);
 
@@ -15,10 +17,12 @@ typedef void(^GKSkeletonAnimationCompletion)(BOOL finished);
 @interface GKSkeletonAnimationHelper : NSObject<CAAnimationDelegate>
 
 ///动画完成回调
-@property(nonatomic, copy) GKSkeletonAnimationCompletion completion;
+@property(nonatomic, copy, nullable) GKSkeletonAnimationCompletion completion;
 
 ///执行透明度渐变动画
-- (void)executeOpacityAnimationForLayer:(CALayer*) layer completion:(GKSkeletonAnimationCompletion) completion;
+- (void)executeOpacityAnimationForLayer:(CALayer*) layer completion:(nullable GKSkeletonAnimationCompletion) completion;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///刷新回调
 typedef void(^GKDataControlHandler)(void);
 
@@ -48,47 +50,47 @@ typedef NS_ENUM(NSInteger, GKDataControlState)
 /**
  关联的 scrollView
  */
-@property(nonatomic,readonly,weak) UIScrollView *scrollView;
+@property(nonatomic, readonly, weak, nullable) UIScrollView *scrollView;
 
 /**
  触发的临界点 default is 下拉刷新 60，上拉加载 45
  */
-@property(assign,nonatomic) CGFloat criticalPoint;
+@property(nonatomic, assign) CGFloat criticalPoint;
 
 /**
  原来的内容 缩进
  */
-@property(nonatomic,assign) UIEdgeInsets originalContentInset;
+@property(nonatomic, assign) UIEdgeInsets originalContentInset;
 
 /**
  刷新回调 子类不需要调用这个
  */
-@property(nonatomic,copy) GKDataControlHandler handler;
+@property(nonatomic, copy, nullable) GKDataControlHandler handler;
 
 /**
  加载延迟 default is '0.25'
  */
-@property(nonatomic,assign) NSTimeInterval loadingDelay;
+@property(nonatomic, assign) NSTimeInterval loadingDelay;
 
 /**
  停止延迟 default is '0.25'
  */
-@property(nonatomic,assign) NSTimeInterval stopDelay;
+@property(nonatomic, assign) NSTimeInterval stopDelay;
 
 /**
  下拉状态，很少需要主动设置该值
  */
-@property(nonatomic,assign) GKDataControlState state;
+@property(nonatomic, assign) GKDataControlState state;
 
 /*
  *是否正在动画
  */
-@property(nonatomic,assign) BOOL animating;
+@property(nonatomic, assign) BOOL animating;
 
 /**
  是否需要scrollView 停止响应点击事件 当加载中 default is 'NO'
  */
-@property(nonatomic,assign) BOOL shouldDisableScrollViewWhenLoading;
+@property(nonatomic, assign) BOOL shouldDisableScrollViewWhenLoading;
 
 /**
  构造方法
@@ -125,19 +127,19 @@ typedef NS_ENUM(NSInteger, GKDataControlState)
 /**
  获取对应状态的标题 没有则返回normal的标题
  */
-- (NSString*)titleForState:(GKDataControlState) state;
+- (nullable NSString*)titleForState:(GKDataControlState) state;
 
 /**
  设置对应状态的标题
  */
-- (void)setTitle:(NSString*) title forState:(GKDataControlState) state;
+- (void)setTitle:(nullable NSString*) title forState:(GKDataControlState) state;
 
 /**
  UIScrollView 代理，主要用于当刚好到到达临界点时 松开手时获取contentOffset无法满足临界点
  */
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView 
                      withVelocity:(CGPoint)velocity
-              targetContentOffset:(inout CGPoint *)targetContentOffset;
+              targetContentOffset:(inout CGPoint*)targetContentOffset;
 
 /**
  初始化
@@ -145,3 +147,5 @@ typedef NS_ENUM(NSInteger, GKDataControlState)
 - (void)initialization NS_REQUIRES_SUPER;
 
 @end
+
+NS_ASSUME_NONNULL_END

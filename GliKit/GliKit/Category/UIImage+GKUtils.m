@@ -41,7 +41,7 @@
     return retImage;
 }
 
-//MARK: resize
+// MARK: - resize
 
 - (CGSize)gkFitWithSize:(CGSize) size type:(GKImageFitType) type
 {

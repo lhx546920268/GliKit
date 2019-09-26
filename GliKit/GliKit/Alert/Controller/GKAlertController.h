@@ -10,6 +10,8 @@
 #import "GKAlertAction.h"
 #import "GKAlertProps.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///弹窗样式
 typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 {
@@ -54,16 +56,16 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 /**
  点击回调 index 按钮下标 包含取消按钮 actionSheet 从上到下， alert 从左到右
  */
-@property(nonatomic,copy) void(^selectionHandler)(NSUInteger index);
+@property(nonatomic, copy, nullable) void(^selectionHandler)(NSUInteger index);
 
-+ (instancetype)alertWithTitle:(id) title
-                       message:(id) message
-             cancelButtonTitle:(NSString*) cancelButtonTitle
-             otherButtonTitles:(NSArray<NSString*>*) otherButtonTitles;
++ (instancetype)alertWithTitle:(nullable id) title
+                       message:(nullable id) message
+             cancelButtonTitle:(nullable NSString*) cancelButtonTitle
+             otherButtonTitles:(nullable NSArray<NSString*>*) otherButtonTitles;
 
-+ (instancetype)actionSheetWithTitle:(id) title
-                             message:(id) message
-                   otherButtonTitles:(NSArray<NSString*>*) otherButtonTitles;
++ (instancetype)actionSheetWithTitle:(nullable id) title
+                             message:(nullable id) message
+                   otherButtonTitles:(nullable NSArray<NSString*>*) otherButtonTitles;
 
 /**
  实例化一个弹窗
@@ -75,12 +77,12 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
  @param otherButtonTitles 按钮
  @return 一个实例
  */
-- (instancetype)initWithTitle:(id) title
-                      message:(id) message
-                         icon:(UIImage*) icon
+- (instancetype)initWithTitle:(nullable id) title
+                      message:(nullable id) message
+                         icon:(nullable UIImage*) icon
                         style:(GKAlertControllerStyle) style
-            cancelButtonTitle:(NSString *) cancelButtonTitle
-            otherButtonTitles:(NSArray<NSString*>*) otherButtonTitles;
+            cancelButtonTitle:(nullable NSString *) cancelButtonTitle
+            otherButtonTitles:(nullable NSArray<NSString*>*) otherButtonTitles;
 
 /**
  实例化一个弹窗
@@ -92,12 +94,12 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
  @param actions 按钮
  @return 一个实例
  */
-- (instancetype)initWithTitle:(id) title
-                      message:(id) message
-                         icon:(UIImage*) icon
+- (instancetype)initWithTitle:(nullable id) title
+                      message:(nullable id) message
+                         icon:(nullable UIImage*) icon
                         style:(GKAlertControllerStyle) style
-            cancelButtonTitle:(NSString *) cancelButtonTitle
-           otherButtonActions:(NSArray<GKAlertAction*>*) actions;
+            cancelButtonTitle:(nullable NSString *) cancelButtonTitle
+           otherButtonActions:(nullable NSArray<GKAlertAction*>*) actions;
 
 /**
  更新某个按钮 不包含actionSheet 的取消按钮
@@ -107,7 +109,7 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 /**
  通过下标回去按钮标题
  */
-- (NSString*)buttonTitleForIndex:(NSUInteger) index;
+- (nullable NSString*)buttonTitleForIndex:(NSUInteger) index;
 
 /**
  显示弹窗
@@ -120,3 +122,5 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 - (void)dismiss;
 
 @end
+
+NS_ASSUME_NONNULL_END

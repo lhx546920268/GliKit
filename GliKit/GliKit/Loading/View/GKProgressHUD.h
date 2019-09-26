@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///状态
 typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
     
@@ -33,7 +35,7 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 /**
  提示信息
  */
-@property(nonatomic, copy) NSString *text;
+@property(nonatomic, copy, nullable) NSString *text;
 
 /**
  内容视图是否延迟显示 0 不延迟
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 /**
  消失回调
  */
-@property(nonatomic, copy) void(^dismissHandler)(void);
+@property(nonatomic, copy, nullable) void(^dismissHandler)(void);
 
 ///显示
 - (void)show;
@@ -67,23 +69,25 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 /**
  黑色半透明背景视图
  */
-@property(nonatomic,readonly) UIView *translucentView;
+@property(nonatomic, readonly) UIView *translucentView;
 
 /**
  提示信息
  */
-@property(nonatomic,readonly) UILabel *textLabel;
+@property(nonatomic, readonly) UILabel *textLabel;
 
 /**
  加载指示器
  */
-@property(nonatomic,readonly) UIActivityIndicatorView *activityIndicatorView;
+@property(nonatomic, readonly, nullable) UIActivityIndicatorView *activityIndicatorView;
 
 /**
  提示图标
  */
-@property(nonatomic,readonly) UIImageView *imageView;
+@property(nonatomic, readonly, nullable) UIImageView *imageView;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 

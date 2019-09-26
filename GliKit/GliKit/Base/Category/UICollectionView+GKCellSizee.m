@@ -41,7 +41,7 @@
     }
 }
 
-//MARK: register cells
+// MARK: - register cells
 
 - (void)gkCellSize_registerClass:(Class) clazz forCellWithReuseIdentifier:(NSString *) identifier
 {
@@ -67,7 +67,7 @@
     [[self gkRegisterObjects] setObject:nib forKey:identifier];
 }
 
-//MARK: data change
+// MARK: - data change
 
 - (void)gkCellSize_reloadSections:(NSIndexSet *) sections
 {
@@ -165,7 +165,7 @@
     [self gkCellSize_reloadData];
 }
 
-//MARK: 计算
+// MARK: - 计算
 
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(GKCellConfiguration) configuration
 {
@@ -210,7 +210,7 @@
 }
 
 
-//MARK: - cell大小缓存
+// MARK: - - cell大小缓存
 
 ///缓存cell大小的数组
 - (NSMutableDictionary<NSNumber*, NSMutableDictionary<NSNumber*, NSValue*>* >*)gkCellSizeCaches
@@ -250,7 +250,7 @@
     }
 }
 
-//MARK: 注册的 cells
+// MARK: - 注册的 cells
 
 ///注册的 class nib
 - (NSMutableDictionary*)gkRegisterObjects

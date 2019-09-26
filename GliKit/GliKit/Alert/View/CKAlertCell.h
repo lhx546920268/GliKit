@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///弹窗按钮列表cell
 @interface CKAlertCell : UICollectionViewCell
 
 ///按钮
-@property(nonatomic,readonly) UIButton *button;
+@property(nonatomic, readonly) UIButton *button;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

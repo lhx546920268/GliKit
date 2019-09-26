@@ -8,6 +8,8 @@
 
 #import <UIKit/UIkit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKSkeletonSubLayer;
 
 ///骨架帮助类
@@ -41,4 +43,6 @@
 + (void)replaceImplementations:(SEL) selector owner:(NSObject*) owner implementer:(NSObject*) implementer;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

@@ -159,7 +159,7 @@
     _dismissWhenSelectButton = YES;
 }
 
-//MARK: layout
+// MARK: - layout
 
 - (void)viewDidLayoutSubviews
 {
@@ -431,7 +431,7 @@
     self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
 }
 
-//MARK: private method
+// MARK: - private method
 
 ///取消
 - (void)cancel:(id) sender
@@ -499,7 +499,7 @@
     }
 }
 
-//MARK: public method
+// MARK: - public method
 
 - (void)reloadButtonForIndex:(NSUInteger) index
 {
@@ -528,7 +528,7 @@
     [self dismissDialog];
 }
 
-//MARK: UITapGestureRecognizer delegate
+// MARK: - UITapGestureRecognizer delegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -541,7 +541,7 @@
     return YES;
 }
 
-//MARK: UICollectionView delegate
+// MARK: - UICollectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -634,7 +634,7 @@
     cell.contentView.backgroundColor = self.props.highlightedBackgroundColor;
 }
 
-//MARK: property
+// MARK: - property
 
 - (GKAlertProps*)props
 {

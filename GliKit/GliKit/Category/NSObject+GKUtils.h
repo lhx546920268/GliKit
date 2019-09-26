@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///扩展
 @interface NSObject (GKUtils)
 
@@ -20,8 +22,8 @@
 /**
  获取当前显示的 UINavigationController 如果是部分present出来的，则忽略
  */
-@property(class, nonatomic, readonly) UINavigationController *gkCurrentNavigationController;
-@property(nonatomic, readonly) UINavigationController *gkCurrentNavigationController;
+@property(class, nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
+@property(nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
 
 /**
  获取当前类的所有属性名称
@@ -34,7 +36,7 @@
 @property(class, nonatomic, readonly) NSString *gkNameOfClass;
 @property(nonatomic, readonly) NSString *gkNameOfClass;
 
-//MARK: 方法交换
+// MARK: - 方法交换
 
 /**
  交换实例方法实现
@@ -53,7 +55,7 @@
  */
 + (void)gkExchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
 
-//MARK: coder
+// MARK: - coder
 
 /**
  自动化归档，在encodeWithCoder 中调用，子类不需要重写encodeWithCoder
@@ -69,7 +71,7 @@
  */
 - (void)gkInitWithCoder:(NSCoder*) decoder;
 
-//MARK: copy
+// MARK: - copy
 
 /**
  拷贝某个对象
@@ -78,7 +80,7 @@
  */
 - (void)gkCopyObject:(NSObject*) object;
 
-//MARK: push
+// MARK: - push
 
 /**
  打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
@@ -105,3 +107,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

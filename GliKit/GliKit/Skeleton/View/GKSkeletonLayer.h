@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKSkeletonSubLayer;
 
 ///骨架图层
@@ -20,3 +22,5 @@
 @property(nonatomic, copy) NSArray<GKSkeletonSubLayer*> *skeletonSubLayers;
 
 @end
+
+NS_ASSUME_NONNULL_END

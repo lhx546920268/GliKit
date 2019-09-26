@@ -12,7 +12,7 @@
 @interface GKCollectionViewLayoutInvalidationContext : UICollectionViewLayoutInvalidationContext
 
 ///当前需要更新的
-@property(nonatomic, strong) NSDictionary<NSString*, NSArray<NSIndexPath*> *> *invalidSupplementaryIndexPaths;
+@property(nonatomic, strong, nullable) NSDictionary<NSString*, NSArray<NSIndexPath*> *> *invalidSupplementaryIndexPaths;
 
 @end
 

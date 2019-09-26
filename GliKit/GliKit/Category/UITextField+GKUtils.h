@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "NSString+GKUtils.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///
 @interface UITextField (GKUtils)
 
-//MARK: 内嵌视图
+// MARK: - 内嵌视图
 
 /**
  设置输入框左边图标
@@ -49,12 +51,12 @@
  @param target 点击确定方法回调，nil则使用默认的 关闭键盘
  @param action 点击确定方法回调，nil则使用默认的 关闭键盘
  */
-- (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString*) title target:(id) target action:(SEL) action;
-- (void)gkAddDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action;
+- (void)gkAddDefaultInputAccessoryViewWithTitle:(nullable NSString*) title target:(nullable id) target action:(nullable SEL) action;
+- (void)gkAddDefaultInputAccessoryViewWithTarget:(nullable id) target action:(nullable SEL) action;
 - (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString *)title;
 - (void)gkAddDefaultInputAccessoryView;
 
-//MARK: 文本限制
+// MARK: - 文本限制
 
 /** 用于 gk_extraString
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -74,23 +76,25 @@
 /**
  使用以上2个属性，不能自己监听文字变化 UIControlEventEditingChanged 否则会导致监听不对的问题，使用该属性来监听
  */
-@property(nonatomic, copy) void(^gkTextDidChange)(void);
+@property(nonatomic, copy, nullable) void(^gkTextDidChange)(void);
 
 /**
  额外字符串 放在文字后面 需要配合 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string 一起使用
  */
-@property(nonatomic, copy) NSString *gkExtraString;
+@property(nonatomic, copy, nullable) NSString *gkExtraString;
 
 /**
  禁止的方法列表，如复制，粘贴，通过 NSStringFromSelector 把需要禁止的方法传进来，如禁止粘贴，可传 NSStringFromSelector(paste:) default is 'nil'
  */
-@property(nonatomic,strong) NSArray<NSString*> *gkForbiddenActions;
+@property(nonatomic, strong, nullable) NSArray<NSString*> *gkForbiddenActions;
 
 /**
  光标位置
  */
-@property(nonatomic,assign) NSRange gkSelectedRange;
+@property(nonatomic, assign) NSRange gkSelectedRange;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 

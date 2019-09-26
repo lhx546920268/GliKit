@@ -46,7 +46,10 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
 ///每帧 毫秒数
 @property(nonatomic, assign) NSTimeInterval timePerFrame;
 
+///当前速度
 @property(nonatomic, assign) CGFloat currentSpeed;
+
+///帧数
 @property(nonatomic, assign) int frames;
 
 @end
@@ -78,17 +81,20 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     [self stopDisplayLink];
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    CGFloat maxOffsetY = floor(self.parentScrollView.contentSize.height - self.parentScrollView.gkHeight);
+    UIScrollView *child = self.parentScrollView.gkNestedChildScrollView;
+    
+    if(maxOffsetY <= 0 || !child || child.contentSize.height == 0)
+        return;
+    
     BOOL isParent = scrollView == self.parentScrollView;
     CGPoint contentOffset = scrollView.contentOffset;
-    
-    CGFloat maxOffsetY = floor(self.parentScrollView.contentSize.height - self.parentScrollView.gkHeight);
     if(isParent){
     
-        UIScrollView *child = self.parentScrollView.gkNestedChildScrollView;
         BOOL childRefreshEnable = child.gkRefreshControl != nil;
         
         //下拉刷新中
@@ -173,7 +179,7 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     }
 }
 
-//MARK: Display Link
+// MARK: - Display Link
 
 ///开始监听屏幕刷新
 - (void)startDisplayLink
@@ -231,7 +237,7 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     }
 }
 
-//MARK: 替换实现
+// MARK: - 替换实现
 
 + (void)replaceImplementations:(SEL) selector owner:(NSObject *)owner implementer:(NSObject *)implementer
 {

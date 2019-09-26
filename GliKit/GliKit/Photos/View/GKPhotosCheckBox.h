@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///相册选中
 @interface GKPhotosCheckBox : UIView
 
@@ -18,7 +20,7 @@
 @property(nonatomic, strong) UIFont *font;
 
 ///选中的文字
-@property(nonatomic, copy) NSString *checkedText;
+@property(nonatomic, copy, nullable) NSString *checkedText;
 
 ///内边距
 @property(nonatomic, assign) UIEdgeInsets contentInsets;
@@ -27,4 +29,6 @@
 - (void)setChecked:(BOOL)checked animated:(BOOL) animated;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

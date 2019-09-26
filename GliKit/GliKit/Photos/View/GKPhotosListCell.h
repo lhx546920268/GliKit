@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 ///相册列表
 @interface GKPhotosListCell : UITableViewCell
@@ -22,7 +23,9 @@
 @property(nonatomic, readonly) UILabel *countLabel;
 
 ///asset标识符
-@property(nonatomic, strong) NSString *assetLocalIdentifier;
+@property(nonatomic, strong, nullable) NSString *assetLocalIdentifier;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

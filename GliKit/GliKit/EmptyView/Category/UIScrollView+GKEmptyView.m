@@ -12,6 +12,7 @@
 #import "UIView+GKUtils.h"
 #import "UIScrollView+GKRefresh.h"
 #import "GKLoadMoreControl.h"
+#import "NSObject+GKUtils.h"
 
 ///是否显示空视图kkey
 static char GKShouldShowEmptyViewKey;
@@ -20,6 +21,11 @@ static char GKShouldShowEmptyViewKey;
 static char GKEmptyViewInsetsKey;
 
 @implementation UIScrollView (GKEmptyView)
+
++ (void)load
+{
+    [self gkExchangeImplementations:@selector(layoutSubviews) prefix:@"gkEmpty_"];
+}
 
 - (void)setGkShouldShowEmptyView:(BOOL)gkShouldShowEmptyView
 {
@@ -61,7 +67,6 @@ static char GKEmptyViewInsetsKey;
     if(!self.gkShouldShowEmptyView)
         return;
     
-    [self.superview layoutIfNeeded];
     //大小为0时不创建
     if(CGSizeEqualToSize(CGSizeZero, self.frame.size)){
         return;
@@ -101,6 +106,16 @@ static char GKEmptyViewInsetsKey;
 - (BOOL)gkIsEmptyData
 {
     return YES;
+}
+
+///用于使用约束时没那么快得到 frame
+- (void)gkEmpty_layoutSubviews
+{
+    [self gkEmpty_layoutSubviews];
+    if(!CGSizeEqualToSize(self.gkOldSize, self.frame.size)){
+        self.gkOldSize = self.frame.size;
+        [self layoutEmtpyView];
+    }
 }
 
 @end

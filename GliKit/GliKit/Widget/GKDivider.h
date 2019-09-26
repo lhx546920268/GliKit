@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///分割线 会自己设置高度 宽度和背景
 @interface GKDivider : UIView
 
@@ -16,3 +18,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

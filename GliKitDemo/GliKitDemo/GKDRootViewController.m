@@ -13,35 +13,12 @@
 #import "GKDSkeletonViewController.h"
 #import "GKDTransitionViewController.h"
 #import "GKDNestedParentViewController.h"
-
-@interface GKDRootModel : NSObject
-
-///xx
-@property(nonatomic, strong) NSString *title;
-
-///xx
-@property(nonatomic, strong) Class clazz;
-
-+ (instancetype)modelWithTitle:(NSString*) title clazz:(Class) clazz;
-
-@end
-
-@implementation GKDRootModel
-
-+ (instancetype)modelWithTitle:(NSString *)title clazz:(Class)clazz
-{
-    GKDRootModel *model = GKDRootModel.new;
-    model.title = title;
-    model.clazz = clazz;
-    
-    return model;
-}
-
-@end
+#import "GKDRowModel.h"
+#import "GKDEmptyViewController.h"
 
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
-@property(nonatomic, strong) NSArray<GKDRootModel*> *datas;
+@property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
 
 
 @end
@@ -55,10 +32,11 @@
     self.navigationItem.title = GKAppUtils.appName;
     
     self.datas = @[
-                   [GKDRootModel modelWithTitle:@"相册" clazz:GKDPhotosViewController.class],
-                   [GKDRootModel modelWithTitle:@"骨架" clazz:GKDSkeletonViewController.class],
-                   [GKDRootModel modelWithTitle:@"UIViewController 过渡" clazz:GKDTransitionViewController.class],
-                   [GKDRootModel modelWithTitle:@"嵌套滑动" clazz:GKDNestedParentViewController.class],
+                   [GKDRowModel modelWithTitle:@"相册" clazz:GKDPhotosViewController.class],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:GKDSkeletonViewController.class],
+                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:GKDTransitionViewController.class],
+                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:GKDNestedParentViewController.class],
+                   [GKDRowModel modelWithTitle:@"空视图" clazz:GKDEmptyViewController.class],
                    ];
     
     [self initViews];
@@ -92,7 +70,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    GKDRootModel *model = self.datas[indexPath.row];
+    GKDRowModel *model = self.datas[indexPath.row];
     [self.class gkPushViewController:model.clazz.new];
 }
 

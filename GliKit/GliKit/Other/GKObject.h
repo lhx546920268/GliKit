@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///通过字典初始化
 @interface GKObject : NSObject
 
-+ (instancetype)modelFromDictionary:(NSDictionary*) dic NS_REQUIRES_SUPER;
++ (instancetype)modelFromDictionary:(nullable NSDictionary*) dic NS_REQUIRES_SUPER;
 
 
 /**
@@ -20,7 +22,7 @@
  @param array 包含字典的数组
  @return 如果array 大于0 返回包含对应子类的数组，否则返回nil
  */
-+ (NSMutableArray*)modelsFromArray:(NSArray<NSDictionary*>*) array;
++ (nullable NSMutableArray*)modelsFromArray:(nullable NSArray<NSDictionary*>*) array;
 
 
 /**
@@ -30,14 +32,16 @@
  @param maxCount 最大数量
  @return 如果array 大于0 返回包含对应子类的数组，否则返回nil
  */
-+ (NSMutableArray*)modelsFromArray:(NSArray<NSDictionary*>*) array maxCount:(int) maxCount;
++ (nullable NSMutableArray*)modelsFromArray:(nullable NSArray<NSDictionary*>*) array maxCount:(int) maxCount;
 
 /**
  子类要重写这个
  
  @param dic 包含数据的字典
  */
-- (void)setDictionary:(NSDictionary*) dic;
+- (void)setDictionary:(nullable NSDictionary*) dic;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

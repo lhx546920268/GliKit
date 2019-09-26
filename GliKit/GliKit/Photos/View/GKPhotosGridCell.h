@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKPhotosCheckBox, GKPhotosGridCell, PHAsset;
 
 ///代理
@@ -34,13 +36,15 @@
 @property(nonatomic, assign) BOOL checked;
 
 ///asset标识符
-@property(nonatomic, strong) PHAsset *asset;
+@property(nonatomic, strong, nullable) PHAsset *asset;
 
 ///代理
-@property(nonatomic, weak) id<GKPhotosGridCellDelegate> delegate;
+@property(nonatomic, weak, nullable) id<GKPhotosGridCellDelegate> delegate;
 
 ///设置选中
 - (void)setChecked:(BOOL)checked animated:(BOOL) animated;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

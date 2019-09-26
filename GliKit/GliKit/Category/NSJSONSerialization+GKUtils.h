@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NSJSONSerialization (GKUtils)
 
@@ -18,7 +19,7 @@
  *@param string Json数据
  *@return NSDictionary
  */
-+ (NSDictionary*)gkDictionaryFromString:(NSString*) string;
++ (nullable NSDictionary*)gkDictionaryFromString:(NSString*) string;
 
 /**
  
@@ -27,7 +28,7 @@
  *@param data Json数据
  *@return NSDictionary
  */
-+ (NSDictionary*)gkDictionaryFromData:(NSData*) data;
++ (nullable NSDictionary*)gkDictionaryFromData:(NSData*) data;
 
 /**
  
@@ -36,7 +37,7 @@
  *@param string Json数据
  *@return NSArray
  */
-+ (NSArray*)gkArrayFromString:(NSString*) string;
++ (nullable NSArray*)gkArrayFromString:(NSString*) string;
 
 /**
  
@@ -45,20 +46,22 @@
  *@param data Json数据
  *@return NSArray
  */
-+ (NSArray*)gkArrayFromData:(NSData*) data;
++ (nullable NSArray*)gkArrayFromData:(NSData*) data;
 
 /**
  把Json 对象转换成 json字符串
  *@param object 要转换成json的对象
  *@return json字符串
  */
-+ (NSString*)gkStringFromObject:(id) object;
++ (nullable NSString*)gkStringFromObject:(id) object;
 
 /**
  把 json 对象转换成 json二进制
  *@param object 要转换成json的对象
  *@return json字符串
  */
-+ (NSData*)gkDataFromObject:(id) object;
++ (nullable NSData*)gkDataFromObject:(id) object;
 
 @end
+
+NS_ASSUME_NONNULL_END

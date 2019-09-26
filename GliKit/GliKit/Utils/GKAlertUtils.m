@@ -71,13 +71,13 @@
     
     for(NSInteger i = 0;i < buttonTitles.count;i ++){
         NSString *title = buttonTitles[i];
-        [controlelr addAction:[UIAlertAction actionWithTitle:title style:destructiveButtonIndex == i ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [controlelr addAction:[UIAlertAction actionWithTitle:title style:destructiveButtonIndex == i ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             !handler ?: handler(i, title);
         }]];
     }
     
     if(cancelButtonTitle){
-        [controlelr addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [controlelr addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             !handler ?: handler(buttonTitles.count, title);
         }]];
     }

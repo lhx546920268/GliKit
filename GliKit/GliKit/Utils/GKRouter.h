@@ -12,7 +12,7 @@
 @interface GKRouter : NSObject
 
 ///打开一个界面
-+ (void)openWithData:(NSDictionary*) data;
++ (void)openWithData:(nullable NSDictionary*) data;
 
 @end
 

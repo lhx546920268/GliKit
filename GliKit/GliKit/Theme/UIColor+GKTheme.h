@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIColor (GKTheme)
 
 ///app主色调
@@ -38,5 +40,7 @@
 @property(class, nonatomic, strong) UIColor *gkPlaceholderColor;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 

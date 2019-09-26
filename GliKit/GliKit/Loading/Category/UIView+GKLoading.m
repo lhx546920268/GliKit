@@ -17,10 +17,11 @@
 static char GKPageLoadingViewKey;
 static char GKReloadDataHandlerKey;
 static char GKProgressHUDKey;
+static char GKPageLoadingViewInsetsKey;
 
 @implementation UIView (CaLoading)
 
-//MARK: page loading
+// MARK: - page loading
 
 - (void)setGkShowPageLoading:(BOOL)gkShowPageLoading
 {
@@ -65,7 +66,7 @@ static char GKProgressHUDKey;
     if(gkPageLoadingView){
         [self addSubview:gkPageLoadingView];
         [gkPageLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
+            make.edges.equalTo(self).insets(self.gkPageLoadingViewInsets);
             
             //scrollView 需要确定滑动范围
             if([self isKindOfClass:[UIScrollView class]]){
@@ -113,13 +114,26 @@ static char GKProgressHUDKey;
     
     WeakObj(self);
     pageLoadingView.refreshHandler = ^{
-        [selfWeak gkHandlerTapFailPage:nil];
+        [selfWeak gkHandlerTapFailPage];
     };
     self.gkPageLoadingView = pageLoadingView;
     return pageLoadingView;
 }
 
-//MARK: handler
+- (void)setGkPageLoadingViewInsets:(UIEdgeInsets)gkPageLoadingViewInsets
+{
+    UIEdgeInsets insets = self.gkPageLoadingViewInsets;
+    if(!UIEdgeInsetsEqualToEdgeInsets(insets, gkPageLoadingViewInsets)){
+        objc_setAssociatedObject(self, &GKPageLoadingViewInsetsKey, [NSValue valueWithUIEdgeInsets:gkPageLoadingViewInsets], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+}
+
+- (UIEdgeInsets)gkPageLoadingViewInsets
+{
+    return [objc_getAssociatedObject(self, &GKPageLoadingViewInsetsKey) UIEdgeInsetsValue];
+}
+
+// MARK: - handler
 
 - (void)setGkReloadDataHandler:(void (^)(void))gkReloadDataHandler
 {
@@ -132,13 +146,13 @@ static char GKProgressHUDKey;
 }
 
 //点击失败视图
-- (void)gkHandlerTapFailPage:(UITapGestureRecognizer*) tap
+- (void)gkHandlerTapFailPage
 {
     void(^handler)(void) = self.gkReloadDataHandler;
     !handler ?: handler();
 }
 
-//MARK: hud
+// MARK: - hud
 
 - (UIView<GKProgressHUD> *)gkProgressHUD
 {
@@ -224,7 +238,7 @@ static char GKProgressHUDKey;
         };
         [view addSubview:hud];
         
-        [hud makeConstraints:^(MASConstraintMaker *make) {
+        [hud mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(view);
             
             //scrollView 需要确定滑动范围

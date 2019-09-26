@@ -88,12 +88,8 @@ static char GKOldSizeKey;
             }
             [self addSubview:emptyView];
             
-            [emptyView makeConstraints:^(MASConstraintMaker *make) {
+            [emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self);
-                
-                if([self isKindOfClass:[UIScrollView class]]){
-                    make.size.equalTo(self);
-                }
             }];
         }
     }

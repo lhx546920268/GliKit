@@ -123,7 +123,7 @@
     CGContextRestoreGState(cx);
 }
 
-//MARK: private method
+// MARK: - private method
 
 - (void)setShouldDisplayPlusSign:(BOOL)shouldDisplayPlusSign
 {

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKHttpTask;
 
 /**
@@ -28,7 +30,7 @@
 /**
  所有任务完成回调 hasFail 是否有任务失败了
  */
-@property(nonatomic, copy) void(^completionHandler)(GKHttpMultiTasks *tasks, BOOL hasFail);
+@property(nonatomic, copy, nullable) void(^completionHandler)(GKHttpMultiTasks *tasks, BOOL hasFail);
 
 /**
  添加任务 key 为className
@@ -61,7 +63,9 @@
 /**
  获取某个请求
  */
-- (__kindof GKHttpTask*)taskForKey:(NSString*) key;
+- (nullable __kindof GKHttpTask*)taskForKey:(NSString*) key;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

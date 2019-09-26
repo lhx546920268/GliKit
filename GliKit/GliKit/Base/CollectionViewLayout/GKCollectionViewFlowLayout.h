@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///UICollectionViewFlowLayout item对其方式
 typedef NS_ENUM(NSInteger, GKCollectionViewItemAlignment)
 {
@@ -29,7 +31,7 @@ typedef NS_ENUM(NSInteger, GKCollectionViewItemAlignment)
 - (BOOL)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout shouldStickHeaderAtSection:(NSInteger) section;
 
 ///每个区域的背景颜色
-- (UIColor*)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout backgroundColorAtSection:(NSInteger) section;
+- (nullable UIColor*)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout backgroundColorAtSection:(NSInteger) section;
 
 ///每个区域的背景 rect 用来微调 返回新的rect
 - (CGRect)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout didFetchRect:(CGRect) rect atSection:(NSInteger) section;
@@ -40,6 +42,8 @@ typedef NS_ENUM(NSInteger, GKCollectionViewItemAlignment)
 @interface GKCollectionViewFlowLayout : UICollectionViewFlowLayout
 
 ///对其方式 default is 'GKCollectionViewItemAlignmentDefault'
-@property(nonatomic,assign) GKCollectionViewItemAlignment itemAlignment;
+@property(nonatomic, assign) GKCollectionViewItemAlignment itemAlignment;
 
 @end
+
+NS_ASSUME_NONNULL_END

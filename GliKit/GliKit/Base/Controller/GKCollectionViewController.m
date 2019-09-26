@@ -36,7 +36,7 @@
 }
 
 
-//MARK: public method
+// MARK: - Init
 
 - (UICollectionViewFlowLayout*)flowLayout
 {
@@ -86,6 +86,15 @@
     self.contentView = _collectionView;
 }
 
+- (void)reloadListData
+{
+    if(self.isInit){
+        [self.collectionView reloadData];
+    }
+}
+
+// MARK: - Register Cell
+
 - (void)registerNib:(Class)clazz
 {
     [self.collectionView registerNib:clazz];
@@ -116,14 +125,7 @@
     [self.collectionView registerFooterNib:clazz];
 }
 
-- (void)reloadListData
-{
-    if(self.isInit){
-        [self.collectionView reloadData];
-    }
-}
-
-//MARK: UICollectionView delegate
+// MARK: - UICollectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

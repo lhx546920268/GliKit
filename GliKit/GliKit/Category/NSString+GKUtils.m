@@ -51,7 +51,7 @@
     return NO;
 }
 
-//MARK: 获取
+// MARK: - 获取
 
 - (char)gkFirstCharacter
 {
@@ -104,7 +104,7 @@
     return size;
 }
 
-//MARK: 校验
+// MARK: - 校验
 
 - (BOOL)isInteger
 {
@@ -118,7 +118,7 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]].length == 0;
 }
 
-//MARK: 加密
+// MARK: - 加密
 
 - (NSString*)gkMD5String
 {
@@ -134,7 +134,7 @@
             ];
 }
 
-//MARK: 过滤
+// MARK: - 过滤
 
 - (NSString*)gkStringByFilterWithType:(GKTextType)type
 {

@@ -177,7 +177,7 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
     return [super shouldInvalidateLayoutForBoundsChange:newBounds];
 }
 
-//MARK: section 背景颜色
+// MARK: - section 背景颜色
 
 ///计算每个section的区域，创建对应布局属性 目前只支持垂直的
 - (void)createSectionBackgroundDecoratorAttributes

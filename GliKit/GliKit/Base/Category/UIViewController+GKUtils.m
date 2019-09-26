@@ -24,9 +24,6 @@ static char GKInteractivePopEnableKey;
 ///是否显示返回按钮
 static char GKShowBackItemKey;
 
-///返回按钮标题
-static char GKBackItemTitleKey;
-
 @implementation UIViewController (Utils)
 
 - (void)setGkHideNavigationBarShadowImage:(BOOL)gkHideNavigationBarShadowImage
@@ -57,13 +54,13 @@ static char GKBackItemTitleKey;
     return number ? number.boolValue : YES;
 }
 
-- (void)setCa_interactivePopEnable:(BOOL)gk_interactivePopEnable
+- (void)setGkInteractivePopEnable:(BOOL)gkInteractivePopEnable
 {
-    self.navigationController.interactivePopGestureRecognizer.enabled = gk_interactivePopEnable;
-    objc_setAssociatedObject(self, &GKInteractivePopEnableKey, @(gk_interactivePopEnable), OBJC_ASSOCIATION_RETAIN);
+    self.navigationController.interactivePopGestureRecognizer.enabled = gkInteractivePopEnable;
+    objc_setAssociatedObject(self, &GKInteractivePopEnableKey, @(gkInteractivePopEnable), OBJC_ASSOCIATION_RETAIN);
 }
 
-//MARK: 返回
+// MARK: - 返回
 
 - (void)setGkShowBackItem:(BOOL)gkShowBackItem
 {
@@ -118,7 +115,7 @@ static char GKBackItemTitleKey;
     }
 }
 
-//MARK: property readonly
+// MARK: - property readonly
 
 - (CGFloat)gkStatusBarHeight
 {
@@ -182,7 +179,7 @@ static char GKBackItemTitleKey;
     return [[GKBaseNavigationController alloc] initWithRootViewController:self];
 }
 
-//MARK: 导航栏按钮
+// MARK: - 导航栏按钮
 
 - (void)gkSetNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position
 {
@@ -265,7 +262,7 @@ static char GKBackItemTitleKey;
     return item;
 }
 
-//MARK: Class Method
+// MARK: - Class Method
 
 + (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(id) target action:(SEL) action
 {

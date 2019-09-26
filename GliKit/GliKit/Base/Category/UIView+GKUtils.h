@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///视图扩展
 @interface UIView (GKUtils)
 
-//MARK: 坐标
+// MARK: - 坐标
 
 /**
  get and set frame.origin.y
@@ -61,7 +63,7 @@
 /**
  通过xib加载 xib的名称必须和类的名称一致
  */
-+ (instancetype)loadFromNib;
++ (nullable instancetype)loadFromNib;
 
 /**
  删除所有子视图
@@ -74,4 +76,6 @@
 @property(nonatomic, readonly) UIEdgeInsets gkSafeAreaInsets;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

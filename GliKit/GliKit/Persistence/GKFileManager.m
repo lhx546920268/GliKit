@@ -135,7 +135,7 @@
 {
     NSString *temp = NSTemporaryDirectory();
     NSString *time = [NSDate gkRandom];
-    NSString *file = [NSString stringWithFormat:@"%@.%@",time, suffix];
+    NSString *file = [NSString stringWithFormat:@"%@.%@", time, suffix];
     
     return [temp stringByAppendingPathComponent:file];
 }

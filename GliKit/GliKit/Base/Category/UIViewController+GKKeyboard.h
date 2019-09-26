@@ -8,18 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///键盘相关扩展
 @interface UIViewController (GKKeyboard)
 
 /**
  键盘是否隐藏
  */
-@property(nonatomic,readonly) BOOL keyboardHidden;
+@property(nonatomic, readonly) BOOL keyboardHidden;
 
 /**
  键盘大小
  */
-@property(nonatomic,readonly) CGRect keyboardFrame;
+@property(nonatomic, readonly) CGRect keyboardFrame;
 
 /**
  添加键盘监听
@@ -48,4 +50,6 @@
 - (void)keyboardWillShow:(NSNotification*) notification NS_REQUIRES_SUPER;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

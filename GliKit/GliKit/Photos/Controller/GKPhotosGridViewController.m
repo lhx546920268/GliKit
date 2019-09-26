@@ -26,7 +26,7 @@
 #import "GKImageCropViewController.h"
 #import "UIImage+GKUtils.h"
 
-@interface GKPhotosGridViewController ()<PHPhotoLibraryChangeObserver, GKPhotosGridCellDelegate>
+@interface GKPhotosGridViewController ()<GKPhotosGridCellDelegate>
 
 //选中的图片
 @property(nonatomic, strong) NSMutableArray<PHAsset*> *selectedAssets;
@@ -78,14 +78,12 @@
     }
     
     self.navigationItem.title = self.collection.title;
-    [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
     
     [self initViews];
 }
 
 - (void)dealloc
 {
-    [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self];
     [self.imageManager stopCachingImagesForAllAssets];
 }
 
@@ -120,7 +118,7 @@
     }
 }
 
-//MARK: action
+// MARK: - action
 
 ///取消
 - (void)handleCancel
@@ -221,7 +219,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-//MARK: 操作
+// MARK: - 操作
 
 ///是否选中asset
 - (BOOL)containAsset:(PHAsset*) asset
@@ -260,26 +258,14 @@
     return NSNotFound;
 }
 
-//MARK: PHPhotoLibraryChangeObserver
-
-- (void)photoLibraryDidChange:(PHChange *)changeInstance
-{
-    //相册内容改变了
-    PHFetchResultChangeDetails *details = [changeInstance changeDetailsForFetchResult:self.collection.assets];
-    if(details){
-        self.collection.assets = details.fetchResultAfterChanges;
-        [self.collectionView reloadData];
-    }
-}
-
-//MARK: GKEmptyViewDelegate
+// MARK: - GKEmptyViewDelegate
 
 - (void)emptyViewWillAppear:(GKEmptyView *)view
 {
     view.textLabel.text = @"暂无照片信息";
 }
 
-//MARK: caching
+// MARK: - caching
 
 ///更新缓存
 - (void)updateAssetCaches
@@ -318,7 +304,7 @@
             }else{
                 //向上滑动
                 stopCachingRect = CGRectMake(0, CGRectGetMaxY(precachingRect), size.width, CGRectGetMaxY(self.previousPrecachingRect) - CGRectGetMaxY(precachingRect));
-                stopCachingRect = CGRectMake(0, CGRectGetMinY(precachingRect), size.width, self.previousPrecachingRect.origin.y - precachingRect.origin.y);
+                startCachingRect = CGRectMake(0, CGRectGetMinY(precachingRect), size.width, self.previousPrecachingRect.origin.y - precachingRect.origin.y);
             }
         }
         
@@ -348,14 +334,14 @@
     }
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self updateAssetCaches];
 }
 
-//MARK: UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -426,7 +412,7 @@
     }
 }
 
-//MARK: GKPhotosGridCellDelegate
+// MARK: - GKPhotosGridCellDelegate
 
 - (void)photosGridCellCheckedDidChange:(GKPhotosGridCell *)cell
 {

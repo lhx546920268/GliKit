@@ -24,7 +24,7 @@ static char GKExtraStringKey;
 
 @implementation UITextField (GKUtils)
 
-//MARK: 内嵌视图
+// MARK: - 内嵌视图
 
 - (void)gkSetLeftViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
 {
@@ -124,7 +124,7 @@ static char GKExtraStringKey;
     [self resignFirstResponder];
 }
 
-//MARK: 文本限制
+// MARK: - 文本限制
 
 - (BOOL)gkShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -247,7 +247,7 @@ static char GKExtraStringKey;
     return NO;
 }
 
-//MARK: Edit change
+// MARK: - Edit change
 
 ///是否需要监听输入变化
 - (void)gkShouldObserveEditingChange

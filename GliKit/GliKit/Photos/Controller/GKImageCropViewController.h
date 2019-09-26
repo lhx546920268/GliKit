@@ -8,6 +8,8 @@
 
 #import "GKBaseViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKPhotosOptions;
 
 /**
@@ -22,14 +24,11 @@
 
 /**
  构造方法
- *@param settings 裁剪设置
+ *@param options 裁剪设置
  *@return 一个实例
  */
-- (id)initWithOptions:(GKPhotosOptions*) options;
-
-/**
- 获取裁剪的图片
- */
-- (UIImage*)cropImage;
+- (instancetype)initWithOptions:(GKPhotosOptions*) options;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  文字类型类型
  */
@@ -28,19 +30,19 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 
 @interface NSString (GKUtils)
 
-//MARK: 空判断
+// MARK: - 空判断
 
 /**
  判断字符串是否为空，会去掉 空格 \n \r
  */
-+ (BOOL)isEmpty:(NSString*) str;
++ (BOOL)isEmpty:(nullable NSString*) str;
 
 /**
  判断字符串是否为空,字符串可以为空格
  */
-+ (BOOL)isNull:(NSString*) str;
++ (BOOL)isNull:(nullable NSString*) str;
 
-//MARK: 获取
+// MARK: - 获取
 
 /**
  第一个字符
@@ -71,7 +73,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 - (CGSize)gkStringSizeWithFont:(UIFont*) font contraintWith:(CGFloat) width;
 
-//MARK: 校验
+// MARK: - 校验
 
 /**
  是否是纯数字
@@ -83,12 +85,12 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 - (BOOL)isInteger;
 
-//MARK: 加密
+// MARK: - 加密
 
 ///获取md5字符串
 - (NSString*)gkMD5String;
 
-//MARK: 过滤
+// MARK: - 过滤
 
 /**
  过滤字符串
@@ -122,3 +124,5 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 - (void)gkRemoveLastString:(NSString*) str;
 
 @end
+
+NS_ASSUME_NONNULL_END

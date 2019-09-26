@@ -46,14 +46,14 @@ static NSMutableSet* GKSharedTasks()
     return self;
 }
 
-//MARK: 参数
+// MARK: - 参数
 
 - (nullable NSMutableDictionary*)files
 {
     return nil;
 }
 
-- (nonnull NSString*)name
+- (NSString*)name
 {
     if(_name == nil){
         return NSStringFromClass([self class]);
@@ -62,7 +62,7 @@ static NSMutableSet* GKSharedTasks()
     return _name;
 }
 
-//MARK: Handler
+// MARK: - Handler
 
 - (NSURLSessionTask *)URLSessionTask
 {
@@ -85,7 +85,7 @@ static NSMutableSet* GKSharedTasks()
             }];
             
         }else{
-            _URLSessionTask = [manager dataTaskWithHTTPMethod:self.httpMethod == GKHttpMethodGet ? @"GET" : @"POST" URLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval success:^(NSURLSessionTask *task, NSDictionary * responseObject) {
+            _URLSessionTask = [manager dataTaskWithHTTPMethod:self.httpMethod URLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval success:^(NSURLSessionTask *task, NSDictionary * responseObject) {
                 
                 [selfWeak processSuccessResult:responseObject];
                 
@@ -138,7 +138,7 @@ static NSMutableSet* GKSharedTasks()
     [self requestDidFail];
 }
 
-//MARK: 状态
+// MARK: - 状态
 
 - (BOOL)isExecuting
 {
@@ -150,7 +150,7 @@ static NSMutableSet* GKSharedTasks()
     return _URLSessionTask != nil && _URLSessionTask.state == NSURLSessionTaskStateSuspended;
 }
 
-//MARK: 子类重写 回调
+// MARK: - 子类重写 回调
 
 - (void)onStart
 {
@@ -187,7 +187,7 @@ static NSMutableSet* GKSharedTasks()
     [GKSharedTasks() removeObject:self];
 }
 
-//MARK: 外部调用方法
+// MARK: - 外部调用方法
 
 - (void)start
 {
@@ -207,7 +207,7 @@ static NSMutableSet* GKSharedTasks()
     }
 }
 
-//MARK: 内部回调
+// MARK: - 内部回调
 
 ///请求成功
 - (void)requestDidSuccess

@@ -24,7 +24,7 @@
     //添加背景
     if(!self.backgroundView){
         self.backgroundView = [UIView new];
-        self.backgroundView.backgroundColor = self.delegate.backgroundColor;
+        self.backgroundView.backgroundColor = self.transitionDelegate.backgroundColor;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)];
         tap.delegate = self;
         [self.backgroundView addGestureRecognizer:tap];
@@ -37,7 +37,7 @@
     
     //背景渐变动画
     self.backgroundView.alpha = 0;
-    [self.presentedViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    [self.presentedViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         self.backgroundView.alpha = 1.0;
     } completion:nil];
 }
@@ -53,7 +53,7 @@
 - (void)dismissalTransitionWillBegin
 {
     //背景渐变
-    [self.presentedViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    [self.presentedViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         self.backgroundView.alpha = 0;
     } completion:nil];
 }
@@ -76,9 +76,9 @@
 - (CGRect)frameOfPresentedViewInContainerView
 {
     //弹窗大小位置
-    CGSize size = self.delegate.partialContentSize;
+    CGSize size = self.transitionDelegate.partialContentSize;
     CGSize parentSize = self.containerView.frame.size;
-    switch (self.delegate.transitionStyle) {
+    switch (self.transitionDelegate.transitionStyle) {
         case GKPresentTransitionStyleCoverVerticalFromTop : {
             return CGRectMake((parentSize.width - size.width) / 2.0, 0, size.width, size.height);
         }
@@ -94,21 +94,21 @@
     }
 }
 
-//MARK: Action
+// MARK: - Action
 
 ///点击背景
 - (void)handleTap
 {
-    if(self.delegate.tapBackgroundHandler){
-        self.delegate.tapBackgroundHandler();
+    if(self.transitionDelegate.tapBackgroundHandler){
+        self.transitionDelegate.tapBackgroundHandler();
     }else{
-        if(self.delegate.dismissWhenTapBackground){
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:self.delegate.dismissHandler];
+        if(self.transitionDelegate.dismissWhenTapBackground){
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:self.transitionDelegate.dismissHandler];
         }
     }
 }
 
-//MARK: UIGestureRecognizerDelegate
+// MARK: - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {

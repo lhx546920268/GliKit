@@ -85,6 +85,8 @@
     [self reloadData];
 }
 
+// MARK: - Layout
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -137,7 +139,7 @@
     }
 }
 
-//MARK: Public Method
+// MARK: - Public Method
 
 - (void)removeAllViewContollers
 {
@@ -188,7 +190,7 @@
     
 }
 
-//MARK: GKMenuBarDelegate
+// MARK: - GKMenuBarDelegate
 
 - (void)menuBar:(GKMenuBar *)menu didSelectItemAtIndex:(NSUInteger)index
 {
@@ -197,7 +199,7 @@
     [self onScrollTopPage:index];
 }
 
-//MARK: UIScrollViewDelegate
+// MARK: - UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {

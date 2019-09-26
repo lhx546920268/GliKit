@@ -32,7 +32,7 @@
         [self.contentView addSubview:label];
         
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(imageView.bottom).offset(5);
+            make.top.equalTo(imageView.mas_bottom).offset(5);
             make.leading.equalTo(5);
             make.trailing.equalTo(-5);
         }];

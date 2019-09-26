@@ -47,7 +47,7 @@
     _statusLabel.gkTop = _indicatorView.gkTop;
 }
 
-//MARK: Super Method
+// MARK: - Super Method
 
 - (void)onStateChange:(GKDataControlState)state
 {

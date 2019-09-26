@@ -8,6 +8,7 @@
 
 #import "GKCollectionViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 @class GKPhotosOptions, GKPhotosCollection;
 
@@ -15,10 +16,11 @@
 @interface GKPhotosGridViewController : GKCollectionViewController
 
 ///资源信息
-@property(nonatomic, strong) GKPhotosCollection *collection;
+@property(nonatomic, strong, nullable) GKPhotosCollection *collection;
 
 ///选项
 @property(nonatomic, strong) GKPhotosOptions *photosOptions;
 
 @end
 
+NS_ASSUME_NONNULL_END

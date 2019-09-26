@@ -63,9 +63,10 @@ static char GKLoadMoreControlKey;
 {
     if(refreshControl != self.gkRefreshControl){
         [self.gkRefreshControl removeFromSuperview];
+        if(refreshControl){
+            [self addSubview:refreshControl];
+        }
         objc_setAssociatedObject(self, &GKRefreshControlKey, refreshControl, OBJC_ASSOCIATION_ASSIGN);
-        
-        [self addSubview:refreshControl];
     }
 }
 
@@ -74,7 +75,7 @@ static char GKLoadMoreControlKey;
     return self.gkRefreshControl.state == GKDataControlStateLoading;
 }
 
-//MARK: 加载更多
+// MARK: - 加载更多
 
 - (__kindof GKLoadMoreControl*)gkAddLoadMoreWithHandler:(GKDataControlHandler)handler
 {
@@ -112,14 +113,15 @@ static char GKLoadMoreControlKey;
 {
     if(loadMoreControl != self.gkLoadMoreControl){
         [self.gkLoadMoreControl removeFromSuperview];
-        objc_setAssociatedObject(self, &GKLoadMoreControlKey, loadMoreControl, OBJC_ASSOCIATION_RETAIN);
-
-        GKEmptyView *emptyView = self.gkEmptyView;
-        if(emptyView){
-            [self insertSubview:loadMoreControl belowSubview:emptyView];
-        }else{
-            [self addSubview:loadMoreControl];
+        if(loadMoreControl){
+            GKEmptyView *emptyView = self.gkEmptyView;
+            if(emptyView){
+                [self insertSubview:loadMoreControl belowSubview:emptyView];
+            }else{
+                [self addSubview:loadMoreControl];
+            }
         }
+        objc_setAssociatedObject(self, &GKLoadMoreControlKey, loadMoreControl, OBJC_ASSOCIATION_RETAIN);
     }
 }
 

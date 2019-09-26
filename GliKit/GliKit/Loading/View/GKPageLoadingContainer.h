@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///状态
 typedef NS_ENUM(NSInteger, GKPageLoadingStatus){
     
@@ -27,7 +29,7 @@ typedef NS_ENUM(NSInteger, GKPageLoadingStatus){
 @property(nonatomic, assign) GKPageLoadingStatus status;
 
 ///刷新回调
-@property(nonatomic, copy) void(^refreshHandler)(void);
+@property(nonatomic, copy, nullable) void(^refreshHandler)(void);
 
 ///开始动画
 - (void)startAnimating;
@@ -41,3 +43,6 @@ typedef NS_ENUM(NSInteger, GKPageLoadingStatus){
 @interface GKPageLoadingContainer : UIView<GKPageLoadingContainer>
 
 @end
+
+
+NS_ASSUME_NONNULL_END

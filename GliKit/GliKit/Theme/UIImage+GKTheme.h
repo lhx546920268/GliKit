@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 //app图标
 @interface UIImage (GKTheme)
 
@@ -14,4 +16,6 @@
 @property(class, nonatomic, strong) UIImage *gkNavigationBarBackIcon;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

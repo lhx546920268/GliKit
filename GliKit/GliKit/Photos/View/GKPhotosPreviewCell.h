@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PHAsset, GKPhotosPreviewCell;
 
 ///代理
@@ -25,13 +27,15 @@
 @property(nonatomic, assign) BOOL loading;
 
 ///asset标识符
-@property(nonatomic, strong) PHAsset *asset;
+@property(nonatomic, strong, nullable) PHAsset *asset;
 
 ///代理
-@property(nonatomic, weak) id<GKPhotosPreviewCellDelegate> delegate;
+@property(nonatomic, weak, nullable) id<GKPhotosPreviewCellDelegate> delegate;
 
 ///图片加载完成时
-- (void)onLoadImage:(UIImage*) image;
+- (void)onLoadImage:(nullable UIImage*) image;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

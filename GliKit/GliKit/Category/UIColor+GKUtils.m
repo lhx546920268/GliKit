@@ -9,18 +9,6 @@
 #import "UIColor+GKUtils.h"
 #import "NSString+GKUtils.h"
 
-///红
-NSString *const GKColorRed = @"red";
-
-///绿
-NSString *const GKColorGreen = @"green";
-
-///蓝
-NSString *const GKColorBlue = @"blue";
-
-///透明度
-NSString *const GKColorAlpha = @"alpha";
-
 @implementation UIColor (GKUtils)
 
 - (NSDictionary<NSString*, NSNumber*>*)gkColorARGB

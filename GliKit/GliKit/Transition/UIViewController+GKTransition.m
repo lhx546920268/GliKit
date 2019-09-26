@@ -25,7 +25,7 @@ static char GKPartialContentSizeKey;
 
 @implementation UIViewController (GKTransition)
 
-//MARK: swwizle
+// MARK: - swwizle
 
 + (void)load
 {
@@ -77,7 +77,7 @@ static char GKPartialContentSizeKey;
     return objc_getAssociatedObject(self, &GKTransitioningDelegateKey);
 }
 
-//MARK: present
+// MARK: - present
 
 - (void)setPartialContentSize:(CGSize)partialContentSize
 {
@@ -121,7 +121,7 @@ static char GKPartialContentSizeKey;
     [delegate showViewController:viewController];
 }
 
-//MARK: push
+// MARK: - push
 
 - (void)gkPushViewController:(UIViewController*) viewController
 {

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */; };
+		CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C671233B410100C4F196 /* UIImage+GKTheme.m */; };
+		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
 		CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */; };
 		CEB85F452326021A0045CB38 /* GKNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */; };
 		CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F47232622DA0045CB38 /* GKWeakProxy.m */; };
@@ -57,7 +59,6 @@
 		CED0D390230BC8790057D405 /* GKPhotosGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D29C230BC6250057D405 /* GKPhotosGridCell.m */; };
 		CED0D392230BC8790057D405 /* GKPhotosToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D29E230BC6250057D405 /* GKPhotosToolBar.m */; };
 		CED0D393230BC8790057D405 /* GKPhotosPreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D29F230BC6250057D405 /* GKPhotosPreviewCell.m */; };
-		CED0D394230BC8790057D405 /* GKPhotosPreviewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2A0230BC6250057D405 /* GKPhotosPreviewHeader.m */; };
 		CED0D397230BC8790057D405 /* GKPhotosCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2A3230BC6250057D405 /* GKPhotosCheckBox.m */; };
 		CED0D3A1230BC8790057D405 /* GKSkeletonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D24B230BC6250057D405 /* GKSkeletonHelper.m */; };
 		CED0D3A2230BC8790057D405 /* GKSkeletonAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D24C230BC6250057D405 /* GKSkeletonAnimationHelper.m */; };
@@ -149,6 +150,10 @@
 		0BEDB41C20325014EA1F86BB /* Pods-GliKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.release.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.release.xcconfig"; sourceTree = "<group>"; };
 		13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
+		CE37C671233B410100C4F196 /* UIImage+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GKTheme.m"; sourceTree = "<group>"; };
+		CE37C672233B410100C4F196 /* UIFont+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+GKTheme.m"; sourceTree = "<group>"; };
+		CE37C673233B410100C4F196 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
+		CE37C674233B410100C4F196 /* UIImage+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GKTheme.h"; sourceTree = "<group>"; };
 		CEB85F402325FCF70045CB38 /* UIScrollView+GKNestedScroll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+GKNestedScroll.h"; sourceTree = "<group>"; };
 		CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+GKNestedScroll.m"; sourceTree = "<group>"; };
 		CEB85F432326021A0045CB38 /* GKNestedScrollHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNestedScrollHelper.h; sourceTree = "<group>"; };
@@ -249,11 +254,9 @@
 		CED0D29D230BC6250057D405 /* GKPhotosCheckBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosCheckBox.h; sourceTree = "<group>"; };
 		CED0D29E230BC6250057D405 /* GKPhotosToolBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPhotosToolBar.m; sourceTree = "<group>"; };
 		CED0D29F230BC6250057D405 /* GKPhotosPreviewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPhotosPreviewCell.m; sourceTree = "<group>"; };
-		CED0D2A0230BC6250057D405 /* GKPhotosPreviewHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPhotosPreviewHeader.m; sourceTree = "<group>"; };
 		CED0D2A1230BC6250057D405 /* GKPhotosListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosListCell.h; sourceTree = "<group>"; };
 		CED0D2A2230BC6250057D405 /* GKPhotosGridCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosGridCell.h; sourceTree = "<group>"; };
 		CED0D2A3230BC6250057D405 /* GKPhotosCheckBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPhotosCheckBox.m; sourceTree = "<group>"; };
-		CED0D2A4230BC6250057D405 /* GKPhotosPreviewHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosPreviewHeader.h; sourceTree = "<group>"; };
 		CED0D2A5230BC6250057D405 /* GKPhotosPreviewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosPreviewCell.h; sourceTree = "<group>"; };
 		CED0D2A6230BC6250057D405 /* GKPhotosToolBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosToolBar.h; sourceTree = "<group>"; };
 		CED0D2A9230BC6250057D405 /* GKBaseViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseViewModel.h; sourceTree = "<group>"; };
@@ -445,24 +448,24 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
-				CEB85F3C2325FB5C0045CB38 /* NestedScroll */,
-				CEFE907B230F794D006A0EBD /* Vendors */,
-				CED3A7F9230D44EE00C304B3 /* Refresh */,
-				CED0D44B230BF6DA0057D405 /* Constant */,
-				CED0D447230BF2040057D405 /* Theme */,
 				CED0D229230BC6250057D405 /* Alert */,
 				CED0D285230BC6250057D405 /* Api */,
 				CED0D2A7230BC6250057D405 /* Base */,
 				CED0D20C230BC6250057D405 /* Category */,
+				CED0D44B230BF6DA0057D405 /* Constant */,
 				CED0D266230BC6250057D405 /* EmptyView */,
 				CED0D1E2230BC6250057D405 /* Loading */,
 				CED0D275230BC6250057D405 /* Menu */,
+				CEB85F3C2325FB5C0045CB38 /* NestedScroll */,
 				CED0D254230BC6250057D405 /* Other */,
 				CED0D280230BC6250057D405 /* Persistence */,
 				CED0D28D230BC6250057D405 /* Photos */,
+				CED3A7F9230D44EE00C304B3 /* Refresh */,
 				CED0D242230BC6250057D405 /* Skeleton */,
+				CED0D447230BF2040057D405 /* Theme */,
 				CED0D1DB230BC6250057D405 /* Transition */,
 				CED0D25B230BC6250057D405 /* Utils */,
+				CEFE907B230F794D006A0EBD /* Vendors */,
 				CED0D239230BC6250057D405 /* Web */,
 				CED0D1ED230BC6250057D405 /* Widget */,
 			);
@@ -840,8 +843,6 @@
 				CED0D29B230BC6250057D405 /* GKPhotosListCell.m */,
 				CED0D2A5230BC6250057D405 /* GKPhotosPreviewCell.h */,
 				CED0D29F230BC6250057D405 /* GKPhotosPreviewCell.m */,
-				CED0D2A4230BC6250057D405 /* GKPhotosPreviewHeader.h */,
-				CED0D2A0230BC6250057D405 /* GKPhotosPreviewHeader.m */,
 				CED0D2A6230BC6250057D405 /* GKPhotosToolBar.h */,
 				CED0D29E230BC6250057D405 /* GKPhotosToolBar.m */,
 			);
@@ -968,6 +969,10 @@
 		CED0D447230BF2040057D405 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
+				CE37C673233B410100C4F196 /* UIFont+GKTheme.h */,
+				CE37C672233B410100C4F196 /* UIFont+GKTheme.m */,
+				CE37C674233B410100C4F196 /* UIImage+GKTheme.h */,
+				CE37C671233B410100C4F196 /* UIImage+GKTheme.m */,
 				CED0D448230BF2210057D405 /* UIApplication+GKTheme.h */,
 				CED0D449230BF2210057D405 /* UIApplication+GKTheme.m */,
 				CEBFAA48230CD5DD007B8D47 /* UIColor+GKTheme.h */,
@@ -1084,7 +1089,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = GK;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = luohaixiong;
 				TargetAttributes = {
 					CED0D1CD230BC5BE0057D405 = {
@@ -1098,6 +1103,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = CED0D1C5230BC5BE0057D405;
 			productRefGroup = CED0D1CF230BC5BE0057D405 /* Products */;
@@ -1152,6 +1158,7 @@
 				CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */,
 				CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */,
 				CED3A7F6230D443200C304B3 /* UITableView+GKEmptyView.m in Sources */,
+				CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */,
 				CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */,
 				CED0D2F5230BC8780057D405 /* GKAlertButton.m in Sources */,
 				CED0D2F6230BC8780057D405 /* CKAlertCell.m in Sources */,
@@ -1213,6 +1220,7 @@
 				CED0D43F230BED690057D405 /* UIView+GKSkeleton.m in Sources */,
 				CED0D3DF230BCC110057D405 /* GKCollectionViewFlowFillLayout.m in Sources */,
 				CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */,
+				CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */,
 				CED0D387230BC8790057D405 /* GKPhotosPreviewViewController.m in Sources */,
 				CED0D388230BC8790057D405 /* GKPhotosGridViewController.m in Sources */,
 				CED0D38D230BC8790057D405 /* GKPhotosCollection.m in Sources */,
@@ -1222,7 +1230,6 @@
 				CED0D390230BC8790057D405 /* GKPhotosGridCell.m in Sources */,
 				CED0D392230BC8790057D405 /* GKPhotosToolBar.m in Sources */,
 				CED0D393230BC8790057D405 /* GKPhotosPreviewCell.m in Sources */,
-				CED0D394230BC8790057D405 /* GKPhotosPreviewHeader.m in Sources */,
 				CED0D397230BC8790057D405 /* GKPhotosCheckBox.m in Sources */,
 				CED0D42D230BECF20057D405 /* UIView+GKUtils.m in Sources */,
 				CED0D409230BECD00057D405 /* UIImage+GKUtils.m in Sources */,

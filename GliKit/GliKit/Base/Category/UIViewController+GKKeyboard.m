@@ -14,7 +14,7 @@ static char GKKeyboardFrameKey;
 
 @implementation UIViewController (GKKeyboard)
 
-//MARK: property
+// MARK: - property
 
 - (void)setKeyboardHidden:(BOOL)keyboardHidden
 {

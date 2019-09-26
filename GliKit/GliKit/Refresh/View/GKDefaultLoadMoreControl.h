@@ -8,6 +8,8 @@
 
 #import "GKLoadMoreControl.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  默认的加载更多控件
  */
@@ -29,3 +31,5 @@
 @property(nonatomic, readonly) UILabel *textLabel;
 
 @end
+
+NS_ASSUME_NONNULL_END

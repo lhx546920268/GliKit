@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///集合视图扩展
 @interface UICollectionView (GKUtils)
 
@@ -23,4 +25,6 @@
 - (void)registerFooterNib:(Class) clazz;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

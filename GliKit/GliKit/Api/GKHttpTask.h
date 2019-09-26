@@ -9,22 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "GKHttpTaskDelegate.h"
 
-///http请求方法
-typedef NS_ENUM(NSInteger, GKHttpMethod){
-    
-    ///get
-    GKHttpMethodGet,
-    
-    ///post
-    GKHttpMethodPost,
-};
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NSString* GKHttpMethod NS_EXTENSIBLE_STRING_ENUM;
+
+///get
+static GKHttpMethod const GKHttpMethodGet = @"GET";
+
+///post
+static GKHttpMethod const GKHttpMethodPost = @"POST";
 
 ///翻页起始页
 static const int GKHttpFirstPage = 1;
 
 @class UIView;
-
-NS_ASSUME_NONNULL_BEGIN
 
 /**
  单个http请求任务 子类可重写对应的方法
@@ -32,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GKHttpTask : NSObject
 
-//MARK: http参数
+// MARK: - http参数
 
 /**
  请求超时
@@ -43,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  默认get
  */
-@property(nonatomic, assign) GKHttpMethod httpMethod;
+@property(nonatomic, copy) GKHttpMethod httpMethod;
 
 /**
  请求链接
@@ -60,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSMutableDictionary *files;
 
-//MARK: 状态
+// MARK: - 状态
 
 /**
  是否正在执行
@@ -77,29 +75,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) BOOL isCanceled;
 
-//MARK: 回调
+// MARK: - 回调
 
 /**
  成功回调
  */
-@property(nonatomic, copy) void(^ _Nullable successHandler)(__kindof GKHttpTask * _Nonnull task);
+@property(nonatomic, copy, nullable) void(^successHandler)(__kindof GKHttpTask *task);
 
 /**
  将要调用失败回调
  */
-@property(nonatomic, copy) void(^ _Nullable willFailHandler)(__kindof GKHttpTask * _Nonnull task);
+@property(nonatomic, copy, nullable) void(^willFailHandler)(__kindof GKHttpTask *task);
 
 /**
  失败回调
  */
-@property(nonatomic, copy) void(^ _Nullable failHandler)(__kindof GKHttpTask * _Nonnull task);
+@property(nonatomic, copy, nullable) void(^failHandler)(__kindof GKHttpTask *task);
 
 /**
  代理
  */
-@property(nonatomic, weak) id<GKHttpTaskDelegate> delegate;
+@property(nonatomic, weak, nullable) id<GKHttpTaskDelegate> delegate;
 
-//MARK: 结果
+// MARK: - 结果
 
 /**
  是否是网络错误
@@ -114,31 +112,31 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  原始最外层字典
  */
-@property(nonatomic, readonly) NSDictionary *data;
+@property(nonatomic, readonly, nullable) NSDictionary *data;
 
 /**
  提示的信息
  */
-@property(nonatomic, copy) NSString *message;
+@property(nonatomic, copy, nullable) NSString *message;
 
-//MARK: 其他
+// MARK: - 其他
 
 /**
  请求标识 默认返回类的名称
  */
-@property(nonnull, nonatomic, copy) NSString *name;
+@property(nonatomic, copy) NSString *name;
 
 /**
  额外信息，用来传值的
  */
-@property(nonatomic, strong) NSDictionary *userInfo;
+@property(nonatomic, strong, nullable) NSDictionary *userInfo;
 
-//MARK: Loading
+// MARK: - Loading
 
 /**
  关联的view，用来显示 错误信息，loading
  */
-@property(nonatomic, weak) UIView *view;
+@property(nonatomic, weak, nullable) UIView *view;
 
 /**
  activity显示延迟 default 0.5
@@ -155,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, assign) BOOL shouldAlertErrorMsg;
 
-//MARK: 子类重写 回调
+// MARK: - 子类重写 回调
 
 /**
  请求开始
@@ -168,7 +166,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param data 原始字典数据
  @return 接口是否请求成功
  */
-- (BOOL)onLoadData:(NSDictionary*) data;
+- (BOOL)onLoadData:(nullable NSDictionary*) data;
 
 /**
  请求成功 在这里解析数据
@@ -186,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onComplete NS_REQUIRES_SUPER;
 
-//MARK: 外部调用方法
+// MARK: - 外部调用方法
 
 /**
  开始请求

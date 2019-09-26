@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKEmptyView;
 
 ///空视图相关扩展
 @interface UIViewController (GKEmptyView)
 
 ///空视图
-@property(nonatomic,readonly) GKEmptyView *gkEmptyView;
+@property(nonatomic, readonly, nullable) GKEmptyView *gkEmptyView;
 
 ///设置显示空视图
-@property(nonatomic,assign) BOOL gkShowEmptyView;
+@property(nonatomic, assign) BOOL gkShowEmptyView;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

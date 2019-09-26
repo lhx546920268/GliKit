@@ -24,7 +24,7 @@
     [layer addAnimation:animation forKey:@"opacity"];
 }
 
-//MARK: GKAnimationDelegate
+// MARK: - GKAnimationDelegate
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
