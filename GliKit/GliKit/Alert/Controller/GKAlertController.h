@@ -58,6 +58,11 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
  */
 @property(nonatomic, copy, nullable) void(^selectionHandler)(NSUInteger index);
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+
 + (instancetype)alertWithTitle:(nullable id) title
                        message:(nullable id) message
              cancelButtonTitle:(nullable NSString*) cancelButtonTitle
@@ -99,7 +104,7 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
                          icon:(nullable UIImage*) icon
                         style:(GKAlertControllerStyle) style
             cancelButtonTitle:(nullable NSString *) cancelButtonTitle
-           otherButtonActions:(nullable NSArray<GKAlertAction*>*) actions;
+           otherButtonActions:(nullable NSArray<GKAlertAction*>*) actions NS_DESIGNATED_INITIALIZER;
 
 /**
  更新某个按钮 不包含actionSheet 的取消按钮

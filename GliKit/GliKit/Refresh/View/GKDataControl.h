@@ -92,12 +92,17 @@ typedef NS_ENUM(NSInteger, GKDataControlState)
  */
 @property(nonatomic, assign) BOOL shouldDisableScrollViewWhenLoading;
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
 /**
  构造方法
  *@param scrollView x
  *@return 一个实例，frame和 scrollView的frame一样
  */
-- (instancetype)initWithScrollView:(UIScrollView*) scrollView;
+- (instancetype)initWithScrollView:(UIScrollView*) scrollView NS_DESIGNATED_INITIALIZER;
 
 /**
  开始加载

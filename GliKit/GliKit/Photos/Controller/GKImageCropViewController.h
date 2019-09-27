@@ -22,12 +22,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) CGRect cropFrame;
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+
 /**
  构造方法
  *@param options 裁剪设置
  *@return 一个实例
  */
-- (instancetype)initWithOptions:(GKPhotosOptions*) options;
+- (instancetype)initWithOptions:(GKPhotosOptions*) options NS_DESIGNATED_INITIALIZER;
 
 @end
 

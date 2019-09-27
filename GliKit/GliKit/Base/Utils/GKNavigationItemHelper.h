@@ -36,8 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///设置导航栏隐藏item
 @property(nonatomic, assign) BOOL hiddenItem;
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 ///通过viewController 构建
-- (instancetype)initWithViewController:(UIViewController*) viewController;
+- (instancetype)initWithViewController:(UIViewController*) viewController NS_DESIGNATED_INITIALIZER;
 
 @end
 
