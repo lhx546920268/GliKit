@@ -349,7 +349,7 @@
         for(GKWeakObjectContainer *obj in self.currentTasks){
             if(obj.weakObject == nil){
                 [toRemoveTasks addObject:obj];
-            }if([obj.weakObject isKindOfClass:[GKHttpTask class]]){
+            }else if([obj.weakObject isKindOfClass:[GKHttpTask class]]){
                 GKHttpTask *task = (GKHttpTask*)obj.weakObject;
                 if([task.name isEqualToString:name]){
                     [task cancel];

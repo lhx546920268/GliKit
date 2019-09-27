@@ -15,6 +15,7 @@
 #import "GKDNestedParentViewController.h"
 #import "GKDRowModel.h"
 #import "GKDEmptyViewController.h"
+#import "GKDProgressViewController.h"
 
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
@@ -37,6 +38,7 @@
                    [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:GKDTransitionViewController.class],
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:GKDNestedParentViewController.class],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:GKDEmptyViewController.class],
+                   [GKDRowModel modelWithTitle:@"进度条" clazz:GKDProgressViewController.class],
                    ];
     
     [self initViews];

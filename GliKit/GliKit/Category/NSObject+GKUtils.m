@@ -88,6 +88,10 @@
         [propertyNames addObject:[NSString stringWithCString:name encoding:NSUTF8StringEncoding]];
     }
     
+    if(properties != NULL){
+        free(properties);
+    }
+    
     return propertyNames;
 }
 
@@ -152,6 +156,10 @@
         }
     }
     
+    if(properties != NULL){
+        free(properties);
+    }
+    
     //递归获取父类的属性
     [self gkEncodeWithCoder:coder clazz:[clazz superclass]];
 }
@@ -206,6 +214,10 @@
         }
     }
     
+    if(properties != NULL){
+        free(properties);
+    }
+    
     //递归获取父类的属性
     [self gkInitWithCoder:decoder clazz:[clazz superclass]];
 }
@@ -242,6 +254,10 @@
             
             [self setValue:[object valueForKey:name] forKey:name];
         }
+    }
+    
+    if(properties != NULL){
+        free(properties);
     }
     
     [self gk_copyObject:object clazz:[clazz superclass]];

@@ -33,23 +33,35 @@ static BOOL GKDidChangeMargins = NO;
 
 - (void)gkSetNavigationItemMargin
 {
-    //ios 11适配间距
-    if(!GKDidChangeMargins){
+    //_UINavigationBarContentView
+    if(@available(iOS 13, *)){
+        if(!GKDidChangeMargins){
+            //ios 13 直接设置间距会无效
+            for(UIView *view in self.subviews){
+                if([NSStringFromClass([view class]) isEqualToString:@"_UINavigationBarContentView"]){
+                    //系统默认为20
+                    GKDidChangeMargins = YES;
+                    Method method1 = class_getInstanceMethod(view.class, @selector(layoutMargins));
+                    Method method2 = class_getInstanceMethod(self.class, NSSelectorFromString(@"gkLayoutMargins"));
+                    
+                    method_exchangeImplementations(method1, method2);
+                    
+                    method1 = class_getInstanceMethod(view.class, @selector(directionalLayoutMargins));
+                    method2 = class_getInstanceMethod(self.class, NSSelectorFromString(@"gkDirectionalLayoutMargins"));
+                                               
+                    method_exchangeImplementations(method1, method2);
+
+                    break;
+                }
+            }
+        }
+    }else if(@available(iOS 11, *)){
         for(UIView *view in self.subviews){
-            //_UINavigationBarContentView
+            //ios 13 以下按照上面那样设置 presentViewController 会报约束警告
             if([NSStringFromClass([view class]) isEqualToString:@"_UINavigationBarContentView"]){
                 //系统默认为20
-                GKDidChangeMargins = YES;
-                Method method1 = class_getInstanceMethod(view.class, @selector(layoutMargins));
-                Method method2 = class_getInstanceMethod(self.class, NSSelectorFromString(@"gkLayoutMargins"));
-                
-                method_exchangeImplementations(method1, method2);
-                
-                method1 = class_getInstanceMethod(view.class, @selector(directionalLayoutMargins));
-                method2 = class_getInstanceMethod(self.class, NSSelectorFromString(@"gkDirectionalLayoutMargins"));
-                                           
-                method_exchangeImplementations(method1, method2);
-
+                view.layoutMargins = UIEdgeInsetsZero;
+                view.directionalLayoutMargins = NSDirectionalEdgeInsetsZero;
                 break;
             }
         }

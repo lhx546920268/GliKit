@@ -64,7 +64,7 @@ static NSMutableSet* GKSharedTasks()
 
 // MARK: - Handler
 
-- (NSURLSessionTask *)URLSessionTask
+- (NSURLSessionTask*)URLSessionTask
 {
     if(!_URLSessionTask){
 

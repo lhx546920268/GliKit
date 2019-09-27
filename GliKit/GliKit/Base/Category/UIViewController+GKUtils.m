@@ -281,6 +281,7 @@ static char GKShowBackItemKey;
     [btn setTitleColor:UIColor.gkNavigationBarTintColor forState:UIControlStateNormal];
     btn.titleLabel.font = UIFont.gkNavigationBarItemFont;
     [btn setTitleColor:[UIColor.gkNavigationBarTintColor gkColorWithAlpha:0.3] forState:UIControlStateHighlighted];
+    [btn setTitleColor:UIColor.grayColor forState:UIControlStateDisabled];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     CGSize size = [title gkStringSizeWithFont:btn.titleLabel.font];
     btn.frame = CGRectMake(0, 0, size.width, 44);
