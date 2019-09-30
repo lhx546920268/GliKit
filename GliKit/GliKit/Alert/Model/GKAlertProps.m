@@ -7,6 +7,7 @@
 //
 
 #import "GKAlertProps.h"
+#import "NSObject+GKUtils.h"
 
 @implementation GKAlertProps
 
@@ -66,36 +67,7 @@
 - (instancetype)copyWithZone:(NSZone *)zone
 {
     GKAlertProps *style = [GKAlertProps allocWithZone:zone];
-    style.contentInsets = self.contentInsets;
-    style.cornerRadius = self.cornerRadius;
-    style.textInsets = self.textInsets;
-    style.verticalSpacing = self.verticalSpacing;
-    
-    style.cancelButtonFont = self.cancelButtonFont;
-    style.cancelButtonTextColor = self.cancelButtonTextColor;
-    style.cancelButtonVerticalSpacing = self.cancelButtonVerticalSpacing;
-    style.spacingBackgroundColor = self.spacingBackgroundColor;
-    style.mainColor = self.mainColor;
-    
-    style.titleFont = self.titleFont;
-    style.titleTextColor = self.titleTextColor;
-    style.titleTextAlignment = self.titleTextAlignment;
-    
-    style.messageFont = self.messageFont;
-    style.messageTextColor = self.messageTextColor;
-    style.messageTextAlignment = self.messageTextAlignment;
-    
-    style.buttonHeight = self.buttonHeight;
-    style.butttonFont = self.butttonFont;
-    style.buttonTextColor = self.buttonTextColor;
-    
-    style.destructiveButtonFont = self.destructiveButtonFont;
-    style.destructiveButtonTextColor = self.destructiveButtonTextColor;
-    style.destructiveButtonBackgroundColor = self.destructiveButtonBackgroundColor;
-    
-    style.highlightedBackgroundColor = self.highlightedBackgroundColor;
-    
-    style.disableButtonTextColor = self.disableButtonTextColor;
+    [style gkCopyObject:self];
     
     return style;
 }

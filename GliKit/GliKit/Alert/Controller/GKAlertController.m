@@ -96,11 +96,10 @@
 
 - (instancetype)initWithTitle:(id)title message:(id)message icon:(UIImage *)icon style:(GKAlertControllerStyle)style cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonActions:(NSArray<GKAlertAction *> *)actions
 {
-#ifdef DEBUG
     NSAssert(!title || [title isKindOfClass:[NSString class]] || [title isKindOfClass:[NSAttributedString class]], @"GKAlertController title 必须为 nil 或者 NSString 或者 NSAttributedString");
     NSAssert(!message || [message isKindOfClass:[NSString class]] || [message isKindOfClass:[NSAttributedString class]], @"GKAlertController message 必须为 nil 或者 NSString 或者 NSAttributedString");
-#endif
-    self = [super init];
+    
+    self = [super initWithNibName:nil bundle:nil];
     
     if(self){
         self.alertTitle = title;

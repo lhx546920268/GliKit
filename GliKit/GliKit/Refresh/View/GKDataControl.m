@@ -25,12 +25,12 @@
     self = [super initWithFrame:frame];
     if(self){
         _scrollView = scrollView;
-        [self initialization];
+        [self initViews];
     }
     return self;
 }
 
-- (void)initialization
+- (void)initViews
 {
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _originalContentInset = _scrollView.contentInset;

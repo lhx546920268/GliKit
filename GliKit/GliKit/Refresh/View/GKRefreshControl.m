@@ -27,9 +27,9 @@
     return self;
 }
 
-- (void)initialization
+- (void)initViews
 {
-    [super initialization];
+    [super initViews];
     self.criticalPoint = 60;
     [self setTitle:@"下拉刷新" forState:GKDataControlStateNormal];
     [self setTitle:@"加载中..." forState:GKDataControlStateLoading];

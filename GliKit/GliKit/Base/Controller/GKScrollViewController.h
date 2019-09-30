@@ -77,14 +77,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) BOOL refreshing;
 
 /**
+ 手动调用下拉刷新，会有下拉动画
+ */
+- (void)startRefresh NS_REQUIRES_SUPER;
+
+/**
  触发下拉刷新
  */
 - (void)onRefesh NS_REQUIRES_SUPER;
-
-/**
- 触发加载更多
- */
-- (void)onLoadMore NS_REQUIRES_SUPER;
 
 /**
  结束下拉刷新
@@ -92,15 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stopRefresh NS_REQUIRES_SUPER;
 
 /**
- 手动调用下拉刷新，会有下拉动画
- */
-- (void)startRefresh NS_REQUIRES_SUPER;
-
-/**
  刷新完成
- *@param success 是否成功
+ *@param result 是否成功
  */
-- (void)onRefreshComplete:(BOOL) success NS_REQUIRES_SUPER;
+- (void)stopRefreshForResult:(BOOL) result NS_REQUIRES_SUPER;
 
 /**
  下拉刷新取消
@@ -136,6 +131,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) BOOL loadingMore;
 
 /**
+ 手动加载更多，会有上拉动画
+ */
+- (void)startLoadMore NS_REQUIRES_SUPER;
+
+/**
+ 触发加载更多
+ */
+- (void)onLoadMore NS_REQUIRES_SUPER;
+
+/**
  结束加载更多
  *@param flag 是否还有更多信息
  */
@@ -145,21 +150,6 @@ NS_ASSUME_NONNULL_BEGIN
  加载更多失败
  */
 - (void)stopLoadMoreWithFail NS_REQUIRES_SUPER;
-
-/**
- 手动加载更多，会有上拉动画
- */
-- (void)startLoadMore NS_REQUIRES_SUPER;
-
-/**
- 加载更多完成 是否还有更多
- */
-- (void)onloadMoreComplete:(BOOL) hasMore NS_REQUIRES_SUPER;
-
-/**
- 加载更多失败
- */
-- (void)onloadMoreFail NS_REQUIRES_SUPER;
 
 /**
  加载更多取消

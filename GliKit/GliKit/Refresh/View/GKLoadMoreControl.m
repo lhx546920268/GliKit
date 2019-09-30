@@ -35,9 +35,9 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     return self;
 }
 
-- (void)initialization
+- (void)initViews
 {
-    [super initialization];
+    [super initViews];
     self.criticalPoint = 45;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self addGestureRecognizer:tap];

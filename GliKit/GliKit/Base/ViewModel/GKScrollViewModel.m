@@ -22,6 +22,40 @@
     return self;
 }
 
+// MARK: - Refresh
+
+- (BOOL)refreshing
+{
+    return self.viewController.refreshing;
+}
+
+- (void)startRefresh
+{
+    [self.viewController startRefresh];
+}
+
+- (void)onRefesh
+{
+    
+}
+
+- (void)stopRefresh
+{
+    [self.viewController stopRefresh];
+}
+
+- (void)stopRefreshForResult:(BOOL)result
+{
+    [self.viewController stopRefreshForResult:result];
+}
+
+- (void)onRefeshCancel
+{
+    
+}
+
+// MARK: - Load More
+
 - (void)setCurPage:(int)curPage
 {
     self.viewController.curPage = curPage;
@@ -32,19 +66,14 @@
     return self.viewController.curPage;
 }
 
-- (BOOL)refreshing
-{
-    return self.viewController.refreshing;
-}
-
 - (BOOL)loadingMore
 {
     return self.viewController.loadingMore;
 }
 
-- (void)onRefesh
+- (void)startLoadMore
 {
-    
+    [self.viewController startLoadMore];
 }
 
 - (void)onLoadMore
@@ -52,24 +81,14 @@
     
 }
 
-- (void)onRefreshComplete:(BOOL) success
+- (void)stopLoadMoreWithMore:(BOOL)flag
 {
-    [self.viewController onRefreshComplete:success];
+    [self.viewController stopLoadMoreWithMore:flag];
 }
 
-- (void)onloadMoreComplete:(BOOL) hasMore
+- (void)stopLoadMoreWithFail
 {
-    [self.viewController onloadMoreComplete:hasMore];
-}
-
-- (void)onloadMoreFail
-{
-    [self.viewController onloadMoreFail];
-}
-
-- (void)onRefeshCancel
-{
-    
+    [self.viewController stopLoadMoreWithFail];
 }
 
 - (void)onLoadMoreCancel

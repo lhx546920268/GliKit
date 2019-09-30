@@ -206,6 +206,15 @@
     }
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    _isViewDidLayoutSubviews = YES;
+    if(self.navigatonBar){
+        [self.view bringSubviewToFront:self.navigatonBar];
+    }
+}
+
 // MARK: - 导航栏
 
 - (Class)navigationBarClass
@@ -278,20 +287,6 @@
     view.textLabel.text = @"暂无数据";
 }
 
-// MARK: - 加载数据
-
-- (void)gkReloadData
-{
-    if(self.viewModel){
-        [self.viewModel reloadData];
-    }
-}
-
-- (void)onLoadData
-{
-    
-}
-
 // MARK: - UIStatusBar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -300,15 +295,6 @@
         return UIStatusBarStyleLightContent;
     }else{
         return UIApplication.gkStatusBarStyle;
-    }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    _isViewDidLayoutSubviews = YES;
-    if(self.navigatonBar){
-        [self.view bringSubviewToFront:self.navigatonBar];
     }
 }
 
@@ -321,7 +307,7 @@
 
 - (void)addCanceledTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
 {
-    [self removeInvalidTasksAndCancelTheSame:cancel forName:task.name];
+    [self _removeInvalidTasksAndCancelTheSame:cancel forName:task.name];
     if(task){
         if(!self.currentTasks){
             self.currentTasks = [NSMutableSet set];
@@ -332,7 +318,7 @@
 
 - (void)addCanceledTasks:(GKHttpMultiTasks*) tasks
 {
-    [self removeInvalidTasksAndCancelTheSame:NO forName:nil];
+    [self _removeInvalidTasksAndCancelTheSame:NO forName:nil];
     if(tasks){
         if(!self.currentTasks){
             self.currentTasks = [NSMutableSet set];
@@ -342,7 +328,7 @@
 }
 
 ///移除无效的请求
-- (void)removeInvalidTasksAndCancelTheSame:(BOOL) cancel forName:(NSString*) name
+- (void)_removeInvalidTasksAndCancelTheSame:(BOOL) cancel forName:(NSString*) name
 {
     if(self.currentTasks.count > 0){
         NSMutableSet *toRemoveTasks = [NSMutableSet set];
@@ -360,6 +346,18 @@
         
         [self.currentTasks minusSet:toRemoveTasks];
     }
+}
+
+- (void)gkReloadData
+{
+    if(self.viewModel){
+        [self.viewModel reloadData];
+    }
+}
+
+- (void)onLoadData
+{
+    
 }
 
 - (void)dealloc
@@ -383,7 +381,7 @@
     if(_shouldDismissKeyboardWhileTap != shouldDismissKeyboardWhileTap){
         _shouldDismissKeyboardWhileTap = shouldDismissKeyboardWhileTap;
         if(!self.tapDialogBackgroundGestureRecognizer){
-            self.dismissKeyboardGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissKeyboard:)];
+            self.dismissKeyboardGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleDismissKeyboard:)];
             self.dismissKeyboardGestureRecognizer.delegate = self;
             [self.view addGestureRecognizer:self.dismissKeyboardGestureRecognizer];
         }
@@ -404,7 +402,7 @@
 }
 
 ///回收键盘
-- (void)handleDismissKeyboard:(id) sender
+- (void)_handleDismissKeyboard:(id) sender
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
 }

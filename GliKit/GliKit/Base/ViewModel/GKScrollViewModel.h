@@ -17,10 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///绑定的viewController
 @property(nonatomic, weak, nullable) __kindof GKScrollViewController *viewController;
 
-/**
- 当前第几页 default is 'GKHttpFirstPage'
- */
-@property(nonatomic, assign) int curPage;
+// MARK: - Refresh
 
 /**
  是否正在刷新数据
@@ -28,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) BOOL refreshing;
 
 /**
- 是否正在加载更多
+ 手动调用下拉刷新，会有下拉动画
  */
-@property(nonatomic, readonly) BOOL loadingMore;
+- (void)startRefresh NS_REQUIRES_SUPER;
 
 /**
  触发下拉刷新
@@ -38,35 +35,58 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onRefesh;
 
 /**
- 触发加载更多
+ 结束下拉刷新
  */
-- (void)onLoadMore;
+- (void)stopRefresh NS_REQUIRES_SUPER;
 
 /**
  刷新完成
- *@param success 是否成功
+ *@param result 是否成功
  */
-- (void)onRefreshComplete:(BOOL) success NS_REQUIRES_SUPER;
-
-/**
- 加载更多完成 是否还有更多
- */
-- (void)onloadMoreComplete:(BOOL) hasMore NS_REQUIRES_SUPER;
-
-/**
- 加载更多失败
- */
-- (void)onloadMoreFail NS_REQUIRES_SUPER;
+- (void)stopRefreshForResult:(BOOL) result NS_REQUIRES_SUPER;
 
 /**
  下拉刷新取消
  */
 - (void)onRefeshCancel;
 
+// MARK: - Load More
+
+/**
+ 当前第几页 default is 'GKHttpFirstPage'
+ */
+@property(nonatomic, assign) int curPage;
+
+/**
+ 是否正在加载更多
+ */
+@property(nonatomic, readonly) BOOL loadingMore;
+
+/**
+ 手动加载更多，会有上拉动画
+ */
+- (void)startLoadMore NS_REQUIRES_SUPER;
+
+/**
+ 触发加载更多
+ */
+- (void)onLoadMore NS_REQUIRES_SUPER;
+
+/**
+ 结束加载更多
+ *@param flag 是否还有更多信息
+ */
+- (void)stopLoadMoreWithMore:(BOOL) flag NS_REQUIRES_SUPER;
+
+/**
+ 加载更多失败
+ */
+- (void)stopLoadMoreWithFail NS_REQUIRES_SUPER;
+
 /**
  加载更多取消
  */
-- (void)onLoadMoreCancel;
+- (void)onLoadMoreCancel NS_REQUIRES_SUPER;
 
 @end
 

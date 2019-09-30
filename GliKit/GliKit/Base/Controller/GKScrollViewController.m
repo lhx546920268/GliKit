@@ -67,15 +67,15 @@
 - (void)setRefreshEnable:(BOOL) refreshEnable
 {
     if(_refreshEnable != refreshEnable){
-#ifdef DEBUG
+
         NSAssert(_scrollView != nil, @"%@ 设置下拉刷新 scrollView 不能为nil", NSStringFromClass([self class]));
-#endif
+
         _refreshEnable = refreshEnable;
         if(_refreshEnable){
             WeakObj(self);
             [self.scrollView gkAddRefreshWithHandler:^(void){
                 
-                [selfWeak willRefresh];
+                [selfWeak _willRefresh];
             }];
         }else{
             [self.scrollView gkRemoveRefreshControl];
@@ -89,7 +89,7 @@
 }
 
 ///将要触发下拉刷新
-- (void)willRefresh
+- (void)_willRefresh
 {
     if(self.loadingMore && !self.coexistRefreshAndLoadMore){
         [self stopLoadMoreWithMore:YES];
@@ -98,13 +98,6 @@
     _refreshing = YES;
     [self onRefesh];
 }
-
-- (void)stopRefresh
-{
-    _refreshing = NO;
-    [self.refreshControl stopLoading];
-}
-
 
 - (void)startRefresh
 {
@@ -118,21 +111,38 @@
     }
 }
 
+- (void)stopRefresh
+{
+    [self stopRefreshForResult:YES];
+}
+
+- (void)stopRefreshForResult:(BOOL)result
+{
+    _refreshing = NO;
+    [self.refreshControl stopLoading];
+}
+
+- (void)onRefeshCancel
+{
+    if(self.viewModel){
+        [self.viewModel onRefeshCancel];
+    }
+}
+
 // MARK: - Load More
 
 - (void)setLoadMoreEnable:(BOOL)loadMoreEnable
 {
     if(_loadMoreEnable != loadMoreEnable){
-#ifdef DEBUG
+        
         NSAssert(_scrollView != nil, @"%@ 设置加载更多 scrollView 不能为nil", NSStringFromClass([self class]));
-#endif
         _loadMoreEnable = loadMoreEnable;
         
         if(_loadMoreEnable){
             WeakObj(self);
             [self.scrollView gkAddLoadMoreWithHandler:^(void){
                 
-                [selfWeak willLoadMore];
+                [selfWeak _willLoadMore];
             }];
         }else{
             [self.scrollView gkRemoveLoadMoreControl];
@@ -146,7 +156,7 @@
 }
 
 ///将要触发加载更多
-- (void)willLoadMore
+- (void)_willLoadMore
 {
     if(self.refreshing && !self.coexistRefreshAndLoadMore){
         [self stopRefresh];
@@ -154,6 +164,18 @@
     }
     _loadingMore = YES;
     [self onLoadMore];
+}
+
+- (void)startLoadMore
+{
+    [self.loadMoreControl startLoading];
+}
+
+- (void)onLoadMore
+{
+    if(self.viewModel){
+        [self.viewModel onLoadMore];
+    }
 }
 
 - (void)stopLoadMoreWithMore:(BOOL) flag
@@ -171,40 +193,6 @@
 {
     _loadingMore = NO;
     [self.loadMoreControl loadFail];
-}
-
-- (void)startLoadMore
-{
-    [self.loadMoreControl startLoading];
-}
-
-- (void)onLoadMore
-{
-    if(self.viewModel){
-        [self.viewModel onLoadMore];
-    }
-}
-
-- (void)onRefreshComplete:(BOOL) success
-{
-    [self stopRefresh];
-}
-
-- (void)onloadMoreComplete:(BOOL) hasMore
-{
-    [self stopLoadMoreWithMore:hasMore];
-}
-
-- (void)onloadMoreFail
-{
-    [self stopLoadMoreWithFail];
-}
-
-- (void)onRefeshCancel
-{
-    if(self.viewModel){
-        [self.viewModel onRefeshCancel];
-    }
 }
 
 - (void)onLoadMoreCancel
@@ -262,8 +250,8 @@
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    [self.loadMoreControl scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     if(scrollView == self.scrollView){
+        [self.loadMoreControl scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
         if([self.parentViewController isKindOfClass:[GKPageViewController class]]){
             GKPageViewController *page = (GKPageViewController*)self.parentViewController;
             page.scrollView.scrollEnabled = YES;

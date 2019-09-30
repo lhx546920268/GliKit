@@ -149,7 +149,7 @@ typedef NS_ENUM(NSInteger, GKDataControlState)
 /**
  初始化
  */
-- (void)initialization NS_REQUIRES_SUPER;
+- (void)initViews NS_REQUIRES_SUPER;
 
 @end
 

@@ -46,21 +46,8 @@
 
 // MARK: - public method
 
-/**开始点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
- */
-- (void)touchBegan
-{
-    _highlightView.hidden = NO;
-}
-
-/**结束点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
- */
-- (void)touchEnded
-{
-    _highlightView.hidden = YES;
-}
-
-/**添加单击手势
+/**
+ 添加单击手势
  */
 - (void)addTarget:(id)target action:(SEL)selector
 {
@@ -70,6 +57,22 @@
 
 
 // MARK: - touch
+
+/**
+ 开始点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
+ */
+- (void)touchBegan
+{
+    _highlightView.hidden = NO;
+}
+
+/**
+ 结束点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
+ */
+- (void)touchEnded
+{
+    _highlightView.hidden = YES;
+}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -103,8 +106,8 @@
 ///点击事件
 - (void)handleTap
 {
-    if(!self.highlightView.hidden)
-    {
+    if(!self.highlightView.hidden){
+        
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [self.target performSelector:self.selector withObject:self];

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GKMenuBarItem.h"
+#import "GKMenuBarProps.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,14 +18,17 @@ static const CGFloat GKMenuBarHeight = 40.0;
 ///GKMenuBar 样式
 typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 {
+    ///自动检测
+    GKMenuBarStyleAutoDetect,
+    
     ///按钮的宽度和标题宽度对应，多余的可滑动
-    GKMenuBarStyleFit = 0,
+    GKMenuBarStyleFit,
     
     ///按钮的宽度根据按钮数量和菜单宽度等分，不可滑动
-    GKMenuBarStyleFill = 1,
+    GKMenuBarStyleFill,
 };
 
-@class GKMenuBar,GKMenuBarCell;
+@class GKMenuBar, GKMenuBarCell;
 
 /**
  条形菜单代理
@@ -58,76 +62,24 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 //MARK: - 按钮样式
 
 /**
- 菜单按钮字体颜色 default is '[UIColor darkGrayColor]'
+ 样式 默认自动检测 要计算完成才能确定 layoutSubviews
  */
-@property(nonatomic, strong) UIColor *normalTextColor;
+@property(nonatomic, assign) GKMenuBarStyle style;
 
 /**
- 菜单按钮字体
+ 菜单属性
  */
-@property(nonatomic, strong) UIFont *normalFont;
-
-/**
- 菜单按钮 选中颜色 default is 'GKAppMainColor'
- */
-@property(nonatomic, strong) UIColor *selectedTextColor;
-
-/**
- 菜单按钮 选中字体
- */
-@property(nonatomic, strong) UIFont *selectedFont;
-
-/**
- 按钮间 只有 GKMenuBarStyleFit 生效 default is '5.0'
- */
-@property(nonatomic, assign) CGFloat itemInterval;
-
-/**
- 按钮宽度延伸 left + right defautl is '10.0'
- */
-@property(nonatomic, assign) CGFloat itemPadding;
+@property(nonatomic, strong, null_resettable) GKMenuBarProps *props;
 
 /**
  获取菜单宽度 ，根据当前标题、字体和间隔来
  */
 @property(nonatomic, readonly) CGFloat menuBarWidth;
 
-//MARK: - 分割线
-
 /**
- 菜单底部分割线
- */
-@property(nonatomic, readonly) UIView *bottomSeparator;
-
-/**
- 按钮选中下划线
+ 按钮选中下划线颜色 只有 props.indicatorHeight > 0 才创建
  */
 @property(nonatomic, readonly) UIView *indicator;
-
-/**
- 按钮选中下划线高度 default is '2.0'
- */
-@property(nonatomic, assign) CGFloat indicatorHeight;
-
-/**
- 按钮选中下划线颜色 default is 'GKAppMainColor'
- */
-@property(nonatomic, strong) UIColor *indicatorColor;
-
-/**
- 下划线是否填满 default is 'NO' GKMenuBarStyleFill 有效
- */
-@property(nonatomic, assign) BOOL indicatorShouldFill;
-
-/**
- 菜单顶部分割线
- */
-@property(nonatomic, readonly) UIView *topSeparator;
-
-/**
- 是否显示分隔符 只有 GKMenuBarStyleFit 生效 default is 'YES'
- */
-@property(nonatomic, assign) BOOL showSeparator;
 
 //MARK: - 其他
 
@@ -142,21 +94,6 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 @property(nonatomic, assign) BOOL callDelegateWhenSetSelectedIndex;
 
 /**
- 内容间距 default is 'UIEdgeInsetZero'
- */
-@property(nonatomic, assign) UIEdgeInsets contentInset;
-
-/**
- 样式 默认自动检测 要计算完成才能确定 layoutSubviews
- */
-@property(nonatomic, assign) GKMenuBarStyle style;
-
-/**
- 是否自动检测菜单样式 default is 'YES'，只有 'NO' 时设置样式才生效
- */
-@property(nonatomic, assign) BOOL shouldDetectStyleAutomatically;
-
-/**
  计算完成回调 layoutSubviews 后
  */
 @property(nonatomic, copy, nullable) void(^measureCompletionHandler)(void);
@@ -164,12 +101,12 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 /**
  菜单按钮标题 设置此值会导致菜单重新加载数据
  */
-@property(nonatomic, copy) NSArray<NSString*> *titles;
+@property(nonatomic, copy, nullable) NSArray<NSString*> *titles;
 
 /**
  按钮信息 设置此值会导致菜单重新加载数据
  */
-@property(nonatomic, copy) NSArray<GKMenuBarItem*> *items;
+@property(nonatomic, copy, nullable) NSArray<GKMenuBarItem*> *items;
 
 /**
  代理回调

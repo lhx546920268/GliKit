@@ -12,9 +12,7 @@
 
 - (void)gkAvoidColorBlended
 {
-#ifdef DEBUG
     NSAssert(self.superview, @"gk_avoidColorBlended superview can't be nil");
-#endif
     [self gkAvoidColorBlendedForColor:self.superview.backgroundColor];
 }
 

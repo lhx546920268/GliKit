@@ -42,7 +42,7 @@
 
 - (UITableView*)tableView
 {
-    [self initTableView];
+    [self _initTableView];
     return _tableView;
 }
 
@@ -51,11 +51,11 @@
 - (void)initViews
 {
     [super initViews];
-    [self initTableView];
+    [self _initTableView];
     self.contentView = _tableView;
 }
 
-- (void)initTableView
+- (void)_initTableView
 {
     if(!_tableView){
         Class clazz = [self tableViewClass];

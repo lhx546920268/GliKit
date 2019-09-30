@@ -34,11 +34,22 @@ static WKProcessPool *sharedProcessPool;
 
 @implementation GKBaseWebViewController
 
+// MARK: - dealloc
+
+- (void)dealloc
+{
+    _webView.scrollView.delegate = nil;
+    [_webView removeObserver:self forKeyPath:@"title"];
+    [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
+}
+
+// MARK: - Init
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        [self initilization];
+        [self initViews];
     }
     
     return self;
@@ -56,7 +67,7 @@ static WKProcessPool *sharedProcessPool;
         }
         
         _originalURL = [URL copy];
-        [self initilization];
+        [self initViews];
     }
     return self;
 }
@@ -66,93 +77,18 @@ static WKProcessPool *sharedProcessPool;
     self = [super initWithNibName:nil bundle:nil];
     if(self){
         self.htmlString = htmlString;
-        [self initilization];
+        [self initViews];
     }
     
     return self;
 }
-
-//初始化
-- (void)initilization
-{
-    self.useWebTitle = YES;
-    _shouldDisplayProgress = YES;
-}
-
-// MARK: - property
-
-- (void)setHtmlString:(NSString *)htmlString
-{
-    if(_htmlString != htmlString && ![_htmlString isEqualToString:htmlString]){
-        if(_adjustScreenWhenLoadHtmlString && ![NSString isEmpty:htmlString]){
-            _htmlString = [[NSString stringWithFormat:@"%@%@", [NSString gkAdjustScreenHtmlString], htmlString] copy];
-        }else{
-            _htmlString = [htmlString copy];
-        }
-    }
-}
-
-- (void)setShouldDisplayProgress:(BOOL)shouldDisplayProgress
-{
-    if(_shouldDisplayProgress != shouldDisplayProgress){
-        _shouldDisplayProgress = shouldDisplayProgress;
-        self.progressView.hidden = !_shouldDisplayProgress || self.progressView.progress == 0;
-    }
-}
-
-// MARK: - web control
-
-- (BOOL)canGoBack
-{
-    return [_webView canGoBack];;
-}
-
-- (BOOL)canGoForward
-{
-    return [_webView canGoForward];
-}
-
-- (NSURL*)currentURL
-{
-    return _webView.URL;
-}
-
-- (void)goBack
-{
-    [_webView goBack];
-}
-
-- (void)goForward
-{
-    [_webView goForward];
-}
-
-- (void)reload
-{
-    NSURL *URL = self.currentURL;
-    if(!URL){
-        URL = self.URL;
-    }
-    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
-}
-
-// MARK: - dealloc
-
-- (void)dealloc
-{
-    _webView.scrollView.delegate = nil;
-    [_webView removeObserver:self forKeyPath:@"title"];
-    [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
-}
-
-// MARK: - 加载视图
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self willInitWebView];
-    [self initWebView];
+    [self _initWebView];
     [self loadWebContent];
 }
 
@@ -161,10 +97,17 @@ static WKProcessPool *sharedProcessPool;
     
 }
 
+//初始化
+- (void)initViews
+{
+    self.useWebTitle = YES;
+    _shouldDisplayProgress = YES;
+}
+
 /**
  初始化webView
  */
-- (void)initWebView
+- (void)_initWebView
 {
     //加载进度条条
     UIView *contentView = [UIView new];
@@ -176,7 +119,7 @@ static WKProcessPool *sharedProcessPool;
     [contentView addSubview:progressView];
     self.progressView = progressView;
     
-    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:[self webViewConfiguration]];
+    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:[self _webViewConfiguration]];
     if(@available(iOS 9.0, *)){
         _webView.allowsLinkPreview = NO;
     }
@@ -206,7 +149,10 @@ static WKProcessPool *sharedProcessPool;
     }];
 }
 
-- (WKWebViewConfiguration*)webViewConfiguration
+// MARK: - Web Config
+
+///网页配置
+- (WKWebViewConfiguration*)_webViewConfiguration
 {
     WKUserContentController *userContentController = [WKUserContentController new];
     if(self.shouldCloseSystemLongPressGesture){
@@ -249,6 +195,63 @@ static WKProcessPool *sharedProcessPool;
 - (NSString*)customUserAgent
 {
     return nil;
+}
+
+// MARK: - 内容
+
+- (void)setHtmlString:(NSString *)htmlString
+{
+    if(_htmlString != htmlString && ![_htmlString isEqualToString:htmlString]){
+        if(_adjustScreenWhenLoadHtmlString && ![NSString isEmpty:htmlString]){
+            _htmlString = [[NSString stringWithFormat:@"%@%@", [NSString gkAdjustScreenHtmlString], htmlString] copy];
+        }else{
+            _htmlString = [htmlString copy];
+        }
+    }
+}
+
+- (void)setShouldDisplayProgress:(BOOL)shouldDisplayProgress
+{
+    if(_shouldDisplayProgress != shouldDisplayProgress){
+        _shouldDisplayProgress = shouldDisplayProgress;
+        self.progressView.hidden = !_shouldDisplayProgress || self.progressView.progress == 0;
+    }
+}
+
+// MARK: - Web Control
+
+- (BOOL)canGoBack
+{
+    return [_webView canGoBack];;
+}
+
+- (BOOL)canGoForward
+{
+    return [_webView canGoForward];
+}
+
+- (NSURL*)currentURL
+{
+    return _webView.URL;
+}
+
+- (void)goBack
+{
+    [_webView goBack];
+}
+
+- (void)goForward
+{
+    [_webView goForward];
+}
+
+- (void)reload
+{
+    NSURL *URL = self.currentURL;
+    if(!URL){
+        URL = self.URL;
+    }
+    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
 }
 
 - (void)loadWebContent
@@ -294,7 +297,7 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
-// MARK: - kvo
+// MARK: - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -338,13 +341,7 @@ static WKProcessPool *sharedProcessPool;
     return NO;
 }
 
-// MARK: - progress handle
-
-//重设进度
-- (void)resetProgress
-{
-    [self setProgress:0.0];
-}
+// MARK: - Progress Handle
 
 //设置加载进度
 - (void)setProgress:(float) progress
@@ -357,8 +354,6 @@ static WKProcessPool *sharedProcessPool;
 {
     
 }
-
-// MARK: - 页面是否可以打开
 
 - (BOOL)shouldOpenURL:(NSURL*) URL action:(WKNavigationAction *)action
 {

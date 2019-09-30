@@ -12,7 +12,7 @@
 #import "UIApplication+GKTheme.h"
 #import "UIViewController+GKUtils.h"
 
-@interface GKBaseNavigationController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>
+@interface GKBaseNavigationController ()<UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 @end
 
@@ -93,6 +93,7 @@
     self.interactivePopGestureRecognizer.enabled = viewController.gkInteractivePopEnable;
 }
 
+// MARK: - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -106,6 +107,8 @@
     
     return YES;
 }
+
+// MARK: - UIStatusBar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {

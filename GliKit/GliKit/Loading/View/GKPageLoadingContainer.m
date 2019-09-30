@@ -39,6 +39,7 @@
         
         _textLabel = [UILabel new];
         _textLabel.font = [UIFont systemFontOfSize:14];
+        _textLabel.text = @"加载中...";
         [self addSubview:_textLabel];
         
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -83,7 +84,7 @@
         _textLabel.textColor = [UIColor gkColorFromHex:@"aeaeae"];
         _textLabel.font = [UIFont systemFontOfSize:14];
         _textLabel.textAlignment = NSTextAlignmentCenter;
-        _textLabel.text = @"load_error_tip";
+        _textLabel.text = @"加载失败\n轻触屏幕刷新";
         _textLabel.numberOfLines = 0;
         [self addSubview:_textLabel];
         
