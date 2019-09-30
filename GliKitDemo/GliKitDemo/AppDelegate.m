@@ -19,10 +19,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
+    
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.window.rootViewController = [[GKBaseNavigationController alloc] initWithRootViewController:GKDRootViewController.new];
     [self.window makeKeyAndVisible];
 
+    
+    
     return YES;
 }
 

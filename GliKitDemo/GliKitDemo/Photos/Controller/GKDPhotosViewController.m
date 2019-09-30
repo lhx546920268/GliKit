@@ -84,11 +84,11 @@
         GKPhotosViewController *album = [GKPhotosViewController new];
         album.photosOptions.maxCount = self.maxCount - self.results.count;
         album.photosOptions.thumbnailSize = self.flowLayout.itemSize;
-        album.photosOptions.intention = GKPhotosIntentionCrop;
-        
-        GKImageCropSettings *settings = [GKImageCropSettings new];
-        settings.cropSize = CGSizeMake(200, 200);
-        album.photosOptions.cropSettings = settings;
+        album.photosOptions.intention = GKPhotosIntentionMultiSelection;
+//
+//        GKImageCropSettings *settings = [GKImageCropSettings new];
+//        settings.cropSize = CGSizeMake(200, 200);
+//        album.photosOptions.cropSettings = settings;
         album.photosOptions.needOriginalImage = YES;
         
         WeakObj(self)
