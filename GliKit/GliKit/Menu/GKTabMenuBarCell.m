@@ -1,17 +1,17 @@
 //
-//  GKMenuBarCell.m
+//  GKTabMenuBarCell.m
 //  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
 //  Copyright © 2019 罗海雄. All rights reserved.
 //
 
-#import "GKMenuBarCell.h"
-#import "GKMenuBarItem.h"
+#import "GKTabMenuBarCell.h"
+#import "GKTabMenuBarItem.h"
 #import "GKBaseDefines.h"
 #import "UIButton+GKUtils.h"
 
-@implementation GKMenuBarCell
+@implementation GKTabMenuBarCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -42,7 +42,7 @@
     return self;
 }
 
-- (void)setItem:(GKMenuBarItem *)item
+- (void)setItem:(GKTabMenuBarItem *)item
 {
     _item = item;
     [_button setTitle:_item.title forState:UIControlStateNormal];

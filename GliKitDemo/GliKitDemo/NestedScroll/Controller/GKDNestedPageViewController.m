@@ -32,10 +32,10 @@
         [self.subPages addObject:page];
     }
     self.menuBar.titles = titles;
-    self.menuBar.props.selectedTextColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
-    self.menuBar.props.indicatorColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
-    self.menuBar.props.displayBottomDivider = YES;
-    self.menuBar.props.displayTopDivider = YES;
+    self.menuBar.selectedTextColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
+    self.menuBar.indicatorColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
+    self.menuBar.displayBottomDivider = YES;
+    self.menuBar.displayTopDivider = YES;
     
     [self initViews];
 }

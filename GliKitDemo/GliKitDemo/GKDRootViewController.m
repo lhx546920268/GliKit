@@ -64,6 +64,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UITableViewCell.gkNameOfClass forIndexPath:indexPath];
     
     cell.textLabel.text = self.datas[indexPath.row].title;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.tintColor = UIColor.redColor;
     
     return cell;
 }

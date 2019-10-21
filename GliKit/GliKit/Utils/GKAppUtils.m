@@ -96,21 +96,23 @@ static NSString *sharedUUID = nil;
 + (NSString *)currentIP
 {
     BOOL success;
-    struct ifaddrs * addrs;
-    const struct ifaddrs * cursor;
+    struct ifaddrs *addrs;
+    const struct ifaddrs *cursor;
     success = getifaddrs(&addrs) == 0;
+    NSString *ip = nil;
     if (success) {
         cursor = addrs;
         while (cursor != NULL) {
             // the second test keeps from picking up the loopback address
             if (cursor->ifa_addr->sa_family == AF_INET && (cursor->ifa_flags & IFF_LOOPBACK) == 0){
-                return [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr)];
+                ip = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr)];
+                break;
             }
             cursor = cursor->ifa_next;
         }
         freeifaddrs(addrs);
     }
-    return nil;
+    return ip;
 }
 
 + (void)makePhoneCall:(NSString*) mobile shouldAlert:(BOOL) alert

@@ -147,13 +147,13 @@ static char GKShowBackItemKey;
     if(self.tabBarController){
         return self.tabBarController.tabBar.bounds.size.height;
     }else{
-        return 49;
+        return 49 + UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom;
     }
 }
 
 - (CGFloat)gkToolBarHeight
 {
-    return 44;
+    return 44 + UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom;
 }
 
 - (__kindof UIViewController *)gkTopestPresentedViewController

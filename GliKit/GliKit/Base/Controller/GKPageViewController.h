@@ -7,17 +7,17 @@
 //
 
 #import "GKScrollViewController.h"
-#import "GKMenuBar.h"
+#import "GKTabMenuBar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 ///翻页容器
-@interface GKPageViewController : GKScrollViewController<GKMenuBarDelegate>
+@interface GKPageViewController : GKScrollViewController<GKTabMenuBarDelegate>
 
 /**
  顶部菜单 当 shouldUseMenuBar = NO，return nil
  */
-@property(nonatomic, readonly, nullable) GKMenuBar *menuBar;
+@property(nonatomic, readonly, nullable) GKTabMenuBar *menuBar;
 
 /**
  是否需要用菜单 menuBar default is 'YES'

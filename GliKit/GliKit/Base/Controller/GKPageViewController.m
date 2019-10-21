@@ -40,14 +40,14 @@
     self.menuBarHeight = GKMenuBarHeight;
 }
 
-- (GKMenuBar*)menuBar
+- (GKTabMenuBar*)menuBar
 {
     if(!self.shouldUseMenuBar)
         return nil;
     
     if(!_menuBar){
-        _menuBar = [GKMenuBar new];
-        _menuBar.props.contentInset = UIEdgeInsetsMake(0, _menuBar.props.itemPadding, 0, _menuBar.props.itemPadding);
+        _menuBar = [GKTabMenuBar new];
+        _menuBar.contentInset = UIEdgeInsetsMake(0, _menuBar.itemPadding, 0, _menuBar.itemPadding);
         _menuBar.delegate = self;
     }
     
@@ -190,9 +190,9 @@
     
 }
 
-// MARK: - GKMenuBarDelegate
+// MARK: - GKTabMenuBarDelegate
 
-- (void)menuBar:(GKMenuBar *)menu didSelectItemAtIndex:(NSUInteger)index
+- (void)menuBar:(GKTabMenuBar *)menu didSelectItemAtIndex:(NSUInteger)index
 {
     [self.scrollView setContentOffset:CGPointMake(index * self.scrollViewSize.width, 0)];
     _currentPage = index;

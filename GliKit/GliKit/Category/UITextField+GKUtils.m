@@ -254,7 +254,7 @@ static char GKExtraStringKey;
 {
     SEL action = @selector(gkTextFieldTextDidChange:);
     if(!(self.gkTextType & GKTextTypeAll) || self.gkMaxLength > 0){
-        if(![self targetForAction:action withSender:self]){
+        if([self actionsForTarget:self forControlEvent:UIControlEventEditingChanged].count == 0){
             [self addTarget:self action:action forControlEvents:UIControlEventEditingChanged];
         }
     }else{

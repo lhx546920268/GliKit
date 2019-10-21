@@ -1,5 +1,5 @@
 //
-//  GKMenuBarCell.h
+//  GKTabMenuBarCell.h
 //  GliKit
 //
 //  Created by 罗海雄 on 2019/3/15.
@@ -10,12 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GKMenuBarItem;
+@class GKTabMenuBarItem;
 
 /**
  菜单按钮
  */
-@interface GKMenuBarCell : UICollectionViewCell
+@interface GKTabMenuBarCell : UICollectionViewCell
 
 /**
  按钮
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  按钮信息
  */
-@property(nonatomic, strong) GKMenuBarItem *item;
+@property(nonatomic, strong) GKTabMenuBarItem *item;
 
 /**
  自定义视图

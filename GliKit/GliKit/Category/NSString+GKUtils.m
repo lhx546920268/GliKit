@@ -101,7 +101,7 @@
     size = [self boundingRectWithSize:contraintSize  options:NSStringDrawingUsesLineFragmentOrigin |NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
     
     
-    return size;
+    return CGSizeMake(ceil(size.width), ceil(size.height));
 }
 
 // MARK: - 校验

@@ -10,7 +10,8 @@
 		882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */; };
 		CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C671233B410100C4F196 /* UIImage+GKTheme.m */; };
 		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
-		CEAF254F2341EEC10038BD89 /* GKMenuBarProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF254E2341EEC10038BD89 /* GKMenuBarProps.m */; };
+		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
+		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
 		CEAF25522341FEA30038BD89 /* GKPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF25512341FEA30038BD89 /* GKPopover.m */; };
 		CEAF2555234200030038BD89 /* GKPopoverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF2554234200030038BD89 /* GKPopoverMenu.m */; };
 		CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */; };
@@ -45,9 +46,9 @@
 		CED0D367230BC8790057D405 /* GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D273230BC6250057D405 /* GKEmptyView.m */; };
 		CED0D36E230BC8790057D405 /* GKPageLoadingContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1EA230BC6250057D405 /* GKPageLoadingContainer.m */; };
 		CED0D36F230BC8790057D405 /* GKProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1EB230BC6250057D405 /* GKProgressHUD.m */; };
-		CED0D372230BC8790057D405 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D277230BC6250057D405 /* GKMenuBarItem.m */; };
-		CED0D373230BC8790057D405 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D278230BC6250057D405 /* GKMenuBar.m */; };
-		CED0D379230BC8790057D405 /* CAMenuBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D27E230BC6250057D405 /* CAMenuBarCell.m */; };
+		CED0D372230BC8790057D405 /* GKTabMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D277230BC6250057D405 /* GKTabMenuBarItem.m */; };
+		CED0D373230BC8790057D405 /* GKTabMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D278230BC6250057D405 /* GKTabMenuBar.m */; };
+		CED0D379230BC8790057D405 /* GKTabMenuBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D27E230BC6250057D405 /* GKTabMenuBarCell.m */; };
 		CED0D37E230BC8790057D405 /* GKCountDownTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D258230BC6250057D405 /* GKCountDownTimer.m */; };
 		CED0D37F230BC8790057D405 /* GKWeakObjectContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D259230BC6250057D405 /* GKWeakObjectContainer.m */; };
 		CED0D380230BC8790057D405 /* GKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D25A230BC6250057D405 /* GKObject.m */; };
@@ -157,8 +158,10 @@
 		CE37C672233B410100C4F196 /* UIFont+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C673233B410100C4F196 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
 		CE37C674233B410100C4F196 /* UIImage+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GKTheme.h"; sourceTree = "<group>"; };
-		CEAF254D2341EEC10038BD89 /* GKMenuBarProps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKMenuBarProps.h; sourceTree = "<group>"; };
-		CEAF254E2341EEC10038BD89 /* GKMenuBarProps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarProps.m; sourceTree = "<group>"; };
+		CE61DD48235D5A9B00701675 /* GKMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBar.h; sourceTree = "<group>"; };
+		CE61DD49235D5A9B00701675 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
+		CE61DD4B235D5D4E00701675 /* GKMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarItem.h; sourceTree = "<group>"; };
+		CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
 		CEAF25502341FEA30038BD89 /* GKPopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPopover.h; sourceTree = "<group>"; };
 		CEAF25512341FEA30038BD89 /* GKPopover.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPopover.m; sourceTree = "<group>"; };
 		CEAF2553234200030038BD89 /* GKPopoverMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPopoverMenu.h; sourceTree = "<group>"; };
@@ -231,12 +234,12 @@
 		CED0D264230BC6250057D405 /* GKAppUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAppUtils.m; sourceTree = "<group>"; };
 		CED0D273230BC6250057D405 /* GKEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKEmptyView.m; sourceTree = "<group>"; };
 		CED0D274230BC6250057D405 /* GKEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKEmptyView.h; sourceTree = "<group>"; };
-		CED0D277230BC6250057D405 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
-		CED0D278230BC6250057D405 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
-		CED0D279230BC6250057D405 /* GKMenuBarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarCell.h; sourceTree = "<group>"; };
-		CED0D27C230BC6250057D405 /* GKMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarItem.h; sourceTree = "<group>"; };
-		CED0D27D230BC6250057D405 /* GKMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBar.h; sourceTree = "<group>"; };
-		CED0D27E230BC6250057D405 /* CAMenuBarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CAMenuBarCell.m; sourceTree = "<group>"; };
+		CED0D277230BC6250057D405 /* GKTabMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKTabMenuBarItem.m; sourceTree = "<group>"; };
+		CED0D278230BC6250057D405 /* GKTabMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKTabMenuBar.m; sourceTree = "<group>"; };
+		CED0D279230BC6250057D405 /* GKTabMenuBarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTabMenuBarCell.h; sourceTree = "<group>"; };
+		CED0D27C230BC6250057D405 /* GKTabMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTabMenuBarItem.h; sourceTree = "<group>"; };
+		CED0D27D230BC6250057D405 /* GKTabMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTabMenuBar.h; sourceTree = "<group>"; };
+		CED0D27E230BC6250057D405 /* GKTabMenuBarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKTabMenuBarCell.m; sourceTree = "<group>"; };
 		CED0D281230BC6250057D405 /* GKFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKFileManager.h; sourceTree = "<group>"; };
 		CED0D282230BC6250057D405 /* GKDataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDataBase.h; sourceTree = "<group>"; };
 		CED0D283230BC6250057D405 /* GKFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKFileManager.m; sourceTree = "<group>"; };
@@ -768,14 +771,16 @@
 		CED0D275230BC6250057D405 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				CEAF254D2341EEC10038BD89 /* GKMenuBarProps.h */,
-				CEAF254E2341EEC10038BD89 /* GKMenuBarProps.m */,
-				CED0D27D230BC6250057D405 /* GKMenuBar.h */,
-				CED0D278230BC6250057D405 /* GKMenuBar.m */,
-				CED0D279230BC6250057D405 /* GKMenuBarCell.h */,
-				CED0D27E230BC6250057D405 /* CAMenuBarCell.m */,
-				CED0D27C230BC6250057D405 /* GKMenuBarItem.h */,
-				CED0D277230BC6250057D405 /* GKMenuBarItem.m */,
+				CE61DD48235D5A9B00701675 /* GKMenuBar.h */,
+				CE61DD49235D5A9B00701675 /* GKMenuBar.m */,
+				CE61DD4B235D5D4E00701675 /* GKMenuBarItem.h */,
+				CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */,
+				CED0D27D230BC6250057D405 /* GKTabMenuBar.h */,
+				CED0D278230BC6250057D405 /* GKTabMenuBar.m */,
+				CED0D279230BC6250057D405 /* GKTabMenuBarCell.h */,
+				CED0D27E230BC6250057D405 /* GKTabMenuBarCell.m */,
+				CED0D27C230BC6250057D405 /* GKTabMenuBarItem.h */,
+				CED0D277230BC6250057D405 /* GKTabMenuBarItem.m */,
 				CEAF25502341FEA30038BD89 /* GKPopover.h */,
 				CEAF25512341FEA30038BD89 /* GKPopover.m */,
 				CEAF2553234200030038BD89 /* GKPopoverMenu.h */,
@@ -1219,18 +1224,18 @@
 				CED0D426230BECF20057D405 /* UIViewController+GKDialog.m in Sources */,
 				CED0D36E230BC8790057D405 /* GKPageLoadingContainer.m in Sources */,
 				CED0D36F230BC8790057D405 /* GKProgressHUD.m in Sources */,
-				CED0D372230BC8790057D405 /* GKMenuBarItem.m in Sources */,
-				CED0D373230BC8790057D405 /* GKMenuBar.m in Sources */,
+				CED0D372230BC8790057D405 /* GKTabMenuBarItem.m in Sources */,
+				CED0D373230BC8790057D405 /* GKTabMenuBar.m in Sources */,
 				CEFE9087230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m in Sources */,
-				CED0D379230BC8790057D405 /* CAMenuBarCell.m in Sources */,
+				CED0D379230BC8790057D405 /* GKTabMenuBarCell.m in Sources */,
 				CEAF25522341FEA30038BD89 /* GKPopover.m in Sources */,
 				CEAF2555234200030038BD89 /* GKPopoverMenu.m in Sources */,
 				CED0D37E230BC8790057D405 /* GKCountDownTimer.m in Sources */,
 				CED3A7F7230D443200C304B3 /* UIView+GKEmptyView.m in Sources */,
-				CEAF254F2341EEC10038BD89 /* GKMenuBarProps.m in Sources */,
 				CED0D37F230BC8790057D405 /* GKWeakObjectContainer.m in Sources */,
 				CED0D380230BC8790057D405 /* GKObject.m in Sources */,
 				CEFE9084230F9D47006A0EBD /* GKImageCropSettings.m in Sources */,
+				CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */,
 				CED0D383230BC8790057D405 /* GKFileManager.m in Sources */,
 				CED0D405230BECD00057D405 /* UIColor+GKUtils.m in Sources */,
 				CED0D384230BC8790057D405 /* GKDataBase.m in Sources */,
@@ -1258,6 +1263,7 @@
 				CED0D44A230BF2210057D405 /* UIApplication+GKTheme.m in Sources */,
 				CED0D3A7230BC8790057D405 /* GKSkeletonLayer.m in Sources */,
 				CED0D3AA230BC8790057D405 /* GKPartialPresentTransitionDelegate.m in Sources */,
+				CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */,
 				CED0D3AC230BC8790057D405 /* GKPresentTransitionDelegate.m in Sources */,
 				CED3A7F5230D443200C304B3 /* UICollectionView+GKEmptyView.m in Sources */,
 				CED0D427230BECF20057D405 /* UIViewController+GKKeyboard.m in Sources */,
