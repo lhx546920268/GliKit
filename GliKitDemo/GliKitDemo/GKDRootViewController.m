@@ -20,7 +20,6 @@
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
-@property(nonatomic, assign) int count;
 
 @end
 
@@ -32,7 +31,6 @@
     
     self.navigationItem.title = GKAppUtils.appName;
     
-    self.count = 100;
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:GKDPhotosViewController.class],
                    [GKDRowModel modelWithTitle:@"骨架" clazz:GKDSkeletonViewController.class],
@@ -44,19 +42,35 @@
 
     [self initViews];
     
-    for(int i = 0;i < 200;i ++){
+    if (@available(iOS 10.0, *)) {
         [NSThread detachNewThreadWithBlock:^{
-            [NSThread sleepForTimeInterval:1];
             [self buyCount];
         }];
+    } else {
+        // Fallback on earlier versions
+    }
+    
+    if (@available(iOS 10.0, *)) {
+        [NSThread detachNewThreadWithBlock:^{
+            [self test];
+        }];
+    } else {
+        // Fallback on earlier versions
     }
 }
 
 - (void)buyCount
 {
-    if(self.count > 0){
-        self.count --;
-        NSLog(@"还剩 %d", self.count);
+    @synchronized (@"你") {
+        [NSThread sleepForTimeInterval:3];
+        NSLog(@"buyCount after 3 seconds");
+    }
+}
+
+- (void)test
+{
+    @synchronized (@"我") {
+        NSLog(@"test");
     }
 }
 
@@ -90,9 +104,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"aaclink://name=code"]];
-//    GKDRowModel *model = self.datas[indexPath.row];
-//    [self.class gkPushViewController:model.clazz.new];
+    GKDRowModel *model = self.datas[indexPath.row];
+    [self.class gkPushViewController:model.clazz.new];
 }
 
 @end
