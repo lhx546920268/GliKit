@@ -9,7 +9,7 @@
 #import "UIApplication+GKTheme.h"
 
 static CGFloat appSeparatorHeight = 0;
-static CGFloat appNavigationBarMargin = 12;
+static CGFloat appNavigationBarMargin = 15;
 static CGFloat appNavigationBarTitleViewItemMargin = -6;
 static UIStatusBarStyle appStatusBarStyle = UIStatusBarStyleDefault;
 

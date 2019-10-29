@@ -60,63 +60,6 @@ static char GKShowBackItemKey;
     objc_setAssociatedObject(self, &GKInteractivePopEnableKey, @(gkInteractivePopEnable), OBJC_ASSOCIATION_RETAIN);
 }
 
-// MARK: - 返回
-
-- (void)setGkShowBackItem:(BOOL)gkShowBackItem
-{
-    if(gkShowBackItem != self.gkShowBackItem){
-        if(gkShowBackItem){
-            UIImage *image = UIImage.gkNavigationBarBackIcon;
-            UIBarButtonItem *item = [[self class] gkBarItemWithImage:image target:self action:@selector(gkBack)];
-            [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
-        }else{
-            self.navigationItem.leftBarButtonItem = nil;
-            self.navigationItem.leftBarButtonItems = nil;
-            self.navigationItem.hidesBackButton = YES;
-        }
-        objc_setAssociatedObject(self, &GKShowBackItemKey, @(gkShowBackItem), OBJC_ASSOCIATION_RETAIN);
-    }
-}
-
-- (BOOL)gkShowBackItem
-{
-    return [objc_getAssociatedObject(self, &GKShowBackItemKey) boolValue];
-}
-
-- (UIBarButtonItem *)gkBackBarButtonItem
-{
-    return self.navigationItem.leftBarButtonItem;
-}
-
-- (void)gkBack
-{
-    [self gkBackAnimated:YES];
-}
-
-- (void)gkBackAnimated:(BOOL) flag
-{
-    [self gkBackAnimated:flag completion:nil];
-}
-
-- (void)gkBackAnimated:(BOOL) flag completion: (void (^)(void))completion
-{
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [[self class] cancelPreviousPerformRequestsWithTarget:self];
-    
-    if(self.navigationController.viewControllers.count <= 1){
-        if(self.presentingViewController){
-            [self dismissViewControllerAnimated:flag completion:completion];
-        }else{
-            !completion ?: completion();
-        }
-    }else{
-        [self.navigationController popViewControllerAnimated:flag && !completion];
-        !completion ?: completion();
-    }
-}
-
-// MARK: - property readonly
-
 - (CGFloat)gkStatusBarHeight
 {
     CGFloat height = [[UIApplication sharedApplication] statusBarFrame].size.height;
@@ -179,7 +122,66 @@ static char GKShowBackItemKey;
     return [[GKBaseNavigationController alloc] initWithRootViewController:self];
 }
 
-// MARK: - 导航栏按钮
+@end
+
+@implementation UIViewController (GKNavigationBarBackItem)
+
+- (void)setGkShowBackItem:(BOOL)gkShowBackItem
+{
+    if(gkShowBackItem != self.gkShowBackItem){
+        if(gkShowBackItem){
+            UIImage *image = UIImage.gkNavigationBarBackIcon;
+            UIBarButtonItem *item = [[self class] gkBarItemWithImage:image target:self action:@selector(gkBack)];
+            [self gkSetNavigationBarItem:item posiiton:GKNavigationItemPositionLeft];
+        }else{
+            self.navigationItem.leftBarButtonItem = nil;
+            self.navigationItem.leftBarButtonItems = nil;
+            self.navigationItem.hidesBackButton = YES;
+        }
+        objc_setAssociatedObject(self, &GKShowBackItemKey, @(gkShowBackItem), OBJC_ASSOCIATION_RETAIN);
+    }
+}
+
+- (BOOL)gkShowBackItem
+{
+    return [objc_getAssociatedObject(self, &GKShowBackItemKey) boolValue];
+}
+
+- (UIBarButtonItem *)gkBackBarButtonItem
+{
+    return self.navigationItem.leftBarButtonItem;
+}
+
+- (void)gkBack
+{
+    [self gkBackAnimated:YES];
+}
+
+- (void)gkBackAnimated:(BOOL) flag
+{
+    [self gkBackAnimated:flag completion:nil];
+}
+
+- (void)gkBackAnimated:(BOOL) flag completion: (void (^)(void))completion
+{
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    
+    if(self.navigationController.viewControllers.count <= 1){
+        if(self.presentingViewController){
+            [self dismissViewControllerAnimated:flag completion:completion];
+        }else{
+            !completion ?: completion();
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:flag && !completion];
+        !completion ?: completion();
+    }
+}
+
+@end
+
+@implementation UIViewController (GKNavigationBarItemUtils)
 
 - (void)gkSetNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position
 {
@@ -298,6 +300,5 @@ static char GKShowBackItemKey;
 {
     return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:target action:action];
 }
-
 
 @end

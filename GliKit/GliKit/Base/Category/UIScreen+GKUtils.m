@@ -22,11 +22,7 @@
 
 + (CGSize)gkScreenSize
 {
-    CGSize size = UIScreen.mainScreen.nativeBounds.size;
-    size.width /= UIScreen.mainScreen.nativeScale;
-    size.height /= UIScreen.mainScreen.nativeScale;
-    
-    return size;
+    return UIScreen.mainScreen.bounds.size;
 }
 
 @end

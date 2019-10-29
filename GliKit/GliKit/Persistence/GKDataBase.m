@@ -10,6 +10,7 @@
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
 #import "GKFileManager.h"
+#import "GKAppUtils.h"
 
 @implementation GKDataBase
 
@@ -82,7 +83,7 @@
         }
     }
     
-    return [sqliteDirectory stringByAppendingPathComponent:@"zegobird_sqlite"];
+    return [sqliteDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sqlite", GKAppUtils.appName]];
 }
 
 

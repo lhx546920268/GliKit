@@ -14,18 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSObject (GKUtils)
 
 /**
- 获取当前显示的UIViewController
- */
-@property(class, nonatomic, readonly) UIViewController *gkCurrentViewController;
-@property(nonatomic, readonly) UIViewController *gkCurrentViewController;
-
-/**
- 获取当前显示的 UINavigationController 如果是部分present出来的，则忽略
- */
-@property(class, nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
-@property(nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
-
-/**
  获取当前类的所有属性名称
  */
 @property(nonatomic, readonly) NSArray<NSString*> *gkPropertyNames;
@@ -79,6 +67,25 @@ NS_ASSUME_NONNULL_BEGIN
  @param object 这个对象必须是当前类的或者其子类
  */
 - (void)gkCopyObject:(NSObject*) object;
+
+
+
+@end
+
+///UIViewController扩展
+@interface NSObject (GKUIViewControllerUtils)
+
+/**
+ 获取当前显示的UIViewController
+ */
+@property(class, nonatomic, readonly) UIViewController *gkCurrentViewController;
+@property(nonatomic, readonly) UIViewController *gkCurrentViewController;
+
+/**
+ 获取当前显示的 UINavigationController 如果是部分present出来的，则忽略
+ */
+@property(class, nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
+@property(nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
 
 // MARK: - push
 

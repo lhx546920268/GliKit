@@ -47,7 +47,7 @@
     self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;
     self.shouldAutoAdjustSize = YES;
-    _contentInsets = UIEdgeInsetsZero;
+    _contentInsets = UIEdgeInsetsMake(3, 5, 3, 5);
     
     _fillColor = [UIColor redColor];
     _strokeColor = [UIColor clearColor];

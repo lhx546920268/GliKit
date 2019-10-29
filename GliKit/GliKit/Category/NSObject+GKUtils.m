@@ -14,67 +14,6 @@
 
 @implementation NSObject (GKUtils)
 
-+ (UIViewController*)gkCurrentViewController
-{
-    //刚开始启动 不一定是tabBar
-    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
-        return UIApplication.sharedApplication.delegate.window.rootViewController;
-    }
-    
-    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
-    if(parentViewControlelr == tab){
-        parentViewControlelr = tab.selectedViewController;
-    }
-
-    if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
-        UINavigationController *nav = (UINavigationController*)parentViewControlelr;
-        if(nav.viewControllers.count > 0){
-            return [nav.viewControllers lastObject];
-        }else{
-            return nav;
-        }
-    }else{
-        return parentViewControlelr;
-    }
-}
-
-- (UIViewController*)gkCurrentViewController
-{
-    return NSObject.gkCurrentViewController;
-}
-
-+ (UINavigationController*)gkCurrentNavigationController
-{
-    //刚开始启动 不一定是tabBar
-    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
-        return UIApplication.sharedApplication.delegate.window.rootViewController.navigationController;
-    }
-    
-    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
-    
-    if([parentViewControlelr.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
-        parentViewControlelr = parentViewControlelr.presentingViewController;
-    }
-    
-    if(parentViewControlelr == tab){
-        parentViewControlelr = tab.selectedViewController;
-    }
-
-    
-    if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
-        return (UINavigationController*)parentViewControlelr;
-    }else{
-        return parentViewControlelr.navigationController;
-    }
-}
-
-- (UINavigationController*)gkCurrentNavigationController
-{
-    return NSObject.gkCurrentNavigationController;
-}
-
 - (NSArray<NSString*>*)gkPropertyNames
 {
     unsigned int count;
@@ -261,6 +200,71 @@
     }
     
     [self gk_copyObject:object clazz:[clazz superclass]];
+}
+
+@end
+
+@implementation NSObject (GKUIViewControllerUtils)
+
++ (UIViewController*)gkCurrentViewController
+{
+    //刚开始启动 不一定是tabBar
+    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
+        return UIApplication.sharedApplication.delegate.window.rootViewController;
+    }
+    
+    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
+    if(parentViewControlelr == tab){
+        parentViewControlelr = tab.selectedViewController;
+    }
+
+    if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
+        UINavigationController *nav = (UINavigationController*)parentViewControlelr;
+        if(nav.viewControllers.count > 0){
+            return [nav.viewControllers lastObject];
+        }else{
+            return nav;
+        }
+    }else{
+        return parentViewControlelr;
+    }
+}
+
+- (UIViewController*)gkCurrentViewController
+{
+    return NSObject.gkCurrentViewController;
+}
+
++ (UINavigationController*)gkCurrentNavigationController
+{
+    //刚开始启动 不一定是tabBar
+    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
+        return UIApplication.sharedApplication.delegate.window.rootViewController.navigationController;
+    }
+    
+    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
+    
+    if([parentViewControlelr.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
+        parentViewControlelr = parentViewControlelr.presentingViewController;
+    }
+    
+    if(parentViewControlelr == tab){
+        parentViewControlelr = tab.selectedViewController;
+    }
+
+    
+    if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
+        return (UINavigationController*)parentViewControlelr;
+    }else{
+        return parentViewControlelr.navigationController;
+    }
+}
+
+- (UINavigationController*)gkCurrentNavigationController
+{
+    return NSObject.gkCurrentNavigationController;
 }
 
 // MARK: - push

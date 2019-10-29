@@ -49,7 +49,9 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///创建导航栏并返回
 @property(nonatomic, readonly) __kindof UINavigationController *gkCreateWithNavigationController;
 
-// MARK: - 返回
+@end
+
+@interface UIViewController (GKNavigationBarBackItem)
 
 ///显示返回按钮
 @property(nonatomic, assign) BOOL gkShowBackItem;
@@ -66,7 +68,9 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///返回 是否动画 返回完成回调
 - (void)gkBackAnimated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
 
-// MARK: - 导航栏按钮
+@end
+
+@interface UIViewController (GKNavigationBarItemUtils)
 
 /**
  设置导航栏按钮

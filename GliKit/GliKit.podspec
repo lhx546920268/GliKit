@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
                         这是一个描述
                    DESC
 
-  spec.homepage     = "http://EXAMPLE/iOSLib"
+  spec.homepage     = "http://EXAMPLE/GliKit"
   spec.license      = "MIT"
 
   spec.author             = "luohaixiong"

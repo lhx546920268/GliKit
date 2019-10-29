@@ -47,12 +47,12 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 /**
  第一个字符
  */
-- (char)gkFirstCharacter;
+@property(nonatomic, readonly) char gkFirstCharacter;
 
 /**
  最后一个字符
  */
-- (char)gkLastCharacter;
+@property(nonatomic, readonly) char gkLastCharacter;
 
 /**
  从后面的字符串开始，获取对应字符的下标
@@ -78,17 +78,19 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 /**
  是否是纯数字
  */
-- (BOOL)isDigitalOnly;
+@property(nonatomic, readonly) BOOL isDigitalOnly;
 
 /**
  判断是否是整数
  */
-- (BOOL)isInteger;
+@property(nonatomic, readonly) BOOL isInteger;
 
 // MARK: - 加密
 
-///获取md5字符串
-- (NSString*)gkMD5String;
+/**
+ 获取md5字符串
+ */
+@property(nonatomic, readonly) NSString *gkMD5String;
 
 // MARK: - 过滤
 

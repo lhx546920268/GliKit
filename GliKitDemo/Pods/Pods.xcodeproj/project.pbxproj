@@ -451,7 +451,7 @@
 		FD118ADDBD87EB0D3FEDEA8CA47B143C /* GKScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF25D8416264167BEE509D70FAAD5C0 /* GKScrollViewController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		FDC5508D2B5A2EE696B785D097CF6AF5 /* NSImage+Compatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BC296033A18392D3C7629B44FF6D30F /* NSImage+Compatibility.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FE0BA09E1648A9E565045825479C9F29 /* GKPhotosViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BA5AAC5AE4B8D2F4CD5CCF2D1E2B355 /* GKPhotosViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		FE4494F00CF192F8B4F206A45129E5CC /* UICollectionView+GKCellSizee.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF4E95E206F97E6B442C0DE7AFA0687 /* UICollectionView+GKCellSizee.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		FE4494F00CF192F8B4F206A45129E5CC /* UICollectionView+GKCellSize.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF4E95E206F97E6B442C0DE7AFA0687 /* UICollectionView+GKCellSize.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		FE7B43A9A93E30DA5E76236B96859EE5 /* SDMemoryCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E61579AC941A18D7180348B27F3AFAC /* SDMemoryCache.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FF3082E7F2A4C1E7F7736721D39239DD /* NSArray+MASShorthandAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 638BB109B10C472369DC3FE28D59614C /* NSArray+MASShorthandAdditions.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FF57B29BB386B4FC6724BA584549D705 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFB3F30FF3831455747488C2C0B5C1F /* GKRefreshStyle.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -931,7 +931,7 @@
 		D8376E9155BE574B65EA95738151E339 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
 		D8BEBF8F48E85B6ADEB56CFD1F485129 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA38A509BB2BB6568A2272350A7B1874 /* GKContainer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GKContainer.m; sourceTree = "<group>"; };
-		DBF4E95E206F97E6B442C0DE7AFA0687 /* UICollectionView+GKCellSizee.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+GKCellSizee.m"; sourceTree = "<group>"; };
+		DBF4E95E206F97E6B442C0DE7AFA0687 /* UICollectionView+GKCellSize.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+GKCellSize.m"; sourceTree = "<group>"; };
 		DC36CAF64DB4D6CCAFA9FC1607D5CF65 /* UIScrollView+GKEmptyView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+GKEmptyView.m"; sourceTree = "<group>"; };
 		DCE1D8E0A1AA2154715AE616136FB4D7 /* UIView+GKSkeleton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIView+GKSkeleton.m"; sourceTree = "<group>"; };
 		DE46ECE99028B4A671A597F92F52342E /* SDImageTransformer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageTransformer.m; path = SDWebImage/SDImageTransformer.m; sourceTree = "<group>"; };
@@ -1478,7 +1478,7 @@
 			isa = PBXGroup;
 			children = (
 				7E31AD0FF0731655EC6CAEC9E1917B04 /* UICollectionView+GKCellSize.h */,
-				DBF4E95E206F97E6B442C0DE7AFA0687 /* UICollectionView+GKCellSizee.m */,
+				DBF4E95E206F97E6B442C0DE7AFA0687 /* UICollectionView+GKCellSize.m */,
 				4930684FB5A8EC5738619ECC351191BA /* UICollectionView+GKUtils.h */,
 				1D15C8D2F837764280208D46BAEE2D26 /* UICollectionView+GKUtils.m */,
 				56C60C49112345EA50AF823F4E38AE82 /* UINavigationBar+GKUtils.h */,
@@ -2648,7 +2648,7 @@
 				3E8D56BA00B469F2FE25A7B4F46B8B19 /* UIApplication+GKTheme.m in Sources */,
 				5FE7F1E89E5F9B9C1BF54312ECF6E63E /* UIButton+GKUtils.m in Sources */,
 				D8A8B642A7367EB2E669D65F245D7FC8 /* UICollectionReusableView+GKUtils.m in Sources */,
-				FE4494F00CF192F8B4F206A45129E5CC /* UICollectionView+GKCellSizee.m in Sources */,
+				FE4494F00CF192F8B4F206A45129E5CC /* UICollectionView+GKCellSize.m in Sources */,
 				4C38EB95AF110734D3FD90964506D064 /* UICollectionView+GKEmptyView.m in Sources */,
 				8411D93220DE6A35B9179CF5951F942D /* UICollectionView+GKSkeleton.m in Sources */,
 				7E16E9EDBEE2E45A66CDAE63E6A58010 /* UICollectionView+GKUtils.m in Sources */,

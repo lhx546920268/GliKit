@@ -60,7 +60,7 @@ static WKProcessPool *sharedProcessPool;
     self = [super initWithNibName:nil bundle:nil];
     if(self){
         if(![NSString isEmpty:URL]){
-            if(![URL hasPrefix:@"http://"] && ![URL hasPrefix:@"https://"]){
+            if(![URL containsString:@"://"]){
                 URL = [NSString stringWithFormat:@"http://%@", URL];
             }
             self.URL = [NSURL URLWithString:URL];
@@ -155,20 +155,26 @@ static WKProcessPool *sharedProcessPool;
 - (WKWebViewConfiguration*)_webViewConfiguration
 {
     WKUserContentController *userContentController = [WKUserContentController new];
-    if(self.shouldCloseSystemLongPressGesture){
-        //禁止长按弹出 UIMenuController 相关
-        //禁止选择 css 配置相关
-        NSString *css = @"('body{-webkit-user-select:none;-webkit-user-drag:none;}')";
-        //css 选中样式取消
+    
+    NSString *js = [self javascript];
+    if(self.shouldCloseSystemLongPressGesture || ![NSString isEmpty:js]){
+        
         NSMutableString *javaScript = [NSMutableString new];
-        [javaScript appendString:@"var style = document.createElement('style');"];
-        [javaScript appendString:@"style.type = 'text/css';"];
-        [javaScript appendFormat:@"var cssContent = document.createTextNode%@;", css];
-        [javaScript appendString:@"style.appendChild(cssContent);"];
-        [javaScript appendString:@"document.body.appendChild(style);"];
-        [javaScript appendString:@"document.documentElement.style.webkitUserSelect='none';"];//禁止选择
-        [javaScript appendString:@"document.documentElement.style.webkitTouchCallout='none';"];//禁止长按
-        NSString *js = [self javascript];
+        if(self.shouldCloseSystemLongPressGesture){
+            //禁止长按弹出 UIMenuController 相关
+            //禁止选择 css 配置相关
+            NSString *css = @"('body{-webkit-user-select:none;-webkit-user-drag:none;}')";
+            //css 选中样式取消
+            
+            [javaScript appendString:@"var style = document.createElement('style');"];
+            [javaScript appendString:@"style.type = 'text/css';"];
+            [javaScript appendFormat:@"var cssContent = document.createTextNode%@;", css];
+            [javaScript appendString:@"style.appendChild(cssContent);"];
+            [javaScript appendString:@"document.body.appendChild(style);"];
+            [javaScript appendString:@"document.documentElement.style.webkitUserSelect='none';"];//禁止选择
+            [javaScript appendString:@"document.documentElement.style.webkitTouchCallout='none';"];//禁止长按
+        }
+        
         if(![NSString isEmpty:js]){
             [javaScript appendString:js];
         }

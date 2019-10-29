@@ -18,7 +18,7 @@
 @property(nonatomic, assign) IBInspectable CGFloat borderWidth;
 
 ///边框颜色
-@property(nonatomic, strong) IBInspectable UIColor *borderColor;
+@property(nonatomic, strong, null_resettable) IBInspectable UIColor *borderColor;
 
 ///layer.maskToBounds
 @property(nonatomic, assign) IBInspectable BOOL maskToBounds;
