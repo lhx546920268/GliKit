@@ -75,8 +75,11 @@
 
 - (void)initViews
 {
-    self.imageManager = [PHCachingImageManager new];
-    self.imageManager.allowsCachingHighQualityImages = NO;
+    //要授权才调用，否则在dealloc会闪退
+    if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
+        self.imageManager = [PHCachingImageManager new];
+        self.imageManager.allowsCachingHighQualityImages = NO;
+    }
     
     self.gkShowPageLoading = NO;
     [self registerClass:GKPhotosListCell.class];

@@ -29,6 +29,7 @@
     self.window.rootViewController = [[GKBaseNavigationController alloc] initWithRootViewController:GKDRootViewController.new];
     [self.window makeKeyAndVisible];
 
+   
     return YES;
 }
 

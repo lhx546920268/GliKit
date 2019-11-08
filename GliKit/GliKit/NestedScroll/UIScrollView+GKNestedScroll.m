@@ -47,7 +47,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 - (void)gkNestedScroll_setDelegate:(id<UIScrollViewDelegate>)delegate
 {
-    if(delegate){
+    if(delegate && self.gkNestedScrollEnable){
         [GKNestedScrollHelper replaceImplementations:@selector(scrollViewDidScroll:) owner:delegate implementer:self];
         [GKNestedScrollHelper replaceImplementations:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:) owner:delegate implementer:self];
     }
@@ -85,7 +85,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     if(scrollView.gkNestedScrollEnable){
         [scrollView.gkNestedScrollHelper scrollViewDidScroll:scrollView];
     }
-    //调用 代理自己的实现
+    
     [self gkNestedScroll_scrollViewDidScroll:scrollView];
 }
 

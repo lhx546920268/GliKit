@@ -97,8 +97,11 @@
         [self setBottomView:self.photosToolBar];
     }
     
-    self.imageManager = [PHCachingImageManager new];
-    self.imageManager.allowsCachingHighQualityImages = NO;
+    //要授权才调用，否则在dealloc会闪退
+    if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
+        self.imageManager = [PHCachingImageManager new];
+        self.imageManager.allowsCachingHighQualityImages = NO;
+    }
     
     CGFloat spacing = self.photosOptions.gridInterval;
     self.flowLayout.minimumLineSpacing = spacing;
@@ -180,7 +183,7 @@
                 [results addObject:result];
             }
         }
-
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [selfWeak gkDismissProgress];
             !selfWeak.photosOptions.completion ?: selfWeak.photosOptions.completion(results);
@@ -368,7 +371,7 @@
     cell.asset = asset;
     
     [self.imageManager requestImageForAsset:asset targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-
+        
         if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){
             cell.imageView.image = result;
         }
@@ -419,7 +422,7 @@
     if(cell.checked){
         cell.checked = NO;
         [self removeAsset:cell.asset];
-       
+        
         //reloadData 图片会抖动 所以只刷新选中下标
         NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
         for(NSIndexPath *indexPath in indexPaths){
@@ -436,9 +439,9 @@
         if(self.selectedAssets.count >= self.photosOptions.maxCount){
             
             [[GKAlertController alertWithTitle:[NSString stringWithFormat:@"您最多能选择%d张图片", (int)self.photosOptions.maxCount]
-                                        message:nil
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@[@"我知道了"]] show];
+                                       message:nil
+                             cancelButtonTitle:nil
+                             otherButtonTitles:@[@"我知道了"]] show];
             
         }else{
             [self.selectedAssets addObject:cell.asset];

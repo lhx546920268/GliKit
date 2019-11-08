@@ -9,7 +9,6 @@
 #import "UIViewController+GKUtils.h"
 #import <objc/runtime.h>
 #import "GKBaseNavigationController.h"
-#import "UINavigationBar+GKUtils.h"
 #import "UIView+GKUtils.h"
 #import "UIApplication+GKTheme.h"
 #import "NSString+GKUtils.h"

@@ -25,7 +25,7 @@ static char GKPartialContentSizeKey;
 
 @implementation UIViewController (GKTransition)
 
-// MARK: - swwizle
+// MARK: - Swizzle
 
 + (void)load
 {

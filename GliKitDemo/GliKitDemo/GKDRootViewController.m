@@ -16,6 +16,8 @@
 #import "GKDRowModel.h"
 #import "GKDEmptyViewController.h"
 #import "GKDProgressViewController.h"
+#import <objc/runtime.h>
+#import "GKDWebViewController.h"
 
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
@@ -38,8 +40,8 @@
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:GKDNestedParentViewController.class],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:GKDEmptyViewController.class],
                    [GKDRowModel modelWithTitle:@"进度条" clazz:GKDProgressViewController.class],
+                   [GKDRowModel modelWithTitle:@"Web" clazz:GKDWebViewController.class],
                    ];
-
     [self initViews];
     
     if (@available(iOS 10.0, *)) {

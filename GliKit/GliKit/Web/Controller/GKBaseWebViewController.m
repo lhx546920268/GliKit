@@ -28,7 +28,12 @@ static WKProcessPool *sharedProcessPool;
 /**
  加载进度条
  */
-@property(nonatomic,strong) GKProgressView *progressView;
+@property(nonatomic, strong) GKProgressView *progressView;
+
+/**
+ 获取userAgent的 webView，因为 在iOS 12中，在调用 navigatior.userAgent 后，设置customUserAgent会无效
+ */
+@property(nonatomic, strong) WKWebView *userAgentWebView;
 
 @end
 
@@ -203,6 +208,23 @@ static WKProcessPool *sharedProcessPool;
     return nil;
 }
 
+///获取userAgent
+- (void)loadUserAgentWithCompletion:(void(^)(void)) completion
+{
+    if(!self.userAgentWebView){
+        self.userAgentWebView = [WKWebView new];
+        WeakObj(self)
+        [self.userAgentWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+            if([NSString isEmpty:result]){
+                result = @"";
+            }
+            GKSystemUserAgent = result;
+            selfWeak.userAgentWebView = nil;
+            !completion ?: completion();
+        }];
+    }
+}
+
 // MARK: - 内容
 
 - (void)setHtmlString:(NSString *)htmlString
@@ -263,37 +285,28 @@ static WKProcessPool *sharedProcessPool;
 - (void)loadWebContent
 {
     BOOL loadEnable = YES;
-    
     //判断需不需要设置 自定义ua，没有获取的系统的ua 先获取
-    NSString *userAgent = [self customUserAgent];
-    if(![NSString isEmpty:userAgent]){
-        if(!GKSystemUserAgent){
-            if(@available(iOS 12.0, *)){
-                NSString *baseAgent = [NSString stringWithFormat:@"Mozilla/5.0 (iPhone; CPU iPhone OS %@ like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile 16A366", [UIDevice currentDevice].systemVersion];
-                NSString *agent = [NSString stringWithFormat:@"%@ %@", baseAgent, userAgent];
-                self.webView.customUserAgent = agent;
-            }
+    if(!GKSystemUserAgent){
+        NSString *userAgent = [self customUserAgent];
+        if(![NSString isEmpty:userAgent]){
             
             loadEnable = NO;
             WeakObj(self)
-            [self.webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-                
-                if([NSString isEmpty:result]){
-                    result = @"";
-                }
-                GKSystemUserAgent = result;
-                selfWeak.webView.customUserAgent = [NSString stringWithFormat:@"%@ %@", GKSystemUserAgent, userAgent];
+            [self loadUserAgentWithCompletion:^{
                 [selfWeak loadWebContent];
             }];
-        }else{
-            
-            if([NSString isEmpty:self.webView.customUserAgent]){
-                if(![NSString isEmpty:userAgent]){
-                    self.webView.customUserAgent = [NSString stringWithFormat:@"%@ %@", GKSystemUserAgent, userAgent];
-                }
+        }
+    }else{
+        
+        if([NSString isEmpty:self.webView.customUserAgent]){
+            NSString *userAgent = [self customUserAgent];
+            if(![NSString isEmpty:userAgent]){
+                NSString *agent = [NSString stringWithFormat:@"%@ %@", GKSystemUserAgent, userAgent];
+                self.webView.customUserAgent = agent;
             }
         }
     }
+ 
     if(loadEnable){
         if(self.URL){
             [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];

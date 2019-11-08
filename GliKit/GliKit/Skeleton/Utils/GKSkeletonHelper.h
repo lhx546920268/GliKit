@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)createLayers:(NSMutableArray<GKSkeletonSubLayer*>*) layers fromView:(UIView*) view rootView:(UIView*) rootView;
 
 /**
- 替换某个方法的实现 新增的方法要加一个前缀gk_skeleton_
+ 替换某个方法的实现 新增的方法要加一个前缀gkSkeleton_
 
  @param selector 要替换的方法
  @param owner 方法的拥有者

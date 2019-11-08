@@ -7,6 +7,7 @@
 //
 
 #import "GKSystemNavigationBar.h"
+#import "UIColor+GKTheme.h"
 
 @implementation GKSystemNavigationBar
 
@@ -31,6 +32,10 @@
 - (void)initialization
 {
     self.enable = YES;
+    //把导航栏变成透明
+    [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.shadowImage = [UIImage new];
+    self.tintColor = UIColor.gkNavigationBarTintColor;
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event

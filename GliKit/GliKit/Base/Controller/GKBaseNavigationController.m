@@ -8,7 +8,6 @@
 
 #import "GKBaseNavigationController.h"
 #import "GKSystemNavigationBar.h"
-#import "UIColor+GKTheme.h"
 #import "UIApplication+GKTheme.h"
 #import "UIViewController+GKUtils.h"
 
@@ -40,11 +39,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //把导航栏变成透明
-    [self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    self.navigationBar.shadowImage = [UIImage new];
-    self.navigationBar.tintColor = UIColor.gkNavigationBarTintColor;
     
     __weak GKBaseNavigationController *weakSelf = self;
     

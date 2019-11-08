@@ -97,6 +97,11 @@ static const CGFloat GKImageScale = 2.0;
  */
 - (UIImage*)gkSubImageWithRect:(CGRect) rect;
 
+/**
+ 修复图片方向错误，比如拍照的时候，有时图片方向不对
+ */
++ (UIImage*)gkFixOrientation:(UIImage *)aImage;
+
 @end
 
 NS_ASSUME_NONNULL_END
