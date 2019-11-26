@@ -29,6 +29,11 @@
     [self initViews];
 }
 
+- (void)setRouterParams:(NSDictionary *)params
+{
+    self.photoName = [params gkStringForKey:@"name"];
+}
+
 - (void)initViews
 {
     self.flowLayout.minimumLineSpacing = 5;

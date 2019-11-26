@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GKDPhotosViewController : GKCollectionViewController
 
+@property(nonatomic, copy) NSString *photoName;
+
 @end
 
 NS_ASSUME_NONNULL_END

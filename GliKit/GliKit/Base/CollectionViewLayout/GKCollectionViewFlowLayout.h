@@ -30,6 +30,9 @@ typedef NS_ENUM(NSInteger, GKCollectionViewItemAlignment)
 ///是否需要悬浮 default is 'NO'
 - (BOOL)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout shouldStickHeaderAtSection:(NSInteger) section;
 
+///某个header将要置顶
+- (void)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout headerWillStickAtSection:(NSInteger) section;
+
 ///每个区域的背景颜色
 - (nullable UIColor*)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout backgroundColorAtSection:(NSInteger) section;
 

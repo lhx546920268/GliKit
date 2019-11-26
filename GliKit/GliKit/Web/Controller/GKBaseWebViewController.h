@@ -79,10 +79,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  构造方法
+ *@param URLString 将要打开的链接
+ *@return 一个实例
+ */
+- (instancetype)initWithURLString:(nullable NSString*) URLString;
+
+/**
+ 构造方法
  *@param URL 将要打开的链接
  *@return 一个实例
  */
-- (instancetype)initWithURL:(nullable NSString*) URL;
+- (instancetype)initWithURL:(nullable NSURL*) URL;
 
 /**
  构造方法

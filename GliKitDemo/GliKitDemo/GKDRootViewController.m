@@ -18,6 +18,7 @@
 #import "GKDProgressViewController.h"
 #import <objc/runtime.h>
 #import "GKDWebViewController.h"
+#import <GKRouter.h>
 
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
@@ -32,6 +33,8 @@
     // Do any additional setup after loading the view.
     
     self.navigationItem.title = GKAppUtils.appName;
+    
+    [GKRouter.sharedRouter registerName:@"photo" forClass:GKDPhotosViewController.class];
     
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:GKDPhotosViewController.class],
@@ -107,7 +110,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
     GKDRowModel *model = self.datas[indexPath.row];
-    [self.class gkPushViewController:model.clazz.new];
+    [GKRouter.sharedRouter pushApp:NSStringFromClass(model.clazz) params:@{@"name": @"xxx"}];
 }
 
 @end

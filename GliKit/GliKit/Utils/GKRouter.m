@@ -13,51 +13,232 @@
 #import "NSObject+GKUtils.h"
 #import "NSDictionary+GKUtils.h"
 #import "NSString+GKUtils.h"
+#import "UIViewController+GKUtils.h"
+
+@interface GKRouter ()
+
+//已注册的类
+@property(nonatomic, strong) NSMutableDictionary<NSString*, Class> *registeredClasses;
+
+@end
 
 @implementation GKRouter
 
-+ (void)openWithData:(NSDictionary *) data
++ (GKRouter *)sharedRouter
 {
-    if(![data isKindOfClass:NSDictionary.class] || data.count == 0)
-        return;
+    static dispatch_once_t onceToken;
+    static GKRouter *sharedRouter = nil;
     
-    NSString *className = [data gkStringForKey:@"className"];
-    if([NSString isEmpty:className])
-        return;
+    dispatch_once(&onceToken, ^{
+        
+        sharedRouter = [GKRouter new];
+    });
     
-    Class clazz = NSClassFromString(className);
+    return sharedRouter;
+}
 
-    if(!clazz)
-        return;
-    
-    GKBaseViewController *vc = [clazz new];
-    if(![vc isKindOfClass:GKBaseViewController.class])
-        return;
-    
-    NSDictionary *propertyData = [data gkDictionaryForKey:@"data"];
-    if(propertyData.count > 0){
-        [self setPropertyForViewController:vc data:propertyData];
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.appScheme = @"app://";
+        self.registeredClasses = [NSMutableDictionary dictionary];
     }
-    UINavigationController *nav = self.gkCurrentNavigationController;
-    BOOL closeCurrent = [data gkBoolForKey:@"closeCurrent"];
-    if(closeCurrent && nav){
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
-        [viewControllers removeLastObject];
-        [viewControllers addObject:vc];
-        [nav pushViewController:vc animated:YES];
+    return self;
+}
+
+- (void)registerName:(NSString *)name forClass:(Class)cls
+{
+    if(name && cls){
+        self.registeredClasses[name] = cls;
     }else{
-        [NSObject gkPushViewController:vc];
+#ifdef DEBUG
+        @throw [NSException exceptionWithName:@"GKRouterNullException" reason:@"name and class can not be nil" userInfo:nil];
+#endif
     }
 }
 
-+ (void)setPropertyForViewController:(GKBaseViewController*) vc data:(NSDictionary*) data
+- (void)unregisterName:(NSString *)name
+{
+    if(name){
+        [self.registeredClasses removeObjectForKey:name];
+    }
+}
+
+- (void)pushApp:(NSString *)URLString
+{
+    [self pushApp:URLString params:nil];
+}
+
+- (void)pushApp:(NSString*) URLString params:(NSDictionary*) params
+{
+    [self push:[self.appScheme stringByAppendingString:URLString] params:params];
+}
+
+- (void)push:(NSString *)URLString
+{
+    [self push:URLString params:nil];
+}
+
+- (void)push:(NSString *)URLString params:(NSDictionary *)params
+{
+    [self open:URLString params:params isPresent:NO withNavigationBar:NO completion:nil];
+}
+
+- (void)presentApp:(NSString *)URLString
+{
+    [self presentApp:URLString params:nil];
+}
+
+- (void)presentApp:(NSString *)URLString params:(NSDictionary *)params
+{
+    [self presentApp:URLString params:params completion:nil];
+}
+
+- (void)presentApp:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
+{
+    [self presentApp:URLString params:params withNavigationBar:YES completion:completion];
+}
+
+- (void)presentApp:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
+{
+    [self present:[self.appScheme stringByAppendingString:URLString] params:params withNavigationBar:withNavigationBar completion:completion];
+}
+
+- (void)present:(NSString *)URLString
+{
+    [self present:URLString params:nil];
+}
+
+- (void)present:(NSString *)URLString params:(NSDictionary *)params
+{
+    [self present:URLString params:params completion:nil];
+}
+
+- (void)present:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
+{
+    [self present:URLString params:params withNavigationBar:YES completion:completion];
+}
+
+- (void)present:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
+{
+    [self open:URLString params:params isPresent:YES withNavigationBar:withNavigationBar completion:completion];
+}
+
+- (UIViewController *)get:(NSString *)URLString params:(NSMutableDictionary *)params
+{
+    NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
+    return [self viewControllerForComponents:components params:params];
+}
+
+- (UIViewController *)viewControllerForComponents:(NSURLComponents *) components params:(NSMutableDictionary *)params
+{
+    UIViewController *viewController = nil;
+    if(components){
+        NSString *clsName = components.host;
+        if(![NSString isEmpty:clsName]){
+            Class cls = self.registeredClasses[clsName];
+            if(!cls){
+                cls = NSClassFromString(clsName);
+            }
+            
+            viewController = [cls new];
+            if(![viewController isKindOfClass:UIViewController.class]){
+                viewController = nil;
+            }
+        }
+        
+    }
+    
+    if(!viewController){
+        [self cannotFound:components.string];
+    }else{
+        for(NSURLQueryItem *item in components.queryItems){
+            if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
+                params[item.name] = item.value;
+            }
+        }
+        [self setPropertyForViewController:viewController data:params];
+        if([viewController isKindOfClass:GKBaseViewController.class]){
+            GKBaseViewController *baseViewController = (GKBaseViewController*)viewController;
+            [baseViewController setRouterParams:params];
+        }
+    }
+    
+    return viewController;
+}
+
+///获取在tabBar上面对应的下标
+- (NSInteger)tabBarIndexForName:(NSString*) name
+{
+    UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+    if([controller isKindOfClass:UITabBarController.class]){
+        for(NSInteger i = 0;i < controller.viewControllers.count;i ++){
+            UIViewController *vc = controller.viewControllers[i];
+            if([vc.gkNameOfClass isEqualToString:name]){
+                return i;
+            }else if ([vc isKindOfClass:UINavigationController.class]){
+                UINavigationController *nav = (UINavigationController*)vc;
+                if([nav.viewControllers.firstObject.gkNameOfClass isEqualToString:name]){
+                    return i;
+                }
+            }
+        }
+    }
+    
+    return NSNotFound;
+}
+
+///打开一个页面
+- (void)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar completion:(void (^)(void))completion
+{
+    NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
+    if(!components){
+        [self cannotFound:components.string];
+        return;
+    }
+    
+    NSInteger tabBarIndex = [self tabBarIndexForName:components.host];
+    if(tabBarIndex != NSNotFound){
+        [self.gkCurrentViewController gkBackAnimated:NO completion:^{
+            UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+            controller.selectedIndex = tabBarIndex;
+        }];
+        return;
+    }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:params];
+    UIViewController *viewController = [self viewControllerForComponents:components params:dic];
+    if(!viewController)
+        return;
+    
+    if(withNavigationBar){
+        viewController = viewController.gkCreateWithNavigationController;
+    }
+    if(isPresent){
+        [self.gkCurrentViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:completion];
+    }else{
+        [self.class gkPushViewController:viewController];
+    }
+}
+       
+
+///找不到对应的页面
+- (void)cannotFound:(NSString*) URLString
+{
+#ifdef DEBUG
+    NSLog(@"Can not found viewControlelr for %@", URLString);
+#endif
+}
+
+- (void)setPropertyForViewController:(UIViewController*) vc data:(NSDictionary*) data
 {
     [self setPropertyForViewController:vc data:data clazz:vc.class];
 }
 
-+ (void)setPropertyForViewController:(GKBaseViewController*) vc data:(NSDictionary*) data clazz:(Class) clazz
+- (void)setPropertyForViewController:(UIViewController*) vc data:(NSDictionary*) data clazz:(Class) clazz
 {
-    if(clazz == GKBaseViewController.class){
+    if(clazz == UIViewController.class){
         return;
     }
     

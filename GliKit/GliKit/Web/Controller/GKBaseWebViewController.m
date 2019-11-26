@@ -60,17 +60,28 @@ static WKProcessPool *sharedProcessPool;
     return self;
 }
 
-- (instancetype)initWithURL:(NSString*) URL
+- (instancetype)initWithURLString:(NSString *)URLString
+{
+    NSURL *URL = nil;
+    if(![NSString isEmpty:URLString]){
+        URL = [NSURL URLWithString:URLString];
+        if(!URL){
+            if(![URLString hasPrefix:@"http://"] || ![URLString hasPrefix:@"https://"]){
+                URLString = [NSString stringWithFormat:@"http://%@", URLString];
+            }
+            URL = [NSURL URLWithString:URLString];
+        }
+    }
+    
+ 
+    return [self initWithURL:URL];
+}
+
+- (instancetype)initWithURL:(NSURL*) URL
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self){
-        if(![NSString isEmpty:URL]){
-            if(![URL containsString:@"://"]){
-                URL = [NSString stringWithFormat:@"http://%@", URL];
-            }
-            self.URL = [NSURL URLWithString:URL];
-        }
-        
+       
         _originalURL = [URL copy];
         [self initViews];
     }
