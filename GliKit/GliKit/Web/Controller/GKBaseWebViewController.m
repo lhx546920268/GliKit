@@ -73,7 +73,6 @@ static WKProcessPool *sharedProcessPool;
         }
     }
     
- 
     return [self initWithURL:URL];
 }
 
@@ -82,6 +81,7 @@ static WKProcessPool *sharedProcessPool;
     self = [super initWithNibName:nil bundle:nil];
     if(self){
        
+        _URL = URL;
         _originalURL = [URL copy];
         [self initViews];
     }
@@ -333,11 +333,7 @@ static WKProcessPool *sharedProcessPool;
 {
     if([keyPath isEqualToString:@"estimatedProgress"]){
         
-        if(self.navigatonBar && !self.navigatonBar.hidden){
-            [self setProgress:_webView.estimatedProgress];
-        }else{
-            self.progressView.hidden = YES;
-        }
+        [self setProgress:_webView.estimatedProgress];
     }else if ([keyPath isEqualToString:@"title"]){
         
         if(self.useWebTitle){

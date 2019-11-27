@@ -112,6 +112,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)gkPushViewControllerRemoveSameIfNeeded:(UIViewController*) viewController;
 
+/**
+ 打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
+
+ @param viewController 要push 的视图控制器
+ @param toReplacedViewControlelrs 要替换的
+ */
++ (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
+
 @end
 
 NS_ASSUME_NONNULL_END

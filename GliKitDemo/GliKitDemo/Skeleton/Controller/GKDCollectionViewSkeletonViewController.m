@@ -41,7 +41,7 @@
 
 - (void)initViews
 {
-    CGFloat size = (UIScreen.gkScreenWidth - 10 * 4) / 3;
+    CGFloat size = floor((UIScreen.gkScreenWidth - 10 * 4) / 3);
     self.flowLayout.itemSize = CGSizeMake(size, size + 30);
     self.flowLayout.minimumLineSpacing = 10;
     self.flowLayout.minimumInteritemSpacing = 10;

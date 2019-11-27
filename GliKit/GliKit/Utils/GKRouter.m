@@ -14,6 +14,7 @@
 #import "NSDictionary+GKUtils.h"
 #import "NSString+GKUtils.h"
 #import "UIViewController+GKUtils.h"
+#import "GKBaseWebViewController.h"
 
 @interface GKRouter ()
 
@@ -43,8 +44,18 @@
     if (self) {
         self.appScheme = @"app://";
         self.registeredClasses = [NSMutableDictionary dictionary];
+        self.openURLWhileSchemeNotSupport = YES;
     }
     return self;
+}
+
+- (NSString *)appScheme
+{
+    if(!_appScheme){
+        return @"app://";
+    }
+    
+    return _appScheme;
 }
 
 - (void)registerName:(NSString *)name forClass:(Class)cls
@@ -52,9 +63,7 @@
     if(name && cls){
         self.registeredClasses[name] = cls;
     }else{
-#ifdef DEBUG
         @throw [NSException exceptionWithName:@"GKRouterNullException" reason:@"name and class can not be nil" userInfo:nil];
-#endif
     }
 }
 
@@ -64,6 +73,8 @@
         [self.registeredClasses removeObjectForKey:name];
     }
 }
+
+// MARK: - Push
 
 - (void)pushApp:(NSString *)URLString
 {
@@ -84,6 +95,45 @@
 {
     [self open:URLString params:params isPresent:NO withNavigationBar:NO completion:nil];
 }
+
+// MARK: - Replace
+
+- (void)replace:(NSString *)URLString
+{
+    [self replace:URLString params:nil];
+}
+
+- (void)replace:(NSString *)URLString params:(NSDictionary *)params
+{
+    NSArray *viewControllers = nil;
+    UIViewController *viewController = self.gkCurrentViewController;
+    if(viewController){
+        viewControllers = @[viewController];
+    }
+    [self replace:URLString params:params toReplacedViewControlelrs:viewControllers];
+}
+
+- (void)replace:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+{
+    [self open:URLString params:params isPresent:NO withNavigationBar:NO toReplacedViewControlelrs:toReplacedViewControlelrs completion:nil];
+}
+
+- (void)replaceApp:(NSString *)URLString
+{
+    [self replaceApp:URLString params:nil];
+}
+
+- (void)replaceApp:(NSString *)URLString params:(NSDictionary *)params
+{
+    [self replace:[self.appScheme stringByAppendingString:URLString] params:params];
+}
+
+- (void)replaceApp:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+{
+    [self replace:[self.appScheme stringByAppendingString:URLString] params:params toReplacedViewControlelrs:toReplacedViewControlelrs];
+}
+
+// MARK: - Present
 
 - (void)presentApp:(NSString *)URLString
 {
@@ -125,6 +175,8 @@
     [self open:URLString params:params isPresent:YES withNavigationBar:withNavigationBar completion:completion];
 }
 
+// MARK: - ViewController
+
 - (UIViewController *)get:(NSString *)URLString params:(NSMutableDictionary *)params
 {
     NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
@@ -135,24 +187,30 @@
 {
     UIViewController *viewController = nil;
     if(components){
-        NSString *clsName = components.host;
-        if(![NSString isEmpty:clsName]){
-            Class cls = self.registeredClasses[clsName];
-            if(!cls){
-                cls = NSClassFromString(clsName);
+        NSString *scheme = [components.scheme stringByAppendingString:@"://"];
+        if([scheme isEqualToString:self.appScheme]){
+            NSString *clsName = components.host;
+            if(![NSString isEmpty:clsName]){
+                Class cls = self.registeredClasses[clsName];
+                if(!cls){
+                    cls = NSClassFromString(clsName);
+                }
+                
+                viewController = [cls new];
+                if(![viewController isKindOfClass:UIViewController.class]){
+                    viewController = nil;
+                }
             }
-            
-            viewController = [cls new];
-            if(![viewController isKindOfClass:UIViewController.class]){
-                viewController = nil;
-            }
+        }else if([scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"]){
+            GKBaseWebViewController *web = [[GKBaseWebViewController alloc] initWithURLString:components.string];
+            [web setRouterParams:params];
+            viewController = web;
         }
-        
     }
     
     if(!viewController){
         [self cannotFound:components.string];
-    }else{
+    }else if(![viewController isKindOfClass:GKBaseWebViewController.class]){
         for(NSURLQueryItem *item in components.queryItems){
             if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
                 params[item.name] = item.value;
@@ -189,8 +247,13 @@
     return NSNotFound;
 }
 
-///打开一个页面
 - (void)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar completion:(void (^)(void))completion
+{
+    [self open:URLString params:params isPresent:isPresent withNavigationBar:withNavigationBar toReplacedViewControlelrs:nil completion:completion];
+}
+
+///打开一个页面
+- (void)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar toReplacedViewControlelrs:(NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void (^)(void))completion
 {
     NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
     if(!components){
@@ -209,8 +272,12 @@
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:params];
     UIViewController *viewController = [self viewControllerForComponents:components params:dic];
-    if(!viewController)
+    if(!viewController){
+        if(self.openURLWhileSchemeNotSupport && ![self isSupportScheme:components.scheme]){
+            [UIApplication.sharedApplication openURL:components.URL];
+        }
         return;
+    }
     
     if(withNavigationBar){
         viewController = viewController.gkCreateWithNavigationController;
@@ -218,7 +285,7 @@
     if(isPresent){
         [self.gkCurrentViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:completion];
     }else{
-        [self.class gkPushViewController:viewController];
+        [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs];
     }
 }
        
@@ -230,6 +297,15 @@
     NSLog(@"Can not found viewControlelr for %@", URLString);
 #endif
 }
+
+///判断scheme是否支持
+- (BOOL)isSupportScheme:(NSString*) scheme
+{
+    scheme = [scheme stringByAppendingString:@"://"];
+    return [scheme isEqualToString:self.appScheme] || [scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"];
+}
+
+// MARK: - Property
 
 - (void)setPropertyForViewController:(UIViewController*) vc data:(NSDictionary*) data
 {
@@ -250,39 +326,19 @@
         objc_property_t property = properties[i];
         NSString *name = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
         
-        //类型地址 https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
-        NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
-        
-        NSArray *attrs = [attr componentsSeparatedByString:@","];
-        
-        //判断是否是只读属性
-        if(attrs.count > 0 && ![attrs containsObject:@"R"]){
+        id value = [data objectForKey:name];
+        if(value){
+            //类型地址 https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
+            NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
             
-            id value = [data objectForKey:name];
-            if([value isKindOfClass:NSString.class] || [value isKindOfClass:NSNumber.class]){
-                
+            NSArray *attrs = [attr componentsSeparatedByString:@","];
+            
+            //判断是否是只读属性
+            if(attrs.count > 0 && ![attrs containsObject:@"R"]){
                 if([attr containsString:@"NSString"]){
                     [vc setValue:[data gkStringForKey:name] forKey:name];
                 }else{
                     [vc setValue:value forKey:name];
-                }
-            }else if ([value isKindOfClass:NSDictionary.class]){
-                
-                //把字典转换成对应模型
-                NSDictionary *dic = (NSDictionary*)value;
-                NSString *className = [dic gkStringForKey:@"className"];
-                Class clazz = NSClassFromString(className);
-                GKObject *obj = [clazz new];
-                if([obj isKindOfClass:GKObject.class]){
-                    
-                    id modelData = [dic objectForKey:@"data"];
-                    if([modelData isKindOfClass:NSDictionary.class]){
-                        [obj setDictionary:modelData];
-                        [vc setValue:obj forKey:name];
-                    }else if([modelData isKindOfClass:NSArray.class]){
-                        
-                        [vc setValue:[clazz modelsFromArray:modelData] forKey:name];
-                    }
                 }
             }
         }
@@ -291,5 +347,6 @@
     //递归获取父类的属性
     [self setPropertyForViewController:vc data:data clazz:[clazz superclass]];
 }
+
 
 @end

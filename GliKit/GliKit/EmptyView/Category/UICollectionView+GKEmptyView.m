@@ -95,11 +95,12 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///item为0，section 大于0时，可能存在sectionHeader
-        if(empty && section > 0){
+        if(empty && section > 0 && [self.collectionViewLayout isKindOfClass:UICollectionViewFlowLayout.class]){
+            
+            UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
+            id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
             if(!self.gkShouldShowEmptyViewWhenExistSectionHeaderView){
-                UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
-                id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
-                
+
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
                         CGSize size = [delegate collectionView:self layout:layout referenceSizeForHeaderInSection:i];
@@ -114,9 +115,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
             }
             
             if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooterView){
-                UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
-                id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.delegate;
-                
+
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
                         CGSize size = [delegate collectionView:self layout:layout referenceSizeForFooterInSection:i];

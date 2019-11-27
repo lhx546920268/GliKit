@@ -271,7 +271,7 @@
 
 + (void)gkPushViewController:(UIViewController*) viewController
 {
-    [self gkPushViewController:viewController shouldReplaceLastSame:NO];
+    [self gkPushViewController:viewController toReplacedViewControlelrs:nil];
 }
 
 + (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController
@@ -283,7 +283,6 @@
 {
     if(!viewController)
         return;
-    viewController.hidesBottomBarWhenPushed = YES;
     UIViewController *parentViewControlelr = self.gkCurrentViewController;
     
     UINavigationController *nav = parentViewControlelr.navigationController;
@@ -295,8 +294,6 @@
             NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
             [viewControllers removeLastObject];
             [viewControllers addObject:viewController];
-            
-            viewController.gkShowBackItem = YES;
             
             [nav setViewControllers:viewControllers animated:YES];
         }else{
@@ -332,6 +329,32 @@
         [viewControllers addObject:viewController];
         
         [nav setViewControllers:viewControllers animated:YES];
+    }else{
+        [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
+    }
+}
+
++ (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+{
+    if(!viewController)
+        return;
+    UIViewController *parentViewControlelr = self.gkCurrentViewController;
+    
+    UINavigationController *nav = parentViewControlelr.navigationController;
+    if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
+        nav = (UINavigationController*)parentViewControlelr;
+    }
+    if(nav){
+        if(toReplacedViewControlelrs.count > 0){
+            NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
+            [viewControllers removeObjectsInArray:toReplacedViewControlelrs];
+            [viewControllers addObject:viewController];
+            
+            [nav setViewControllers:viewControllers animated:YES];
+        }else{
+            [nav pushViewController:viewController animated:YES];
+        }
+           
     }else{
         [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
     }

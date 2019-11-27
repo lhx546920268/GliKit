@@ -48,12 +48,29 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        _photosOptions = [GKPhotosOptions new];
         _fetchOptions = [PHFetchOptions new];
         _fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
     }
     
     return self;
+}
+
+- (GKPhotosOptions *)photosOptions
+{
+    if(!_photosOptions){
+        _photosOptions = [GKPhotosOptions new];
+    }
+    return _photosOptions;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if(self.datas.count > 0){
+        if(!self.isInit){
+            [self initViews];
+        }
+    }
 }
 
 - (void)viewDidLoad
@@ -169,8 +186,6 @@
     self.datas = datas;
     if(self.isInit){
         [self.tableView reloadData];
-    }else{
-        [self initViews];
     }
     
     if(self.photosOptions.displayFistCollection && self.datas.count > 0){
@@ -179,6 +194,10 @@
         vc.collection = self.datas.firstObject;
         
         [self.navigationController setViewControllers:@[self, vc]];
+    }else{
+        if(!self.isInit){
+            [self initViews];
+        }
     }
 }
 

@@ -193,14 +193,14 @@
             //当 self.view 不是 container时， container中的子视图布局完成不会调用 viewDidLayoutSubviews 要手动，否则在 viewDidLayoutSubviews中获取 self.contentView的大小时会失败
             WeakObj(self);
             self.container.layoutSubviewsHandler = ^(void){
-                [selfWeak viewDidLayoutSubviews];
+                [selfWeak viewDidLayoutSubviewsShouldCallSuper:NO];
             };
             [self.view addSubview:self.container];
         }
     }else{
     
         self.view.backgroundColor = [UIColor whiteColor];
-        if(self.navigationController.viewControllers.count > 1 && !self.gkShowBackItem){
+        if(!self.gkShowBackItem && (self.navigationController.viewControllers.count > 1 || self.navigationController.presentingViewController)){
             self.gkShowBackItem = YES;
         }
     }
@@ -209,6 +209,14 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    [self viewDidLayoutSubviewsShouldCallSuper:YES];
+}
+
+- (void)viewDidLayoutSubviewsShouldCallSuper:(BOOL) callSuper
+{
+    if(callSuper){
+        [super viewDidLayoutSubviews];
+    }
     _isViewDidLayoutSubviews = YES;
     if(self.navigatonBar){
         [self.view bringSubviewToFront:self.navigatonBar];

@@ -141,9 +141,6 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
                 
                 if (originInCollectionView.y < 0){
                     frame.origin.y += (originInCollectionView.y * -1);
-                    if([self.s_delegate respondsToSelector:@selector(collectionViewFlowLayout:headerWillStickAtSection:)]){
-                        [self.s_delegate collectionViewFlowLayout:self headerWillStickAtSection:attr.indexPath.section];
-                    }
                 }
                 
                 NSInteger numberOfSections = 1;

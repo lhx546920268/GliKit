@@ -32,6 +32,10 @@
 - (void)setRouterParams:(NSDictionary *)params
 {
     self.photoName = [params gkStringForKey:@"name"];
+    self.selectHandler = params[@"selectHandler"];
+    
+    NSObject *value = [params objectForKey:@"selectHandler"];
+    NSLog(@"%@", value.class);
 }
 
 - (void)initViews
@@ -67,6 +71,7 @@
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
+    !self.selectHandler ?: self.selectHandler(@"这是一个回调");
     if(indexPath.item < self.results.count){
         
         NSMutableArray *images = [NSMutableArray array];

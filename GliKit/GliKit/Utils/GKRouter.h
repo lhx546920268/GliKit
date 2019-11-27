@@ -19,7 +19,10 @@ typedef void(^GKRounterOpenCompletion)(void);
 @property(class, nonatomic, readonly) GKRouter *sharedRouter;
 
 ///app default @"app://"
-@property(nonatomic, copy) NSString *appScheme;
+@property(nonatomic, copy, null_resettable) NSString *appScheme;
+
+///当scheme不支持时，是否用 UIApplication 打开 default YES
+@property(nonatomic, assign) BOOL openURLWhileSchemeNotSupport;
 
 /**
  注册一个页面
@@ -46,6 +49,20 @@ typedef void(^GKRounterOpenCompletion)(void);
 - (void)push:(NSString*) URLString;
 - (void)pushApp:(NSString*) URLString params:(nullable NSDictionary*) params;
 - (void)pushApp:(NSString*) URLString;
+
+/**
+ 替换一个页面，只有带导航栏的视图控制器才能替换
+ 
+ @param URLString 页面链接 可带参数，如 app://profile?userId=1
+ @param params 页面参数
+ @param toReplacedViewControlelrs 要替换的视图，不带toReplacedViewControlelrs时， 默认替换当前页
+ */
+- (void)replace:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
+- (void)replace:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (void)replace:(NSString*) URLString;
+- (void)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
+- (void)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (void)replaceApp:(NSString*) URLString;
 
 /**
  打开一个页面

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKPhotosViewController : GKTableViewController
 
 ///选项
-@property(nonatomic, readonly) GKPhotosOptions *photosOptions;
+@property(nonatomic, strong) GKPhotosOptions *photosOptions;
 
 @end
 
