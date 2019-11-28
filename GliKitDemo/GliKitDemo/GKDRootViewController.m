@@ -110,38 +110,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
     GKDRowModel *model = self.datas[indexPath.row];
-    
-    void(^callback)(NSString*) = ^(NSString *title){
-        
-        NSLog(@"%@ %@", model.title, title);
-    };
-    
-    void(^callback1)(NSString*) = ^(NSString *title){
-        
-        NSLog(@"%@ %@", model.title, title);
-    };
-    
-    void(^callback2)(NSString*) = ^(NSString *title){
-        
-        NSLog(@"%@ %@", model.title, title);
-    };
-    
-    NSMutableArray *array = [NSMutableArray arrayWithObjects:^(NSString *title){
-        
-        NSLog(@"%@ %@", model.title, title);
-    }, ^(NSString *title){
-        
-        
-    }, ^(NSString *title){
-        
-        
-    }, ^(NSString *title){
-        
-        
-    }, nil];
-    
-    NSLog(@"%@", array);
-    [GKRouter.sharedRouter pushApp:NSStringFromClass(model.clazz) params:@{@"name": @"这是一个名词", @"selectHandler": callback}];
+    [GKRouter.sharedRouter pushApp:NSStringFromClass(model.clazz)];
 }
 
 @end

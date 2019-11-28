@@ -14,6 +14,8 @@
 		CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C680233B49D500C4F196 /* GKDCollectionEmptyViewController.m */; };
 		CE37C684233B4A2700C4F196 /* GKDEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C683233B4A2700C4F196 /* GKDEmptyViewController.m */; };
 		CE37C687233B4AAA00C4F196 /* GKDRowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C686233B4AAA00C4F196 /* GKDRowModel.m */; };
+		CE3987E6238FAFF700703C0B /* GKDTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */; };
+		CE3987E7238FB80700703C0B /* GKDNestedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB85F51232630560045CB38 /* GKDNestedTableViewCell.xib */; };
 		CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */; };
 		CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F4D232630210045CB38 /* GKDNestedParentViewController.m */; };
 		CEB85F52232630560045CB38 /* GKDNestedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F50232630560045CB38 /* GKDNestedTableViewCell.m */; };
@@ -513,9 +515,11 @@
 				CEB8B652238E5E94002E51A3 /* LaunchScreen.storyboard in Resources */,
 				CEB8B675238E7639002E51A3 /* GKDNormalSkeletonViewController.xib in Resources */,
 				CEB8B672238E629C002E51A3 /* Assets.xcassets in Resources */,
+				CE3987E6238FAFF700703C0B /* GKDTransitionViewController.xib in Resources */,
 				CEB8B674238E7634002E51A3 /* GKDCollectionViewSkeletonHeader.xib in Resources */,
 				CEB8B64F238E5E94002E51A3 /* Assets.xcassets in Resources */,
 				CEB8B673238E762F002E51A3 /* GKDTableViewSkeletonCell.xib in Resources */,
+				CE3987E7238FB80700703C0B /* GKDNestedTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

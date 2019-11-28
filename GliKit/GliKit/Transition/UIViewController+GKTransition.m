@@ -65,7 +65,7 @@ static char GKPartialContentSizeKey;
 
 - (void)setGkTransitioningDelegate:(id<UIViewControllerTransitioningDelegate>)gkTransitioningDelegate
 {
-    NSAssert(![gkTransitioningDelegate isEqual:self], @"gk_transitioningDelegate 不能设置为self，如果要设置成self，使用 transitioningDelegate");
+    NSAssert(![gkTransitioningDelegate isEqual:self], @"gkTransitioningDelegate 不能设置为self，如果要设置成self，使用 transitioningDelegate");
     objc_setAssociatedObject(self, &GKTransitioningDelegateKey, gkTransitioningDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.transitioningDelegate = gkTransitioningDelegate;
 }
