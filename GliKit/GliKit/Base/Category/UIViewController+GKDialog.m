@@ -275,7 +275,7 @@ static char GKInPresentWayKey;
     [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil];
 }
 
-- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (^)(UIView *, UIView *))layoutHandler
+- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (NS_NOESCAPE ^)(UIView *, UIView *))layoutHandler
 {
     if(self.isDialogShowing){
         return;

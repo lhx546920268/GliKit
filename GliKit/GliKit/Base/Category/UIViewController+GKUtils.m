@@ -161,7 +161,7 @@ static char GKShowBackItemKey;
     [self gkBackAnimated:flag completion:nil];
 }
 
-- (void)gkBackAnimated:(BOOL) flag completion: (void (^)(void))completion
+- (void)gkBackAnimated:(BOOL) flag completion: (void (NS_NOESCAPE ^)(void))completion
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];

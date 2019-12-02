@@ -65,7 +65,7 @@ static char GKSkeletonHideAnimateKey;
     return [objc_getAssociatedObject(self, &GKSkeletonHideAnimateKey) boolValue];
 }
 
-- (void)gkHideSkeletonWithAnimate:(BOOL)animate completion:(void (^)(BOOL))completion
+- (void)gkHideSkeletonWithAnimate:(BOOL)animate completion:(void (NS_NOESCAPE ^)(BOOL))completion
 {
     GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing){

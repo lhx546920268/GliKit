@@ -315,7 +315,7 @@
 
 - (void)addCanceledTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
 {
-    [self _removeInvalidTasksAndCancelTheSame:cancel forName:task.name];
+    [self removeInvalidTasksAndCancelTheSame:cancel forName:task.name];
     if(task){
         if(!self.currentTasks){
             self.currentTasks = [NSMutableSet set];
@@ -326,7 +326,7 @@
 
 - (void)addCanceledTasks:(GKHttpMultiTasks*) tasks
 {
-    [self _removeInvalidTasksAndCancelTheSame:NO forName:nil];
+    [self removeInvalidTasksAndCancelTheSame:NO forName:nil];
     if(tasks){
         if(!self.currentTasks){
             self.currentTasks = [NSMutableSet set];
@@ -336,7 +336,7 @@
 }
 
 ///移除无效的请求
-- (void)_removeInvalidTasksAndCancelTheSame:(BOOL) cancel forName:(NSString*) name
+- (void)removeInvalidTasksAndCancelTheSame:(BOOL) cancel forName:(NSString*) name
 {
     if(self.currentTasks.count > 0){
         NSMutableSet *toRemoveTasks = [NSMutableSet set];
@@ -389,7 +389,7 @@
     if(_shouldDismissKeyboardWhileTap != shouldDismissKeyboardWhileTap){
         _shouldDismissKeyboardWhileTap = shouldDismissKeyboardWhileTap;
         if(!self.tapDialogBackgroundGestureRecognizer){
-            self.dismissKeyboardGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleDismissKeyboard:)];
+            self.dismissKeyboardGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissKeyboard:)];
             self.dismissKeyboardGestureRecognizer.delegate = self;
             [self.view addGestureRecognizer:self.dismissKeyboardGestureRecognizer];
         }
@@ -410,7 +410,7 @@
 }
 
 ///回收键盘
-- (void)_handleDismissKeyboard:(id) sender
+- (void)handleDismissKeyboard:(id) sender
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
 }

@@ -167,27 +167,27 @@
 
 // MARK: - 计算
 
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(NS_NOESCAPE GKCellConfiguration) configuration
 {
     return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeZero configuration:configuration];
 }
 
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(NS_NOESCAPE GKCellConfiguration) configuration
 {
     return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:constraintSize type:GKAutoLayoutCalculateTypeSize configuration:configuration];
 }
 
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(NS_NOESCAPE GKCellConfiguration) configuration
 {
     return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeMake(width, 0) type:GKAutoLayoutCalculateTypeHeight configuration:configuration];
 }
 
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(NS_NOESCAPE GKCellConfiguration) configuration
 {
     return [self gkCellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeMake(0, height) type:GKAutoLayoutCalculateTypeWidth configuration:configuration];
 }
 
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize type:(GKAutoLayoutCalculateType) type configuration:(GKCellConfiguration) configuration
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize type:(GKAutoLayoutCalculateType) type configuration:(NS_NOESCAPE GKCellConfiguration) configuration
 {
     NSValue *value = [self gkCachedSizeForIndexPath:indexPath];
     if (value != nil && !CGSizeEqualToSize(CGSizeZero, [value CGSizeValue])){

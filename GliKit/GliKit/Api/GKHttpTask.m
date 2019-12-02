@@ -78,20 +78,20 @@ static NSMutableSet* GKSharedTasks()
             
             _URLSessionTask = [manager uploadTaskWithURLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval files:files success:^(NSURLSessionDataTask *task, id responseObject) {
                 
-                [selfWeak _processSuccessResult:responseObject];
+                [selfWeak processSuccessResult:responseObject];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 
-                [selfWeak _processError:error];
+                [selfWeak processError:error];
             }];
             
         }else{
             _URLSessionTask = [manager dataTaskWithHTTPMethod:self.httpMethod URLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval success:^(NSURLSessionTask *task, NSDictionary * responseObject) {
                 
-                [selfWeak _processSuccessResult:responseObject];
+                [selfWeak processSuccessResult:responseObject];
                 
             } failure:^(NSURLSessionTask *operation, NSError *error) {
                 
-                [selfWeak _processError:error];
+                [selfWeak processError:error];
             }];
         }
     }
@@ -99,23 +99,23 @@ static NSMutableSet* GKSharedTasks()
 }
 
 ///处理http请求请求成功的结果
-- (void)_processSuccessResult:(NSDictionary*) result
+- (void)processSuccessResult:(NSDictionary*) result
 {
     if([result isKindOfClass:[NSDictionary class]]){
         _data = result;
         _isApiSuccess = [self onLoadData:_data];
         if(_isApiSuccess){
-            [self _requestDidSuccess];
+            [self requestDidSuccess];
         }else{
-            [self _requestDidFail];
+            [self requestDidFail];
         }
     }else{
-        [self _requestDidFail];
+        [self requestDidFail];
     }
 }
 
 ///处理请求失败错误
-- (void)_processError:(NSError*) error
+- (void)processError:(NSError*) error
 {
     //是自己取消的  因为服务端取消的也会被标记成 NSURLErrorCancelled
     if(self.isCanceled){
@@ -135,7 +135,7 @@ static NSMutableSet* GKSharedTasks()
             break;
     }
     
-    [self _requestDidFail];
+    [self requestDidFail];
 }
 
 // MARK: - 状态
@@ -210,7 +210,7 @@ static NSMutableSet* GKSharedTasks()
 // MARK: - 内部回调
 
 ///请求成功
-- (void)_requestDidSuccess
+- (void)requestDidSuccess
 {
     [self onSuccess];
     if([self.delegate respondsToSelector:@selector(taskDidSuccess:)]){
@@ -224,7 +224,7 @@ static NSMutableSet* GKSharedTasks()
 }
 
 ///请求失败
-- (void)_requestDidFail
+- (void)requestDidFail
 {
     WeakObj(self)
     dispatch_async(dispatch_get_main_queue(), ^{

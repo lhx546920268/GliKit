@@ -61,11 +61,11 @@
 
 - (UICollectionView*)collectionView
 {
-    [self _initCollectionView];
+    [self initCollectionView];
     return _collectionView;
 }
 
-- (void)_initCollectionView
+- (void)initCollectionView
 {
     if(_collectionView == nil){
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
@@ -82,7 +82,7 @@
 - (void)initViews
 {
     [super initViews];
-    [self _initCollectionView];
+    [self initCollectionView];
     self.contentView = _collectionView;
 }
 

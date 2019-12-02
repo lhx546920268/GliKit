@@ -21,7 +21,7 @@ typedef void(^GKCellConfiguration)(__kindof UICollectionReusableView *cell);
  *@param indexPath cell下标
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(nullable GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
 
 /**获取cell大小
  *@param identifier cell唯一标识
@@ -29,7 +29,7 @@ typedef void(^GKCellConfiguration)(__kindof UICollectionReusableView *cell);
  *@param constraintSize 最大，只能设置 宽度或高度
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(nullable GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
 
 /**获取cell大小
  *@param identifier cell唯一标识
@@ -37,7 +37,7 @@ typedef void(^GKCellConfiguration)(__kindof UICollectionReusableView *cell);
  *@param width cell宽度
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(nullable GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
 
 /**获取cell大小
  *@param identifier cell唯一标识
@@ -45,7 +45,7 @@ typedef void(^GKCellConfiguration)(__kindof UICollectionReusableView *cell);
  *@param height cell高度
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(nullable GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
 
 
 ///头部

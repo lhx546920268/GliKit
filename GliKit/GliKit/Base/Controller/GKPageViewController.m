@@ -94,7 +94,7 @@
     if(!CGSizeEqualToSize(self.scrollView.frame.size, CGSizeZero) && !CGSizeEqualToSize(self.scrollView.frame.size, self.scrollViewSize)){
         
         self.scrollViewSize = self.scrollView.frame.size;
-        [self _layoutPages];
+        [self layoutPages];
         
         if((self.willScrollToPage > 0 && self.willScrollToPage < self.numberOfPage) || self.menuBar.selectedIndex != 0){
             
@@ -109,25 +109,25 @@
 }
 
 ///调整子视图
-- (void)_layoutPages
+- (void)layoutPages
 {
     if(!CGSizeEqualToSize(self.scrollViewSize, CGSizeZero)){
         self.scrollView.contentSize = CGSizeMake(self.scrollViewSize.width * self.numberOfPage, self.scrollViewSize.height);
-        [self _layoutVisiablePages];
+        [self layoutVisiablePages];
     }
 }
 
 ///调整可见部分的视图
-- (void)_layoutVisiablePages
+- (void)layoutVisiablePages
 {
     NSInteger index = floor(self.scrollView.contentOffset.x / self.scrollViewSize.width);
-    [self _layoutPageForIndex:index - 1];
-    [self _layoutPageForIndex:index];
-    [self _layoutPageForIndex:index + 1];
+    [self layoutPageForIndex:index - 1];
+    [self layoutPageForIndex:index];
+    [self layoutPageForIndex:index + 1];
 }
 
 ///调整viewControlelr
-- (void)_layoutPageForIndex:(NSInteger) index
+- (void)layoutPageForIndex:(NSInteger) index
 {
     if(index >= 0 && index < [self numberOfPage]){
         UIViewController *viewControlelr = [self viewControllerForIndex:index];
@@ -152,7 +152,7 @@
 
 - (void)reloadData
 {
-    [self _layoutPages];
+    [self layoutPages];
     self.scrollView.contentOffset = CGPointZero;
 }
 
@@ -204,14 +204,14 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.beginOffset = scrollView.contentOffset;
-    [self _setScrollEnable:NO];
+    [self setScrollEnable:NO];
     
     [super scrollViewWillBeginDragging:scrollView];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [self _layoutVisiablePages];
+    [self layoutVisiablePages];
     
     CGFloat offset = scrollView.contentOffset.x;
     if(offset <= 0 || offset >= scrollView.gkWidth * (self.menuBar.titles.count - 1)){
@@ -244,14 +244,14 @@
 {
     if(!decelerate){
         [self scrollToVisibleIndex];
-        [self _setScrollEnable:YES];
+        [self setScrollEnable:YES];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self scrollToVisibleIndex];
-    [self _setScrollEnable:YES];
+    [self setScrollEnable:YES];
 }
 
 ///滑动到可见位置
@@ -271,7 +271,7 @@
 }
 
 ///设置是否可以滑动
-- (void)_setScrollEnable:(BOOL) enable
+- (void)setScrollEnable:(BOOL) enable
 {
     for(UIViewController *viewController in _pageViewControllers){
         if([viewController isKindOfClass:[GKScrollViewController class]]){

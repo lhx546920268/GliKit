@@ -104,7 +104,7 @@ static WKProcessPool *sharedProcessPool;
     [super viewDidLoad];
     
     [self willInitWebView];
-    [self _initWebView];
+    [self initWebView];
     [self loadWebContent];
 }
 
@@ -123,7 +123,7 @@ static WKProcessPool *sharedProcessPool;
 /**
  初始化webView
  */
-- (void)_initWebView
+- (void)initWebView
 {
     //加载进度条条
     UIView *contentView = [UIView new];
@@ -135,7 +135,7 @@ static WKProcessPool *sharedProcessPool;
     [contentView addSubview:progressView];
     self.progressView = progressView;
     
-    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:[self _webViewConfiguration]];
+    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:[self webViewConfiguration]];
     if(@available(iOS 9.0, *)){
         _webView.allowsLinkPreview = NO;
     }
@@ -168,7 +168,7 @@ static WKProcessPool *sharedProcessPool;
 // MARK: - Web Config
 
 ///网页配置
-- (WKWebViewConfiguration*)_webViewConfiguration
+- (WKWebViewConfiguration*)webViewConfiguration
 {
     WKUserContentController *userContentController = [WKUserContentController new];
     

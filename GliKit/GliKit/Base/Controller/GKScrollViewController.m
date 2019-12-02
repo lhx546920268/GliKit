@@ -75,7 +75,7 @@
             WeakObj(self);
             [self.scrollView gkAddRefreshWithHandler:^(void){
                 
-                [selfWeak _willRefresh];
+                [selfWeak willRefresh];
             }];
         }else{
             [self.scrollView gkRemoveRefreshControl];
@@ -89,7 +89,7 @@
 }
 
 ///将要触发下拉刷新
-- (void)_willRefresh
+- (void)willRefresh
 {
     if(self.loadingMore && !self.coexistRefreshAndLoadMore){
         [self stopLoadMoreWithMore:YES];
@@ -142,7 +142,7 @@
             WeakObj(self);
             [self.scrollView gkAddLoadMoreWithHandler:^(void){
                 
-                [selfWeak _willLoadMore];
+                [selfWeak willLoadMore];
             }];
         }else{
             [self.scrollView gkRemoveLoadMoreControl];
@@ -156,7 +156,7 @@
 }
 
 ///将要触发加载更多
-- (void)_willLoadMore
+- (void)willLoadMore
 {
     if(self.refreshing && !self.coexistRefreshAndLoadMore){
         [self stopRefresh];
