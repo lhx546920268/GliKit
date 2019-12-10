@@ -12,16 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GKDRootViewController : GKTableViewController
 
-
-/**
- xx
- 
- xxx
- 
- @see [GKDRootViewController style]
- */
-@property(nonatomic, assign) CGFloat left;
-
 @end
 
 NS_ASSUME_NONNULL_END

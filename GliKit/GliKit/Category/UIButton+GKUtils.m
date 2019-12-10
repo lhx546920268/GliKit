@@ -13,6 +13,8 @@
 
 ///保存背景颜色的key
 static char GKButtonBackgroundColorKey;
+static char GKContentEdgeInsetsKey;
+static char GKButtonTintColorKey;
 
 @implementation UIButton (GKUtils)
 
@@ -29,6 +31,16 @@ static char GKButtonBackgroundColorKey;
     for(NSInteger i = 0;i < count;i ++){
         [self gkExchangeImplementations:selectors[i] prefix:@"gk_"];
     }
+}
+
+- (void)setGkContentEdgeInsets:(UIEdgeInsets)gkContentEdgeInsets
+{
+    objc_setAssociatedObject(self, &GKContentEdgeInsetsKey, [NSValue valueWithUIEdgeInsets:gkContentEdgeInsets], OBJC_ASSOCIATION_RETAIN);
+}
+
+- (UIEdgeInsets)gkContentEdgeInsets
+{
+    return [objc_getAssociatedObject(self, &GKContentEdgeInsetsKey) UIEdgeInsetsValue];
 }
 
 - (void)gkSetImagePosition:(GKButtonImagePosition) position margin:(CGFloat) margin
@@ -312,17 +324,44 @@ static char GKButtonBackgroundColorKey;
     self.contentEdgeInsets = contentInsets;
 }
 
+// MARK: - 状态
+
+- (void)gk_setHighlighted:(BOOL)highlighted
+{
+    [self gk_setHighlighted:highlighted];
+    [self gkStateDidChange];
+}
+
+- (void)gk_setSelected:(BOOL)selected
+{
+    [self gk_setSelected:selected];
+    [self gkStateDidChange];
+}
+
+- (void)gk_setEnabled:(BOOL)enabled
+{
+    [self gk_setEnabled:enabled];
+    [self gkStateDidChange];
+}
+
+///状态改变
+- (void)gkStateDidChange
+{
+    [self gkAdjustsBackgroundColor];
+    [self gkAdjustsTintColor];
+}
+
 // MARK: - 背景颜色
 
 ///状态背景
-- (NSMutableDictionary<NSNumber*,UIColor*>*)gk_backgroundColorsForState
+- (NSMutableDictionary<NSNumber*,UIColor*>*)gkBackgroundColorsForState
 {
     return objc_getAssociatedObject(self, &GKButtonBackgroundColorKey);
 }
 
 - (void)gkSetBackgroundColor:(UIColor *)backgroundColor forState:(UIControlState)state
 {
-    NSMutableDictionary *dic = [self gk_backgroundColorsForState];
+    NSMutableDictionary *dic = [self gkBackgroundColorsForState];
     if(!backgroundColor && !dic)
         return;
     
@@ -340,24 +379,6 @@ static char GKButtonBackgroundColorKey;
     if(self.state == state){
         self.backgroundColor = backgroundColor;
     }
-}
-
-- (void)gk_setHighlighted:(BOOL)highlighted
-{
-    [self gk_setHighlighted:highlighted];
-    [self gkAdjustsBackgroundColor];
-}
-
-- (void)gk_setSelected:(BOOL)selected
-{
-    [self gk_setSelected:selected];
-    [self gkAdjustsBackgroundColor];
-}
-
-- (void)gk_setEnabled:(BOOL)enabled
-{
-    [self gk_setEnabled:enabled];
-    [self gkAdjustsBackgroundColor];
 }
 
 ///获取当前颜色
@@ -391,9 +412,76 @@ static char GKButtonBackgroundColorKey;
 ///调整背景颜色
 - (void)gkAdjustsBackgroundColor
 {
-    NSMutableDictionary *dic = [self gk_backgroundColorsForState];
+    NSMutableDictionary *dic = [self gkBackgroundColorsForState];
     if(dic.count > 0){
         self.backgroundColor = [self gkCurrentBackgroundColorFromDictionary:dic];
+    }
+}
+
+// MARK: - TintColor
+
+- (void)gkSetTintColor:(UIColor *)tintColor forState:(UIControlState)state
+{
+    NSMutableDictionary *dic = [self gkTintColorsForState];
+    if(!tintColor && !dic)
+           return;
+       
+    if(!dic){
+        dic = [NSMutableDictionary dictionary];
+        objc_setAssociatedObject(self, &GKButtonTintColorKey, dic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+       
+    if(tintColor){
+        [dic setObject:tintColor forKey:@(state)];
+    }else{
+        [dic removeObjectForKey:@(state)];
+    }
+       
+    if(self.state == state){
+        self.tintColor = tintColor;
+    }
+}
+
+///状态背景
+- (NSMutableDictionary<NSNumber*,UIColor*>*)gkTintColorsForState
+{
+    return objc_getAssociatedObject(self, &GKButtonTintColorKey);
+}
+
+///获取当前颜色
+- (UIColor*)gkCurrentTintColorFromDictionary:(NSDictionary*) dic
+{
+    UIColor *color = nil;
+    if(!self.enabled){
+        
+        color = [dic objectForKey:@(UIControlStateDisabled)];
+    }else if(self.highlighted){
+        
+        color = [dic objectForKey:@(UIControlStateHighlighted)];
+        if(!color){
+            color = [dic objectForKey:@(self.selected ? UIControlStateSelected : UIControlStateNormal)];
+        }
+    }else if (self.selected){
+        color = [dic objectForKey:@(UIControlStateSelected)];
+    }
+    
+    if(!color){
+        color = [dic objectForKey:@(UIControlStateNormal)];
+    }
+    
+    if(!color){
+        color = self.tintColor;
+    }
+    
+    return color;
+}
+
+///调整背景颜色
+- (void)gkAdjustsTintColor
+{
+    NSMutableDictionary *dic = [self gkTintColorsForState];
+    if(dic.count > 0){
+        self.tintColor = [self gkCurrentTintColorFromDictionary:dic];
     }
 }
 

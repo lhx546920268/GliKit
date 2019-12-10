@@ -59,6 +59,7 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///返回按钮
 @property(nonatomic, readonly, nullable) UIBarButtonItem *gkBackBarButtonItem;
 
+
 ///返回 动画
 - (void)gkBack;
 
@@ -71,6 +72,16 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 @end
 
 @interface UIViewController (GKNavigationBarItemUtils)
+
+/**
+ 导航栏按钮tintColor，默认是 导航栏上的tintColor
+ */
+@property(null_resettable, nonatomic, strong) UIColor *gkTintColor;
+
+/**
+ 设置item tintColor
+ */
+- (void)gkSetTintColorForItem:(UIBarButtonItem*) item;
 
 /**
  设置导航栏按钮

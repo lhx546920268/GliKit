@@ -16,9 +16,11 @@
 #import <objc/runtime.h>
 #import "UIViewController+GKUtils.h"
 #import "UIView+GKUtils.h"
+#import "UIApplication+GKUtils.h"
 
 static char GKisShowAsDialogKey;
 static char GKDialogKey;
+static char GKDialogShouldUseNewWindowKey;
 static char GKShouldDismissDialogOnTapTranslucentKey;
 static char GKDialogBackgroundViewKey;
 static char GKDialogShowAnimateKey;
@@ -30,6 +32,7 @@ static char GKDialogShouldAnimateKey;
 static char GKTapDialogBackgroundGestureRecognizerKey;
 static char GKIsDialogViewDidLayoutSubviewsKey;
 static char GKInPresentWayKey;
+
 
 @implementation UIViewController (GKDialog)
 
@@ -78,25 +81,26 @@ static char GKInPresentWayKey;
 // MARK: - view init
 
 - (void)gkDialog_viewDidLoad {
-    [self gkDialog_viewDidLoad];
-    
-    if(self.isShowAsDialog){
-        UIView *backgroundView = [UIView new];
-        backgroundView.alpha = 0;
-        backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
-        [self.view insertSubview:backgroundView atIndex:0];
-        
-        [backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
-        }];
-        [self setDialogBackgroundView:backgroundView];
-        
-        self.dialogShouldAnimate = YES;
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.view.backgroundColor = [UIColor clearColor];
-        
-        self.shouldDismissDialogOnTapTranslucent = YES;
-    }
+ 
+      [self gkDialog_viewDidLoad];
+      
+      if(self.isShowAsDialog){
+          UIView *backgroundView = [UIView new];
+          backgroundView.alpha = 0;
+          backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
+          [self.view insertSubview:backgroundView atIndex:0];
+          
+          [backgroundView addGestureRecognizer:self.tapDialogBackgroundGestureRecognizer];
+          self.tapDialogBackgroundGestureRecognizer.enabled = self.shouldDismissDialogOnTapTranslucent;
+          
+          [backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+              make.edges.equalTo(self.view);
+          }];
+          [self setDialogBackgroundView:backgroundView];
+          
+          self.automaticallyAdjustsScrollViewInsets = NO;
+          self.view.backgroundColor = [UIColor clearColor];
+      }
 }
 
 - (void)gkDialog_viewDidLayoutSubviews
@@ -144,14 +148,28 @@ static char GKInPresentWayKey;
     return objc_getAssociatedObject(self, &GKDialogKey);
 }
 
+- (void)setDialogShouldUseNewWindow:(BOOL)dialogShouldUseNewWindow
+{
+    objc_setAssociatedObject(self, &GKDialogShouldUseNewWindowKey, @(dialogShouldUseNewWindow), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)dialogShouldUseNewWindow
+{
+    return [objc_getAssociatedObject(self, &GKDialogShouldUseNewWindowKey) boolValue];
+}
+
+- (UIWindow *)dialogWindow
+{
+    if(self.dialogShouldUseNewWindow){
+        return UIApplication.sharedApplication.dialogWindow;
+    }else{
+        return UIApplication.sharedApplication.delegate.window;
+    }
+}
+
 - (void)setShouldDismissDialogOnTapTranslucent:(BOOL) flag
 {
     if(self.shouldDismissDialogOnTapTranslucent != flag){
-        if(!self.tapDialogBackgroundGestureRecognizer){
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissDialog)];
-            [self.dialogBackgroundView addGestureRecognizer:tap];
-            [self setTapDialogBackgroundGestureRecognizer:tap];
-        }
         
         objc_setAssociatedObject(self, &GKShouldDismissDialogOnTapTranslucentKey, @(flag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         self.tapDialogBackgroundGestureRecognizer.enabled = flag;
@@ -160,7 +178,8 @@ static char GKInPresentWayKey;
 
 - (BOOL)shouldDismissDialogOnTapTranslucent
 {
-    return [objc_getAssociatedObject(self, &GKShouldDismissDialogOnTapTranslucentKey) boolValue];
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldDismissDialogOnTapTranslucentKey);
+    return number != nil ? number.boolValue : YES;
 }
 
 - (void)setTapDialogBackgroundGestureRecognizer:(UITapGestureRecognizer*) tap
@@ -170,7 +189,12 @@ static char GKInPresentWayKey;
 
 - (UIGestureRecognizer*)tapDialogBackgroundGestureRecognizer
 {
-    return objc_getAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey);
+    UITapGestureRecognizer *tap = objc_getAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey);
+    if(!tap){
+        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissDialog)];
+        self.tapDialogBackgroundGestureRecognizer = tap;
+    }
+    return tap;
 }
 
 - (void)setDialogBackgroundView:(UIView *)dialogBackgroundView
@@ -267,12 +291,33 @@ static char GKInPresentWayKey;
 
 - (void)showAsDialog
 {
-    [self showAsDialogInViewController:UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController];
+    if(self.dialogShouldUseNewWindow){
+        if(self.isDialogShowing){
+            return;
+        }
+        [UIApplication.sharedApplication loadDialogWindowIfNeeded];
+        [self setIsShowAsDialog:YES];
+        self.dialogShouldAnimate = YES;
+        if(self.dialogWindow.rootViewController){
+            self.modalPresentationStyle = UIModalPresentationCustom;
+            [self.dialogWindow.rootViewController.gkTopestPresentedViewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
+        }else{
+            self.dialogWindow.rootViewController = self;
+            !self.dialogShowCompletionHandler ?: self.dialogShowCompletionHandler();
+        }
+    }else{
+        [self showAsDialogInViewController:UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController];
+    }
 }
 
 - (void)showAsDialogInViewController:(UIViewController *)viewController
 {
     [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil];
+}
+
+- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void (NS_NOESCAPE ^)(UIView *, UIView *))layoutHandler
+{
+    [self showAsDialogInViewController:viewController inPresentWay:NO layoutHandler:layoutHandler];
 }
 
 - (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (NS_NOESCAPE ^)(UIView *, UIView *))layoutHandler
@@ -286,10 +331,9 @@ static char GKInPresentWayKey;
     if(inPresentWay){
         ///设置使背景透明
         [self setInPresentWay:YES];
-        self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        self.modalPresentationStyle = UIModalPresentationCustom;
         [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
     }else{
-        [self setIsDialogShowing:YES];
         [self willMoveToParentViewController:viewController];
         [viewController.view addSubview:self.view];
         [viewController addChildViewController:self];
@@ -301,6 +345,7 @@ static char GKInPresentWayKey;
             }];
         }
         [self didMoveToParentViewController:viewController];
+        !self.dialogShowCompletionHandler ?: self.dialogShowCompletionHandler();
     }
 }
 
@@ -460,13 +505,36 @@ static char GKInPresentWayKey;
 ///消失动画完成
 - (void)onDialogDismiss
 {
-    if([self inPresentWay]){
-        [self dismissViewControllerAnimated:NO completion:self.dialogDismissCompletionHandler];
+    if(self.dialogShouldUseNewWindow){
+        
+        if(self.dialogWindow.rootViewController != self){
+            [self dismissViewControllerAnimated:NO completion:^{
+                [self afterDialogDismiss];
+            }];
+        }else{
+            [self afterDialogDismiss];
+        }
     }else{
-        [self.view removeFromSuperview];
-        [self removeFromParentViewController];
-        !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
+        if(self.inPresentWay){
+            [self dismissViewControllerAnimated:NO completion:^{
+                [self afterDialogDismiss];
+            }];
+        }else{
+            [self.view removeFromSuperview];
+            [self removeFromParentViewController];
+            [self afterDialogDismiss];
+        }
     }
+}
+
+///弹窗消失
+- (void)afterDialogDismiss
+{
+    !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
+    if(self.dialogShouldUseNewWindow && self.dialogWindow.rootViewController == self){
+        self.dialogWindow.rootViewController = nil;
+    }
+    [UIApplication.sharedApplication removeDialogWindowIfNeeded];
 }
 
 - (void)didExecuteDialogShowCustomAnimate:(void(^)(BOOL finish)) completion

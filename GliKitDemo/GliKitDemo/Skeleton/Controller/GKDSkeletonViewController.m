@@ -7,9 +7,6 @@
 //
 
 #import "GKDSkeletonViewController.h"
-#import "GKDNormalSkeletonViewController.h"
-#import "GKDTableViewSkeletonViewController.h"
-#import "GKDCollectionViewSkeletonViewController.h"
 #import "GKDRowModel.h"
 
 @interface GKDSkeletonViewController ()
@@ -24,9 +21,9 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"骨架";
-    self.datas = @[[GKDRowModel modelWithTitle:@"普通视图" clazz:GKDNormalSkeletonViewController.class],
-                   [GKDRowModel modelWithTitle:@"TableView" clazz:GKDTableViewSkeletonViewController.class],
-                   [GKDRowModel modelWithTitle:@"CollectionView" clazz:GKDCollectionViewSkeletonViewController.class]];
+    self.datas = @[[GKDRowModel modelWithTitle:@"普通视图" clazz:@"GKDNormalSkeletonViewController"],
+                   [GKDRowModel modelWithTitle:@"TableView" clazz:@"GKDTableViewSkeletonViewController"],
+                   [GKDRowModel modelWithTitle:@"CollectionView" clazz:@"GKDCollectionViewSkeletonViewController"]];
     
     self.style = UITableViewStyleGrouped;
     [self initViews];
@@ -55,7 +52,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.navigationController pushViewController:self.datas[indexPath.row].clazz.new animated:YES];
+    [GKRouter.sharedRouter pushApp:self.datas[indexPath.row].className];
 }
 
 @end

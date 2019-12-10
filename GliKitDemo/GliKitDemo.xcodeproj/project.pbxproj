@@ -55,6 +55,8 @@
 		CEB8B674238E7634002E51A3 /* GKDCollectionViewSkeletonHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */; };
 		CEB8B675238E7639002E51A3 /* GKDNormalSkeletonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C845231E5971003ADE7A /* GKDNormalSkeletonViewController.xib */; };
 		CEC1732F233DE50A00A1ADA8 /* GKDProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC1732E233DE50A00A1ADA8 /* GKDProgressViewController.m */; };
+		CEC2D976239F8C0900F14210 /* GKDAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC2D974239F8C0900F14210 /* GKDAlertViewController.m */; };
+		CEC2D977239F8C0900F14210 /* GKDAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC2D975239F8C0900F14210 /* GKDAlertViewController.xib */; };
 		CEC3C842231E5612003ADE7A /* GKDSkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C841231E5612003ADE7A /* GKDSkeletonViewController.m */; };
 		CEC3C846231E5971003ADE7A /* GKDNormalSkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C844231E5971003ADE7A /* GKDNormalSkeletonViewController.m */; };
 		CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C845231E5971003ADE7A /* GKDNormalSkeletonViewController.xib */; };
@@ -115,6 +117,9 @@
 		CEB8B654238E5E94002E51A3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CEC1732D233DE50A00A1ADA8 /* GKDProgressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDProgressViewController.h; sourceTree = "<group>"; };
 		CEC1732E233DE50A00A1ADA8 /* GKDProgressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDProgressViewController.m; sourceTree = "<group>"; };
+		CEC2D973239F8C0900F14210 /* GKDAlertViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDAlertViewController.h; sourceTree = "<group>"; };
+		CEC2D974239F8C0900F14210 /* GKDAlertViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDAlertViewController.m; sourceTree = "<group>"; };
+		CEC2D975239F8C0900F14210 /* GKDAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDAlertViewController.xib; sourceTree = "<group>"; };
 		CEC3C840231E5612003ADE7A /* GKDSkeletonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDSkeletonViewController.h; sourceTree = "<group>"; };
 		CEC3C841231E5612003ADE7A /* GKDSkeletonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDSkeletonViewController.m; sourceTree = "<group>"; };
 		CEC3C843231E5971003ADE7A /* GKDNormalSkeletonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNormalSkeletonViewController.h; sourceTree = "<group>"; };
@@ -298,6 +303,24 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		CEC2D971239F8BD400F14210 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				CEC2D972239F8BD400F14210 /* Controller */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		CEC2D972239F8BD400F14210 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CEC2D973239F8C0900F14210 /* GKDAlertViewController.h */,
+				CEC2D974239F8C0900F14210 /* GKDAlertViewController.m */,
+				CEC2D975239F8C0900F14210 /* GKDAlertViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		CEC3C83D231E55F1003ADE7A /* Skeleton */ = {
 			isa = PBXGroup;
 			children = (
@@ -381,6 +404,7 @@
 		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEC2D971239F8BD400F14210 /* Alert */,
 				CEAB052C236FB15900D2A4CF /* Web */,
 				CEC1732B233DE4F400A1ADA8 /* Progress */,
 				CE37C677233B499000C4F196 /* EmptyView */,
@@ -527,6 +551,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEC2D977239F8C0900F14210 /* GKDAlertViewController.xib in Resources */,
 				CEE8C89F231911EB00E7CA75 /* LaunchScreen.storyboard in Resources */,
 				CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */,
 				CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */,
@@ -640,6 +665,7 @@
 				CE37C684233B4A2700C4F196 /* GKDEmptyViewController.m in Sources */,
 				CEC3C858231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m in Sources */,
 				CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */,
+				CEC2D976239F8C0900F14210 /* GKDAlertViewController.m in Sources */,
 				CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */,
 				CEC1732F233DE50A00A1ADA8 /* GKDProgressViewController.m in Sources */,
 				CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */,

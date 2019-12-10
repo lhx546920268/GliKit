@@ -48,6 +48,16 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 @property(nonatomic, strong, nullable) UIView *dialog;
 
 /**
+ 是否使用新窗口显示 使用新窗口显示可以保证 弹窗始终显示在最前面 必须在 showAsDialog 前设置
+ */
+@property(nonatomic, assign) BOOL dialogShouldUseNewWindow;
+
+/**
+ 关联的窗口
+ */
+@property(nonatomic, readonly) UIWindow *dialogWindow;
+
+/**
  是否要点击透明背景dismiss default is 'YES'
  */
 @property(nonatomic, assign) BOOL shouldDismissDialogOnTapTranslucent;
@@ -88,22 +98,20 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 @property(nonatomic, copy, nullable) void(^dialogDismissCompletionHandler)(void);
 
 /**
- 显示 在 window.rootViewController.topest 通过present方式显示
+ 显示 如果 dialogShouldUseNewWindow，则在新的窗口上显示，否则在 window.rootViewController.topest 通过present方式显示
  */
 - (void)showAsDialog;
 
 /**
- 显示在指定viewController 通过present方式显示
+ 在指定viewController 上显示
  */
-- (void)showAsDialogInViewController:(UIViewController*) viewController;
-
+- (void)showAsDialogInViewController:(UIViewController *)viewController;
 
 /**
  显示在制定viewControlelr
- *@param inPresentWay 是否通过present方式显示
- *@param layoutHandler 布局回调 ， inPresentWay = NO时有用
+ *@param layoutHandler 布局回调 如果为空，则在viewController 上铺满
  */
-- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
+- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
 
 /**
  隐藏

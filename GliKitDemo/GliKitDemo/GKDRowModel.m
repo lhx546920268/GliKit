@@ -10,11 +10,11 @@
 
 @implementation GKDRowModel
 
-+ (instancetype)modelWithTitle:(NSString *)title clazz:(Class)clazz
++ (instancetype)modelWithTitle:(NSString *)title clazz:(NSString*)clazz
 {
     GKDRowModel *model = GKDRowModel.new;
     model.title = title;
-    model.clazz = clazz;
+    model.className = clazz;
     
     return model;
 }

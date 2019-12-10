@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSString *title;
 
 ///xx
-@property(nonatomic, strong) Class clazz;
+@property(nonatomic, strong) NSString *className;
 
-+ (instancetype)modelWithTitle:(NSString*) title clazz:(Class) clazz;
++ (instancetype)modelWithTitle:(NSString*) title clazz:(NSString*) clazz;
 
 @end
 

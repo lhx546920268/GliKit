@@ -102,6 +102,7 @@
     self = [super initWithNibName:nil bundle:nil];
     
     if(self){
+        
         self.alertTitle = title;
         self.message = message;
         self.icon = icon;
@@ -128,9 +129,7 @@
             }
                 break;
             case GKAlertControllerStyleActionSheet :{
-                if(!self.cancelTitle){
-                    self.cancelTitle = @"取消";
-                }
+                
             }
                 break;
         }
@@ -142,18 +141,24 @@
     return self;
 }
 
+- (void)dealloc
+{
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.dialogShowAnimate = GKDialogAnimateCustom;
     self.dialogDismissAnimate = GKDialogAnimateCustom;
-    self.shouldDismissDialogOnTapTranslucent = self.style == GKAlertControllerStyleActionSheet;
+    self.shouldDismissDialogOnTapTranslucent = self.style == GKAlertControllerStyleActionSheet && ![NSString isEmpty:self.cancelTitle];
     self.tapDialogBackgroundGestureRecognizer.delegate = self;
 }
 
 ///属性初始化
 - (void)initilization
 {
+    self.dialogShouldUseNewWindow = YES;
     _destructiveButtonIndex = NSNotFound;
     _dismissWhenSelectButton = YES;
 }
@@ -206,7 +211,7 @@
                     size = [self.alertTitle gkBoundsWithConstraintWidth:constraintWidth];
                 }
                 
-                self.header.titleLabel.frame = CGRectMake(props.textInsets.left, y, constraintWidth, size.height + 1.0);
+                self.header.titleLabel.frame = CGRectMake(props.textInsets.left, y, constraintWidth, size.height);
                 y += self.header.titleLabel.gkHeight;
             }
             
@@ -226,7 +231,7 @@
                     self.header.messageLabel.attributedText = self.message;
                     size = [self.message gkBoundsWithConstraintWidth:constraintWidth];
                 }
-                self.header.messageLabel.frame = CGRectMake(props.textInsets.left, y, constraintWidth, size.height + 1.0);
+                self.header.messageLabel.frame = CGRectMake(props.textInsets.left, y, constraintWidth, size.height);
                 y += self.header.messageLabel.gkHeight;
             }
             
@@ -272,24 +277,27 @@
             case GKAlertControllerStyleActionSheet : {
                 
                 self.container.frame = CGRectMake(props.contentInsets.left, margin, width, 0);
-                self.cancelButton = [[GKAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, props.buttonHeight)];
-                self.cancelButton.layer.cornerRadius = props.cornerRadius;
-                self.cancelButton.backgroundColor = props.mainColor;
-                self.cancelButton.titleLabel.text = self.cancelTitle;
-                self.cancelButton.titleLabel.textColor = props.cancelButtonTextColor;
-                self.cancelButton.titleLabel.font = props.cancelButtonFont;
-                self.cancelButton.highlightView.backgroundColor = props.highlightedBackgroundColor;
-                [self.cancelButton addTarget:self action:@selector(cancel:)];
                 
-                //取消按钮和 内容视图的间隔
-                if(props.spacingBackgroundColor && props.cancelButtonVerticalSpacing > 0){
-                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, -props.cancelButtonVerticalSpacing, self.cancelButton.gkWidth, props.cancelButtonVerticalSpacing)];
-                    view.backgroundColor = props.spacingBackgroundColor;
-                    [self.cancelButton addSubview:view];
-                    self.cancelButton.clipsToBounds = NO;
+                if(![NSString isEmpty:self.cancelTitle]){
+                    self.cancelButton = [[GKAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, props.buttonHeight)];
+                    self.cancelButton.layer.cornerRadius = props.cornerRadius;
+                    self.cancelButton.backgroundColor = props.mainColor;
+                    self.cancelButton.titleLabel.text = self.cancelTitle;
+                    self.cancelButton.titleLabel.textColor = props.cancelButtonTextColor;
+                    self.cancelButton.titleLabel.font = props.cancelButtonFont;
+                    self.cancelButton.highlightView.backgroundColor = props.highlightedBackgroundColor;
+                    [self.cancelButton addTarget:self action:@selector(cancel:)];
+                    
+                    //取消按钮和 内容视图的间隔
+                    if(props.spacingBackgroundColor && props.cancelButtonVerticalSpacing > 0){
+                        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, -props.cancelButtonVerticalSpacing, self.cancelButton.gkWidth, props.cancelButtonVerticalSpacing)];
+                        view.backgroundColor = props.spacingBackgroundColor;
+                        [self.cancelButton addSubview:view];
+                        self.cancelButton.clipsToBounds = NO;
+                    }
+                    
+                    [self.view addSubview:self.cancelButton];
                 }
-                
-                [self.view addSubview:self.cancelButton];
             }
                 break;
         }
@@ -538,6 +546,11 @@
     }
     
     return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return touch.view == self.dialogBackgroundView;
 }
 
 // MARK: - UICollectionView delegate

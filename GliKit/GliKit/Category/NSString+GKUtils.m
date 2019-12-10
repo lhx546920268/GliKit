@@ -99,7 +99,8 @@
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil];
     
     size = [self boundingRectWithSize:contraintSize  options:NSStringDrawingUsesLineFragmentOrigin |NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
-    
+    size.width = ceil(size.width);
+    size.height = ceil(size.height);
     
     return CGSizeMake(ceil(size.width), ceil(size.height));
 }

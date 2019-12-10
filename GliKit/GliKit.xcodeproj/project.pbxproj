@@ -19,6 +19,7 @@
 		CEB85F452326021A0045CB38 /* GKNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */; };
 		CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F47232622DA0045CB38 /* GKWeakProxy.m */; };
 		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
+		CEC2D970239F4D5400F14210 /* UIApplication+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */; };
 		CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertController.m */; };
 		CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22E230BC6250057D405 /* GKAlertProps.m */; };
 		CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D231230BC6250057D405 /* GKAlertAction.m */; };
@@ -174,6 +175,8 @@
 		CEB85F47232622DA0045CB38 /* GKWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKWeakProxy.m; sourceTree = "<group>"; };
 		CEBFAA48230CD5DD007B8D47 /* UIColor+GKTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+GKTheme.h"; sourceTree = "<group>"; };
 		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
+		CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+GKUtils.h"; sourceTree = "<group>"; };
+		CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+GKUtils.m"; sourceTree = "<group>"; };
 		CED0D1CE230BC5BE0057D405 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED0D1DC230BC6250057D405 /* GKPartialPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPartialPresentTransitionDelegate.h; sourceTree = "<group>"; };
 		CED0D1DE230BC6250057D405 /* GKPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPresentTransitionDelegate.h; sourceTree = "<group>"; };
@@ -584,6 +587,8 @@
 				CED0D3F9230BECCF0057D405 /* UITableViewCell+GKUtils.m */,
 				CED0D3F2230BECCF0057D405 /* UITextField+GKUtils.h */,
 				CED0D3EB230BECCE0057D405 /* UITextField+GKUtils.m */,
+				CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */,
+				CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1274,6 +1279,7 @@
 				CED0D401230BECD00057D405 /* UITextField+GKUtils.m in Sources */,
 				CED0D3B7230BC8790057D405 /* GKAppUtils.m in Sources */,
 				CED3A7F4230D443200C304B3 /* UIViewController+GKEmptyView.m in Sources */,
+				CEC2D970239F4D5400F14210 /* UIApplication+GKUtils.m in Sources */,
 				CED0D3BB230BC8790057D405 /* GKBaseWebViewController.m in Sources */,
 				CED0D3C7230BC8790057D405 /* GKCountDownButton.m in Sources */,
 				CED0D3CE230BC8790057D405 /* GKDivider.m in Sources */,

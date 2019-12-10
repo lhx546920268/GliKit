@@ -7,9 +7,6 @@
 //
 
 #import "GKDEmptyViewController.h"
-#import "GKDNormalEmptyViewController.h"
-#import "GKDTableEmptyViewController.h"
-#import "GKDCollectionEmptyViewController.h"
 #import "GKDRowModel.h"
 
 @interface GKDEmptyViewController ()
@@ -24,9 +21,9 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"空视图";
-    self.datas = @[[GKDRowModel modelWithTitle:@"普通视图" clazz:GKDNormalEmptyViewController.class],
-                   [GKDRowModel modelWithTitle:@"TableView" clazz:GKDTableEmptyViewController.class],
-                   [GKDRowModel modelWithTitle:@"CollectionView" clazz:GKDCollectionEmptyViewController.class]];
+    self.datas = @[[GKDRowModel modelWithTitle:@"普通视图" clazz:@"GKDNormalEmptyViewController"],
+                   [GKDRowModel modelWithTitle:@"TableView" clazz:@"GKDTableEmptyViewController"],
+                   [GKDRowModel modelWithTitle:@"CollectionView" clazz:@"GKDCollectionEmptyViewController"]];
     
     self.style = UITableViewStyleGrouped;
     [self initViews];
@@ -55,6 +52,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.navigationController pushViewController:self.datas[indexPath.row].clazz.new animated:YES];
+    [GKRouter.sharedRouter pushApp:self.datas[indexPath.row].className];
 }
 @end

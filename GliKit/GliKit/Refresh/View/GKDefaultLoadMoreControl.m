@@ -103,8 +103,6 @@
     if(self.isHorizontal){
         CGFloat height = _indicatorView.gkHeight;
         CGSize size = [_textLabel.text gkStringSizeWithFont:_textLabel.font contraintWith:18];
-        size.width += 1.0;
-        size.height += 1.0;
         _indicatorView.gkTop = (self.gkHeight - height) / 2.0;
         
         CGRect frame = _textLabel.frame;

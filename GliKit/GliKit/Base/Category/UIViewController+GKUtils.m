@@ -16,12 +16,16 @@
 #import "UIFont+GKTheme.h"
 #import "UIColor+GKUtils.h"
 #import "UIImage+GKTheme.h"
+#import "UIButton+GKUtils.h"
 
 ///是否可以活动返回
 static char GKInteractivePopEnableKey;
 
 ///是否显示返回按钮
 static char GKShowBackItemKey;
+
+///导航栏按钮tintColor
+static char GKTintColorKey;
 
 @implementation UIViewController (Utils)
 
@@ -182,9 +186,55 @@ static char GKShowBackItemKey;
 
 @implementation UIViewController (GKNavigationBarItemUtils)
 
+- (void)setGkTintColor:(UIColor *)gkTintColor
+{
+    objc_setAssociatedObject(self, &GKTintColorKey, gkTintColor, OBJC_ASSOCIATION_RETAIN);
+    [self gkTintColorDidChange];
+}
+
+- (UIColor *)gkTintColor
+{
+    UIColor *tintColor = objc_getAssociatedObject(self, &GKTintColorKey);
+    if(!tintColor){
+        tintColor = self.navigationController.navigationBar.tintColor;
+    }
+    
+    if(!tintColor){
+        tintColor = UIColor.gkNavigationBarTintColor;
+    }
+    
+    return tintColor;
+}
+
+///tintColor改变
+- (void)gkTintColorDidChange
+{
+    [self gkSetTintColorForItem:self.navigationItem.leftBarButtonItem];
+    [self gkSetTintColorForItem:self.navigationItem.rightBarButtonItem];
+}
+
+///设置item tintColor
+- (void)gkSetTintColorForItem:(UIBarButtonItem*) item
+{
+    UIColor *tintColor = self.gkTintColor;
+    if([item.customView isKindOfClass:UIButton.class]){
+        UIButton *btn = (UIButton*)item.customView;
+        if([btn imageForState:UIControlStateNormal]){
+            [btn gkSetTintColor:tintColor forState:UIControlStateNormal];
+            [btn gkSetTintColor:[tintColor gkColorWithAlpha:0.3] forState:UIControlStateHighlighted];
+            
+        }else{
+            [btn setTitleColor:tintColor forState:UIControlStateNormal];
+            [btn setTitleColor:[tintColor gkColorWithAlpha:0.3] forState:UIControlStateHighlighted];
+        }
+    }else{
+        item.customView.tintColor = tintColor;
+    }
+}
+
 - (void)gkSetNavigationBarItem:(UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position
 {
-    item.customView.tintColor = self.navigationController.navigationBar.tintColor;
+    [self gkSetTintColorForItem:item];
     item.customView.gkWidth += UIApplication.gkNavigationBarMargin * 2;
     switch (position) {
         case GKNavigationItemPositionLeft : {
@@ -268,8 +318,14 @@ static char GKShowBackItemKey;
 + (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(id) target action:(SEL) action
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    if(image.renderingMode != UIImageRenderingModeAlwaysTemplate){
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+    
     [btn setImage:image forState:UIControlStateNormal];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [btn gkSetTintColor:UIColor.grayColor forState:UIControlStateDisabled];
     btn.frame = CGRectMake(0, 0, image.size.width, 44);
     
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
@@ -279,9 +335,7 @@ static char GKShowBackItemKey;
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setTitle:title forState:UIControlStateNormal];
-    [btn setTitleColor:UIColor.gkNavigationBarTintColor forState:UIControlStateNormal];
     btn.titleLabel.font = UIFont.gkNavigationBarItemFont;
-    [btn setTitleColor:[UIColor.gkNavigationBarTintColor gkColorWithAlpha:0.3] forState:UIControlStateHighlighted];
     [btn setTitleColor:UIColor.grayColor forState:UIControlStateDisabled];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     CGSize size = [title gkStringSizeWithFont:btn.titleLabel.font];

@@ -7,18 +7,9 @@
 //
 
 #import "GKDRootViewController.h"
-#import <GKAppUtils.h>
-#import <NSObject+GKUtils.h>
-#import "GKDPhotosViewController.h"
-#import "GKDSkeletonViewController.h"
-#import "GKDTransitionViewController.h"
-#import "GKDNestedParentViewController.h"
 #import "GKDRowModel.h"
-#import "GKDEmptyViewController.h"
-#import "GKDProgressViewController.h"
 #import <objc/runtime.h>
-#import "GKDWebViewController.h"
-#import <GKRouter.h>
+#import <GKAppUtils.h>
 
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
@@ -34,49 +25,20 @@
     
     self.navigationItem.title = GKAppUtils.appName;
     
-    [GKRouter.sharedRouter registerName:@"photo" forClass:GKDPhotosViewController.class];
-    
     self.datas = @[
-                   [GKDRowModel modelWithTitle:@"相册" clazz:GKDPhotosViewController.class],
-                   [GKDRowModel modelWithTitle:@"骨架" clazz:GKDSkeletonViewController.class],
-                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:GKDTransitionViewController.class],
-                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:GKDNestedParentViewController.class],
-                   [GKDRowModel modelWithTitle:@"空视图" clazz:GKDEmptyViewController.class],
-                   [GKDRowModel modelWithTitle:@"进度条" clazz:GKDProgressViewController.class],
-                   [GKDRowModel modelWithTitle:@"Web" clazz:GKDWebViewController.class],
+                   [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
+                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
                    ];
     [self initViews];
     
-    if (@available(iOS 10.0, *)) {
-        [NSThread detachNewThreadWithBlock:^{
-            [self buyCount];
-        }];
-    } else {
-        // Fallback on earlier versions
-    }
-    
-    if (@available(iOS 10.0, *)) {
-        [NSThread detachNewThreadWithBlock:^{
-            [self test];
-        }];
-    } else {
-        // Fallback on earlier versions
-    }
-}
+    [self gkSetRightItemWithTitle:@"完成" action:nil];
 
-- (void)buyCount
-{
-    @synchronized (@"你") {
-        [NSThread sleepForTimeInterval:3];
-        NSLog(@"buyCount after 3 seconds");
-    }
-}
-
-- (void)test
-{
-    @synchronized (@"我") {
-        NSLog(@"test");
-    }
 }
 
 - (void)initViews
@@ -109,8 +71,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
+    
     GKDRowModel *model = self.datas[indexPath.row];
-    [GKRouter.sharedRouter pushApp:NSStringFromClass(model.clazz)];
+    [GKRouter.sharedRouter pushApp:model.className];
 }
 
 @end

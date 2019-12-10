@@ -128,7 +128,6 @@
         CGFloat contentWidth = 0;
         for(GKPopoverMenuItem *item in self.menuItems){
             CGSize size = [item.title gkStringSizeWithFont:_font contraintWith:UIScreen.gkScreenWidth];
-            size.width += 1.0;
             contentWidth = MAX(contentWidth, size.width + item.icon.size.width + _iconTitleInterval);
         }
         

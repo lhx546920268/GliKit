@@ -388,7 +388,7 @@
 {
     if(_shouldDismissKeyboardWhileTap != shouldDismissKeyboardWhileTap){
         _shouldDismissKeyboardWhileTap = shouldDismissKeyboardWhileTap;
-        if(!self.tapDialogBackgroundGestureRecognizer){
+        if(!self.dismissKeyboardGestureRecognizer){
             self.dismissKeyboardGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissKeyboard:)];
             self.dismissKeyboardGestureRecognizer.delegate = self;
             [self.view addGestureRecognizer:self.dismissKeyboardGestureRecognizer];
