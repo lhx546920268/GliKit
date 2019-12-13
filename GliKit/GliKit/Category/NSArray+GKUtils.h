@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param clazz 要获取值得类型
  @return object
  */
-- (nullable ObjectType)gkObjectAtIndex:(NSUInteger) index class:(Class) clazz;
+- (nullable ObjectType)gkObjectAtIndex:(NSUInteger) index clazz:(Class) clazz;
 
 /**
  判断数组中是否存在某个字符串

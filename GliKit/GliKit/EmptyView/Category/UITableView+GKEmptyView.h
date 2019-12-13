@@ -12,16 +12,16 @@
 @interface UITableView (GKEmptyView)
 
 ///存在 tableHeaderView 时，是否显示空视图 default is 'YES'
-@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistTableHeaderView;
+@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistTableHeader;
 
 ///存在 tableFooterView 时，是否显示空视图 default is 'YES'
-@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistTableFooterView;
+@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistTableFooter;
 
 ///存在 sectionHeader 时，是否显示空视图 default is 'NO'
-@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistSectionHeaderView;
+@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistSectionHeader;
 
 ///存在 sectionFooter 时，是否显示空视图 default is 'NO'
-@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistSectionFooterView;
+@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistSectionFooter;
 
 @end
 

@@ -11,8 +11,6 @@
 #import <GKBaseNavigationController.h>
 #import <GKHttpTask.h>
 
-
-
 @interface AppDelegate ()
 
 @end

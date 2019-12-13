@@ -13,6 +13,7 @@
 		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
+		CEA569F123A0CCCC0005A5EA /* UIView+GKStateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */; };
 		CEAF25522341FEA30038BD89 /* GKPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF25512341FEA30038BD89 /* GKPopover.m */; };
 		CEAF2555234200030038BD89 /* GKPopoverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF2554234200030038BD89 /* GKPopoverMenu.m */; };
 		CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */; };
@@ -163,6 +164,8 @@
 		CE61DD49235D5A9B00701675 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
 		CE61DD4B235D5D4E00701675 /* GKMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarItem.h; sourceTree = "<group>"; };
 		CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
+		CEA569EF23A0CCCC0005A5EA /* UIView+GKStateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GKStateUtils.h"; sourceTree = "<group>"; };
+		CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GKStateUtils.m"; sourceTree = "<group>"; };
 		CEAF25502341FEA30038BD89 /* GKPopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPopover.h; sourceTree = "<group>"; };
 		CEAF25512341FEA30038BD89 /* GKPopover.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPopover.m; sourceTree = "<group>"; };
 		CEAF2553234200030038BD89 /* GKPopoverMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPopoverMenu.h; sourceTree = "<group>"; };
@@ -573,6 +576,8 @@
 				CED0D3E2230BECCE0057D405 /* NSObject+GKUtils.m */,
 				CED0D3F5230BECCF0057D405 /* NSString+GKUtils.h */,
 				CED0D3E6230BECCE0057D405 /* NSString+GKUtils.m */,
+				CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */,
+				CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */,
 				CED0D3F8230BECCF0057D405 /* UIButton+GKUtils.h */,
 				CED0D3E7230BECCE0057D405 /* UIButton+GKUtils.m */,
 				CED0D3F6230BECCF0057D405 /* UICollectionReusableView+GKUtils.h */,
@@ -587,8 +592,8 @@
 				CED0D3F9230BECCF0057D405 /* UITableViewCell+GKUtils.m */,
 				CED0D3F2230BECCF0057D405 /* UITextField+GKUtils.h */,
 				CED0D3EB230BECCE0057D405 /* UITextField+GKUtils.m */,
-				CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */,
-				CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */,
+				CEA569EF23A0CCCC0005A5EA /* UIView+GKStateUtils.h */,
+				CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1258,6 +1263,7 @@
 				CED0D390230BC8790057D405 /* GKPhotosGridCell.m in Sources */,
 				CED0D392230BC8790057D405 /* GKPhotosToolBar.m in Sources */,
 				CED0D393230BC8790057D405 /* GKPhotosPreviewCell.m in Sources */,
+				CEA569F123A0CCCC0005A5EA /* UIView+GKStateUtils.m in Sources */,
 				CED0D397230BC8790057D405 /* GKPhotosCheckBox.m in Sources */,
 				CED0D42D230BECF20057D405 /* UIView+GKUtils.m in Sources */,
 				CED0D409230BECD00057D405 /* UIImage+GKUtils.m in Sources */,

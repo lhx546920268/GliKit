@@ -34,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)gkExchangeImplementations:(SEL) selector1 prefix:(NSString*) prefix;
 
-
 /**
  交换实例方法实现
  
@@ -67,7 +66,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param object 这个对象必须是当前类的或者其子类
  */
 - (void)gkCopyObject:(NSObject*) object;
-
 
 
 @end

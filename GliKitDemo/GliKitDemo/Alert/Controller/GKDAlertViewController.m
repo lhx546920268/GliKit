@@ -17,10 +17,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.label.highlightedTextColor = [UIColor redColor];
+    self.label.enabled = NO;
+    
+    [self.imageView gkSetTintColor:UIColor.grayColor forState:UIControlStateHighlighted];
+    
+    [self.imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapImageView)]];
+    
+    [self.label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapLabel)]];
 }
 
+- (void)handleTapImageView
+{
+    
+}
 
+- (void)handleTapLabel
+{
+    
+}
 
 - (IBAction)handleAlert:(id)sender
 {

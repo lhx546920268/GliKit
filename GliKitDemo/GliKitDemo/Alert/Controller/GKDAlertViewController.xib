@@ -10,6 +10,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GKDAlertViewController">
             <connections>
+                <outlet property="imageView" destination="AV6-Ie-S2X" id="z5i-WT-3jx"/>
+                <outlet property="label" destination="1A8-gk-xd2" id="VE8-EH-eDc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -37,16 +39,32 @@
                         <action selector="handleActionSheet:" destination="-1" eventType="touchUpInside" id="mEU-Sb-I2g"/>
                     </connections>
                 </button>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按钮" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1A8-gk-xd2">
+                    <rect key="frame" x="189.5" y="560" width="35" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="AV6-Ie-S2X">
+                    <rect key="frame" x="175.5" y="643" width="63.5" height="63.5"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="1A8-gk-xd2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Bft-dJ-eW1"/>
                 <constraint firstItem="2lm-57-enE" firstAttribute="centerX" secondItem="cGX-Ch-djv" secondAttribute="centerX" id="Q9I-BU-jAP"/>
                 <constraint firstItem="cGX-Ch-djv" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="310" id="W6w-uv-jmx"/>
+                <constraint firstItem="1A8-gk-xd2" firstAttribute="top" secondItem="2lm-57-enE" secondAttribute="bottom" constant="76" id="YQu-Na-rJu"/>
+                <constraint firstItem="AV6-Ie-S2X" firstAttribute="top" secondItem="1A8-gk-xd2" secondAttribute="bottom" constant="62" id="e57-hg-ahL"/>
                 <constraint firstItem="2lm-57-enE" firstAttribute="top" secondItem="cGX-Ch-djv" secondAttribute="bottom" constant="66" id="fdS-iw-ssU"/>
                 <constraint firstItem="cGX-Ch-djv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="rhX-Vq-iz4"/>
+                <constraint firstItem="AV6-Ie-S2X" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="vP1-Tc-Tx7"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="132" y="100"/>
         </view>
     </objects>
+    <resources>
+        <image name="camera" width="63.5" height="63.5"/>
+    </resources>
 </document>

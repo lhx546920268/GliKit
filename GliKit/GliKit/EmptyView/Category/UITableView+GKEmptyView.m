@@ -12,10 +12,10 @@
 #import "UIScrollView+GKEmptyView.h"
 #import "UIView+GKUtils.h"
 
-static char GKShouldShowEmptyViewWhenExistTableHeaderViewKey;
-static char GKShouldShowEmptyViewWhenExistTableFooterViewKey;
-static char GKShouldShowEmptyViewWhenExistSectionHeaderViewKey;
-static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
+static char GKShouldShowEmptyViewWhenExistTableHeaderKey;
+static char GKShouldShowEmptyViewWhenExistTableFooterKey;
+static char GKShouldShowEmptyViewWhenExistSectionHeaderKey;
+static char GKShouldShowEmptyViewWhenExistTableHeaderKey;
 
 @implementation UITableView (GKEmptyView)
 
@@ -39,7 +39,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取sectionHeader 高度
-        if(self.gkShouldShowEmptyViewWhenExistSectionHeaderView){
+        if(self.gkShouldShowEmptyViewWhenExistSectionHeader){
             if([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]){
                 for(NSInteger i = 0;i < numberOfSections;i ++){
                     y += [self.delegate tableView:self heightForHeaderInSection:i];
@@ -50,7 +50,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取section footer 高度
-        if(self.gkShouldShowEmptyViewWhenExistTableFooterView){
+        if(self.gkShouldShowEmptyViewWhenExistTableFooter){
             if([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]){
                 for(NSInteger i = 0;i < numberOfSections;i ++){
                     y += [self.delegate tableView:self heightForFooterInSection:i];
@@ -74,11 +74,11 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 {
     BOOL empty = YES;
     
-    if(!self.gkShouldShowEmptyViewWhenExistTableHeaderView && self.tableHeaderView){
+    if(!self.gkShouldShowEmptyViewWhenExistTableHeader && self.tableHeaderView){
         empty = NO;
     }
     
-    if(!self.gkShouldShowEmptyViewWhenExistTableFooterView && self.tableFooterView){
+    if(!self.gkShouldShowEmptyViewWhenExistTableFooter && self.tableFooterView){
         empty = NO;
     }
     
@@ -100,7 +100,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         
         ///行数为0，section 大于0时，可能存在sectionHeader
         if(empty && section > 0 && self.delegate){
-            if(!self.gkShouldShowEmptyViewWhenExistSectionHeaderView && [self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]){
+            if(!self.gkShouldShowEmptyViewWhenExistSectionHeader && [self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]){
                 for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.delegate tableView:self viewForHeaderInSection:i];
                     if(view){
@@ -110,7 +110,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
                 }
             }
             
-            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]){
+            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooter && [self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]){
                 for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.delegate tableView:self viewForFooterInSection:i];
                     if(view){
@@ -127,14 +127,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 
 // MARK: - Property
 
-- (void)setGkShouldShowEmptyViewWhenExistTableHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistTableHeaderView
+- (void)setGkShouldShowEmptyViewWhenExistTableHeader:(BOOL) header
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderViewKey, @(gkShouldShowEmptyViewWhenExistTableHeaderView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderKey, @(header), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistTableHeaderView
+- (BOOL)gkShouldShowEmptyViewWhenExistTableHeader
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderKey);
     if(number){
         return [number boolValue];
     }
@@ -142,14 +142,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
     return YES;
 }
 
-- (void)setGkShouldShowEmptyViewWhenExistTableFooterView:(BOOL)gkShouldShowEmptyViewWhenExistTableFooterView
+- (void)setGkShouldShowEmptyViewWhenExistTableFooter:(BOOL) footer
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableFooterViewKey, @(gkShouldShowEmptyViewWhenExistTableFooterView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableFooterKey, @(footer), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistTableFooterView
+- (BOOL)gkShouldShowEmptyViewWhenExistTableFooter
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableFooterViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableFooterKey);
     if(number){
         return [number boolValue];
     }
@@ -158,14 +158,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 }
 
 
-- (void)setGkShouldShowEmptyViewWhenExistSectionHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
+- (void)setGkShouldShowEmptyViewWhenExistSectionHeader:(BOOL) header
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey, @(gkShouldShowEmptyViewWhenExistSectionHeaderView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderKey, @(header), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeader
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderKey);
     if(number){
         return [number boolValue];
     }
@@ -174,14 +174,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 }
 
 
-- (void)setGkShouldShowEmptyViewWhenExistSectionFooterView:(BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
+- (void)setGkShouldShowEmptyViewWhenExistSectionFooter:(BOOL) footer
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey,@(gkShouldShowEmptyViewWhenExistSectionFooterView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderKey,@(footer), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooter
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistTableHeaderKey);
     if(number)
     {
         return [number boolValue];

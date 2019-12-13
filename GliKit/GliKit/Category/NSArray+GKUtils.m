@@ -18,7 +18,7 @@
     return nil;
 }
 
-- (instancetype)gkObjectAtIndex:(NSUInteger) index class:(Class) clazz
+- (instancetype)gkObjectAtIndex:(NSUInteger) index clazz:(Class) clazz
 {
     id obj = [self gkObjectAtIndex:index];
     if([obj isKindOfClass:clazz]){

@@ -165,10 +165,10 @@
 
 - (void)gkCopyObject:(NSObject*) object
 {
-    [self gk_copyObject:object clazz:[object class]];
+    [self gkCopyObject:object clazz:[object class]];
 }
 
-- (void)gk_copyObject:(NSObject*) object clazz:(Class) clazz
+- (void)gkCopyObject:(NSObject*) object clazz:(Class) clazz
 {
     if(clazz == [NSObject class]){
         return;
@@ -199,7 +199,7 @@
         free(properties);
     }
     
-    [self gk_copyObject:object clazz:[clazz superclass]];
+    [self gkCopyObject:object clazz:[clazz superclass]];
 }
 
 @end

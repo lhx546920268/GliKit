@@ -12,8 +12,8 @@
 #import "UIView+GKEmptyView.h"
 #import "UIView+GKUtils.h"
 
-static char GKShouldShowEmptyViewWhenExistSectionHeaderViewKey;
-static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
+static char GKShouldShowEmptyViewWhenExistSectionHeaderKey;
+static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
 
 @implementation UICollectionView (GKEmptyView)
 
@@ -34,7 +34,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取sectionHeader 高度
-        if(self.gkShouldShowEmptyViewWhenExistSectionHeaderView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+        if(self.gkShouldShowEmptyViewWhenExistSectionHeader && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
             
@@ -48,7 +48,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///获取section footer 高度
-        if(self.gkShouldShowEmptyViewWhenExistSectionFooterView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+        if(self.gkShouldShowEmptyViewWhenExistSectionFooter && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.delegate;
             
@@ -99,7 +99,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
             
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
-            if(!self.gkShouldShowEmptyViewWhenExistSectionHeaderView){
+            if(!self.gkShouldShowEmptyViewWhenExistSectionHeader){
 
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
@@ -114,7 +114,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
                 }
             }
             
-            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooterView){
+            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooter){
 
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
@@ -136,14 +136,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 
 // MARK: - Property
 
-- (void)setGkShouldShowEmptyViewWhenExistSectionHeaderView:(BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
+- (void)setGkShouldShowEmptyViewWhenExistSectionHeader:(BOOL) header
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey, @(gkShouldShowEmptyViewWhenExistSectionHeaderView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderKey, @(header), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeaderView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeader
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderKey);
     if(number){
         return [number boolValue];
     }
@@ -152,14 +152,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterViewKey;
 }
 
 
-- (void)setGkShouldShowEmptyViewWhenExistSectionFooterView:(BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
+- (void)setGkShouldShowEmptyViewWhenExistSectionFooter:(BOOL) footer
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey, @(gkShouldShowEmptyViewWhenExistSectionFooterView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterKey, @(footer), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooterView
+- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooter
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterViewKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterKey);
     if(number){
         return [number boolValue];
     }

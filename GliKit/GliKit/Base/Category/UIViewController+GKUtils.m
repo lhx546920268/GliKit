@@ -16,7 +16,7 @@
 #import "UIFont+GKTheme.h"
 #import "UIColor+GKUtils.h"
 #import "UIImage+GKTheme.h"
-#import "UIButton+GKUtils.h"
+#import "UIView+GKStateUtils.h"
 
 ///是否可以活动返回
 static char GKInteractivePopEnableKey;
