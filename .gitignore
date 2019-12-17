@@ -28,6 +28,10 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
+#ReactNative
+node_modules
+GliReacNativeKit/ios/Pods
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
