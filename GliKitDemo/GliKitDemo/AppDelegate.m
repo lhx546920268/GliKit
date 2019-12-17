@@ -26,7 +26,7 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.window.rootViewController = [[GKBaseNavigationController alloc] initWithRootViewController:GKDRootViewController.new];
     [self.window makeKeyAndVisible];
-   
+
     return YES;
 }
 

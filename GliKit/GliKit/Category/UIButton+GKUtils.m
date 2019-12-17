@@ -11,27 +11,10 @@
 #import "NSObject+GKUtils.h"
 #import <objc/runtime.h>
 
-///保存背景颜色的key
-static char GKButtonBackgroundColorKey;
 static char GKContentEdgeInsetsKey;
-static char GKButtonTintColorKey;
 
 @implementation UIButton (GKUtils)
 
-+ (void)load
-{
-    SEL selectors[] = {
-        
-        @selector(setEnabled:),
-        @selector(setHighlighted:),
-        @selector(setSelected:)
-    };
-    
-    int count = sizeof(selectors) / sizeof(SEL);
-    for(NSInteger i = 0;i < count;i ++){
-        [self gkExchangeImplementations:selectors[i] prefix:@"gk_"];
-    }
-}
 
 - (void)setGkContentEdgeInsets:(UIEdgeInsets)gkContentEdgeInsets
 {
@@ -48,8 +31,6 @@ static char GKButtonTintColorKey;
     if(self.contentHorizontalAlignment == UIControlContentHorizontalAlignmentFill || self.contentVerticalAlignment == UIControlContentVerticalAlignmentFill){
         return;
     }
-    
-    [self layoutIfNeeded];
     
     UIImage *image = self.currentImage;
     NSString *title = self.currentTitle;

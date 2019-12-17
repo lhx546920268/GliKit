@@ -10,6 +10,7 @@
 #import "GKTabMenuBarItem.h"
 #import "GKBaseDefines.h"
 #import "UIButton+GKUtils.h"
+#import "GKButton.h"
 
 @implementation GKTabMenuBarCell
 
@@ -17,7 +18,7 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button = [GKButton new];
         _button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _button.titleLabel.textAlignment = NSTextAlignmentCenter;
         _button.userInteractionEnabled = NO;
@@ -49,8 +50,8 @@
     [_button setImage:_item.icon forState:UIControlStateNormal];
     [_button setImage:_item.selectedIcon forState:UIControlStateSelected];
     [_button setBackgroundImage:_item.backgroundImage forState:UIControlStateNormal];
-    
-    [_button gkSetImagePosition:_item.iconPosition margin:_item.iconPadding];
+    _button.imagePadding = _item.iconPadding;
+    _button.imagePosition = _item.iconPosition;
     
     UIEdgeInsets insets = _button.titleEdgeInsets;
     insets.left += _item.titleInsets.left;

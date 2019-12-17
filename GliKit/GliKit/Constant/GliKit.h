@@ -30,13 +30,16 @@
 #import "NSDictionary+GKUtils.h"
 #import "NSObject+GKUtils.h"
 #import "NSString+GKUtils.h"
-#import "UIButton+GKUtils.h"
 #import "UICollectionReusableView+GKUtils.h"
 #import "UIColor+GKUtils.h"
 #import "UIFont+GKUtils.h"
 #import "UIImage+GKUtils.h"
 #import "UITableViewCell+GKUtils.h"
 #import "UIView+GKStateUtils.h"
+
+// MARK: - Widget
+
+#import "GKButton.h"
 
 // MARK: - Loading
 

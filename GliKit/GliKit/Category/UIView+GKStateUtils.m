@@ -108,7 +108,7 @@ static char GKTintColorKey;
 
 - (UIColor*)gkCurrentTintColor
 {
-    UIColor *color = [self.gkTintColorsForState objectForKey:@(UIControlStateNormal)];
+    UIColor *color = [self.gkTintColorsForState objectForKey:@(self.gkState)];
 
     if(!color){
         color = self.tintColor;

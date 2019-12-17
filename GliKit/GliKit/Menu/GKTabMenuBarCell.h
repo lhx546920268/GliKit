@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GKTabMenuBarItem;
+@class GKTabMenuBarItem, GKButton;
 
 /**
  菜单按钮
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  按钮
  */
-@property(nonatomic, readonly) UIButton *button;
+@property(nonatomic, readonly) GKButton *button;
 
 /**
  分隔符

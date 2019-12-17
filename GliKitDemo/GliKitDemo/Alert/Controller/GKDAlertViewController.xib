@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GKDAlertViewController">
             <connections>
+                <outlet property="alertButton" destination="cGX-Ch-djv" id="14r-Vr-aiq"/>
                 <outlet property="imageView" destination="AV6-Ie-S2X" id="z5i-WT-3jx"/>
                 <outlet property="label" destination="1A8-gk-xd2" id="VE8-EH-eDc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -20,15 +21,21 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGX-Ch-djv">
-                    <rect key="frame" x="190.5" y="354" width="33" height="30"/>
-                    <state key="normal" title="Alert"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGX-Ch-djv" customClass="GKButton">
+                    <rect key="frame" x="132" y="354" width="150" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="JiJ-EC-tid"/>
+                        <constraint firstAttribute="width" constant="150" id="Qcz-gp-Okl"/>
+                    </constraints>
+                    <state key="normal" title="Alert" image="warehouse">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
                     <connections>
                         <action selector="handleAlert:" destination="-1" eventType="touchUpInside" id="nwk-Dt-0wb"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2lm-57-enE">
-                    <rect key="frame" x="157.5" y="450" width="99" height="34"/>
+                    <rect key="frame" x="157.5" y="470" width="99" height="34"/>
                     <state key="normal" title="ActionSheet">
                         <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
@@ -40,13 +47,13 @@
                     </connections>
                 </button>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按钮" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1A8-gk-xd2">
-                    <rect key="frame" x="189.5" y="560" width="35" height="21"/>
+                    <rect key="frame" x="189.5" y="580" width="35" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="AV6-Ie-S2X">
-                    <rect key="frame" x="175.5" y="643" width="63.5" height="63.5"/>
+                    <rect key="frame" x="175.5" y="663" width="63.5" height="63.5"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -66,5 +73,6 @@
     </objects>
     <resources>
         <image name="camera" width="63.5" height="63.5"/>
+        <image name="warehouse" width="22" height="25"/>
     </resources>
 </document>

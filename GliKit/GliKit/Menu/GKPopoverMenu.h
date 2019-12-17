@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class GKButton;
+
 /**
  弹窗菜单按钮信息
  */
@@ -40,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  按钮
  */
-@property(nonatomic, readonly) UIButton *button;
+@property(nonatomic, readonly) GKButton *button;
 
 /**
  分割线

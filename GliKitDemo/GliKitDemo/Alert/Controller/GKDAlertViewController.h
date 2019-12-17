@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GKDAlertViewController : GKBaseViewController
 
+@property (weak, nonatomic) IBOutlet GKButton *alertButton;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @end

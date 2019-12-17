@@ -8,6 +8,7 @@
 
 #import "CKAlertCell.h"
 #import <Masonry.h>
+#import "GKButton.h"
 
 @implementation CKAlertCell
 
@@ -16,7 +17,7 @@
     self = [super initWithFrame:frame];
     if(self){
 
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button = [GKButton new];
         _button.adjustsImageWhenHighlighted = NO;
         _button.adjustsImageWhenDisabled = NO;
         _button.enabled = NO;

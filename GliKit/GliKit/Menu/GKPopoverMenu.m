@@ -10,12 +10,12 @@
 #import "UIColor+GKUtils.h"
 #import "NSString+GKUtils.h"
 #import "GKBaseDefines.h"
-#import "UIButton+GKUtils.h"
 #import "UIFont+GKUtils.h"
 #import "UIColor+GKTheme.h"
 #import "GKDivider.h"
 #import "UIScreen+GKUtils.h"
 #import "UIView+GKAutoLayout.h"
+#import "GKButton.h"
 
 @implementation GKPopoverMenuItem
 
@@ -41,7 +41,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.selectedBackgroundView = [[UIView alloc] init];
         
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button = [GKButton new];
         _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _button.adjustsImageWhenDisabled = NO;
         _button.adjustsImageWhenHighlighted = NO;
@@ -287,7 +287,7 @@
     cell.divider.gkLeftLayoutConstraint.constant = _separatorInsets.left;
     cell.divider.gkRightLayoutConstraint.constant = _separatorInsets.right;
     
-    [cell.button gkSetImagePosition:GKButtonImagePositionLeft margin:_iconTitleInterval];
+    cell.button.imagePadding = _iconTitleInterval;
     
     return cell;
 }

@@ -21,6 +21,7 @@
 		CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F47232622DA0045CB38 /* GKWeakProxy.m */; };
 		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
 		CEC2D970239F4D5400F14210 /* UIApplication+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */; };
+		CECE565523A88387007A96C4 /* GKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE565423A88387007A96C4 /* GKButton.m */; };
 		CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertController.m */; };
 		CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22E230BC6250057D405 /* GKAlertProps.m */; };
 		CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D231230BC6250057D405 /* GKAlertAction.m */; };
@@ -180,6 +181,8 @@
 		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
 		CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+GKUtils.h"; sourceTree = "<group>"; };
 		CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+GKUtils.m"; sourceTree = "<group>"; };
+		CECE565323A88387007A96C4 /* GKButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKButton.h; sourceTree = "<group>"; };
+		CECE565423A88387007A96C4 /* GKButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKButton.m; sourceTree = "<group>"; };
 		CED0D1CE230BC5BE0057D405 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED0D1DC230BC6250057D405 /* GKPartialPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPartialPresentTransitionDelegate.h; sourceTree = "<group>"; };
 		CED0D1DE230BC6250057D405 /* GKPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPresentTransitionDelegate.h; sourceTree = "<group>"; };
@@ -539,6 +542,8 @@
 		CED0D1ED230BC6250057D405 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				CECE565323A88387007A96C4 /* GKButton.h */,
+				CECE565423A88387007A96C4 /* GKButton.m */,
 				CED0D1F9230BC6250057D405 /* GKBadgeValueView.h */,
 				CED0D20A230BC6250057D405 /* GKBadgeValueView.m */,
 				CED0D205230BC6250057D405 /* GKCountDownButton.h */,
@@ -1257,6 +1262,7 @@
 				CED0D387230BC8790057D405 /* GKPhotosPreviewViewController.m in Sources */,
 				CED0D388230BC8790057D405 /* GKPhotosGridViewController.m in Sources */,
 				CED0D38D230BC8790057D405 /* GKPhotosCollection.m in Sources */,
+				CECE565523A88387007A96C4 /* GKButton.m in Sources */,
 				CED0D38E230BC8790057D405 /* GKPhotosOptions.m in Sources */,
 				CED0D38F230BC8790057D405 /* GKPhotosListCell.m in Sources */,
 				CED0D402230BECD00057D405 /* UICollectionReusableView+GKUtils.m in Sources */,

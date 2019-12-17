@@ -17,6 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.alertButton.imagePadding = 10;
+    self.alertButton.imagePosition = GKButtonImagePositionBottom;
     
     self.label.highlightedTextColor = [UIColor redColor];
     self.label.enabled = NO;

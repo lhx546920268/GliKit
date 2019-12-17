@@ -9,7 +9,7 @@
 #import "GKAlertController.h"
 #import "GKContainer.h"
 #import "UIImage+GKUtils.h"
-#import "UIButton+GKUtils.h"
+#import "GKButton.h"
 #import "NSAttributedString+GKUtils.h"
 #import "GKAlertButton.h"
 #import "CKAlertCell.h"
@@ -375,6 +375,9 @@
         switch (_style){
             case GKAlertControllerStyleAlert : {
                 buttonHeight = self.actions.count < 3 ? props.buttonHeight : self.actions.count * (UIApplication.gkSeparatorHeight + props.buttonHeight);
+                if(headerHeight > 0){
+                    buttonHeight += 0.1;
+                }
             }
                 break;
             case GKAlertControllerStyleActionSheet : {
@@ -476,8 +479,9 @@
             GKAlertProps *props = self.props;
             [UIView animateWithDuration:0.25 animations:^(void){
                 
+                CGFloat spacing = self.cancelButton ? props.cancelButtonVerticalSpacing : 0;
                 self.dialogBackgroundView.alpha = 1.0;
-                self.container.gkTop = self.view.gkHeight - self.container.gkHeight - props.contentInsets.bottom - self.cancelButton.gkHeight - props.cancelButtonVerticalSpacing;
+                self.container.gkTop = self.view.gkHeight - self.container.gkHeight - props.contentInsets.bottom - self.cancelButton.gkHeight - spacing;
                 self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
             }completion:completion];
         }
@@ -598,7 +602,7 @@
     
     [cell.button setTitle:action.title forState:UIControlStateNormal];
     [cell.button setImage:action.icon forState:UIControlStateNormal];
-    [cell.button gkSetImagePosition:GKButtonImagePositionLeft margin:action.spacing];
+    cell.button.imagePadding = action.spacing;
     
     if(indexPath.item == _destructiveButtonIndex && style.destructiveButtonBackgroundColor){
         cell.backgroundColor = style.destructiveButtonBackgroundColor;
