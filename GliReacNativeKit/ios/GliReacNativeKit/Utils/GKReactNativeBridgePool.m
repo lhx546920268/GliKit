@@ -8,7 +8,7 @@
 
 #import "GKReactNativeBridgePool.h"
 #import <React/RCTBridge.h>
-#import "GKReactNativeLoader.h"
+#import "GKReactNativeDefaultLoader.h"
 #import <React/RCTAssert.h>
 
 @interface GKReactNativeBridge ()<RCTBridgeDelegate>
@@ -20,7 +20,7 @@
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
     self.bridge = bridge;
-    return GKReactNativeBridgePool.sharedPool.basicBundleURL;
+    return GKReactNativeBridgePool.sharedPool.documentBasicBundleURL;
 }
 
 @end
@@ -37,15 +37,15 @@
 
 @implementation GKReactNativeBridgePool
 
-@synthesize basicBundleURL = _basicBundleURL;
+@synthesize documentBasicBundleURL = _documentBasicBundleURL;
 
-+ (GKReactNativeBridgePool *)sharedPool
++ (__kindof GKReactNativeBridgePool*)sharedPool
 {
     static GKReactNativeBridgePool *sharedPool = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        sharedPool = GKReactNativeBridgePool.new;
+        sharedPool = self.class.new;
     });
     
     return sharedPool;
@@ -71,26 +71,26 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSURL *)basicBundleURL
+- (NSURL *)documentBasicBundleURL
 {
-    if(!_basicBundleURL){
-        _basicBundleURL = [NSURL fileURLWithPath:[[GKReactNativeLoader reactNativeDirectory] stringByAppendingPathComponent:@"basic.jsbundle"]];
+    if(!_documentBasicBundleURL){
+        _documentBasicBundleURL = [NSURL fileURLWithPath:[[GKReactNativeDefaultLoader reactNativeDirectory] stringByAppendingPathComponent:@"basic.jsbundle"]];
     }
     
-    return _basicBundleURL;
+    return _documentBasicBundleURL;
 }
 
 - (void)initPool
 {
-    if(![NSFileManager.defaultManager fileExistsAtPath:self.basicBundleURL.path]){
-        [NSFileManager.defaultManager copyItemAtURL:[NSBundle.mainBundle URLForResource:@"basic" withExtension:@"jsbundle"] toURL:self.basicBundleURL error:nil];
+    if(![NSFileManager.defaultManager fileExistsAtPath:self.documentBasicBundleURL.path] && self.mainBasicBundleURL){
+        [NSFileManager.defaultManager copyItemAtURL:self.mainBasicBundleURL toURL:self.documentBasicBundleURL error:nil];
     }
     [self preLoadBridge];
 }
 
 - (void)fetchBridgeWithModuleName:(NSString *)moduleName version:(NSString *)version completion:(GKReactNativeFetchBridgeCompletion)completion
 {
-    if(![NSFileManager.defaultManager fileExistsAtPath:self.basicBundleURL.path]){
+    if(![NSFileManager.defaultManager fileExistsAtPath:self.documentBasicBundleURL.path]){
         !completion ?: completion(nil);
         return;
     }

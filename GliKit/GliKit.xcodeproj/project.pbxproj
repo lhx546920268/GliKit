@@ -14,6 +14,7 @@
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
 		CEA569F123A0CCCC0005A5EA /* UIView+GKStateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */; };
+		CEAC863723AA106C00A0B949 /* UITextView+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAC863623AA106C00A0B949 /* UITextView+GKUtils.m */; };
 		CEAF25522341FEA30038BD89 /* GKPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF25512341FEA30038BD89 /* GKPopover.m */; };
 		CEAF2555234200030038BD89 /* GKPopoverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF2554234200030038BD89 /* GKPopoverMenu.m */; };
 		CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */; };
@@ -167,6 +168,8 @@
 		CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
 		CEA569EF23A0CCCC0005A5EA /* UIView+GKStateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GKStateUtils.h"; sourceTree = "<group>"; };
 		CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GKStateUtils.m"; sourceTree = "<group>"; };
+		CEAC863523AA106C00A0B949 /* UITextView+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+GKUtils.h"; sourceTree = "<group>"; };
+		CEAC863623AA106C00A0B949 /* UITextView+GKUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+GKUtils.m"; sourceTree = "<group>"; };
 		CEAF25502341FEA30038BD89 /* GKPopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPopover.h; sourceTree = "<group>"; };
 		CEAF25512341FEA30038BD89 /* GKPopover.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPopover.m; sourceTree = "<group>"; };
 		CEAF2553234200030038BD89 /* GKPopoverMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPopoverMenu.h; sourceTree = "<group>"; };
@@ -599,6 +602,8 @@
 				CED0D3EB230BECCE0057D405 /* UITextField+GKUtils.m */,
 				CEA569EF23A0CCCC0005A5EA /* UIView+GKStateUtils.h */,
 				CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */,
+				CEAC863523AA106C00A0B949 /* UITextView+GKUtils.h */,
+				CEAC863623AA106C00A0B949 /* UITextView+GKUtils.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1195,6 +1200,7 @@
 				CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */,
 				CED3A7F6230D443200C304B3 /* UITableView+GKEmptyView.m in Sources */,
 				CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */,
+				CEAC863723AA106C00A0B949 /* UITextView+GKUtils.m in Sources */,
 				CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */,
 				CED0D2F5230BC8780057D405 /* GKAlertButton.m in Sources */,
 				CED0D2F6230BC8780057D405 /* CKAlertCell.m in Sources */,

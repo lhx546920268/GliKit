@@ -45,6 +45,7 @@
         self.hidesBottomBarWhenPushed = YES;
         self.shouldCreateNavigationBar = YES;
         self.modalPresentationStyle = UIModalPresentationFullScreen;
+        self.statusBarStyle = UIStatusBarStyleDefault;
     }
     return self;
 }
@@ -297,13 +298,17 @@
 
 // MARK: - UIStatusBar
 
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle
+{
+    if(_statusBarStyle != statusBarStyle){
+        _statusBarStyle = statusBarStyle;
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    if(self.isShowAsDialog){
-        return UIStatusBarStyleLightContent;
-    }else{
-        return UIApplication.gkStatusBarStyle;
-    }
+    return self.statusBarStyle;
 }
 
 // MARK: - Task

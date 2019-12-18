@@ -8,9 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		4D8C0CB26CEC1B5EE4E9961B /* libPods-GliReacNativeKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FA05A2FDCF3B015BBDD07B /* libPods-GliReacNativeKit.a */; };
+		CEAC862D23AA036600A0B949 /* GKReactNativeDefaultLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAC862C23AA036600A0B949 /* GKReactNativeDefaultLoader.m */; };
+		CEAC863023AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAC862F23AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.m */; };
+		CEAC863423AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAC863323AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.m */; };
+		CEC00A7723A9B8340015C59A /* GKReactNativeVersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC00A7623A9B8340015C59A /* GKReactNativeVersionModel.m */; };
 		CECE566F23A8E41D007A96C4 /* GKReactNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE566E23A8E41D007A96C4 /* GKReactNativeViewController.m */; };
 		CECE567223A8E54D007A96C4 /* GKReactNativeBridgePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE567123A8E54D007A96C4 /* GKReactNativeBridgePool.m */; };
-		CECE567523A8E5B1007A96C4 /* GKReactNativeLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE567423A8E5B1007A96C4 /* GKReactNativeLoader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,13 +31,20 @@
 /* Begin PBXFileReference section */
 		0674F007DAF26DCCCAE78C3A /* Pods-GliReacNativeKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliReacNativeKit.release.xcconfig"; path = "Target Support Files/Pods-GliReacNativeKit/Pods-GliReacNativeKit.release.xcconfig"; sourceTree = "<group>"; };
 		A249E73BA16EC30C0C20048E /* Pods-GliReacNativeKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliReacNativeKit.debug.xcconfig"; path = "Target Support Files/Pods-GliReacNativeKit/Pods-GliReacNativeKit.debug.xcconfig"; sourceTree = "<group>"; };
+		CEAC862B23AA036600A0B949 /* GKReactNativeDefaultLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKReactNativeDefaultLoader.h; sourceTree = "<group>"; };
+		CEAC862C23AA036600A0B949 /* GKReactNativeDefaultLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKReactNativeDefaultLoader.m; sourceTree = "<group>"; };
+		CEAC862E23AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKReactNativeNestedScrollHelper.h; sourceTree = "<group>"; };
+		CEAC862F23AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKReactNativeNestedScrollHelper.m; sourceTree = "<group>"; };
+		CEAC863223AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTSinglelineTextInputView+GKReactNativeExtension.h"; sourceTree = "<group>"; };
+		CEAC863323AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTSinglelineTextInputView+GKReactNativeExtension.m"; sourceTree = "<group>"; };
+		CEC00A7523A9B8340015C59A /* GKReactNativeVersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKReactNativeVersionModel.h; sourceTree = "<group>"; };
+		CEC00A7623A9B8340015C59A /* GKReactNativeVersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKReactNativeVersionModel.m; sourceTree = "<group>"; };
 		CECE565F23A8E0E4007A96C4 /* libGliReacNativeKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliReacNativeKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CECE566D23A8E41D007A96C4 /* GKReactNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKReactNativeViewController.h; sourceTree = "<group>"; };
 		CECE566E23A8E41D007A96C4 /* GKReactNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKReactNativeViewController.m; sourceTree = "<group>"; };
 		CECE567023A8E54D007A96C4 /* GKReactNativeBridgePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKReactNativeBridgePool.h; sourceTree = "<group>"; };
 		CECE567123A8E54D007A96C4 /* GKReactNativeBridgePool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKReactNativeBridgePool.m; sourceTree = "<group>"; };
 		CECE567323A8E5B1007A96C4 /* GKReactNativeLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKReactNativeLoader.h; sourceTree = "<group>"; };
-		CECE567423A8E5B1007A96C4 /* GKReactNativeLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKReactNativeLoader.m; sourceTree = "<group>"; };
 		F8FA05A2FDCF3B015BBDD07B /* libPods-GliReacNativeKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliReacNativeKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -67,6 +77,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CEAC863123AA0FD500A0B949 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				CEAC863223AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.h */,
+				CEAC863323AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		CEC00A7423A9B81C0015C59A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CEC00A7523A9B8340015C59A /* GKReactNativeVersionModel.h */,
+				CEC00A7623A9B8340015C59A /* GKReactNativeVersionModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		CECE565623A8E0E4007A96C4 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +116,8 @@
 		CECE566123A8E0E4007A96C4 /* GliReacNativeKit */ = {
 			isa = PBXGroup;
 			children = (
+				CEAC863123AA0FD500A0B949 /* Category */,
+				CEC00A7423A9B81C0015C59A /* Model */,
 				CECE566B23A8E3C4007A96C4 /* Controller */,
 				CECE566C23A8E3C4007A96C4 /* Utils */,
 			);
@@ -109,7 +139,10 @@
 				CECE567023A8E54D007A96C4 /* GKReactNativeBridgePool.h */,
 				CECE567123A8E54D007A96C4 /* GKReactNativeBridgePool.m */,
 				CECE567323A8E5B1007A96C4 /* GKReactNativeLoader.h */,
-				CECE567423A8E5B1007A96C4 /* GKReactNativeLoader.m */,
+				CEAC862B23AA036600A0B949 /* GKReactNativeDefaultLoader.h */,
+				CEAC862C23AA036600A0B949 /* GKReactNativeDefaultLoader.m */,
+				CEAC862E23AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.h */,
+				CEAC862F23AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -198,9 +231,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CECE567523A8E5B1007A96C4 /* GKReactNativeLoader.m in Sources */,
+				CEAC863023AA0E7200A0B949 /* GKReactNativeNestedScrollHelper.m in Sources */,
+				CEAC862D23AA036600A0B949 /* GKReactNativeDefaultLoader.m in Sources */,
+				CEC00A7723A9B8340015C59A /* GKReactNativeVersionModel.m in Sources */,
 				CECE566F23A8E41D007A96C4 /* GKReactNativeViewController.m in Sources */,
 				CECE567223A8E54D007A96C4 /* GKReactNativeBridgePool.m in Sources */,
+				CEAC863423AA0FF800A0B949 /* RCTSinglelineTextInputView+GKReactNativeExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

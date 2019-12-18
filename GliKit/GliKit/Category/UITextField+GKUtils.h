@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)gkAddDefaultInputAccessoryViewWithTitle:(nullable NSString*) title target:(nullable id) target action:(nullable SEL) action;
 - (void)gkAddDefaultInputAccessoryViewWithTarget:(nullable id) target action:(nullable SEL) action;
-- (void)gkAddDefaultInputAccessoryViewWithTitle:(NSString *)title;
+- (void)gkAddDefaultInputAccessoryViewWithTitle:(nullable NSString *)title;
 - (void)gkAddDefaultInputAccessoryView;
 
 // MARK: - 文本限制

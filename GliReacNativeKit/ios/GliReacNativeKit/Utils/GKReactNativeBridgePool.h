@@ -34,7 +34,7 @@ typedef void(^GKReactNativeFetchBridgeCompletion)(GKReactNativeBridge * _Nullabl
 @property(nonatomic, assign) BOOL didLoadBusinessJs;
 
 ///完成回调
-@property(nonatomic, copy) GKReactNativeFetchBridgeCompletion completion;
+@property(nonatomic, copy, nullable) GKReactNativeFetchBridgeCompletion completion;
 
 @end
 
@@ -42,10 +42,16 @@ typedef void(^GKReactNativeFetchBridgeCompletion)(GKReactNativeBridge * _Nullabl
 @interface GKReactNativeBridgePool : NSObject
 
 ///单例
-@property(class, nonatomic, readonly) GKReactNativeBridgePool *sharedPool;
+@property(class, nonatomic, readonly) __kindof GKReactNativeBridgePool *sharedPool;
 
-///获取基础库URL
-@property(nonatomic, readonly) NSURL *basicBundleURL;
+///document中的基础库URL
+@property(nonatomic, copy) NSURL *documentBasicBundleURL;
+
+///在mainBundle 中的基础库URL 如果不为空，会拷贝一份到 documentBasicBundleURL 中，因为服务器下载回来的包要和基础包在同一个目录下，否则图片可能加载不出来
+@property(nonatomic, copy) NSURL *mainBasicBundleURL;
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 ///初始化
 - (void)initPool;

@@ -34,6 +34,9 @@ GKNavigationItemHelper;
 ///设置点击self.view 回收键盘
 @property(nonatomic, assign) BOOL shouldDismissKeyboardWhileTap;
 
+///状态栏颜色
+@property(nonatomic, assign) UIStatusBarStyle statusBarStyle;;
+
 // MARK: - 内容视图
 
 ///固定在顶部的视图 xib不要用

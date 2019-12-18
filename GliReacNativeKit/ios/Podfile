@@ -10,6 +10,9 @@ target 'GliReacNativeKit' do
   # use_frameworks!
 
   # Pods for GliReacNativeKit
+  
+  #解压
+  pod 'SSZipArchive', '~> 2.2.2'
 
   pod 'GliKit', :path => '../../GliKit'
   
