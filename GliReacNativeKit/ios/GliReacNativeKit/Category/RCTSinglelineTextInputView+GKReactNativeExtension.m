@@ -3,7 +3,7 @@
 //  GliReacNativeKit
 //
 //  Created by 罗海雄 on 2019/12/18.
-//  Copyright © 2019 luohaixiong. All rights reserved.
+//  Copyright © 2019 luohaisxiong. All rights reserved.
 //
 
 #import "RCTSinglelineTextInputView+GKReactNativeExtension.h"

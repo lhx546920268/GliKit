@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///获取桥接完成回调 如果bridge = nil，表明加载失败
 typedef void(^GKReactNativeFetchBridgeCompletion)(GKReactNativeBridge * _Nullable bridge);
 
-//RN桥接
+///RN桥接
 @interface GKReactNativeBridge : NSObject
 
 ///桥接
@@ -38,7 +38,7 @@ typedef void(^GKReactNativeFetchBridgeCompletion)(GKReactNativeBridge * _Nullabl
 
 @end
 
-//RN桥接池
+///RN桥接池
 @interface GKReactNativeBridgePool : NSObject
 
 ///单例

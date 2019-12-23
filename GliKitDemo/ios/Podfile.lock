@@ -1,0 +1,67 @@
+PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GliKit (0.0.1):
+    - AFNetworking
+    - FMDB
+    - Masonry
+    - SDWebImage
+  - GliReacNativeKit (0.0.1):
+    - GliKit
+    - SSZipArchive
+  - IAPHelper (1.1)
+  - Masonry (1.1.0)
+  - SDWebImage (5.0.5):
+    - SDWebImage/Core (= 5.0.5)
+  - SDWebImage/Core (5.0.5)
+  - SSZipArchive (2.2.2)
+
+DEPENDENCIES:
+  - GliKit (from `../GliKit`)
+  - GliReacNativeKit (from `../GliReacNativeKit`)
+  - IAPHelper
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - FMDB
+    - IAPHelper
+    - Masonry
+    - SDWebImage
+    - SSZipArchive
+
+EXTERNAL SOURCES:
+  GliKit:
+    :path: "../GliKit"
+  GliReacNativeKit:
+    :path: "../GliReacNativeKit"
+
+SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GliKit: ca1a88d2b81ed92c78313de6589410df32ddb175
+  GliReacNativeKit: 0e2c4beae33f0655e23cb585856100a770d0f5a9
+  IAPHelper: fd74f53b0ac142eed085777b88b86a11746a2dd4
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDWebImage: f86b0a0713195d1c734335d010697d44af10d165
+  SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
+
+PODFILE CHECKSUM: 64074e4b0c3165d53600d491c0a6f36c42c8678a
+
+COCOAPODS: 1.6.0.beta.2
