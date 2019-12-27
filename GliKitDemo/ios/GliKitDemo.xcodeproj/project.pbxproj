@@ -16,6 +16,7 @@
 		CE37C687233B4AAA00C4F196 /* GKDRowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C686233B4AAA00C4F196 /* GKDRowModel.m */; };
 		CE3987E6238FAFF700703C0B /* GKDTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */; };
 		CE3987E7238FB80700703C0B /* GKDNestedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB85F51232630560045CB38 /* GKDNestedTableViewCell.xib */; };
+		CE97636323B59F27001A5DD3 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = CE97636223B59F27001A5DD3 /* test.html */; };
 		CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */; };
 		CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F4D232630210045CB38 /* GKDNestedParentViewController.m */; };
 		CEB85F52232630560045CB38 /* GKDNestedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F50232630560045CB38 /* GKDNestedTableViewCell.m */; };
@@ -95,6 +96,7 @@
 		CE37C683233B4A2700C4F196 /* GKDEmptyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDEmptyViewController.m; sourceTree = "<group>"; };
 		CE37C685233B4AAA00C4F196 /* GKDRowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDRowModel.h; sourceTree = "<group>"; };
 		CE37C686233B4AAA00C4F196 /* GKDRowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDRowModel.m; sourceTree = "<group>"; };
+		CE97636223B59F27001A5DD3 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
 		CEAB052E236FB17600D2A4CF /* GKDWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDWebViewController.h; sourceTree = "<group>"; };
 		CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDWebViewController.m; sourceTree = "<group>"; };
 		CEB85F4C232630210045CB38 /* GKDNestedParentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNestedParentViewController.h; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 				CEE8C8AC231915DB00E7CA75 /* GKDRootViewController.m */,
 				CE37C685233B4AAA00C4F196 /* GKDRowModel.h */,
 				CE37C686233B4AAA00C4F196 /* GKDRowModel.m */,
+				CE97636223B59F27001A5DD3 /* test.html */,
 				CEE8C89B231911EB00E7CA75 /* Assets.xcassets */,
 				CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */,
 				CEE8C8A0231911EB00E7CA75 /* Info.plist */,
@@ -559,6 +562,7 @@
 				CEC3C85D231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib in Resources */,
 				CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */,
 				CEC3C852231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib in Resources */,
+				CE97636323B59F27001A5DD3 /* test.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,6 +862,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F4797G69ZD;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;
@@ -877,6 +882,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F4797G69ZD;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;

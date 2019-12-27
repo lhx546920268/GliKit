@@ -27,10 +27,12 @@
     
     NSError *error = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+#ifdef DEBUG
     if(error){
         NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         NSLog(@"%@",error);
     }
+#endif
     
     if([dic isKindOfClass:[NSDictionary class]]){
         return dic;
@@ -54,10 +56,12 @@
     
     NSError *error = nil;
     NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+#ifdef DEBUG
     if(error){
         NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         NSLog(@"%@",error);
     }
+#endif
     
     if([array isKindOfClass:[NSArray class]]){
         return array;
@@ -81,7 +85,9 @@
         NSData *data = [NSJSONSerialization dataWithJSONObject:object options:kNilOptions error:&error];
         
         if(error){
+#ifdef DEBUG
             NSLog(@"生成json 出错%@",error);
+#endif
         }else{
             return data;
         }

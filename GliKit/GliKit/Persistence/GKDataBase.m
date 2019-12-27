@@ -45,7 +45,9 @@
             db.logsErrors = YES;
 #endif
             if(![db open]){
+#ifdef DEBUG
                 NSLog(@"不能打开数据库");
+#endif
             }
         }];
     }

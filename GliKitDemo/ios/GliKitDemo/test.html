@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                
+                <meta name="description" content="">
+                    <!--         引用外部文件，index.js，实现点击事件的方法实现   -->
+                    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+                       
+                        </head>
+    <body>
+        <script type="text/javascript">
+            function share(){
+                if (navigator.share) {
+                  navigator.share({
+                    title: 'WebShare API Demo',
+                    url: 'https://www.baidu.com'
+                  }).then(() => {
+                    console.log('Thanks for sharing!');
+                  })
+                  .catch(console.error);
+                } else {
+                  // fallback
+                }
+            }
+        </script>
+        
+    <button id="shareButton" onclick="share()">Share</button>
+    </body>
+    
+</html>

@@ -10,8 +10,25 @@
 #import "GKDRowModel.h"
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
-#import <IAPHelper.h>
-#import <IAPShare.h>
+#import <Social/Social.h>
+
+@interface CustomActivity : UIActivity
+
+@end
+
+@implementation CustomActivity
+
+- (NSString *)activityTitle
+{
+    return @"这是一个标题";
+}
+
+- (UIImage *)activityImage
+{
+    return [UIImage imageNamed:@"warehouse"];
+}
+
+@end
 
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
@@ -72,46 +89,34 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-  NSSet* dataSet = [[NSSet alloc] initWithObjects:@"这里是iap商品id", nil];
-    [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
-   
-  // 请求商品信息
-  [[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
-     {
-      if(response.products.count > 0 ) {
-       SKProduct *product = response.products[0];
-   
-       [[IAPShare sharedHelper].iap buyProduct:product
-             onCompletion:^(SKPaymentTransaction* trans){
-           if(trans.error)
-           {
-           }
-           else if(trans.transactionState == SKPaymentTransactionStatePurchased) {
-      
-   
-            // 购买验证
-            NSData *receipt = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
-            //网上的攻略有的比较老，在验证时使用的是trans.transactionReceipt，需要注意trans.transactionReceipt在ios9以后被弃用
-            [[IAPShare sharedHelper].iap checkReceipt:receipt onCompletion:^(NSString *response, NSError *error) {}];
-            
-    
-      }
-      else if(trans.transactionState == SKPaymentTransactionStateFailed) {
-            if (trans.error.code == SKErrorPaymentCancelled) {
-            }else if (trans.error.code == SKErrorClientInvalid) {
-            }else if (trans.error.code == SKErrorPaymentInvalid) {
-            }else if (trans.error.code == SKErrorPaymentNotAllowed) {
-            }else if (trans.error.code == SKErrorStoreProductNotAvailable) {
-            }else{
-            }
-         }
-      }];
-      }else{
-            //  ..未获取到商品
-      }
-     }];
     
     
+    UIActivityViewController *vc = [[UIActivityViewController alloc] initWithActivityItems:@[@"这是一个标题", [UIImage imageNamed:@"warehouse"], [NSURL URLWithString:@"https://www.baidu.com"]] applicationActivities:nil];
+    
+    NSMutableArray *excludeTypesM =  [NSMutableArray arrayWithArray:@[//UIActivityTypePostToFacebook,
+                                                                       UIActivityTypePostToTwitter,
+                                                                       UIActivityTypePostToWeibo,
+                                                                       UIActivityTypeMessage,
+                                                                       UIActivityTypeMail,
+                                                                       UIActivityTypePrint,
+                                                                       UIActivityTypeCopyToPasteboard,
+                                                                       UIActivityTypeAssignToContact,
+                                                                       UIActivityTypeSaveToCameraRoll,
+                                                                       UIActivityTypeAddToReadingList,
+                                                                       UIActivityTypePostToFlickr,
+                                                                       UIActivityTypePostToVimeo,
+                                                                       UIActivityTypePostToTencentWeibo,
+                                                                       UIActivityTypeAirDrop,
+                                                                       UIActivityTypeOpenInIBooks]];
+     
+     if ([[UIDevice currentDevice].systemVersion floatValue] >= 11.0) {
+         [excludeTypesM addObject:UIActivityTypeMarkupAsPDF];
+     }
+    vc.excludedActivityTypes = excludeTypesM;
+    vc.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        
+    };
+    [self presentViewController:vc animated:YES completion:nil];
 //    GKDRowModel *model = self.datas[indexPath.row];
 //    [GKRouter.sharedRouter pushApp:model.className];
 }

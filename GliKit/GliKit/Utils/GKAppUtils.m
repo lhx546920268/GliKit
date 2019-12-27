@@ -87,7 +87,9 @@ static NSString *sharedUUID = nil;
         if(!sharedUUID){
             sharedUUID = @"";
         }
+#ifdef DEBUG
         NSLog(@"UUID = %@", sharedUUID);
+#endif
     }
     
     return sharedUUID;

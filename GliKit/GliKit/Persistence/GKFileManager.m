@@ -41,9 +41,10 @@
         NSError *error = nil;
         if([imageData writeToFile:fileName options:NSDataWritingAtomic error:&error]){
             [files addObject:fileName];
-        }
-        else{
+        }else{
+#ifdef DEBUG
             NSLog(@"error = %@",error);
+#endif
             [failImages addObject:image];
         }
     }
@@ -70,9 +71,10 @@
         NSError *error = nil;
         if([imageData writeToFile:fileName options:NSDataWritingAtomic error:&error]){
             [dic setObject:fileName forKey:[NSNumber numberWithInteger:i]];
-        }
-        else{
+        }else{
+#ifdef DEBUG
             NSLog(@"error = %@",error);
+#endif
         }
     }
     
@@ -94,9 +96,10 @@
     NSError *error = nil;
     if([imageData writeToFile:fileName options:NSDataWritingAtomic error:&error]){
         return fileName;
-    }
-    else{
+    }else{
+#ifdef DEBUG
         NSLog(@"error = %@",error);
+#endif
     }
     
     return nil;

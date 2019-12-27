@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.URL = [NSURL URLWithString:@"https://www.baidu.com"];
+    self.URL = [NSBundle.mainBundle URLForResource:@"test" withExtension:@"html"];
     [self loadWebContent];
 }
 

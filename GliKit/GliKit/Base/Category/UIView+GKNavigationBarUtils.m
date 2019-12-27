@@ -10,8 +10,9 @@
 #import <objc/runtime.h>
 #import "UIApplication+GKTheme.h"
 #import "NSObject+GKUtils.h"
+#import "GKSystemNavigationBar.h"
 
-static NSString *const CANavigationBarContentViewName = @"_UINavigationBarContentView";
+static NSString *const GKNavigationBarContentViewName = @"_UINavigationBarContentView";
 
 @implementation UIView (GKNavigationBarUtils)
 
@@ -42,7 +43,7 @@ static NSString *const CANavigationBarContentViewName = @"_UINavigationBarConten
 
 - (UIEdgeInsets)gkLayoutMargins
 {
-    if([NSStringFromClass(self.class) isEqualToString:CANavigationBarContentViewName]){
+    if(self.gkIsAppNavigationBar){
         return UIEdgeInsetsZero;
     }
     return self.gkLayoutMargins;
@@ -50,10 +51,16 @@ static NSString *const CANavigationBarContentViewName = @"_UINavigationBarConten
 
 - (NSDirectionalEdgeInsets)gkDirectionalLayoutMargins NS_AVAILABLE_IOS(11.0)
 {
-    if([NSStringFromClass(self.class) isEqualToString:CANavigationBarContentViewName]){
+    if(self.gkIsAppNavigationBar){
         return NSDirectionalEdgeInsetsZero;
     }
     return self.gkDirectionalLayoutMargins;
+}
+
+///是否自己的导航栏
+- (BOOL)gkIsAppNavigationBar
+{
+    return [NSStringFromClass(self.class) isEqualToString:GKNavigationBarContentViewName] && [self.superview isKindOfClass:GKSystemNavigationBar.class];
 }
 
 @end

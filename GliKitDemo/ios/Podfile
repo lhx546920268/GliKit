@@ -6,9 +6,7 @@ target 'GliKitDemo' do
   # use_frameworks!
 
   # Pods for GliKitDemo
-  pod 'GliKit', :path => '../GliKit'
-  pod 'GliReacNativeKit', :path => '../GliReacNativeKit'
-  pod 'IAPHelper'
+  pod 'GliKit', :path => '../../GliKit'
 end
 
 target 'GliKitApp' do
@@ -16,5 +14,5 @@ target 'GliKitApp' do
   # use_frameworks!
 
   # Pods for GliKitDemo
-  pod 'GliKit', :path => '../GliKit'
+  pod 'GliKit', :path => '../../GliKit'
 end
