@@ -112,7 +112,6 @@
 
 - (CGRect)titleRectForContentRect:(CGRect)contentRect
 {
-    
     CGRect rect = [super titleRectForContentRect:contentRect];
     
     if(![self shouldChange])
@@ -137,7 +136,7 @@
                 }
                     break;
                 case UIControlContentVerticalAlignmentCenter : {
-                    rect.origin.y = (contentRect.size.height - rect.size.height) / 2.0 + insets.top - insets.bottom;
+                    rect.origin.y = contentRect.origin.y + (contentRect.size.height - rect.size.height) / 2.0 + insets.top - insets.bottom;
                 }
                     break;
                 case UIControlContentVerticalAlignmentBottom : {
@@ -156,7 +155,7 @@
                 }
                     break;
                 case UIControlContentVerticalAlignmentCenter : {
-                    rect.origin.y = (contentRect.size.height - (anotherSize.height + padding + rect.size.height)) / 2.0 + insets.top - insets.bottom + anotherSize.height + padding;
+                    rect.origin.y = contentRect.origin.y + (contentRect.size.height - (anotherSize.height + padding + rect.size.height)) / 2.0 + insets.top - insets.bottom + anotherSize.height + padding;
                 }
                     break;
                 case UIControlContentVerticalAlignmentBottom : {
@@ -175,7 +174,7 @@
                 }
                     break;
                 case UIControlContentVerticalAlignmentCenter : {
-                    rect.origin.y = (contentRect.size.height - (anotherSize.height + padding + rect.size.height)) / 2.0 + insets.top - insets.bottom;
+                    rect.origin.y = contentRect.origin.y + (contentRect.size.height - (anotherSize.height + padding + rect.size.height)) / 2.0 + insets.top - insets.bottom;
                 }
                     break;
                 case UIControlContentVerticalAlignmentBottom : {

@@ -43,7 +43,7 @@
     // Do any additional setup after loading the view.
     
     self.navigationItem.title = GKAppUtils.appName;
-    
+    //^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
                    [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
@@ -54,6 +54,7 @@
                    [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
                    [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
                    ];
+  
     [self initViews];
     
     [self gkSetRightItemWithTitle:@"完成" action:nil];
@@ -90,35 +91,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    
-    UIActivityViewController *vc = [[UIActivityViewController alloc] initWithActivityItems:@[@"这是一个标题", [UIImage imageNamed:@"warehouse"], [NSURL URLWithString:@"https://www.baidu.com"]] applicationActivities:nil];
-    
-    NSMutableArray *excludeTypesM =  [NSMutableArray arrayWithArray:@[//UIActivityTypePostToFacebook,
-                                                                       UIActivityTypePostToTwitter,
-                                                                       UIActivityTypePostToWeibo,
-                                                                       UIActivityTypeMessage,
-                                                                       UIActivityTypeMail,
-                                                                       UIActivityTypePrint,
-                                                                       UIActivityTypeCopyToPasteboard,
-                                                                       UIActivityTypeAssignToContact,
-                                                                       UIActivityTypeSaveToCameraRoll,
-                                                                       UIActivityTypeAddToReadingList,
-                                                                       UIActivityTypePostToFlickr,
-                                                                       UIActivityTypePostToVimeo,
-                                                                       UIActivityTypePostToTencentWeibo,
-                                                                       UIActivityTypeAirDrop,
-                                                                       UIActivityTypeOpenInIBooks]];
-     
-     if ([[UIDevice currentDevice].systemVersion floatValue] >= 11.0) {
-         [excludeTypesM addObject:UIActivityTypeMarkupAsPDF];
-     }
-    vc.excludedActivityTypes = excludeTypesM;
-    vc.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-        
-    };
-    [self presentViewController:vc animated:YES completion:nil];
-//    GKDRowModel *model = self.datas[indexPath.row];
-//    [GKRouter.sharedRouter pushApp:model.className];
+    GKDRowModel *model = self.datas[indexPath.row];
+    [GKRouter.sharedRouter pushApp:model.className];
 }
 
 @end

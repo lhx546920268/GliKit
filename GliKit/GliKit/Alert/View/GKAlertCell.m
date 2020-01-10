@@ -1,16 +1,16 @@
 //
-//  CKAlertCell.m
+//  GKAlertCell.m
 //  GliKit
 //
 //  Created by 罗海雄 on 2019/7/18.
 //  Copyright © 2019 罗海雄. All rights reserved.
 //
 
-#import "CKAlertCell.h"
+#import "GKAlertCell.h"
 #import <Masonry.h>
 #import "GKButton.h"
 
-@implementation CKAlertCell
+@implementation GKAlertCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -26,7 +26,6 @@
         [_button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-
     }
     
     return self;

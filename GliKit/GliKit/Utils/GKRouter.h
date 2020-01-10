@@ -10,9 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///页面打开回调
 typedef void(^GKRounterOpenCompletion)(void);
 
-///路由
+///页面初始化处理
+typedef UIViewController* (^GKRounterHandler)(NSDictionary * _Nullable rounterParams);
+
+///路由 在URLString中的特殊字符和参数值必须编码
 @interface GKRouter : NSObject
 
 ///单例
@@ -28,9 +32,17 @@ typedef void(^GKRounterOpenCompletion)(void);
  注册一个页面
  
  @param name 页面名称
- @param cls 页面对应的类
+ @param cls 页面对应的类 会根据对应的cls创建一个页面，必须是UIViewController 
  */
 - (void)registerName:(NSString*) name forClass:(Class) cls;
+
+/**
+注册一个页面 与上一个方法互斥 不会调用 setRouterParams
+
+@param name 页面名称
+@param handler 页面初始化回调
+*/
+- (void)registerName:(NSString*) name forHandler:(GKRounterHandler) handler;
 
 /**
  取消注册一个页面
@@ -44,11 +56,12 @@ typedef void(^GKRounterOpenCompletion)(void);
  
  @param URLString 页面链接 可带参数，如 app://profile?userId=1
  @param params 页面参数
+ @return 是否打开成功
  */
-- (void)push:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (void)push:(NSString*) URLString;
-- (void)pushApp:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (void)pushApp:(NSString*) URLString;
+- (BOOL)push:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (BOOL)push:(NSString*) URLString;
+- (BOOL)pushApp:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (BOOL)pushApp:(NSString*) URLString;
 
 /**
  替换一个页面，只有带导航栏的视图控制器才能替换
@@ -56,13 +69,14 @@ typedef void(^GKRounterOpenCompletion)(void);
  @param URLString 页面链接 可带参数，如 app://profile?userId=1
  @param params 页面参数
  @param toReplacedViewControlelrs 要替换的视图，不带toReplacedViewControlelrs时， 默认替换当前页
+ @return 是否打开成功
  */
-- (void)replace:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
-- (void)replace:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (void)replace:(NSString*) URLString;
-- (void)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
-- (void)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (void)replaceApp:(NSString*) URLString;
+- (BOOL)replace:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
+- (BOOL)replace:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (BOOL)replace:(NSString*) URLString;
+- (BOOL)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
+- (BOOL)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (BOOL)replaceApp:(NSString*) URLString;
 
 /**
  打开一个页面
@@ -71,15 +85,16 @@ typedef void(^GKRounterOpenCompletion)(void);
  @param params 页面参数
  @param withNavigationBar 是否创建导航栏 默认创建
  @param completion 界面打开完成回调
+ @return 是否打开成功
  */
-- (void)present:(NSString*) URLString params:(nullable NSDictionary*) params withNavigationBar:(BOOL) withNavigationBar completion:(nullable GKRounterOpenCompletion) completion;
-- (void)present:(NSString*) URLString params:(nullable NSDictionary*) params completion:(nullable GKRounterOpenCompletion) completion;
-- (void)present:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (void)present:(NSString*) URLString;
-- (void)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params withNavigationBar:(BOOL) withNavigationBar completion:(nullable GKRounterOpenCompletion) completion;
-- (void)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params completion:(nullable GKRounterOpenCompletion) completion;
-- (void)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (void)presentApp:(NSString*) URLString;
+- (BOOL)present:(NSString*) URLString params:(nullable NSDictionary*) params withNavigationBar:(BOOL) withNavigationBar completion:(nullable GKRounterOpenCompletion) completion;
+- (BOOL)present:(NSString*) URLString params:(nullable NSDictionary*) params completion:(nullable GKRounterOpenCompletion) completion;
+- (BOOL)present:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (BOOL)present:(NSString*) URLString;
+- (BOOL)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params withNavigationBar:(BOOL) withNavigationBar completion:(nullable GKRounterOpenCompletion) completion;
+- (BOOL)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params completion:(nullable GKRounterOpenCompletion) completion;
+- (BOOL)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (BOOL)presentApp:(NSString*) URLString;
 
 /**
  获取一个已初始化的页面

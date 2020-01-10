@@ -12,7 +12,7 @@
 #import "GKButton.h"
 #import "NSAttributedString+GKUtils.h"
 #import "GKAlertButton.h"
-#import "CKAlertCell.h"
+#import "GKAlertCell.h"
 #import "GKAlertHeader.h"
 #import "UIViewController+GKDialog.h"
 #import "UIView+GKUtils.h"
@@ -305,7 +305,7 @@
         if(self.actions.count > 0){
             self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.header.gkBottom, width, 0)collectionViewLayout:[self layout]];
             self.collectionView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-            [self.collectionView registerClass:[CKAlertCell class] forCellWithReuseIdentifier:@"GKAlertCell"];
+            [self.collectionView registerClass:[GKAlertCell class] forCellWithReuseIdentifier:@"GKAlertCell"];
             self.collectionView.dataSource = self;
             self.collectionView.delegate = self;
             self.collectionView.bounces = NO;
@@ -504,7 +504,12 @@
         }
             break;
         case GKAlertControllerStyleAlert : {
-            !completion ?: completion(YES);
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.dialogBackgroundView.alpha = 0;
+                self.container.alpha = 0;
+                
+            }completion:completion];
         }
             break;
     }
@@ -524,6 +529,10 @@
     if(index < self.actions.count){
         GKAlertAction *action = self.actions[index];
         return action.title;
+    }
+    
+    if(self.style == GKAlertControllerStyleActionSheet && index == self.actions.count){
+        return self.cancelTitle;
     }
     
     return nil;
@@ -575,39 +584,46 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CKAlertCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GKAlertCell" forIndexPath:indexPath];
+    GKAlertCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GKAlertCell" forIndexPath:indexPath];
     
     GKAlertAction *action = [self.actions objectAtIndex:indexPath.item];
-    
-    BOOL isCancel = NO;
-    if(self.style == GKAlertControllerStyleAlert && self.cancelTitle){
-        isCancel = (indexPath.item == 0 && self.actions.count < 3) || (indexPath.item == self.actions.count - 1 && self.actions.count >= 3);
-    }
-    
-    GKAlertProps *style = self.props;
+    GKAlertProps *props = self.props;
     UIFont *font;
     UIColor *textColor;
-    if(isCancel){
-        textColor = action.textColor ? action.textColor : style.cancelButtonTextColor;
-        font = action.font ? action.font : style.cancelButtonFont;
-    }else if(indexPath.item == _destructiveButtonIndex){
-        textColor = action.textColor ? action.textColor : style.destructiveButtonTextColor;
-        font = action.font ? action.font : style.destructiveButtonFont;
+    
+    if(action.enable){
+        BOOL isCancel = NO;
+        if(self.style == GKAlertControllerStyleAlert && self.cancelTitle){
+            isCancel = (indexPath.item == 0 && self.actions.count < 3) || (indexPath.item == self.actions.count - 1 && self.actions.count >= 3);
+        }
+        
+        if(isCancel){
+            textColor = action.textColor ? action.textColor : props.cancelButtonTextColor;
+            font = action.font ? action.font : props.cancelButtonFont;
+        }else if(indexPath.item == _destructiveButtonIndex){
+            textColor = action.textColor ? action.textColor : props.destructiveButtonTextColor;
+            font = action.font ? action.font : props.destructiveButtonFont;
+        }else{
+            textColor = action.textColor ? action.textColor : props.buttonTextColor;
+            font = action.font ? action.font : props.butttonFont;
+        }
     }else{
-        textColor = action.textColor ? action.textColor : style.buttonTextColor;
-        font = action.font ? action.font : style.butttonFont;
+        textColor = props.disableButtonTextColor;
+        font = props.disableButtonFont;
     }
+    
     [cell.button setTitleColor:textColor forState:UIControlStateNormal];
     cell.button.titleLabel.font = font;
     
     [cell.button setTitle:action.title forState:UIControlStateNormal];
     [cell.button setImage:action.icon forState:UIControlStateNormal];
     cell.button.imagePadding = action.spacing;
+    cell.button.imagePosition = action.imagePosition;
     
-    if(indexPath.item == _destructiveButtonIndex && style.destructiveButtonBackgroundColor){
-        cell.backgroundColor = style.destructiveButtonBackgroundColor;
+    if(indexPath.item == _destructiveButtonIndex && props.destructiveButtonBackgroundColor){
+        cell.backgroundColor = props.destructiveButtonBackgroundColor;
     }else{
-        cell.backgroundColor = style.mainColor;
+        cell.backgroundColor = props.mainColor;
     }
     
     return cell;
@@ -640,13 +656,13 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CKAlertCell *cell = (CKAlertCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    GKAlertCell *cell = (GKAlertCell*)[collectionView cellForItemAtIndexPath:indexPath];
     cell.contentView.backgroundColor = UIColor.clearColor;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CKAlertCell *cell = (CKAlertCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    GKAlertCell *cell = (GKAlertCell*)[collectionView cellForItemAtIndexPath:indexPath];
     cell.contentView.backgroundColor = self.props.highlightedBackgroundColor;
 }
 

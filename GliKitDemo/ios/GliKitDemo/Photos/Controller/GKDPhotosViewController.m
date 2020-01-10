@@ -20,12 +20,23 @@
 
 @implementation GKDPhotosViewController
 
++ (void)load
+{
+    [GKRouter.sharedRouter registerName:@"photo" forHandler:^UIViewController *(NSDictionary * _Nullable rounterParams) {
+        
+        GKDPhotosViewController *vc = [GKDPhotosViewController new];
+        [vc setRouterParams:rounterParams];
+        
+        return vc;
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.maxCount = 9;
     self.results = [NSMutableArray array];
-    self.navigationItem.title = @"相册";
+//    self.navigationItem.title = @"相册";
     [self initViews];
 }
 
@@ -34,8 +45,7 @@
     self.photoName = [params gkStringForKey:@"name"];
     self.selectHandler = params[@"selectHandler"];
     
-    NSObject *value = [params objectForKey:@"selectHandler"];
-    NSLog(@"%@", value.class);
+    self.navigationItem.title = self.photoName;
 }
 
 - (void)initViews

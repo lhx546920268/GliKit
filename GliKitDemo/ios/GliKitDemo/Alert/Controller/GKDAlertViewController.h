@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet GKButton *alertButton;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet GKButton *titleButton;
+@property (weak, nonatomic) IBOutlet GKButton *imageButton;
 @end
 
 NS_ASSUME_NONNULL_END

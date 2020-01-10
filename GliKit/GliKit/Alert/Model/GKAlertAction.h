@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GKButton.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///图片和标题的间隔 default is '5.0'
 @property(nonatomic, assign) CGFloat spacing;
+
+///图标位置
+@property(nonatomic, assign) GKButtonImagePosition imagePosition;
 
 /**
  构造方法

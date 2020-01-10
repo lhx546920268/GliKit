@@ -21,6 +21,9 @@
 //已注册的类
 @property(nonatomic, strong) NSMutableDictionary<NSString*, Class> *registeredClasses;
 
+//已注册的回调
+@property(nonatomic, strong) NSMutableDictionary<NSString*, GKRounterHandler> *registeredHandlers;
+
 @end
 
 @implementation GKRouter
@@ -44,6 +47,7 @@
     if (self) {
         self.appScheme = @"app://";
         self.registeredClasses = [NSMutableDictionary dictionary];
+        self.registeredHandlers = [NSMutableDictionary dictionary];
         self.openURLWhileSchemeNotSupport = YES;
     }
     return self;
@@ -60,10 +64,18 @@
 
 - (void)registerName:(NSString *)name forClass:(Class)cls
 {
-    if(name && cls){
+    if(name && [cls isKindOfClass:UIViewController.class]){
         self.registeredClasses[name] = cls;
     }else{
-        @throw [NSException exceptionWithName:@"GKRouterNullException" reason:@"name and class can not be nil" userInfo:nil];
+        @throw [NSException exceptionWithName:@"GKRouterIllegalArgumentsException" reason:[NSString stringWithFormat:@"the class for %@ must be a UIViewController", name] userInfo:nil];
+    }
+}
+
+- (void)registerName:(NSString *)name forHandler:(GKRounterHandler)handler
+{
+    if(name){
+        [self.registeredClasses removeObjectForKey:name];
+        self.registeredHandlers[name] = handler;
     }
 }
 
@@ -71,152 +83,173 @@
 {
     if(name){
         [self.registeredClasses removeObjectForKey:name];
+        [self.registeredHandlers removeObjectForKey:name];
     }
 }
 
 // MARK: - Push
 
-- (void)pushApp:(NSString *)URLString
+- (BOOL)pushApp:(NSString *)URLString
 {
-    [self pushApp:URLString params:nil];
+    return [self pushApp:URLString params:nil];
 }
 
-- (void)pushApp:(NSString*) URLString params:(NSDictionary*) params
+- (BOOL)pushApp:(NSString*) URLString params:(NSDictionary*) params
 {
-    [self push:[self.appScheme stringByAppendingString:URLString] params:params];
+    return [self push:[self.appScheme stringByAppendingString:URLString] params:params];
 }
 
-- (void)push:(NSString *)URLString
+- (BOOL)push:(NSString *)URLString
 {
-    [self push:URLString params:nil];
+    return [self push:URLString params:nil];
 }
 
-- (void)push:(NSString *)URLString params:(NSDictionary *)params
+- (BOOL)push:(NSString *)URLString params:(NSDictionary *)params
 {
-    [self open:URLString params:params isPresent:NO withNavigationBar:NO completion:nil];
+    return [self open:URLString params:params isPresent:NO withNavigationBar:NO completion:nil];
 }
 
 // MARK: - Replace
 
-- (void)replace:(NSString *)URLString
+- (BOOL)replace:(NSString *)URLString
 {
-    [self replace:URLString params:nil];
+    return [self replace:URLString params:nil];
 }
 
-- (void)replace:(NSString *)URLString params:(NSDictionary *)params
+- (BOOL)replace:(NSString *)URLString params:(NSDictionary *)params
 {
     NSArray *viewControllers = nil;
     UIViewController *viewController = self.gkCurrentViewController;
     if(viewController){
         viewControllers = @[viewController];
     }
-    [self replace:URLString params:params toReplacedViewControlelrs:viewControllers];
+    return [self replace:URLString params:params toReplacedViewControlelrs:viewControllers];
 }
 
-- (void)replace:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+- (BOOL)replace:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
 {
-    [self open:URLString params:params isPresent:NO withNavigationBar:NO toReplacedViewControlelrs:toReplacedViewControlelrs completion:nil];
+    return [self open:URLString params:params isPresent:NO withNavigationBar:NO toReplacedViewControlelrs:toReplacedViewControlelrs completion:nil];
 }
 
-- (void)replaceApp:(NSString *)URLString
+- (BOOL)replaceApp:(NSString *)URLString
 {
-    [self replaceApp:URLString params:nil];
+    return [self replaceApp:URLString params:nil];
 }
 
-- (void)replaceApp:(NSString *)URLString params:(NSDictionary *)params
+- (BOOL)replaceApp:(NSString *)URLString params:(NSDictionary *)params
 {
-    [self replace:[self.appScheme stringByAppendingString:URLString] params:params];
+    return [self replace:[self.appScheme stringByAppendingString:URLString] params:params];
 }
 
-- (void)replaceApp:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+- (BOOL)replaceApp:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
 {
-    [self replace:[self.appScheme stringByAppendingString:URLString] params:params toReplacedViewControlelrs:toReplacedViewControlelrs];
+    return [self replace:[self.appScheme stringByAppendingString:URLString] params:params toReplacedViewControlelrs:toReplacedViewControlelrs];
 }
 
 // MARK: - Present
 
-- (void)presentApp:(NSString *)URLString
+- (BOOL)presentApp:(NSString *)URLString
 {
-    [self presentApp:URLString params:nil];
+    return [self presentApp:URLString params:nil];
 }
 
-- (void)presentApp:(NSString *)URLString params:(NSDictionary *)params
+- (BOOL)presentApp:(NSString *)URLString params:(NSDictionary *)params
 {
-    [self presentApp:URLString params:params completion:nil];
+    return [self presentApp:URLString params:params completion:nil];
 }
 
-- (void)presentApp:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
+- (BOOL)presentApp:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
 {
-    [self presentApp:URLString params:params withNavigationBar:YES completion:completion];
+    return [self presentApp:URLString params:params withNavigationBar:YES completion:completion];
 }
 
-- (void)presentApp:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
+- (BOOL)presentApp:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
 {
-    [self present:[self.appScheme stringByAppendingString:URLString] params:params withNavigationBar:withNavigationBar completion:completion];
+    return [self present:[self.appScheme stringByAppendingString:URLString] params:params withNavigationBar:withNavigationBar completion:completion];
 }
 
-- (void)present:(NSString *)URLString
+- (BOOL)present:(NSString *)URLString
 {
-    [self present:URLString params:nil];
+    return [self present:URLString params:nil];
 }
 
-- (void)present:(NSString *)URLString params:(NSDictionary *)params
+- (BOOL)present:(NSString *)URLString params:(NSDictionary *)params
 {
-    [self present:URLString params:params completion:nil];
+    return [self present:URLString params:params completion:nil];
 }
 
-- (void)present:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
+- (BOOL)present:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
 {
-    [self present:URLString params:params withNavigationBar:YES completion:completion];
+    return [self present:URLString params:params withNavigationBar:YES completion:completion];
 }
 
-- (void)present:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
+- (BOOL)present:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
 {
-    [self open:URLString params:params isPresent:YES withNavigationBar:withNavigationBar completion:completion];
+    return [self open:URLString params:params isPresent:YES withNavigationBar:withNavigationBar completion:completion];
 }
 
 // MARK: - ViewController
 
-- (UIViewController *)get:(NSString *)URLString params:(NSMutableDictionary *)params
+- (UIViewController *)get:(NSString *)URLString params:(NSDictionary *)params
 {
     NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
-    return [self viewControllerForComponents:components params:params];
+    NSMutableDictionary *dic = (NSMutableDictionary*)params;
+    if(![dic isKindOfClass:NSMutableDictionary.class]){
+        dic = [NSMutableDictionary dictionaryWithDictionary:params];
+    }
+    
+    return [self viewControllerForComponents:components params:dic];
 }
 
 - (UIViewController *)viewControllerForComponents:(NSURLComponents *) components params:(NSMutableDictionary *)params
 {
     UIViewController *viewController = nil;
+    
+    BOOL alreadSetParams = NO;
     if(components){
+        
+        //添加URL上的参数
+        for(NSURLQueryItem *item in components.queryItems){
+            if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
+                params[item.name] = item.value;
+            }
+        }
+        
         NSString *scheme = [components.scheme stringByAppendingString:@"://"];
         if([scheme isEqualToString:self.appScheme]){
-            NSString *clsName = components.host;
-            if(![NSString isEmpty:clsName]){
-                Class cls = self.registeredClasses[clsName];
-                if(!cls){
-                    cls = NSClassFromString(clsName);
-                }
+            NSString *name = components.host;
+            if(![NSString isEmpty:name]){
                 
-                viewController = [cls new];
+                GKRounterHandler handler = self.registeredHandlers[name];
+                if(handler){
+                    viewController = handler(params);
+                    alreadSetParams = NO;
+                }else{
+                    Class cls = self.registeredClasses[name];
+                    if(!cls){
+                        cls = NSClassFromString(name);
+                    }
+                    
+                    viewController = [cls new];
+                }
                 if(![viewController isKindOfClass:UIViewController.class]){
                     viewController = nil;
                 }
             }
         }else if([scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"]){
             GKBaseWebViewController *web = [[GKBaseWebViewController alloc] initWithURLString:components.string];
-            [web setRouterParams:params];
             viewController = web;
         }
     }
     
     if(!viewController){
         [self cannotFound:components.string];
-    }else if(![viewController isKindOfClass:GKBaseWebViewController.class]){
-        for(NSURLQueryItem *item in components.queryItems){
-            if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
-                params[item.name] = item.value;
-            }
+    }else if(!alreadSetParams && params.count > 0){
+        
+        if(params.count > 0){
+            [self setPropertyForViewController:viewController data:params];
         }
-        [self setPropertyForViewController:viewController data:params];
+        
         if([viewController isKindOfClass:GKBaseViewController.class]){
             GKBaseViewController *baseViewController = (GKBaseViewController*)viewController;
             [baseViewController setRouterParams:params];
@@ -247,18 +280,18 @@
     return NSNotFound;
 }
 
-- (void)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar completion:(void (^)(void))completion
+- (BOOL)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar completion:(void (^)(void))completion
 {
-    [self open:URLString params:params isPresent:isPresent withNavigationBar:withNavigationBar toReplacedViewControlelrs:nil completion:completion];
+    return [self open:URLString params:params isPresent:isPresent withNavigationBar:withNavigationBar toReplacedViewControlelrs:nil completion:completion];
 }
 
 ///打开一个页面
-- (void)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar toReplacedViewControlelrs:(NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void (^)(void))completion
+- (BOOL)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar toReplacedViewControlelrs:(NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void (^)(void))completion
 {
     NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
     if(!components){
-        [self cannotFound:components.string];
-        return;
+        [self cannotFound:URLString];
+        return NO;
     }
     
     NSInteger tabBarIndex = [self tabBarIndexForName:components.host];
@@ -267,7 +300,7 @@
             UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
             controller.selectedIndex = tabBarIndex;
         }];
-        return;
+        return YES;
     }
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:params];
@@ -275,8 +308,9 @@
     if(!viewController){
         if(self.openURLWhileSchemeNotSupport && ![self isSupportScheme:components.scheme]){
             [UIApplication.sharedApplication openURL:components.URL];
+            return YES;
         }
-        return;
+        return NO;
     }
     
     if(withNavigationBar){
@@ -287,6 +321,8 @@
     }else{
         [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs];
     }
+    
+    return YES;
 }
        
 

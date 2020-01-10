@@ -125,6 +125,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, strong) UIColor *disableButtonTextColor;
 
+/**
+ 按钮无法点击时的字体
+ */
+@property(nonatomic, strong) UIFont *disableButtonFont;
+
 //MARK: - 警示
 
 /**

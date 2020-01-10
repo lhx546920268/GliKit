@@ -1,5 +1,5 @@
 //
-//  CKAlertCell.h
+//  GKAlertCell.h
 //  GliKit
 //
 //  Created by 罗海雄 on 2019/7/18.
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class GKButton;
 
 ///弹窗按钮列表cell
-@interface CKAlertCell : UICollectionViewCell
+@interface GKAlertCell : UICollectionViewCell
 
 ///按钮
 @property(nonatomic, readonly) GKButton *button;

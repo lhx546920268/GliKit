@@ -62,18 +62,7 @@ static WKProcessPool *sharedProcessPool;
 
 - (instancetype)initWithURLString:(NSString *)URLString
 {
-    NSURL *URL = nil;
-    if(![NSString isEmpty:URLString]){
-        URL = [NSURL URLWithString:URLString];
-        if(!URL){
-            if(![URLString hasPrefix:@"http://"] || ![URLString hasPrefix:@"https://"]){
-                URLString = [NSString stringWithFormat:@"http://%@", URLString];
-            }
-            URL = [NSURL URLWithString:URLString];
-        }
-    }
-    
-    return [self initWithURL:URL];
+    return [self initWithURL:[NSURL URLWithString:URLString]];
 }
 
 - (instancetype)initWithURL:(NSURL*) URL
@@ -81,6 +70,7 @@ static WKProcessPool *sharedProcessPool;
     self = [super initWithNibName:nil bundle:nil];
     if(self){
        
+        URL = [self fixURLIfNeeded:URL];
         _URL = URL;
         _originalURL = [URL copy];
         [self initViews];
@@ -163,6 +153,33 @@ static WKProcessPool *sharedProcessPool;
     [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(contentView);
     }];
+}
+
+- (void)setURL:(NSURL *)URL
+{
+    if(_URL != URL){
+        _URL = [self fixURLIfNeeded:URL];
+    }
+}
+
+///如果需要 修正URL
+- (NSURL*)fixURLIfNeeded:(NSURL*) URL
+{
+    if(URL){
+        NSString *URLString = URL.absoluteString;
+        if([NSString isEmpty:URL.scheme]){
+            URLString = [NSString stringWithFormat:@"http://%@", URLString];
+        }
+        
+        NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
+        NSString *host = components.host;
+        if(![NSString isEmpty:host] && [host componentsSeparatedByString:@"."].count < 3){
+            components.host = [NSString stringWithFormat:@"www.%@", host];
+        }
+        
+        URL = components.URL;
+    }
+    return URL;
 }
 
 // MARK: - Web Config
@@ -301,6 +318,9 @@ static WKProcessPool *sharedProcessPool;
         NSString *userAgent = [self customUserAgent];
         if(![NSString isEmpty:userAgent]){
             
+            if(self.URL || self.htmlString){
+                [self setProgress:0.1];
+            }
             loadEnable = NO;
             WeakObj(self)
             [self loadUserAgentWithCompletion:^{
@@ -320,8 +340,10 @@ static WKProcessPool *sharedProcessPool;
  
     if(loadEnable){
         if(self.URL){
+            
             [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
         }else if(self.htmlString){
+            
             [_webView loadHTMLString:self.htmlString baseURL:nil];
         }
     }
@@ -351,7 +373,6 @@ static WKProcessPool *sharedProcessPool;
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     if([self shouldOpenURL:navigationAction.request.URL action:navigationAction]){
-        
         decisionHandler(WKNavigationActionPolicyAllow);
     }else{
         

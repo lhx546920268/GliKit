@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,8 +11,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GKDAlertViewController">
             <connections>
                 <outlet property="alertButton" destination="cGX-Ch-djv" id="14r-Vr-aiq"/>
+                <outlet property="gkLabel" destination="sO3-4m-Fjk" id="jHa-eZ-qum"/>
+                <outlet property="imageButton" destination="fFh-7a-XPu" id="vc0-HE-0pp"/>
                 <outlet property="imageView" destination="AV6-Ie-S2X" id="z5i-WT-3jx"/>
-                <outlet property="label" destination="1A8-gk-xd2" id="VE8-EH-eDc"/>
+                <outlet property="label" destination="1A8-gk-xd2" id="hpz-Z9-OAJ"/>
+                <outlet property="titleButton" destination="amQ-z0-O7h" id="U7S-4c-MOa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,8 +24,9 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGX-Ch-djv" customClass="GKButton">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGX-Ch-djv" customClass="GKButton">
                     <rect key="frame" x="132" y="354" width="150" height="50"/>
+                    <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="JiJ-EC-tid"/>
                         <constraint firstAttribute="width" constant="150" id="Qcz-gp-Okl"/>
@@ -55,15 +59,55 @@
                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="AV6-Ie-S2X">
                     <rect key="frame" x="175.5" y="663" width="63.5" height="63.5"/>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amQ-z0-O7h" customClass="GKButton">
+                    <rect key="frame" x="132" y="289" width="150" height="50"/>
+                    <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="7hJ-oy-gcJ"/>
+                        <constraint firstAttribute="height" constant="50" id="wf9-2D-647"/>
+                    </constraints>
+                    <state key="normal" title="Alert">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="handleSystemAlert:" destination="-1" eventType="touchUpInside" id="jHY-lx-OeA"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFh-7a-XPu" customClass="GKButton">
+                    <rect key="frame" x="132" y="224" width="150" height="50"/>
+                    <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="hlP-Uf-RGz"/>
+                        <constraint firstAttribute="width" constant="150" id="wV8-uU-JON"/>
+                    </constraints>
+                    <state key="normal" image="warehouse">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="handleAlert:" destination="-1" eventType="touchUpInside" id="rsm-Nz-SQO"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="啊自定义Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sO3-4m-Fjk" customClass="GKLabel">
+                    <rect key="frame" x="151.5" y="161" width="111" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="amQ-z0-O7h" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="5ds-u8-Mek"/>
                 <constraint firstItem="1A8-gk-xd2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Bft-dJ-eW1"/>
+                <constraint firstItem="fFh-7a-XPu" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="DEx-nO-4vW"/>
                 <constraint firstItem="2lm-57-enE" firstAttribute="centerX" secondItem="cGX-Ch-djv" secondAttribute="centerX" id="Q9I-BU-jAP"/>
+                <constraint firstItem="amQ-z0-O7h" firstAttribute="top" secondItem="fFh-7a-XPu" secondAttribute="bottom" constant="15" id="Rg4-GG-5MJ"/>
                 <constraint firstItem="cGX-Ch-djv" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="310" id="W6w-uv-jmx"/>
                 <constraint firstItem="1A8-gk-xd2" firstAttribute="top" secondItem="2lm-57-enE" secondAttribute="bottom" constant="76" id="YQu-Na-rJu"/>
+                <constraint firstItem="sO3-4m-Fjk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="bvL-mL-uyO"/>
+                <constraint firstItem="cGX-Ch-djv" firstAttribute="top" secondItem="amQ-z0-O7h" secondAttribute="bottom" constant="15" id="dnR-pw-JeS"/>
                 <constraint firstItem="AV6-Ie-S2X" firstAttribute="top" secondItem="1A8-gk-xd2" secondAttribute="bottom" constant="62" id="e57-hg-ahL"/>
                 <constraint firstItem="2lm-57-enE" firstAttribute="top" secondItem="cGX-Ch-djv" secondAttribute="bottom" constant="66" id="fdS-iw-ssU"/>
+                <constraint firstItem="fFh-7a-XPu" firstAttribute="top" secondItem="sO3-4m-Fjk" secondAttribute="bottom" constant="42" id="lDQ-qQ-Iax"/>
                 <constraint firstItem="cGX-Ch-djv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="rhX-Vq-iz4"/>
                 <constraint firstItem="AV6-Ie-S2X" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="vP1-Tc-Tx7"/>
             </constraints>

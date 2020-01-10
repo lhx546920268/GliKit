@@ -19,17 +19,25 @@
         self.titleFont = [UIFont boldSystemFontOfSize:17.0];
         self.titleTextColor = [UIColor blackColor];
         self.titleTextAlignment = NSTextAlignmentCenter;
+        
         self.messageFont = [UIFont systemFontOfSize:13];
         self.messageTextColor = [UIColor blackColor];
         self.messageTextAlignment = NSTextAlignmentCenter;
+        
         self.butttonFont = [UIFont systemFontOfSize:17];;
         self.buttonTextColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
+        
         self.destructiveButtonFont = [UIFont systemFontOfSize:17];
         self.destructiveButtonTextColor = [UIColor redColor];
+        
         self.cancelButtonFont = [UIFont boldSystemFontOfSize:17.0];
         self.cancelButtonTextColor = self.buttonTextColor;
+        
         self.disableButtonTextColor = [UIColor grayColor];
+        self.disableButtonFont = [UIFont systemFontOfSize:17];
+        
         self.highlightedBackgroundColor = [UIColor colorWithWhite:0.6 alpha:0.3];
+        
         self.cornerRadius = 8.0;
         self.contentInsets = UIEdgeInsetsMake(15, 15, 15, 15);
         self.cancelButtonVerticalSpacing = 15;
