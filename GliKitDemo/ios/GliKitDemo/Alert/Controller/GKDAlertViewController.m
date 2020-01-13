@@ -25,6 +25,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = UIColor.redColor;
         _label = [UILabel new];
         _label.text = @"文字";
         _label.textColor = self.textColor;
@@ -43,6 +44,7 @@
     _label.textColor = _textColor;
 }
 
+
 @end
 
 @interface GKDAlertViewController ()
@@ -56,13 +58,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.gkLabel.contentInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+//    self.gkLabel.contentInsets = UIEdgeInsetsMake(30, 30, 30, 30);
     self.gkLabel.selectable = YES;
     self.gkLabel.userInteractionEnabled = YES;
+    self.gkLabel.backgroundColor = UIColor.systemYellowColor;
     self.gkLabel.selectedBackgroundColor = UIColor.orangeColor;
+    self.gkLabel.shouldDetectURL = YES;
     self.gkLabel.canPerformActionHandler = ^BOOL(SEL  _Nonnull action, id  _Nonnull sender) {
         return YES;
     };
+    self.gkLabel.text = @"这个一个百度链接https://www.baidu.com";
     
     self.alertButton.imagePosition = GKButtonImagePositionTop;
     
