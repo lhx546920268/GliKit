@@ -26,7 +26,7 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        [self initialization];
+        [self initParams];
     }
     
     return self;
@@ -38,7 +38,7 @@
     
     if (self) {
         
-        [self initialization];
+        [self initParams];
     }
     return self;
 }
@@ -51,7 +51,7 @@
 /**
  初始化
  */
-- (void)initialization
+- (void)initParams
 {
     self.countdownTimeInterval = 60;
     self.normalBackgroundColor = [UIColor clearColor];

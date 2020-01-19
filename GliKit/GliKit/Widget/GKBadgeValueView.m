@@ -27,7 +27,7 @@
 {
     self = [super initWithFrame:frame];
     if (self){
-        [self initialization];
+        [self initParams];
     }
     return self;
 }
@@ -36,13 +36,13 @@
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        [self initialization];
+        [self initParams];
     }
     
     return self;
 }
 
-- (void)initialization
+- (void)initParams
 {
     self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;

@@ -80,4 +80,37 @@
     return nil;
 }
 
+- (NSDictionary*)gkFilteredDictionaryUsingBlock:(BOOL (^)(id _Nonnull, id _Nonnull))block
+{
+    if(!block || self.count == 0)
+        return self;
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    for(id key in self){
+        id obj = self[key];
+        if(block(key, obj)){
+            dic[key] = obj;
+        }
+    }
+    return [dic copy];
+}
+
+@end
+
+@implementation NSMutableDictionary (GKUtils)
+
+- (void)gkFilterUsingBlock:(BOOL (^)(id _Nonnull, id _Nonnull))block
+{
+    if(block && self.count > 0){
+        
+        NSMutableArray *removedKeys = [NSMutableArray array];
+        for(id key in self){
+            if(!block(key, self[key])){
+                [removedKeys addObject:key];
+            }
+        }
+        [self removeObjectsForKeys:removedKeys];
+    }
+}
+
 @end

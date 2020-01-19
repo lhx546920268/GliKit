@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSDictionary (GKUtils)
+@interface NSDictionary<__covariant KeyType, __covariant ObjectType> (GKUtils)
 
 /**
  去空获取对象 并且如果对象是NSNumber将会转化成字符串
@@ -56,6 +56,25 @@ NS_ASSUME_NONNULL_BEGIN
  获取数组
  */
 - (nullable NSArray*)gkArrayForKey:(id<NSCopying>) key;
+
+/**
+ 过滤字典 字典本身不变 返回一个新的字典
+ 
+ @param block 用来过滤的块，返回是否保留对应的元素
+ @return 一个新的字典
+ */
+- (NSDictionary<KeyType, ObjectType>*)gkFilteredDictionaryUsingBlock:(BOOL(^)(KeyType key, ObjectType obj)) block;
+
+@end
+
+@interface NSMutableDictionary<KeyType, ObjectType> (GKUtils)
+
+/**
+ 过滤字典
+ 
+ @param block 用来过滤的块，返回是否保留对应的元素
+ */
+- (void)gkFilterUsingBlock:(BOOL(^)(KeyType key, ObjectType obj)) block;
 
 @end
 

@@ -29,7 +29,7 @@
     self = [super initWithCoder:aDecoder];
     if(self){
         _style = GKProgressViewStyleStraightLine;
-        [self initialization];
+        [self initParams];
     }
     
     return self;
@@ -45,13 +45,13 @@
     self = [super initWithFrame:frame];
     if(self){
         _style = style;
-        [self initialization];
+        [self initParams];
     }
     
     return self;
 }
 
-- (void)initialization
+- (void)initParams
 {
     _openProgress = YES;
     _progressColor = [UIColor greenColor];

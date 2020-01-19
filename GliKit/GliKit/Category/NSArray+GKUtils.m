@@ -44,6 +44,20 @@
     return isEqual;
 }
 
+- (NSArray*)gkFilteredArrayUsingBlock:(BOOL (^)(id _Nonnull))block
+{
+    if(!block || self.count == 0)
+        return self;
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(id obj in self){
+        if(block(obj)){
+            [array addObject:obj];
+        }
+    }
+    return [array copy];
+}
+
 @end
 
 @implementation NSMutableArray (Utils)
@@ -72,6 +86,19 @@
 {
     if(obj != nil){
         [self addObject:obj];
+    }
+}
+
+- (void)gkFilterUsingBlock:(BOOL (^)(id _Nonnull))block
+{
+    if(block && self.count > 0){
+        NSMutableArray *removedArray = [NSMutableArray array];
+        for(id obj in self){
+            if(!block(obj)){
+                [removedArray addObject:obj];
+            }
+        }
+        [self removeObjectsInArray:removedArray];
     }
 }
 

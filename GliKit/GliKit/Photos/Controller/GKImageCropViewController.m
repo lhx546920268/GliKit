@@ -96,11 +96,11 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self initialization];
+    [self initViews];
 }
 
 //初始化视图
-- (void)initialization
+- (void)initViews
 {
     if(self.showImgView)
         return;

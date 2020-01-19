@@ -55,7 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, copy, nullable) void(^clickStringHandler)(NSString *string);
 
-
 /**
  *添加可点击的位置，重新设置text会忽略以前添加的
  

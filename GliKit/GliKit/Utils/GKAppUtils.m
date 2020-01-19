@@ -16,6 +16,8 @@
 #import "GKSSKeychain.h"
 #import <sys/utsname.h>
 #import "NSString+GKUtils.h"
+#import <Photos/Photos.h>
+#import <SDWebImageDefine.h>
 
 ///当前设备唯一标识符
 static NSString *sharedUUID = nil;
@@ -132,18 +134,48 @@ static NSString *sharedUUID = nil;
 
 + (void)openCompatURL:(NSURL*) URL
 {
-    if([[UIApplication sharedApplication] canOpenURL:URL]){
-        if(@available(iOS 10, *)){
-            [[UIApplication sharedApplication] openURL:URL options:[NSDictionary dictionary] completionHandler:nil];
-        }else{
-            [[UIApplication sharedApplication] openURL:URL];
+    [self openCompatURL:URL callCanOpen:YES];
+}
+
++ (void)openCompatURL:(NSURL *)URL callCanOpen:(BOOL)call
+{
+    if(call){
+        if([UIApplication.sharedApplication canOpenURL:URL]){
+            [self openCompatURLDirectly:URL];
         }
+    }else{
+        [self openCompatURLDirectly:URL];
+    }
+}
+
++ (void)openCompatURLDirectly:(NSURL *)URL
+{
+    if(@available(iOS 10, *)){
+        [UIApplication.sharedApplication openURL:URL options:[NSDictionary dictionary] completionHandler:nil];
+    }else{
+        [UIApplication.sharedApplication openURL:URL];
     }
 }
 
 + (void)openSettings
 {
     [GKAppUtils openCompatURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
++ (void)requestPhotosAuthorizationWithCompletion:(void (^)(BOOL))completion
+{
+    PHAuthorizationStatus status = PHPhotoLibrary.authorizationStatus;
+    if(status == PHAuthorizationStatusNotDetermined){
+        //没有权限 先申请授权
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            //可能在其他线程回调
+            dispatch_main_async_safe(^{
+                !completion ?: completion(status == PHAuthorizationStatusAuthorized);
+            })
+        }];
+    }else{
+        !completion ?: completion(status == PHAuthorizationStatusAuthorized);
+    }
 }
 
 @end

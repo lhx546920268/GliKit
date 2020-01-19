@@ -246,7 +246,19 @@ static NSRegularExpression *URLRegularExpression = nil;
 - (NSRegularExpression *)URLRegularExpression
 {
     if(!URLRegularExpression){
-        URLRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)" options:NSRegularExpressionCaseInsensitive error:nil];
+        
+        NSString *allCharacter = @"[a-zA-Z0-9_.-~!@#$%^&*+?:/=]"; //所有字符
+        
+        NSString *scheme = @"((http[s]?|ftp)://)?"; //协议 可选
+        NSString *user = [NSString stringWithFormat:@"(%@+@)?", allCharacter]; //用户 密码
+        NSString *host = @"([a-zA-Z0-9_-]+\\.)+[a-zA-Z]{2,6}"; //主机
+        NSString *port = @"(:\\d+)?"; //端口
+        NSString *path = [NSString stringWithFormat:@"(/%@+)*", allCharacter]; //路径
+        NSString *parameterString = [NSString stringWithFormat:@"(;%@+)*", allCharacter]; //参数
+        NSString *query = [NSString stringWithFormat:@"(\\?%@+)*", allCharacter]; //查询参数
+        
+        NSString *pattern = [NSString stringWithFormat:@"%@%@%@%@%@%@%@", scheme, user, host, port, path, parameterString, query];
+        URLRegularExpression = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
     }
     return URLRegularExpression;
 }

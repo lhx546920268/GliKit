@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  初始化
  */
-- (void)initialization NS_REQUIRES_SUPER;
+- (void)initParams NS_REQUIRES_SUPER;
 
 ///倒计时开始
 - (void)onStart NS_REQUIRES_SUPER;

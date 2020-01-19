@@ -24,7 +24,7 @@
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        [self initialization];
+        [self initParams];
     }
     return self;
 }
@@ -33,13 +33,13 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        [self initialization];
+        [self initParams];
     }
     return self;
 }
 
 ///初始化
-- (void)initialization
+- (void)initParams
 {
     CGFloat inset = 5;
     self.textContainerInset = UIEdgeInsetsMake(8, inset, 8, inset);

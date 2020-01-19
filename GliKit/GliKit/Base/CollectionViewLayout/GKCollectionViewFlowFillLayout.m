@@ -379,7 +379,7 @@
 {
     self = [super init];
     if(self){
-        [self initialization];
+        [self initParams];
     }
 
     return self;
@@ -389,14 +389,14 @@
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        [self initialization];
+        [self initParams];
     }
 
     return self;
 }
 
 ///初始化
-- (void)initialization
+- (void)initParams
 {
     _minimumInteritemSpacing = 5.0;
     _minimumLineSpacing = 5.0;

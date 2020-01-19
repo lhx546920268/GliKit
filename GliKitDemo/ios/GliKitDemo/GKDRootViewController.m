@@ -11,21 +11,54 @@
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
 #import <Social/Social.h>
+#import <MessageUI/MessageUI.h>
 
-@interface CustomActivity : UIActivity
+@interface GKInnterModel : NSObject
+
+@property(nonatomic, strong) NSString *name;
+
+- (void)test;
 
 @end
 
-@implementation CustomActivity
+@interface GKDShareViewController : GKBaseViewController<MFMessageComposeViewControllerDelegate>
 
-- (NSString *)activityTitle
+@end
+
+@implementation GKDShareViewController
+
+- (void)viewDidLoad
 {
-    return @"这是一个标题";
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = UIColor.whiteColor;
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [btn setTitle:@"SMS" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(handleSMS) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
+    
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(0);
+    }];
 }
 
-- (UIImage *)activityImage
+- (void)handleSMS
 {
-    return [UIImage imageNamed:@"warehouse"];
+    MFMessageComposeViewController *vc = [MFMessageComposeViewController new];
+    vc.body = @"你好";
+    vc.messageComposeDelegate = self;
+    vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (CGSize)partialContentSize
+{
+    return CGSizeMake(UIScreen.gkScreenWidth, 300);
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
@@ -41,7 +74,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    GKInnterModel *model = [GKInnterModel new];
+    model.name = @"测试啊";
+    [model test];
     self.navigationItem.title = GKAppUtils.appName;
     //^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$
     self.datas = @[
@@ -58,7 +93,6 @@
     [self initViews];
     
     [self gkSetRightItemWithTitle:@"完成" action:nil];
-
 }
 
 - (void)initViews
@@ -90,7 +124,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+  
     GKDRowModel *model = self.datas[indexPath.row];
     [GKRouter.sharedRouter pushApp:model.className];
 }

@@ -52,6 +52,15 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
     
     ///空视图将遮住footer
     GKOverlayAreaEmptyViewBottom = 1 << 4,
+    
+    ///遮住顶部
+    GKOverlayAreaTop = GKOverlayAreaPageLoadingTop | GKOverlayAreaEmptyViewTop,
+    
+    ///遮住底部
+    GKOverlayAreaBottom = GKOverlayAreaPageLoadingBottom | GKOverlayAreaEmptyViewBottom,
+    
+    ///遮住所有
+    GKOverlayAreaAll = GKOverlayAreaTop | GKOverlayAreaBottom,
 };
 
 @class GKBaseViewController;
@@ -89,7 +98,7 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
 @property(nullable, nonatomic, copy) void(^layoutSubviewsHandler)(void);
 
 ///初始化
-- (void)initialization;
+- (void)initParams;
 
 /**
  通过 UIViewController初始化

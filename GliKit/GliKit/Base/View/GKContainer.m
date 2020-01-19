@@ -30,7 +30,7 @@
     self = [super init];
     if(self){
         _viewController = viewController;
-        [self initialization];
+        [self initParams];
     }
     return self;
 }
@@ -39,7 +39,7 @@
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        [self initialization];
+        [self initParams];
     }
     
     return self;
@@ -49,13 +49,13 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        [self initialization];
+        [self initParams];
     }
     return self;
 }
 
 ///初始化
-- (void)initialization
+- (void)initParams
 {
     self.backgroundColor = [UIColor whiteColor];
     self.safeLayoutGuide = GKSafeLayoutGuideTop;

@@ -73,6 +73,12 @@
     return NO;
 }
 
+- (void)containerViewDidLayoutSubviews
+{
+    //系统还会调整视图大小的，所以这里要设置成我们需要的大小
+    self.presentedView.frame = self.frameOfPresentedViewInContainerView;
+}
+
 - (CGRect)frameOfPresentedViewInContainerView
 {
     //弹窗大小位置

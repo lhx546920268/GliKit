@@ -144,7 +144,7 @@ static const int GKHttpFirstPage = 1;
 @property(nonatomic, assign) NSTimeInterval loadingHUDDelay;
 
 /**
- 是否自动提示弹窗 default is no 优先提示
+ 是否要显示loading default is no 
  */
 @property(nonatomic, assign) BOOL shouldShowloadingHUD;
 

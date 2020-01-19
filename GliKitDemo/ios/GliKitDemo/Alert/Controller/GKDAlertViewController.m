@@ -67,7 +67,7 @@
     self.gkLabel.canPerformActionHandler = ^BOOL(SEL  _Nonnull action, id  _Nonnull sender) {
         return YES;
     };
-    self.gkLabel.text = @"这个一个百度链接https://www.baidu.com";
+    self.gkLabel.text = @"这个一个百度链接https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref";
     
     self.alertButton.imagePosition = GKButtonImagePositionTop;
     

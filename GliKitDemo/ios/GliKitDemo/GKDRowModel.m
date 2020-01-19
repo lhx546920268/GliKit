@@ -7,6 +7,24 @@
 //
 
 #import "GKDRowModel.h"
+#import <BackgroundTasks/BackgroundTasks.h>
+
+@interface GKInnterModel : NSObject
+
+@property(nonatomic, strong) NSString *name;
+
+- (void)test;
+
+@end
+
+@implementation GKInnterModel
+
+- (void)test
+{
+    NSLog(@"test %@", self.name);
+}
+
+@end
 
 @implementation GKDRowModel
 

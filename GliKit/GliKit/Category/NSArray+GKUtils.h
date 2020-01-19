@@ -38,6 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)gkContainString:(nullable NSString *)string;
 
+/**
+ 过滤数组 数组本身不变 返回一个新的数组
+ 
+ @param block 用来过滤的块，返回是否保留对应的元素
+ @return 一个新的数组
+ */
+- (NSArray<ObjectType>*)gkFilteredArrayUsingBlock:(BOOL(^)(ObjectType obj)) block;
+
 @end
 
 @interface NSMutableArray<ObjectType> (GKUtils)
@@ -65,6 +73,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param obj 要加入的对象
  */
 - (void)gkAddNotNilObject:(nullable ObjectType) obj;
+
+/**
+ 过滤数组
+ 
+ @param block 用来过滤的块，返回是否保留对应的元素
+ */
+- (void)gkFilterUsingBlock:(BOOL(^)(ObjectType obj)) block;
 
 @end
 

@@ -37,11 +37,17 @@ NS_ASSUME_NONNULL_BEGIN
 ///拨打电话 是否显示提示框
 + (void)makePhoneCall:(nullable NSString*) mobile shouldAlert:(BOOL) alert;
 
-///打开一个URL 兼容所有版本
+///打开一个URL 兼容所有版本 校验是否可以打开
 + (void)openCompatURL:(NSURL*) URL;
+
+///打开一个URL 兼容所有版本 校验是否可以打开
++ (void)openCompatURL:(NSURL*) URL callCanOpen:(BOOL) call;
 
 ///打开设置
 + (void)openSettings;
+
+///请求相册权限 如果已授权 则回调，否则在授权完成后才回调 保证在主线程回调
++ (void)requestPhotosAuthorizationWithCompletion:(void(^)(BOOL hasAuth)) completion;
 
 @end
 

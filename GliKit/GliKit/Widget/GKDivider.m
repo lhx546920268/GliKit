@@ -29,7 +29,7 @@
         NSLayoutConstraint *constraint = self.gkWidthLayoutConstraint;
         self.isVertical = constraint != nil;
         
-        [self initialization];
+        [self initParams];
     }
     
     return self;
@@ -45,7 +45,7 @@
     self = [super initWithFrame:frame];
     if(self){
         self.isVertical = vertical;
-        [self initialization];
+        [self initParams];
     }
     
     return self;
@@ -57,7 +57,7 @@
 }
 
 ///初始化
-- (void)initialization
+- (void)initParams
 {
     self.backgroundColor = UIColor.gkSeparatorColor;
     if(self.isVertical){
