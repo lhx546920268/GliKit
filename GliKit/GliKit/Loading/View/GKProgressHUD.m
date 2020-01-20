@@ -182,8 +182,8 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         _text = [text copy];
         _textSize = [_text gkStringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2];
         
-        if(_textSize.width < self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2){
-            _textSize.width = self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2;
+        if(_textSize.width < self.minimumSize.width - GKProgressHUDHorizontalSpacing * 2){
+            _textSize.width = self.minimumSize.width - GKProgressHUDHorizontalSpacing * 2;
         }
         
         if(_textSize.height > self.maximumSize.height){

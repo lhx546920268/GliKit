@@ -13,14 +13,6 @@
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
 
-@interface GKInnterModel : NSObject
-
-@property(nonatomic, strong) NSString *name;
-
-- (void)test;
-
-@end
-
 @interface GKDShareViewController : GKBaseViewController<MFMessageComposeViewControllerDelegate>
 
 @end
@@ -63,6 +55,40 @@
 
 @end
 
+static NSString* Name1 = @"1";
+static NSString* Name2 = @"2";
+
+@interface UIViewController(exten)
+
+@property(nonatomic, copy) NSString *name1;
+@property(nonatomic, copy) NSString *name2;
+
+@end
+
+@implementation UIViewController(exten)
+
+- (void)setName1:(NSString *)name1
+{
+    objc_setAssociatedObject(self, Name1.UTF8String, name1, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (NSString *)name1
+{
+    return objc_getAssociatedObject(self, Name1.UTF8String);
+}
+
+- (void)setName2:(NSString *)name2
+{
+    objc_setAssociatedObject(self, Name2.UTF8String, name2, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (NSString *)name2
+{
+    return objc_getAssociatedObject(self, Name2.UTF8String);
+}
+
+@end
+
 @interface GKDRootViewController ()<CAAnimationDelegate>
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
@@ -73,10 +99,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    GKInnterModel *model = [GKInnterModel new];
-    model.name = @"测试啊";
-    [model test];
+  
     self.navigationItem.title = GKAppUtils.appName;
     //^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$
     self.datas = @[
@@ -91,6 +114,14 @@
                    ];
   
     [self initViews];
+    
+    NSLog(@"%@, %@", Name1, Name2);
+    
+    self.name1 = @"name1";
+    self.name2 = @"name2";
+    
+    NSLog(@"%@, %@", Name1, Name2);
+    NSLog(@"%@, %@", self.name1, self.name2);
     
     [self gkSetRightItemWithTitle:@"完成" action:nil];
 }

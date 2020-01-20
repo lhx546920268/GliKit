@@ -20,8 +20,6 @@ typedef NS_ENUM(NSInteger, GKPageLoadingStatus){
     GKPageLoadingStatusError,
 };
 
-@class SDAnimatedImageView;
-
 ///页面加载显示容器代理
 @protocol GKPageLoadingContainer <NSObject>
 

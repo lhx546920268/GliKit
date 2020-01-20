@@ -180,7 +180,7 @@ static NSMutableSet* GKSharedTasks()
 - (void)onComplete
 {
     [self.view gkDismissProgress];
-    if([self.delegate respondsToSelector:@selector(taskDidComplete:)]){
+    if(!self.isCanceled && [self.delegate respondsToSelector:@selector(taskDidComplete:)]){
         [self.delegate taskDidComplete:self];
     }
     _URLSessionTask = nil;

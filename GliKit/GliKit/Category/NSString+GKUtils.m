@@ -102,7 +102,7 @@
     size.width = ceil(size.width);
     size.height = ceil(size.height);
     
-    return CGSizeMake(ceil(size.width), ceil(size.height));
+    return size;
 }
 
 // MARK: - 校验
