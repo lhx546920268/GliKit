@@ -35,6 +35,12 @@ static char GKTintColorKey;
     shadowImageView.hidden = gkHideNavigationBarShadowImage;
 }
 
+- (BOOL)gkHideNavigationBarShadowImage
+{
+    UIImageView *shadowImageView = [self gkFindShadowImageView:self.navigationController.navigationBar];
+    return shadowImageView.hidden;
+}
+
 - (UIImageView*)gkFindShadowImageView:(UIView*)view
 {
     if([view isKindOfClass:[UIImageView class]] && view.bounds.size.height <= 1.0){
@@ -65,7 +71,16 @@ static char GKTintColorKey;
 
 - (CGFloat)gkStatusBarHeight
 {
-    CGFloat height = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    
+    CGFloat height = 0;
+    if(@available(iOS 13.0, *)){
+        height = UIApplication.sharedApplication.delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
+    }
+    
+    if(height == 0){
+        height = height = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    }
+    
     if(height == 0){
         if(UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom > 0){
             height = 44;
@@ -122,6 +137,9 @@ static char GKTintColorKey;
 
 - (__kindof UINavigationController*)gkCreateWithNavigationController
 {
+    if(self.navigationController){
+        return self.navigationController;
+    }
     return [[GKBaseNavigationController alloc] initWithRootViewController:self];
 }
 

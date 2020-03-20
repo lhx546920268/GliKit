@@ -32,6 +32,9 @@
 ///点击回收键盘手势
 @property(nonatomic, strong) UITapGestureRecognizer *dismissKeyboardGestureRecognizer;
 
+///界面显示次数
+@property(nonatomic, assign) NSInteger displayTimes;
+
 @end
 
 @implementation GKBaseViewController
@@ -151,6 +154,11 @@
     if(self.viewModel){
         [self.viewModel viewDidAppear:animated];
     }
+    _isDisplaying = YES;
+    self.displayTimes ++;
+    if(self.isFisrtDisplay){
+        [self viewDidFirstAppear:animated];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -167,6 +175,12 @@
     if(self.viewModel){
         [self.viewModel viewDidDisappear:animated];
     }
+    _isDisplaying = NO;
+}
+
+- (void)viewDidFirstAppear:(BOOL) animated
+{
+    
 }
 
 - (void)viewDidLoad
@@ -205,6 +219,11 @@
             self.gkShowBackItem = YES;
         }
     }
+}
+
+- (BOOL)isFisrtDisplay
+{
+    return self.displayTimes <= 1;
 }
 
 - (void)viewDidLayoutSubviews

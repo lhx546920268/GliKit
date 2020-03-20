@@ -37,6 +37,15 @@ GKNavigationItemHelper;
 ///状态栏颜色
 @property(nonatomic, assign) UIStatusBarStyle statusBarStyle;;
 
+///界面是否显示
+@property(nonatomic, readonly) BOOL isDisplaying;
+
+///是否是第一次显示
+@property(nonatomic, readonly) BOOL isFisrtDisplay;
+
+///第一次显示回调
+- (void)viewDidFirstAppear:(BOOL) animate;
+
 // MARK: - 内容视图
 
 ///固定在顶部的视图 xib不要用

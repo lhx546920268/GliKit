@@ -105,7 +105,10 @@
     if(self.shouldStartImmediately){
         [self timerFired:self.timer];
     }
-    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    
+    if(self.isExcuting){
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
 }
 
 - (void)stop
@@ -114,7 +117,6 @@
         if(!_isExcuting || _isCancel)
             return;
         _isCancel = YES;
-        _isExcuting = NO;
         [self stopTimer];
     }
 }
@@ -126,6 +128,7 @@
         [self removeNotifications];
         [self.timer invalidate];
         self.timer = nil;
+        _isExcuting = NO;
     }
 }
 
