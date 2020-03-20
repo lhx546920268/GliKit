@@ -10,50 +10,6 @@
 #import "GKDRowModel.h"
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
-#import <Social/Social.h>
-#import <MessageUI/MessageUI.h>
-
-@interface GKDShareViewController : GKBaseViewController<MFMessageComposeViewControllerDelegate>
-
-@end
-
-@implementation GKDShareViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = UIColor.whiteColor;
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [btn setTitle:@"SMS" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(handleSMS) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn];
-    
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(0);
-    }];
-}
-
-- (void)handleSMS
-{
-    MFMessageComposeViewController *vc = [MFMessageComposeViewController new];
-    vc.body = @"你好";
-    vc.messageComposeDelegate = self;
-    vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [self presentViewController:vc animated:YES completion:nil];
-}
-
-- (CGSize)partialContentSize
-{
-    return CGSizeMake(UIScreen.gkScreenWidth, 300);
-}
-
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
-{
-    [controller dismissViewControllerAnimated:YES completion:nil];
-}
-
-@end
 
 static NSString* Name1 = @"1";
 static NSString* Name2 = @"2";
@@ -61,11 +17,15 @@ static NSString* Name2 = @"2";
 @interface UIViewController(exten)
 
 @property(nonatomic, copy) NSString *name1;
-@property(nonatomic, copy) NSString *name2;
 
 @end
 
 @implementation UIViewController(exten)
+
++ (void)load
+{
+    NSLog(@"UIViewController exten 1");
+}
 
 - (void)setName1:(NSString *)name1
 {
@@ -77,6 +37,27 @@ static NSString* Name2 = @"2";
     return objc_getAssociatedObject(self, Name1.UTF8String);
 }
 
+@end
+
+@interface GKDRowModel()
+
+@property(nonatomic, copy) NSString *name2;
+
+@end
+
+@interface UIViewController(exten1)
+
+@property(nonatomic, copy) NSString *name2;
+
+@end
+
+@implementation UIViewController(exten1)
+
++ (void)load
+{
+    NSLog(@"UIViewController exten 2");
+}
+
 - (void)setName2:(NSString *)name2
 {
     objc_setAssociatedObject(self, Name2.UTF8String, name2, OBJC_ASSOCIATION_COPY_NONATOMIC);
@@ -85,6 +66,90 @@ static NSString* Name2 = @"2";
 - (NSString *)name2
 {
     return objc_getAssociatedObject(self, Name2.UTF8String);
+}
+
+@end
+
+@protocol RunTimeObjectProtocol <NSObject>
+
+///
+@property(nonatomic, assign) NSInteger assigValue;
+
+@end
+
+@interface RunTimeObject : NSObject<RunTimeObjectProtocol>
+{
+    NSString *vaValue;
+}
+
+///
+@property(nonatomic, strong) NSString *stronValue;
+
+///
+@property(nonatomic, copy) NSString *copValue;
+
+///
+@property(nonatomic, weak) GKDRowModel *weaValue;
+
+///
+@property(nonatomic, readonly) NSString *readValue;
+
+@end
+
+@interface RunTimeObject()
+
+@property(nonatomic, strong) NSString *extensionValue;
+
+@end
+
+@interface RunTimeObject()
+
+@property(nonatomic, strong) NSString *extensionValue2;
+
+@end
+
+@implementation RunTimeObject
+
+@synthesize readValue = _readValue;
+
++ (void)initialize
+{
+//    if (self == [RunTimeObject class]) {
+        NSLog(@"RunTimeObject initialize");
+//    }
+}
+
+- (void)setAssigValue:(NSInteger)assigValue
+{
+    
+}
+
+- (NSInteger)assigValue
+{
+    return 0;
+}
+
+- (NSString *)readValue
+{
+    return @"";
+}
+
+@end
+
+@interface RunTimeChildObject : RunTimeObject
+
+///
+@property(nonatomic, copy) NSString *childCopValue;
+
+@end
+
+@implementation RunTimeChildObject
+
++ (void)initialize
+{
+//    if (self == [RunTimeChildObject class]) {
+        NSLog(@"RunTimeChildObject initialize");
+//    }
 }
 
 @end
@@ -101,7 +166,6 @@ static NSString* Name2 = @"2";
     [super viewDidLoad];
   
     self.navigationItem.title = GKAppUtils.appName;
-    //^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
                    [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
@@ -115,6 +179,8 @@ static NSString* Name2 = @"2";
   
     [self initViews];
     
+//    NSLog(@"%@", RunTimeObject.new);
+    NSLog(@"%@", RunTimeChildObject.new);
     NSLog(@"%@, %@", Name1, Name2);
     
     self.name1 = @"name1";
@@ -124,6 +190,22 @@ static NSString* Name2 = @"2";
     NSLog(@"%@, %@", self.name1, self.name2);
     
     [self gkSetRightItemWithTitle:@"完成" action:nil];
+    
+    NSLog(@"class_copyPropertyList");
+    unsigned int count = 0;
+    objc_property_t *properties = class_copyPropertyList(RunTimeObject.class, &count);
+    for(unsigned int i = 0;i < count;i ++){
+        objc_property_t property = properties[i];
+        NSLog(@"%@", [NSString stringWithUTF8String:property_getName(property)]);
+    }
+    
+    NSLog(@"class_copyIvarList");
+    count = 0;
+    Ivar *iVars = class_copyIvarList(RunTimeObject.class, &count);
+    for(unsigned int i = 0;i < count;i ++){
+        Ivar iVar = iVars[i];
+        NSLog(@"%@", [NSString stringWithUTF8String:ivar_getName(iVar)]);
+    }
 }
 
 - (void)initViews

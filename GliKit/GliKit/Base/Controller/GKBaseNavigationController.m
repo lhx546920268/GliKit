@@ -13,6 +13,9 @@
 
 @interface GKBaseNavigationController ()<UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
+///其他代理
+@property(nonatomic, weak) id<UINavigationControllerDelegate> otherDelegate;
+
 @end
 
 @implementation GKBaseNavigationController
@@ -43,12 +46,39 @@
     __weak GKBaseNavigationController *weakSelf = self;
     
     self.interactivePopGestureRecognizer.delegate = weakSelf;
+    [self.interactivePopGestureRecognizer addTarget:self action:@selector(handleInteractivePop:)];
     self.delegate = weakSelf;
+}
+
+- (void)setDelegate:(id<UINavigationControllerDelegate>)delegate
+{
+    if(delegate != self){
+        self.otherDelegate = delegate;
+    }
+    [super setDelegate:self];
 }
 
 - (UIUserInterfaceStyle)overrideUserInterfaceStyle
 {
     return UIUserInterfaceStyleLight;
+}
+
+// MARK: - Action
+
+///滑动返回
+- (void)handleInteractivePop:(UIScreenEdgePanGestureRecognizer*) sender
+{
+    switch (sender.state) {
+        case UIGestureRecognizerStateCancelled :
+        case UIGestureRecognizerStateEnded : {
+            
+            _isInteractivePop = NO;
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 // MARK: - Push
@@ -80,11 +110,26 @@
 
 // MARK: - UINavigationControllerDelegate
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if([self.otherDelegate respondsToSelector:@selector(navigationController:willShowViewController:animated:)]){
+        [self.otherDelegate navigationController:navigationController willShowViewController:viewController animated:animated];
+    }
+}
+
 - (void)navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animate
 {
     self.interactivePopGestureRecognizer.enabled = viewController.gkInteractivePopEnable;
+    if([self.otherDelegate respondsToSelector:@selector(navigationController:didShowViewController:animated:)]){
+        [self.otherDelegate navigationController:self didShowViewController:viewController animated:animate];
+    }
+    
+    if(self.transitionCompletion){
+        self.transitionCompletion();
+        self.transitionCompletion = nil;
+    }
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -99,6 +144,7 @@
         }
     }
     
+    _isInteractivePop = YES;
     return YES;
 }
 

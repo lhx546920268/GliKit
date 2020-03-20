@@ -9,6 +9,7 @@
 #import "GKPartialPresentationController.h"
 #import "GKBaseDefines.h"
 #import "GKPartialPresentTransitionDelegate.h"
+#import "UIScreen+GKUtils.h"
 
 @interface GKPartialPresentationController ()<UIGestureRecognizerDelegate>
 
@@ -69,6 +70,11 @@
 }
 
 - (BOOL)shouldPresentInFullscreen
+{
+    return NO;
+}
+
+- (BOOL)shouldRemovePresentersView
 {
     return NO;
 }

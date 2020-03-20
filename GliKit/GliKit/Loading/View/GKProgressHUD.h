@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 /**
  消失回调
  */
-@property(nonatomic, copy, nullable) void(^dismissHandler)(void);
+@property(nonatomic, copy, nullable) void(^dismissCompletion)(void);
 
 ///显示
 - (void)show;

@@ -142,7 +142,7 @@
         }
     }
     
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^(void){
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         
         if(isPresenting){
             toView.frame = toFrame;
@@ -164,7 +164,7 @@
                     break;
             }
         }
-    }completion:^(BOOL finish){
+    } completion:^(BOOL finished) {
         
         [transitionContext completeTransition:YES];
         
@@ -173,7 +173,6 @@
             toView.hidden = NO;
         }
     }];
-    
 }
 
 @end

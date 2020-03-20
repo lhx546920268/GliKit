@@ -139,4 +139,17 @@
     }
 }
 
+- (void)gkSetCornerRadius:(CGFloat) cornerRadius corners:(UIRectCorner) corners rect:(CGRect) rect
+{
+    CAShapeLayer *layer = (CAShapeLayer*)self.layer.mask;
+    if(![layer isKindOfClass:[CAShapeLayer class]]){
+        layer = [CAShapeLayer layer];
+    }
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+    [layer setPath:path.CGPath];
+    self.layer.mask = layer;
+}
+
+
 @end

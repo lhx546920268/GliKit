@@ -233,7 +233,7 @@ static char GKPageLoadingViewInsetsKey;
         view.gkProgressHUD = hud;
         
         WeakObj(view);
-        hud.dismissHandler = ^{
+        hud.dismissCompletion = ^{
             viewWeak.gkProgressHUD = nil;
         };
         [view addSubview:hud];

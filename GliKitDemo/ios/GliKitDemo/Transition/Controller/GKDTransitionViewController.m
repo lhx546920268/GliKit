@@ -20,7 +20,6 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-
 - (IBAction)handleFromBottom:(UIButton*)sender
 {
     UIViewController *vc = [UIViewController new];
@@ -29,6 +28,7 @@
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     nav.partialContentSize = CGSizeMake(UIScreen.gkScreenWidth, 400);
+    nav.partialCornerRadius = 10;
     [nav partialPresentFromBottom];
 }
 

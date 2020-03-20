@@ -7,6 +7,7 @@
 //
 
 #import "UIImage+GKUtils.h"
+#import "UIColor+GKUtils.h"
 
 @implementation UIImage (GKUtils)
 
@@ -231,5 +232,176 @@
     return img;
 }
 
+// MARK: - 二维码
+
++ (UIImage*)gkQRCodeImageWithString:(NSString*) string
+                  correctionLevel:(GKQRCodeImageCorrectionLevel) correctionLevel
+                             size:(CGSize) size
+                     contentColor:(UIColor*) contentColor
+                  backgroundColor:(UIColor*) backgroundColor
+                             logo:(UIImage*) logo
+                            logoSize:(CGSize)logoSize
+{
+    
+    if(string == nil)
+        return nil;
+    
+    ///设置默认属性
+    if(contentColor == nil)
+        contentColor = [UIColor blackColor];
+    if(backgroundColor == nil)
+        backgroundColor = [UIColor whiteColor];
+    
+    if(CGSizeEqualToSize(size, CGSizeZero)){
+        size = CGSizeMake(240.0, 240.0);
+    }
+    
+    NSString *level = nil;
+    switch (correctionLevel){
+        case GKQRCodeImageCorrectionLevelPercent7 :
+            level = @"L";
+            break;
+        case GKQRCodeImageCorrectionLevelPercent15 :
+            level = @"M";
+            break;
+        case GKQRCodeImageCorrectionLevelPercent25 :
+            level = @"Q";
+            break;
+        case GKQRCodeImageCorrectionLevelPercent30 :
+            level = @"H";
+            break;
+    }
+    
+    ///通过coreImage生成默认的二维码图片
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setValue:[string dataUsingEncoding:NSUTF8StringEncoding] forKey:@"inputMessage"];
+    [filter setValue:level forKey:@"inputCorrectionLevel"];
+    
+    CIImage *ciImage = filter.outputImage;
+    
+    ///把它生成给定大小的图片
+    CGRect rect = CGRectIntegral(ciImage.extent);
+    
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef imageRef = [context createCGImage:ciImage fromRect:rect];
+    
+    if(imageRef == NULL)
+        return nil;
+    
+    ///创建位图
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    ///获取实际生成的图片宽高
+    size_t width = CGImageGetWidth(imageRef);
+    size_t height = CGImageGetHeight(imageRef);
+    
+    ///计算需要的二维码图片宽高比例
+    CGFloat w_scale = size.width / (CGFloat)width;
+    CGFloat h_scale = size.height / (CGFloat)height;
+    
+    width *= w_scale;
+    height *= h_scale;
+    
+    size_t bytesPerRow = width * 4; ///每行字节数
+    uint32_t *data = malloc(bytesPerRow * height); ///创建像素存储空间
+    CGContextRef cx = CGBitmapContextCreate(data, width, height, 8, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Little);
+    CGColorSpaceRelease(colorSpace);
+    
+    if(cx == NULL){
+        CGImageRelease(imageRef);
+        free(data);
+        return nil;
+    }
+    
+    CGContextSetInterpolationQuality(cx, kCGInterpolationNone); ///设置二维码质量，否则二维码图片会变模糊，可无损放大
+    CGContextScaleCTM(cx, w_scale, h_scale); ///调整坐标系比例
+    CGContextDrawImage(cx, rect, imageRef);
+    
+    CGImageRelease(imageRef);
+    
+    ///也可以使用 CIFalseColor 类型的滤镜来改变二维码背景颜色和二维码颜色
+    
+    ///如果二维码颜色不是黑色 并且背景不是白色 ，改变它的颜色
+    if(![contentColor isEqualToColor:[UIColor blackColor]]
+       || ![backgroundColor isEqualToColor:[UIColor whiteColor]]){
+        ///获取颜色的rgba值
+        NSDictionary *dic = [contentColor gkColorARGB];
+        int c_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+        int c_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+        int c_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+        int c_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+        
+        dic = [backgroundColor gkColorARGB];
+        int b_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+        int b_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+        int b_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+        int b_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+        
+        
+        ///遍历图片的像素并改变值，像素是一个二维数组， 每个像素由RGBA的数组组成，在数组中的排列顺序是从右到左即 array[0] 是 A阿尔法通道
+        uint32_t *tmpData = data; ///创建临时的数组指针，保持data的指针指向为起始位置
+        for(size_t i = 0;i < height; i ++){
+            for(size_t j = 0;j < width; j ++){
+                if((*tmpData & 0xFFFFFF) < 0x999999){ ///判断是否是背景像素，白色是背景
+                    ///改变二维码颜色
+                    uint8_t *ptr = (uint8_t*)tmpData;
+                    ptr[3] = c_red;
+                    ptr[2] = c_green;
+                    ptr[1] = c_blue;
+                    ptr[0] = c_alpha;
+                }else{
+                    ///改变背景颜色
+                    uint8_t *ptr = (uint8_t*)tmpData;
+                    ptr[3] = b_red;
+                    ptr[2] = b_green;
+                    ptr[1] = b_blue;
+                    ptr[0] = b_alpha;
+                }
+                
+                tmpData ++; ///指针指向下一个像素
+            }
+        }
+    }
+    
+    ///绘制logo 圆角有锯齿，暂无解决方案
+    //    if(logo)
+    //    {
+    //        ///因为前面 画板已缩放过了，这里的坐标系要调整比例
+    //        CGImageRef logoRef = logo.CGImage;
+    //        width = logo.size.width / w_scale;
+    //        height = logo.size.height / h_scale;
+    //        rect = CGRectMake((size.width / w_scale - width) / 2.0, (size.height / h_scale - height) / 2.0, width, height);
+    //        CGContextDrawImage(cx, rect, logoRef);
+    //    }
+    
+    ///从画板中获取二维码图片
+    CGImageRef qrImageRef = CGBitmapContextCreateImage(cx);
+    CGContextRelease(cx);
+    free(data);
+    
+    if(qrImageRef == NULL)
+        return nil;
+    
+    UIImage *image = [UIImage imageWithCGImage:qrImageRef];
+    CGImageRelease(qrImageRef);
+    
+    ///绘制logo 没有锯齿
+    if(logo){
+        if(logoSize.width == 0 || logoSize.height == 0){
+            logoSize = logo.size;
+        }
+        
+        size = CGSizeMake(floorf(image.size.width), floorf(image.size.height));
+        
+        UIGraphicsBeginImageContextWithOptions(size, NO, GKImageScale);
+        
+        [image drawAtPoint:CGPointZero];
+        [logo drawAtPoint:CGPointMake((size.width - logoSize.width) / 2.0, (size.height - logoSize.height) / 2.0)];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    
+    return image;
+}
 
 @end

@@ -23,6 +23,11 @@ static char GKTransitioningDelegateKey;
  */
 static char GKPartialContentSizeKey;
 
+/**
+ 圆角
+ */
+static char GKPartialCornerRadiusKey;
+
 @implementation UIViewController (GKTransition)
 
 // MARK: - Swizzle
@@ -87,6 +92,16 @@ static char GKPartialContentSizeKey;
     return [objc_getAssociatedObject(self, &GKPartialContentSizeKey) CGSizeValue];
 }
 
+- (void)setPartialCornerRadius:(CGFloat)partialCornerRadius
+{
+    objc_setAssociatedObject(self, &GKPartialCornerRadiusKey, @(partialCornerRadius), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (CGFloat)partialCornerRadius
+{
+    return [objc_getAssociatedObject(self, &GKPartialCornerRadiusKey) floatValue];
+}
+
 - (UIViewController*)partialViewController
 {
     return self;
@@ -113,6 +128,11 @@ static char GKPartialContentSizeKey;
 
 - (void)partialPresentViewController:(UIViewController*) viewController style:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize
 {
+    CGFloat cornerRadius = self.partialCornerRadius;
+    if(cornerRadius > 0){
+        [viewController.view gkSetCornerRadius:cornerRadius corners:UIRectCornerTopLeft | UIRectCornerTopRight rect:CGRectMake(0, 0, contentSize.width, contentSize.height)];
+    }
+    
     GKPartialPresentTransitionDelegate *delegate = [GKPartialPresentTransitionDelegate new];
     delegate.transitionStyle = style;
     delegate.partialContentSize = contentSize;

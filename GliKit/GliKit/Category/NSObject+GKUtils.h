@@ -93,6 +93,15 @@ NS_ASSUME_NONNULL_BEGIN
  @param viewController 要push 的视图控制器
  */
 + (void)gkPushViewController:(UIViewController*) viewController;
+- (void)gkPushViewController:(UIViewController*) viewController;
+
+/**
+ 替换当前 页面，如果有存在navigationController, 则替换成功
+ 
+ @param viewController 要push 的视图控制器
+ */
++ (void)gkReplaceCurrentWithViewController:(UIViewController*) viewController;
+- (void)gkReplaceCurrentWithViewController:(UIViewController*) viewController;
 
 /**
  打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
@@ -101,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param viewController 要push 的视图控制器
  */
 + (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController;
+- (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController;
 
 /**
  打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
@@ -109,6 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param viewController 要push 的视图控制器
  */
 + (void)gkPushViewControllerRemoveSameIfNeeded:(UIViewController*) viewController;
+- (void)gkPushViewControllerRemoveSameIfNeeded:(UIViewController*) viewController;
 
 /**
  打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
@@ -117,6 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param toReplacedViewControlelrs 要替换的
  */
 + (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
+- (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
 
 @end
 

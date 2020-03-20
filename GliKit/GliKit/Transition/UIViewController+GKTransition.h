@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///部分显示大小 会自己加上安全区域高度 子类可重写
 @property(nonatomic, assign) CGSize partialContentSize;
 
+///圆角
+@property(nonatomic, assign) CGFloat partialCornerRadius;
+
 ///返回要显示的viewController 默认是self
 @property(nonatomic, readonly) UIViewController *partialViewController;
 

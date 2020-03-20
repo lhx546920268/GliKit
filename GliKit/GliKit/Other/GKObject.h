@@ -13,7 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 ///通过字典初始化
 @interface GKObject : NSObject
 
-+ (instancetype)modelFromDictionary:(nullable NSDictionary*) dic NS_REQUIRES_SUPER;
+/**
+通过字典创建
+
+@param dic 数据
+@return 一个实例
+*/
++ (instancetype)modelFromDictionary:(nullable NSDictionary*) dic;
 
 
 /**

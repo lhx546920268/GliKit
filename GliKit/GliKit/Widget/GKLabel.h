@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  文本边距 default is 'UIEdgeInsetsZero'
  */
-@property(nonatomic, assign) UIEdgeInsets contentInsets;
+@property(nonatomic, assign) IBInspectable UIEdgeInsets contentInsets;
 
 /**
  是否可以长按选中

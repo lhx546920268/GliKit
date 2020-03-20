@@ -75,6 +75,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) UIEdgeInsets gkSafeAreaInsets;
 
+/**
+ 设置部分圆角
+ 
+ @param cornerRadius 圆角
+ @param corners 圆角位置
+ @param rect 视图大小，如果使用autoLayout
+ */
+- (void)gkSetCornerRadius:(CGFloat) cornerRadius corners:(UIRectCorner) corners rect:(CGRect) rect;
+
 @end
 
 NS_ASSUME_NONNULL_END

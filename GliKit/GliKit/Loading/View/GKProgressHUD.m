@@ -44,7 +44,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 @synthesize activityIndicatorView = _activityIndicatorView;
 @synthesize imageView = _imageView;
 @synthesize delay = _delay;
-@synthesize dismissHandler = _dismissHandler;
+@synthesize dismissCompletion = _dismissCompletion;
 @synthesize status = _status;
 @synthesize text = _text;
 
@@ -328,7 +328,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         
     }completion:^(BOOL finish){
         self.hidden = YES;
-        !self.dismissHandler ?: self.dismissHandler();
+        !self.dismissCompletion ?: self.dismissCompletion();
     }];
 }
 

@@ -35,6 +35,22 @@ typedef NS_ENUM(NSInteger, GKAssetImageOptions)
     GKAssetImageOptionsResolutionImage,
 };
 
+///二维码容错率
+typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
+{
+    /// 7% 容错率 L
+    GKQRCodeImageCorrectionLevelPercent7 = 0,
+    
+    /// 15% 容错率 M
+    GKQRCodeImageCorrectionLevelPercent15,
+    
+    /// 25% 容错率 Q
+    GKQRCodeImageCorrectionLevelPercent25,
+    
+    /// 30% 容错率 H
+    GKQRCodeImageCorrectionLevelPercent30,
+};
+
 static const CGFloat GKImageScale = 2.0;
 
 ///图片扩展
@@ -101,6 +117,28 @@ static const CGFloat GKImageScale = 2.0;
  修复图片方向错误，比如拍照的时候，有时图片方向不对
  */
 + (UIImage*)gkFixOrientation:(UIImage *)aImage;
+
+// MARK: - 二维码
+
+/**
+ 通过给定信息生成二维码
+ 
+ *@param string 二维码信息 不能为空
+ *@param correctionLevel 二维码容错率
+ *@param size 二维码大小 如果为CGSizeZero ，将使用 240的大小
+ *@param contentColor 二维码内容颜色，如果空，将使用 blackColor
+ *@param backgroundColor 二维码背景颜色，如果空，将使用 whiteColor
+ *@param logo 二维码 logo ,放在中心位置 ，logo的大小 根据 UIImage.size 来确定
+ *@param logoSize logo 大小 0则表示是用图片大小
+ *@return 成功返回二维码图片，否则nil
+ */
++ (UIImage*)gkQRCodeImageWithString:(NSString*) string
+                  correctionLevel:(GKQRCodeImageCorrectionLevel) correctionLevel
+                             size:(CGSize) size
+                     contentColor:(UIColor*) contentColor
+                  backgroundColor:(UIColor*) backgroundColor
+                             logo:(UIImage*) logo
+                            logoSize:(CGSize) logoSize;
 
 @end
 

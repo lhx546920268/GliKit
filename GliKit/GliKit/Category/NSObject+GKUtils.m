@@ -274,12 +274,32 @@
     [self gkPushViewController:viewController toReplacedViewControlelrs:nil];
 }
 
-+ (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController
+- (void)gkPushViewController:(UIViewController *)viewController
 {
-    [self gkPushViewController:viewController shouldReplaceLastSame:YES];
+    [self.class gkPushViewController:viewController];
 }
 
-+ (void)gkPushViewController:(UIViewController*) viewController shouldReplaceLastSame:(BOOL) replace
++ (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController*) viewController
+{
+    [self gkPushViewController:viewController shouldReplace:YES shouldSame:YES];
+}
+
+- (void)gkPushViewControllerReplaceLastSameIfNeeded:(UIViewController *)viewController
+{
+    [self.class gkPushViewControllerReplaceLastSameIfNeeded:viewController];
+}
+
++ (void)gkReplaceCurrentWithViewController:(UIViewController *)viewController
+{
+    [self gkPushViewController:viewController shouldReplace:YES shouldSame:NO];
+}
+
+- (void)gkReplaceCurrentWithViewController:(UIViewController *)viewController
+{
+    [self.class gkReplaceCurrentWithViewController:viewController];
+}
+
++ (void)gkPushViewController:(UIViewController*) viewController shouldReplace:(BOOL) replace shouldSame:(BOOL) shouldSame
 {
     if(!viewController)
         return;
@@ -289,8 +309,12 @@
     if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
         nav = (UINavigationController*)parentViewControlelr;
     }
+    
     if(nav){
-        if(replace && [parentViewControlelr isKindOfClass:[viewController class]]){
+        if(shouldSame && replace){
+            replace = [parentViewControlelr isKindOfClass:[viewController class]];
+        }
+        if(replace){
             NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
             [viewControllers removeLastObject];
             [viewControllers addObject:viewController];
@@ -334,6 +358,11 @@
     }
 }
 
+- (void)gkPushViewControllerRemoveSameIfNeeded:(UIViewController *)viewController
+{
+    [self.class gkPushViewControllerRemoveSameIfNeeded:viewController];
+}
+
 + (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
 {
     if(!viewController)
@@ -358,6 +387,11 @@
     }else{
         [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
     }
+}
+
+- (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+{
+    [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs];
 }
 
 @end
