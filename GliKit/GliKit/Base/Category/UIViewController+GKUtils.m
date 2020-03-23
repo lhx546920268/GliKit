@@ -185,8 +185,7 @@ static char GKTintColorKey;
 
 - (void)gkBackAnimated:(BOOL) flag completion: (void (^)(void))completion
 {
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    [self gkBeforeBack];
     
     if(self.navigationController.viewControllers.count <= 1){
         if(self.presentingViewController){
@@ -195,15 +194,14 @@ static char GKTintColorKey;
             !completion ?: completion();
         }
     }else{
-        [self setTransitionCompletion:completion];
+        [self gkSetTransitionCompletion:completion];
         [self.navigationController popViewControllerAnimated:flag];
     }
 }
 
 - (void)gkBackToRootViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
 {
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    [self gkBeforeBack];
 
     //是present出来的
     if(self.presentingViewController){
@@ -211,20 +209,27 @@ static char GKTintColorKey;
         if(root.navigationController.viewControllers.count > 1){
             //dismiss 之后还有 pop,所以dismiss无动画
             [root dismissViewControllerAnimated:NO completion:^{
-                [self setTransitionCompletion:completion];
+                [self gkSetTransitionCompletion:completion];
                 [root.navigationController popToRootViewControllerAnimated:flag];
             }];
         }else{
             [root dismissViewControllerAnimated:flag completion:completion];
         }
     }else{
-        [self setTransitionCompletion:completion];
+        [self gkSetTransitionCompletion:completion];
         [self.navigationController popToRootViewControllerAnimated:flag];
     }
 }
 
+///返回之前
+- (void)gkBeforeBack
+{
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+}
+
 ///设置过渡动画完成回调
-- (void)setTransitionCompletion:(void (^)(void))completion
+- (void)gkSetTransitionCompletion:(void (^)(void))completion
 {
     if(completion && [self.navigationController isKindOfClass:GKBaseNavigationController.class]){
         GKBaseNavigationController *nav = (GKBaseNavigationController*)self.navigationController;

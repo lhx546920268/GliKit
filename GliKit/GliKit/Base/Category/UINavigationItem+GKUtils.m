@@ -50,7 +50,7 @@
         }
         [self gk_setLeftBarButtonItems:@[fixedItem, leftBarButtonItem] animated:animated];
     }else{
-        [self gk_setLeftBarButtonItem:leftBarButtonItem animated:animated];
+        [self gk_setLeftBarButtonItems:nil animated:animated];
     }
 }
 
@@ -87,7 +87,7 @@
         }
         [self gk_setRightBarButtonItems:@[item, rightBarButtonItem] animated:animated];
     }else{
-        [self gk_setRightBarButtonItem:rightBarButtonItem animated:animated];
+        [self gk_setRightBarButtonItems:nil animated:animated];
     }
     
 }

@@ -187,6 +187,11 @@
 {
     [super viewDidLoad];
     
+    //防止侧滑返回 取消时 导航栏出现3个小点
+    UIBarButtonItem *backBarButtonItem = [UIBarButtonItem new];
+    backBarButtonItem.title = @"";
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.hidesBackButton = YES;
     
