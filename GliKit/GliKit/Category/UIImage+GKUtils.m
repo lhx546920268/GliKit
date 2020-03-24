@@ -396,7 +396,7 @@
         UIGraphicsBeginImageContextWithOptions(size, NO, GKImageScale);
         
         [image drawAtPoint:CGPointZero];
-        [logo drawAtPoint:CGPointMake((size.width - logoSize.width) / 2.0, (size.height - logoSize.height) / 2.0)];
+        [logo drawInRect:CGRectMake((size.width - logoSize.width) / 2.0, (size.height - logoSize.height) / 2.0, logoSize.width, logoSize.height)];
         image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     }

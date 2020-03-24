@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///获取当前 tintColor
 @property(nonatomic, readonly) UIColor *gkCurrentTintColor;
 
-///当前装
+///当前状态
 @property(nonatomic, readonly) UIControlState gkState;
 
 /**

@@ -25,9 +25,6 @@ GKNavigationItemHelper;
 ///关联的viewModel 如果有关联 调用viewModel对应方法
 @property(nonatomic, strong, nullable) __kindof GKBaseViewModel *viewModel;
 
-///获取兼容的状态栏高度 比如有连接个人热点的时候状态栏的高度是不一样的 viewDidLayoutSubviews 获取
-@property(nonatomic, readonly) CGFloat compatiableStatusHeight;
-
 ///是否已计算出frame，使用约束时用到
 @property(nonatomic, readonly) BOOL isViewDidLayoutSubviews;
 

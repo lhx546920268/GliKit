@@ -71,7 +71,6 @@ static char GKTintColorKey;
 
 - (CGFloat)gkStatusBarHeight
 {
-    
     CGFloat height = 0;
     if(@available(iOS 13.0, *)){
         height = UIApplication.sharedApplication.delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
@@ -90,6 +89,28 @@ static char GKTintColorKey;
     }
     
     return height;
+}
+
+- (CGFloat)gkCompatiableStatusHeight
+{
+    CGFloat statusHeight = self.gkStatusBarHeight;
+    CGFloat safeAreaTop = 0;
+    if(@available(iOS 11, *)){
+        safeAreaTop = self.view.gkSafeAreaInsets.top;
+    }else{
+        safeAreaTop = self.topLayoutGuide.length;
+    }
+    if(!self.navigationController.navigationBarHidden && self.navigationController.navigationBar.translucent){
+        if(safeAreaTop > self.gkNavigationBarHeight){
+            safeAreaTop -= self.gkNavigationBarHeight;
+        }
+    }
+    
+    if(statusHeight != safeAreaTop){
+        statusHeight = 0;
+    }
+    
+    return statusHeight;
 }
 
 - (CGFloat)gkNavigationBarHeight

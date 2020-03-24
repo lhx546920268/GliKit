@@ -11,145 +11,34 @@
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
 
-static NSString* Name1 = @"1";
-static NSString* Name2 = @"2";
+@interface OriginObject : NSObject
 
-@interface UIViewController(exten)
-
-@property(nonatomic, copy) NSString *name1;
+- (void)originMethod;
 
 @end
 
-@implementation UIViewController(exten)
+@implementation OriginObject
 
-+ (void)load
+- (void)originMethod
 {
-    NSLog(@"UIViewController exten 1");
-}
-
-- (void)setName1:(NSString *)name1
-{
-    objc_setAssociatedObject(self, Name1.UTF8String, name1, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (NSString *)name1
-{
-    return objc_getAssociatedObject(self, Name1.UTF8String);
+    NSLog(@"originMethod");
+    NSLog(@"%@", self);
 }
 
 @end
 
-@interface GKDRowModel()
+@interface ReplaceObject : NSObject
 
-@property(nonatomic, copy) NSString *name2;
-
-@end
-
-@interface UIViewController(exten1)
-
-@property(nonatomic, copy) NSString *name2;
+- (void)replaceMethod;
 
 @end
 
-@implementation UIViewController(exten1)
+@implementation ReplaceObject
 
-+ (void)load
+- (void)replaceMethod
 {
-    NSLog(@"UIViewController exten 2");
-}
-
-- (void)setName2:(NSString *)name2
-{
-    objc_setAssociatedObject(self, Name2.UTF8String, name2, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (NSString *)name2
-{
-    return objc_getAssociatedObject(self, Name2.UTF8String);
-}
-
-@end
-
-@protocol RunTimeObjectProtocol <NSObject>
-
-///
-@property(nonatomic, assign) NSInteger assigValue;
-
-@end
-
-@interface RunTimeObject : NSObject<RunTimeObjectProtocol>
-{
-    NSString *vaValue;
-}
-
-///
-@property(nonatomic, strong) NSString *stronValue;
-
-///
-@property(nonatomic, copy) NSString *copValue;
-
-///
-@property(nonatomic, weak) GKDRowModel *weaValue;
-
-///
-@property(nonatomic, readonly) NSString *readValue;
-
-@end
-
-@interface RunTimeObject()
-
-@property(nonatomic, strong) NSString *extensionValue;
-
-@end
-
-@interface RunTimeObject()
-
-@property(nonatomic, strong) NSString *extensionValue2;
-
-@end
-
-@implementation RunTimeObject
-
-@synthesize readValue = _readValue;
-
-+ (void)initialize
-{
-//    if (self == [RunTimeObject class]) {
-        NSLog(@"RunTimeObject initialize");
-//    }
-}
-
-- (void)setAssigValue:(NSInteger)assigValue
-{
-    
-}
-
-- (NSInteger)assigValue
-{
-    return 0;
-}
-
-- (NSString *)readValue
-{
-    return @"";
-}
-
-@end
-
-@interface RunTimeChildObject : RunTimeObject
-
-///
-@property(nonatomic, copy) NSString *childCopValue;
-
-@end
-
-@implementation RunTimeChildObject
-
-+ (void)initialize
-{
-//    if (self == [RunTimeChildObject class]) {
-        NSLog(@"RunTimeChildObject initialize");
-//    }
+    NSLog(@"replaceMethod");
+    NSLog(@"%@", self);
 }
 
 @end
@@ -179,33 +68,12 @@ static NSString* Name2 = @"2";
   
     [self initViews];
     
-//    NSLog(@"%@", RunTimeObject.new);
-    NSLog(@"%@", RunTimeChildObject.new);
-    NSLog(@"%@, %@", Name1, Name2);
+    Method method1 = class_getInstanceMethod(OriginObject.class, @selector(originMethod));
+    Method method2 = class_getInstanceMethod(ReplaceObject.class, @selector(replaceMethod));
+    method_exchangeImplementations(method1, method2);
     
-    self.name1 = @"name1";
-    self.name2 = @"name2";
-    
-    NSLog(@"%@, %@", Name1, Name2);
-    NSLog(@"%@, %@", self.name1, self.name2);
-    
-    [self gkSetRightItemWithTitle:@"完成" action:nil];
-    
-    NSLog(@"class_copyPropertyList");
-    unsigned int count = 0;
-    objc_property_t *properties = class_copyPropertyList(RunTimeObject.class, &count);
-    for(unsigned int i = 0;i < count;i ++){
-        objc_property_t property = properties[i];
-        NSLog(@"%@", [NSString stringWithUTF8String:property_getName(property)]);
-    }
-    
-    NSLog(@"class_copyIvarList");
-    count = 0;
-    Ivar *iVars = class_copyIvarList(RunTimeObject.class, &count);
-    for(unsigned int i = 0;i < count;i ++){
-        Ivar iVar = iVars[i];
-        NSLog(@"%@", [NSString stringWithUTF8String:ivar_getName(iVar)]);
-    }
+    [OriginObject.new originMethod];
+    [ReplaceObject.new replaceMethod];
 }
 
 - (void)initViews

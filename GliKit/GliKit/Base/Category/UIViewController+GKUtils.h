@@ -31,6 +31,9 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///状态栏高度
 @property(nonatomic, readonly) CGFloat gkStatusBarHeight;
 
+///获取兼容的状态栏高度 比如有连接个人热点的时候状态栏的高度是不一样的 viewDidLayoutSubviews 获取
+@property(nonatomic, readonly) CGFloat gkCompatiableStatusHeight;
+
 ///导航栏高度
 @property(nonatomic, readonly) CGFloat gkNavigationBarHeight;
 
