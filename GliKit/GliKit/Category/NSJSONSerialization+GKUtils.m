@@ -11,6 +11,23 @@
 
 @implementation NSJSONSerialization (GKUtils)
 
++ (id)gkObjectFromData:(NSData*) data
+{
+    if(![data isKindOfClass:[NSData class]])
+        return nil;
+    
+    NSError *error = nil;
+    id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+#ifdef DEBUG
+    if(error){
+        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+        NSLog(@"%@",error);
+    }
+#endif
+    
+    return obj;
+}
+
 + (NSDictionary*)gkDictionaryFromString:(NSString *)string
 {
     if([NSString isEmpty:string]){
@@ -22,18 +39,8 @@
 
 + (NSDictionary*)gkDictionaryFromData:(NSData*) data
 {
-    if(![data isKindOfClass:[NSData class]])
-        return nil;
-    
-    NSError *error = nil;
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-#ifdef DEBUG
-    if(error){
-        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        NSLog(@"%@",error);
-    }
-#endif
-    
+    NSDictionary *dic = [self gkObjectFromData:data];
+
     if([dic isKindOfClass:[NSDictionary class]]){
         return dic;
     }
@@ -51,17 +58,7 @@
 
 + (NSArray*)gkArrayFromData:(NSData*) data
 {
-    if(![data isKindOfClass:[NSData class]])
-        return nil;
-    
-    NSError *error = nil;
-    NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-#ifdef DEBUG
-    if(error){
-        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        NSLog(@"%@",error);
-    }
-#endif
+    NSArray *array = [self gkObjectFromData:data];
     
     if([array isKindOfClass:[NSArray class]]){
         return array;

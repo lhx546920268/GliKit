@@ -7,6 +7,7 @@ target 'GliKitDemo' do
 
   # Pods for GliKitDemo
   pod 'GliKit', :path => '../../GliKit'
+  pod 'UICKeyChainStore'
 end
 
 target 'GliKitApp' do

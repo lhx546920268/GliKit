@@ -25,6 +25,15 @@
     }
 }
 
+- (NSString *)gkNonnullStringForKey:(id<NSCopying>)key
+{
+    NSString *str = [self gkStringForKey:key];
+    if(!str){
+        str = @"";
+    }
+    return str;
+}
+
 - (id)gkNumberForKey:(id<NSCopying>) key
 {
     id value = [self objectForKey:key];

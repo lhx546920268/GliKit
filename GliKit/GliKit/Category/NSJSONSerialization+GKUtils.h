@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSJSONSerialization (GKUtils)
 
 /**
- 
  便利的Json解析
  
  *@param string Json数据
@@ -22,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSDictionary*)gkDictionaryFromString:(NSString*) string;
 
 /**
- 
  便利的Json解析 避免了 data = nil时，抛出异常
  
  *@param data Json数据
@@ -31,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSDictionary*)gkDictionaryFromData:(NSData*) data;
 
 /**
- 
  便利的Json解析
  
  *@param string Json数据
@@ -40,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSArray*)gkArrayFromString:(NSString*) string;
 
 /**
- 
  便利的Json解析 避免了 data = nil时，抛出异常
  
  *@param data Json数据

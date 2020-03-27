@@ -44,7 +44,7 @@
     [super layoutSubviews];
 
     if(self.isHorizontal){
-        CGFloat contentWidth = (_indicatorView.isAnimating ? (_indicatorView.gkWidth + + 3.0) : 0) + _textLabel.gkWidth;
+        CGFloat contentWidth = (_indicatorView.isAnimating ? (_indicatorView.gkWidth + 3.0) : 0) + _textLabel.gkWidth;
         _indicatorView.gkLeft = (self.criticalPoint - contentWidth) / 2;
         _textLabel.gkLeft = (_indicatorView.isAnimating ? _indicatorView.gkRight + 3.0 : _indicatorView.gkLeft);
     }else{

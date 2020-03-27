@@ -12,6 +12,7 @@ static CGFloat appSeparatorHeight = 0;
 static CGFloat appNavigationBarMargin = 15;
 static CGFloat appNavigationBarTitleViewItemMargin = -6;
 static UIStatusBarStyle appStatusBarStyle = UIStatusBarStyleDefault;
+static NSString *appKeychainAccessGroup = nil;
 
 @implementation UIApplication (GKTheme)
 
@@ -61,6 +62,16 @@ static UIStatusBarStyle appStatusBarStyle = UIStatusBarStyleDefault;
 + (CGFloat)gkStatusBarHeight
 {
     return UIApplication.sharedApplication.statusBarFrame.size.height;
+}
+
++ (void)setGkKeychainAcessGroup:(NSString *) group
+{
+    appKeychainAccessGroup = group;
+}
+
++ (NSString *)gkKeychainAcessGroup
+{
+    return appKeychainAccessGroup;
 }
 
 @end

@@ -26,6 +26,8 @@
 ///状态栏高度
 @property (class, nonatomic, readonly) CGFloat gkStatusBarHeight;
 
+///钥匙串群组
+@property(class, nonatomic) NSString *gkKeychainAcessGroup;
 
 @end
 

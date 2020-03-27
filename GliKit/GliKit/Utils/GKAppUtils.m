@@ -13,11 +13,12 @@
 #import <ifaddrs.h>
 #import <dlfcn.h>
 #import "GKAlertUtils.h"
-#import "GKSSKeychain.h"
+#import "GKKeyChainStore.h"
 #import <sys/utsname.h>
 #import "NSString+GKUtils.h"
 #import <Photos/Photos.h>
 #import <SDWebImageDefine.h>
+#import "UIApplication+GKTheme.h"
 
 ///当前设备唯一标识符
 static NSString *sharedUUID = nil;
@@ -61,22 +62,27 @@ static NSString *sharedUUID = nil;
 {
     if([NSString isEmpty:sharedUUID]){
         NSString *service = self.bundleId;
-        NSString *account = @"lhxUUID";
+        NSString *key = @"GliKitUUID";
         
-        NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"%@%@", service, account]];
+        NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"%@%@", service, key]];
         if([NSString isEmpty:uuid]){
-            uuid = [GKSSKeychain passwordForService:service account:account error:nil];
-        }
-        
-        if([NSString isEmpty:uuid]){
-            CFUUIDRef uuidRef = CFUUIDCreate(NULL);
-            CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
-            CFRelease(uuidRef);
-            uuid = [NSString stringWithString:(__bridge NSString*)uuidStringRef];
-            CFRelease(uuidStringRef);
+            uuid = [GKKeyChainStore stringForKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
+            if([NSString isEmpty:uuid]){
+                
+                //兼容以前的 现在改成 ZegoBird 和 ZegoDealer 共享keychain
+                uuid = [GKKeyChainStore stringForKey:key service:service];
+            }
             
-            [GKSSKeychain setPassword:uuid forService:service account:account error:nil];
-            [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:[NSString stringWithFormat:@"%@%@", service, account]];
+            if([NSString isEmpty:uuid]){
+                CFUUIDRef uuidRef = CFUUIDCreate(NULL);
+                CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
+                CFRelease(uuidRef);
+                uuid = [NSString stringWithString:(__bridge NSString*)uuidStringRef];
+                CFRelease(uuidStringRef);
+            }
+            
+            [GKKeyChainStore setString:uuid forKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
+            [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:[NSString stringWithFormat:@"%@%@", service, key]];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         

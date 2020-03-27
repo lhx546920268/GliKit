@@ -126,7 +126,9 @@
 - (void)setTitle:(NSString *)title forState:(GKDataControlState)state
 {
     [self.titles setObject:title forKey:@(state)];
-    [self onStateChange:self.state];
+    if(state == self.state){
+        [self onStateChange:self.state];
+    }
 }
 
 - (NSString*)titleForState:(GKDataControlState)state

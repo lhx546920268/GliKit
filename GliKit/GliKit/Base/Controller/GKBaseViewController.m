@@ -211,7 +211,6 @@
 
 - (void)viewDidLayoutSubviews
 {
-    [super viewDidLayoutSubviews];
     [self viewDidLayoutSubviewsShouldCallSuper:YES];
 }
 

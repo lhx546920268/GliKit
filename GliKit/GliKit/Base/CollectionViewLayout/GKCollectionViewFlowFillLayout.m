@@ -445,7 +445,7 @@
     BOOL shouldStickHeaderDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:shouldStickHeaderAtSection:)];
     self.shouldStickHeaderDelegate = shouldStickHeaderDelegate;
 
-#if GKDebug
+#ifdef DEBUG
     
     BOOL sizeForItemDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:itemSizeForIndexPath:)];
     NSAssert(sizeForItemDelegate, @"必须实现 collectionViewFlowFillLayout:itemSizeForIndexPath:");

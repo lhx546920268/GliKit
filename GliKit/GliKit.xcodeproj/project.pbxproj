@@ -23,6 +23,7 @@
 		CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F47232622DA0045CB38 /* GKWeakProxy.m */; };
 		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
 		CEC2D970239F4D5400F14210 /* UIApplication+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */; };
+		CEC9C327242B4A420082E631 /* GKKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC9C326242B4A420082E631 /* GKKeyChainStore.m */; };
 		CECE565523A88387007A96C4 /* GKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE565423A88387007A96C4 /* GKButton.m */; };
 		CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertController.m */; };
 		CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22E230BC6250057D405 /* GKAlertProps.m */; };
@@ -137,7 +138,6 @@
 		CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */; };
 		CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */; };
 		CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */; };
-		CEFE907F230F795C006A0EBD /* GKSSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE907E230F794D006A0EBD /* GKSSKeychain.m */; };
 		CEFE9084230F9D47006A0EBD /* GKImageCropSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */; };
 		CEFE9087230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9086230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m */; };
 /* End PBXBuildFile section */
@@ -186,6 +186,8 @@
 		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
 		CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+GKUtils.h"; sourceTree = "<group>"; };
 		CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+GKUtils.m"; sourceTree = "<group>"; };
+		CEC9C325242B4A420082E631 /* GKKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKKeyChainStore.h; sourceTree = "<group>"; };
+		CEC9C326242B4A420082E631 /* GKKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKKeyChainStore.m; sourceTree = "<group>"; };
 		CECE565323A88387007A96C4 /* GKButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKButton.h; sourceTree = "<group>"; };
 		CECE565423A88387007A96C4 /* GKButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKButton.m; sourceTree = "<group>"; };
 		CED0D1CE230BC5BE0057D405 /* libGliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGliKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -420,8 +422,6 @@
 		CEE8C8832319066700E7CA75 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
 		CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
 		CEE8C8B323191A6400E7CA75 /* GliKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliKit.h; sourceTree = "<group>"; };
-		CEFE907D230F794D006A0EBD /* GKSSKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKSSKeychain.h; sourceTree = "<group>"; };
-		CEFE907E230F794D006A0EBD /* GKSSKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSSKeychain.m; sourceTree = "<group>"; };
 		CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropSettings.m; sourceTree = "<group>"; };
 		CEFE9083230F9D47006A0EBD /* GKImageCropSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropSettings.h; sourceTree = "<group>"; };
 		CEFE9085230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewLayoutInvalidationContext.h; sourceTree = "<group>"; };
@@ -1078,8 +1078,8 @@
 		CEFE907C230F794D006A0EBD /* KeyChain */ = {
 			isa = PBXGroup;
 			children = (
-				CEFE907D230F794D006A0EBD /* GKSSKeychain.h */,
-				CEFE907E230F794D006A0EBD /* GKSSKeychain.m */,
+				CEC9C325242B4A420082E631 /* GKKeyChainStore.h */,
+				CEC9C326242B4A420082E631 /* GKKeyChainStore.m */,
 			);
 			path = KeyChain;
 			sourceTree = "<group>";
@@ -1186,7 +1186,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE1194282368122800987274 /* UICollectionView+GKCellSize.m in Sources */,
-				CEFE907F230F795C006A0EBD /* GKSSKeychain.m in Sources */,
 				CED3A80A230D45A000C304B3 /* UIScrollView+GKRefresh.m in Sources */,
 				CED3A80B230D45A000C304B3 /* GKDataControl.m in Sources */,
 				CED3A80C230D45A000C304B3 /* GKDefaultLoadMoreControl.m in Sources */,
@@ -1239,6 +1238,7 @@
 				CED0D33C230BC8780057D405 /* GKNavigationBar.m in Sources */,
 				CED0D408230BECD00057D405 /* UITableViewCell+GKUtils.m in Sources */,
 				CED0D425230BECF20057D405 /* UINavigationItem+GKUtils.m in Sources */,
+				CEC9C327242B4A420082E631 /* GKKeyChainStore.m in Sources */,
 				CED0D340230BC8780057D405 /* GKSystemNavigationBar.m in Sources */,
 				CED0D440230BED690057D405 /* UITableView+GKSkeleton.m in Sources */,
 				CED0D367230BC8790057D405 /* GKEmptyView.m in Sources */,

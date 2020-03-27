@@ -141,6 +141,7 @@
 		CEC3C859231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDCollectionViewSkeletonHeader.h; sourceTree = "<group>"; };
 		CEC3C85A231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDCollectionViewSkeletonHeader.m; sourceTree = "<group>"; };
 		CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDCollectionViewSkeletonHeader.xib; sourceTree = "<group>"; };
+		CEC9C321242B14A90082E631 /* GliKitDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GliKitDemo.entitlements; sourceTree = "<group>"; };
 		CED1B13E2320FAC1009C4D6C /* GKDTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTransitionViewController.h; sourceTree = "<group>"; };
 		CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTransitionViewController.m; sourceTree = "<group>"; };
 		CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDTransitionViewController.xib; sourceTree = "<group>"; };
@@ -406,6 +407,7 @@
 		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEC9C321242B14A90082E631 /* GliKitDemo.entitlements */,
 				CEC2D971239F8BD400F14210 /* Alert */,
 				CEAB052C236FB15900D2A4CF /* Web */,
 				CEC1732B233DE4F400A1ADA8 /* Progress */,
@@ -861,6 +863,7 @@
 			baseConfigurationReference = DD740E3E13DC2B05CC565386 /* Pods-GliKitDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GliKitDemo/GliKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F4797G69ZD;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -881,6 +884,7 @@
 			baseConfigurationReference = C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GliKitDemo/GliKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F4797G69ZD;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
