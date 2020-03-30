@@ -53,6 +53,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.aac = @"aac";
+    self.abc = @"abc";
+    
+    
   
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[

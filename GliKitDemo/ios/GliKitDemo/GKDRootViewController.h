@@ -12,6 +12,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GKDRootViewController : GKTableViewController
 
+
+
+@end
+
+@interface GKDRootViewController ()
+
+///x
+@property(nonatomic, copy) NSString *aac;
+
+@end
+
+@interface GKDRootViewController ()
+
+///x
+@property(nonatomic, copy) NSString *abc;
+
 @end
 
 NS_ASSUME_NONNULL_END
