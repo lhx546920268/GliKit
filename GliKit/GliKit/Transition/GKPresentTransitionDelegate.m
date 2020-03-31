@@ -53,7 +53,7 @@
     if(self){
         self.duration = 0.25;
         self.completePercent = 0.5;
-        self.transitionStyle = GKPresentTransitionStyleCoverHorizontal;
+        self.transitionStyle = GKPresentTransitionStyleFromRight;
     }
     
     return self;
@@ -198,7 +198,7 @@
     CGRect toFrame;
     
     switch (self.delegate.transitionStyle){
-        case GKPresentTransitionStyleCoverVerticalFromBottom : {
+        case GKPresentTransitionStyleFromBottom : {
             fromFrame = fromView.frame;
             toFrame = toView.frame;
             if(isPresenting){
@@ -210,7 +210,7 @@
             }
         }
             break;
-        case GKPresentTransitionStyleCoverVerticalFromTop : {
+        case GKPresentTransitionStyleFromTop : {
             fromFrame = fromView.frame;
             toFrame = toView.frame;
             if(isPresenting){
@@ -222,7 +222,7 @@
             }
         }
             break;
-        case GKPresentTransitionStyleCoverHorizontal : {
+        case GKPresentTransitionStyleFromRight : {
             fromFrame = [transitionContext initialFrameForViewController:fromViewController];
             toFrame = [transitionContext finalFrameForViewController:toViewController];
             if(isPresenting){
@@ -231,6 +231,18 @@
             }else{
                 fromView.frame = fromFrame;
                 toView.frame = CGRectOffset(toFrame, -toFrame.size.width * 0.5, 0);
+            }
+        }
+            break;
+        case GKPresentTransitionStyleFromLeft : {
+            fromFrame = [transitionContext initialFrameForViewController:fromViewController];
+            toFrame = [transitionContext finalFrameForViewController:toViewController];
+            if(isPresenting){
+                fromView.frame = fromFrame;
+                toView.frame = CGRectOffset(toFrame, - toFrame.size.width,0);
+            }else{
+                fromView.frame = fromFrame;
+                toView.frame = CGRectOffset(toFrame, toFrame.size.width * 0.5, 0);
             }
         }
             break;
@@ -255,7 +267,7 @@
     [UIView animateWithDuration:transitionDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
         switch (self.delegate.transitionStyle){
-            case GKPresentTransitionStyleCoverVerticalFromBottom : {
+            case GKPresentTransitionStyleFromBottom : {
                 if (isPresenting){
                     toView.frame = toFrame;
                     fromView.frame = fromFrame;
@@ -265,7 +277,7 @@
                 }
             }
                 break;
-            case GKPresentTransitionStyleCoverVerticalFromTop : {
+            case GKPresentTransitionStyleFromTop : {
                 if (isPresenting){
                     toView.frame = toFrame;
                     fromView.frame = fromFrame;
@@ -275,12 +287,22 @@
                 }
             }
                 break;
-            case GKPresentTransitionStyleCoverHorizontal : {
+            case GKPresentTransitionStyleFromRight : {
                 if (isPresenting){
                     toView.frame = toFrame;
                     fromView.frame = CGRectOffset(fromFrame, - fromFrame.size.width * 0.5, 0);
                 }else{
                     fromView.frame = CGRectOffset(fromFrame, fromFrame.size.width,0);
+                    toView.frame = toFrame;
+                }
+            }
+                break;
+            case GKPresentTransitionStyleFromLeft : {
+                if (isPresenting){
+                    toView.frame = toFrame;
+                    fromView.frame = CGRectOffset(fromFrame, fromFrame.size.width * 0.5, 0);
+                }else{
+                    fromView.frame = CGRectOffset(fromFrame, - fromFrame.size.width,0);
                     toView.frame = toFrame;
                 }
             }

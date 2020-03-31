@@ -13,14 +13,17 @@ NS_ASSUME_NONNULL_BEGIN
 ///动画样式
 typedef NS_ENUM(NSInteger, GKPresentTransitionStyle)
 {
-    ///水平覆盖
-    GKPresentTransitionStyleCoverHorizontal = 0,
-    
     ///垂直覆盖
-    GKPresentTransitionStyleCoverVerticalFromBottom,
+    GKPresentTransitionStyleFromBottom = 0,
     
     ///从顶部开始
-    GKPresentTransitionStyleCoverVerticalFromTop,
+    GKPresentTransitionStyleFromTop,
+    
+    ///水平覆盖左
+    GKPresentTransitionStyleFromLeft,
+    
+    ///水平覆盖右
+    GKPresentTransitionStyleFromRight,
 };
 
 /**
@@ -32,7 +35,7 @@ typedef NS_ENUM(NSInteger, GKPresentTransitionStyle)
 ///当活动的视图的占整体的百分比达到此值时，停止手势时，将自动完成后面的动画 范围 0.1 ~ 1.0，default is '0.5'
 @property(nonatomic, assign) float completePercent;
 
-///动画样式 default is 'GKPresentTransitionStyleCoverHorizontal'
+///动画样式 default is 'GKPresentTransitionStyleFromRight'
 @property(nonatomic, assign) GKPresentTransitionStyle transitionStyle;
 
 ///动画时间 default is '0.25'

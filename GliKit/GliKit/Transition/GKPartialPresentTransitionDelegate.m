@@ -12,11 +12,61 @@
 #import "UIViewController+GKUtils.h"
 #import "UIView+GKUtils.h"
 #import "GKPartialPresentationController.h"
+#import "UIScreen+GKUtils.h"
+
+@implementation GKPartialPresentProps
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.transitionDuration = 0.25;
+        self.cancelable = YES;
+        self.transitionStyle = GKPresentTransitionStyleFromBottom;
+        self.frameUseSafeArea = YES;
+        self.corners = UIRectCornerTopLeft | UIRectCornerTopRight;
+    }
+    return self;
+}
+
+- (UIColor *)backgroundColor
+{
+    if(!_backgroundColor){
+        _backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    }
+    return _backgroundColor;
+}
+
+- (CGRect)frame
+{
+    if(_frame.size.width > 0 && _frame.size.height > 0)
+        return _frame;
+    
+    //弹窗大小位置
+    CGSize size = self.contentSize;
+    CGSize parentSize = UIScreen.gkScreenSize;
+    switch (self.transitionStyle) {
+        case GKPresentTransitionStyleFromTop : {
+            return CGRectMake((parentSize.width - size.width) / 2.0, 0, size.width, size.height);
+        }
+        case GKPresentTransitionStyleFromLeft : {
+            return CGRectMake(size.width, (parentSize.height - size.height) / 2.0, size.width, size.height);
+        }
+        case GKPresentTransitionStyleFromBottom : {
+            return CGRectMake((parentSize.width - size.width) / 2.0, parentSize.height - size.height, size.width, size.height);
+        }
+        case GKPresentTransitionStyleFromRight : {
+            return CGRectMake(parentSize.width - size.width, (parentSize.height - size.height) / 2.0, size.width, size.height);
+        }
+    }
+}
+
+@end
 
 @interface GKPartialPresentTransitionAnimator : NSObject<UIViewControllerAnimatedTransitioning>
 
-///关联的 GKPartialPresentTransitionAnimator
-@property(nonatomic,weak) GKPartialPresentTransitionDelegate *delegate;
+///
+@property(nonatomic,weak) GKPartialPresentProps *props;
 
 @end
 
@@ -29,23 +79,11 @@
 
 @implementation GKPartialPresentTransitionDelegate
 
-- (instancetype)init
-{
-    self = [super init];
-    if(self){
-        self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-        self.duration = 0.25;
-        self.dismissWhenTapBackground = YES;
-        self.transitionStyle = GKPresentTransitionStyleCoverVerticalFromBottom;
-    }
-    
-    return self;
-}
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
     self.animator = [[GKPartialPresentTransitionAnimator alloc] init];
-    self.animator.delegate = self;
+    self.animator.props = self.props;
     
     return self.animator;
 }
@@ -54,7 +92,7 @@
 {
     if(!self.animator){
         self.animator = [[GKPartialPresentTransitionAnimator alloc] init];
-        self.animator.delegate = self;
+        self.animator.props = self.props;
     }
     return self.animator;
 }
@@ -80,10 +118,9 @@
 
 @implementation GKPartialPresentTransitionAnimator
 
-
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return self.delegate.duration;
+    return self.props.transitionDuration;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -101,29 +138,28 @@
     CGRect fromFrame = fromView.frame;
     CGRect toFrame = toView.frame;
     
-    CGSize size = self.delegate.partialContentSize;
+    CGRect frame = self.props.frame;
     
     if(isPresenting){
         fromView.frame = fromFrame;
+        toFrame = frame;
         
-        switch (self.delegate.transitionStyle){
+        switch (self.props.transitionStyle){
                 
-            case GKPresentTransitionStyleCoverVerticalFromTop : {
-                toFrame.origin.y = 0;
-                toFrame.origin.x = (containerView.gkWidth - size.width) / 2.0;
-                toView.frame = CGRectOffset(toFrame, 0, -size.height);
+            case GKPresentTransitionStyleFromTop : {
+                toView.frame = CGRectOffset(toFrame, 0, -CGRectGetMaxY(frame));
             }
                 break;
-            case GKPresentTransitionStyleCoverVerticalFromBottom : {
-                toFrame.origin.y = containerView.gkHeight - size.height;
-                toFrame.origin.x = (containerView.gkWidth - size.width) / 2.0;
-                toView.frame = CGRectOffset(toFrame, 0, size.height);
+            case GKPresentTransitionStyleFromBottom : {
+                toView.frame = CGRectOffset(toFrame, 0, CGRectGetMaxY(frame));
             }
                 break;
-            case GKPresentTransitionStyleCoverHorizontal : {
-                toFrame.origin.y = (containerView.gkHeight - size.height) / 2.0;
-                toFrame.origin.x = containerView.gkWidth - size.width;
-                toView.frame = CGRectOffset(toFrame, size.width, 0);
+            case GKPresentTransitionStyleFromLeft : {
+                toView.frame = CGRectOffset(toFrame, -CGRectGetMaxX(frame), 0);
+            }
+                break;
+            case GKPresentTransitionStyleFromRight : {
+                toView.frame = CGRectOffset(toFrame, CGRectGetMaxX(frame), 0);
             }
                 break;
         }
@@ -132,6 +168,25 @@
     }else{
         
         fromView.frame = fromFrame;
+        switch (self.props.transitionStyle){
+            case GKPresentTransitionStyleFromLeft : {
+                fromFrame = CGRectOffset(frame, CGRectGetMaxX(frame), 0);
+            }
+                break;
+            case GKPresentTransitionStyleFromBottom : {
+                fromFrame = CGRectOffset(frame, 0, CGRectGetMaxY(frame));
+            }
+                break;
+            case GKPresentTransitionStyleFromTop : {
+                fromFrame = CGRectOffset(frame, 0, -CGRectGetMaxY(frame));
+            }
+                break;
+            case GKPresentTransitionStyleFromRight : {
+                fromFrame = CGRectOffset(frame, -CGRectGetMaxX(frame), 0);
+            }
+                break;
+        }
+        
         //当 fromViewController.modalPresentationStyle = UIModalPresentationCustom, UIModalPresentationOverCurrentContext 时， toView 为nil
         if(toView){
             toView.frame = toFrame;
@@ -147,22 +202,7 @@
         if(isPresenting){
             toView.frame = toFrame;
         }else{
-            switch (self.delegate.transitionStyle){
-                case GKPresentTransitionStyleCoverHorizontal : {
-                    fromView.frame = CGRectOffset(fromFrame, size.width, 0);
-                }
-                    break;
-                case GKPresentTransitionStyleCoverVerticalFromBottom : {
-                    fromView.frame = CGRectOffset(fromFrame, 0, size.height);
-                }
-                    break;
-                case GKPresentTransitionStyleCoverVerticalFromTop : {
-                    fromView.frame = CGRectOffset(fromFrame, 0, -size.height);
-                }
-                    break;
-                default:
-                    break;
-            }
+            fromView.frame = fromFrame;
         }
     } completion:^(BOOL finished) {
         

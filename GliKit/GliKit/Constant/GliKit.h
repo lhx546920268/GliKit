@@ -21,6 +21,7 @@
 #import "UIViewController+GKDialog.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "UIViewController+GKUtils.h"
+#import "UIViewController+GKPush.h"
 
 #import "GKRouter.h"
 

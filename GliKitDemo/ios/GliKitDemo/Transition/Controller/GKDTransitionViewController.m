@@ -27,8 +27,8 @@
     vc.view.backgroundColor = UIColor.whiteColor;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.partialContentSize = CGSizeMake(UIScreen.gkScreenWidth, 400);
-    nav.partialCornerRadius = 10;
+    nav.partialPresentProps.frame = CGRectMake(20, 100, 300, 400);
+    nav.partialPresentProps.cornerRadius = 10;
     [nav partialPresentFromBottom];
 }
 

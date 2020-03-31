@@ -25,7 +25,7 @@
     //添加背景
     if(!self.backgroundView){
         self.backgroundView = [UIView new];
-        self.backgroundView.backgroundColor = self.transitionDelegate.backgroundColor;
+        self.backgroundView.backgroundColor = self.transitionDelegate.props.backgroundColor;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)];
         tap.delegate = self;
         [self.backgroundView addGestureRecognizer:tap];
@@ -87,23 +87,7 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-    //弹窗大小位置
-    CGSize size = self.transitionDelegate.partialContentSize;
-    CGSize parentSize = self.containerView.frame.size;
-    switch (self.transitionDelegate.transitionStyle) {
-        case GKPresentTransitionStyleCoverVerticalFromTop : {
-            return CGRectMake((parentSize.width - size.width) / 2.0, 0, size.width, size.height);
-        }
-            break;
-        case GKPresentTransitionStyleCoverHorizontal : {
-            return CGRectMake(parentSize.width - size.width, (parentSize.height - size.height) / 2.0, size.width, size.height);
-        }
-            break;
-        case GKPresentTransitionStyleCoverVerticalFromBottom : {
-            return CGRectMake((parentSize.width - size.width) / 2.0, parentSize.height - size.height, size.width, size.height);
-        }
-            break;
-    }
+    return self.transitionDelegate.props.frame;
 }
 
 // MARK: - Action
@@ -111,11 +95,11 @@
 ///点击背景
 - (void)handleTap
 {
-    if(self.transitionDelegate.tapBackgroundHandler){
-        self.transitionDelegate.tapBackgroundHandler();
+    if(self.transitionDelegate.props.cancelCallback){
+        self.transitionDelegate.props.cancelCallback();
     }else{
-        if(self.transitionDelegate.dismissWhenTapBackground){
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:self.transitionDelegate.dismissHandler];
+        if(self.transitionDelegate.props.cancelable){
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:self.transitionDelegate.props.cancelCallback];
         }
     }
 }

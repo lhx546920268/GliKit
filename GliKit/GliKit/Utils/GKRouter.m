@@ -15,6 +15,7 @@
 #import "NSString+GKUtils.h"
 #import "UIViewController+GKUtils.h"
 #import "GKBaseWebViewController.h"
+#import "UIViewController+GKPush.h"
 
 @interface GKRouter ()
 

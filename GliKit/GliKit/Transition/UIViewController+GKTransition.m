@@ -12,6 +12,7 @@
 #import "UIScreen+GKUtils.h"
 #import "UIView+GKUtils.h"
 #import "NSObject+GKUtils.h"
+#import "UIViewController+GKPush.h"
 
 /**
  过渡代理
@@ -19,14 +20,9 @@
 static char GKTransitioningDelegateKey;
 
 /**
- 部分显示大小
+ 部分显示 属性
  */
-static char GKPartialContentSizeKey;
-
-/**
- 圆角
- */
-static char GKPartialCornerRadiusKey;
+static char GKPartialPresentPropsKey;
 
 @implementation UIViewController (GKTransition)
 
@@ -82,24 +78,15 @@ static char GKPartialCornerRadiusKey;
 
 // MARK: - present
 
-- (void)setPartialContentSize:(CGSize)partialContentSize
+- (GKPartialPresentProps *)partialPresentProps
 {
-    objc_setAssociatedObject(self, &GKPartialContentSizeKey, @(partialContentSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (CGSize)partialContentSize
-{
-    return [objc_getAssociatedObject(self, &GKPartialContentSizeKey) CGSizeValue];
-}
-
-- (void)setPartialCornerRadius:(CGFloat)partialCornerRadius
-{
-    objc_setAssociatedObject(self, &GKPartialCornerRadiusKey, @(partialCornerRadius), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (CGFloat)partialCornerRadius
-{
-    return [objc_getAssociatedObject(self, &GKPartialCornerRadiusKey) floatValue];
+    GKPartialPresentProps *props = objc_getAssociatedObject(self, &GKPartialPresentPropsKey);
+    if(!props){
+        props = GKPartialPresentProps.new;
+        objc_setAssociatedObject(self, &GKPartialPresentPropsKey, props, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    
+    return props;
 }
 
 - (UIViewController*)partialViewController
@@ -109,33 +96,29 @@ static char GKPartialCornerRadiusKey;
 
 - (void)partialPresentFromBottom
 {
-    CGSize size = self.partialContentSize;
-    size.height += self.gkCurrentViewController.view.gkSafeAreaInsets.bottom;
-    [self partialPresentWithStyle:GKPresentTransitionStyleCoverVerticalFromBottom contentSize:size];
+    self.partialPresentProps.transitionStyle = GKPresentTransitionStyleFromBottom;
+    [self partialPresent];
 }
 
 - (void)partialPresentFromTop
 {
-    CGSize size = self.partialContentSize;
-    size.height += self.gkStatusBarHeight;
-    [self partialPresentWithStyle:GKPresentTransitionStyleCoverVerticalFromTop contentSize:size];
+    self.partialPresentProps.transitionStyle = GKPresentTransitionStyleFromTop;
+    [self partialPresent];
 }
 
-- (void)partialPresentWithStyle:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize
+- (void)partialPresent
 {
-    [self partialPresentViewController:self.partialViewController style:style contentSize:contentSize];
-}
-
-- (void)partialPresentViewController:(UIViewController*) viewController style:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize
-{
-    CGFloat cornerRadius = self.partialCornerRadius;
+    UIViewController *viewController = self.partialViewController;
+    GKPartialPresentProps *props = self.partialPresentProps;
+    
+    CGFloat cornerRadius = props.cornerRadius;
     if(cornerRadius > 0){
-        [viewController.view gkSetCornerRadius:cornerRadius corners:UIRectCornerTopLeft | UIRectCornerTopRight rect:CGRectMake(0, 0, contentSize.width, contentSize.height)];
+        CGRect frame = props.frame;
+        [viewController.view gkSetCornerRadius:cornerRadius corners:props.corners rect:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     }
     
     GKPartialPresentTransitionDelegate *delegate = [GKPartialPresentTransitionDelegate new];
-    delegate.transitionStyle = style;
-    delegate.partialContentSize = contentSize;
+    delegate.props = props;
     [delegate showViewController:viewController];
 }
 

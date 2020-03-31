@@ -1,11 +1,13 @@
 //
 //  UIViewController+GKPush.h
-//  AFNetworking
+//  GliKit
 //
 //  Created by 罗海雄 on 2020/3/27.
 //
 
-#import <AppKit/AppKit.h>
+#import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 ///UIViewController扩展
 @interface NSObject (GKUIViewControllerUtils)
@@ -68,3 +70,5 @@
 - (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
 
 @end
+
+NS_ASSUME_NONNULL_END

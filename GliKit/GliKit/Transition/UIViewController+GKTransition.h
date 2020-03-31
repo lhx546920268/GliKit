@@ -18,11 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - present
 
-///部分显示大小 会自己加上安全区域高度 子类可重写
-@property(nonatomic, assign) CGSize partialContentSize;
-
-///圆角
-@property(nonatomic, assign) CGFloat partialCornerRadius;
+///部分显示 属性
+@property(nonatomic, readonly) GKPartialPresentProps *partialPresentProps;
 
 ///返回要显示的viewController 默认是self
 @property(nonatomic, readonly) UIViewController *partialViewController;
@@ -33,11 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///从顶部部分显示
 - (void)partialPresentFromTop;
 
-///部分显示 可设置样式和大小
-- (void)partialPresentWithStyle:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize;
-
-///部分显示 可设置要显示的viewController、样式和大小
-- (void)partialPresentViewController:(UIViewController*) viewController style:(GKPresentTransitionStyle) style contentSize:(CGSize) contentSize;
+///部分显示
+- (void)partialPresent;
 
 // MARK: - push
 

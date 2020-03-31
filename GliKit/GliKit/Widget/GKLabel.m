@@ -13,6 +13,7 @@
 #import "UIViewController+GKLoading.h"
 #import <CoreText/CoreText.h>
 #import "UIColor+GKUtils.h"
+#import "UIViewController+GKPush.h"
 
 ///URL 正则表达式识别器
 static NSRegularExpression *URLRegularExpression = nil;

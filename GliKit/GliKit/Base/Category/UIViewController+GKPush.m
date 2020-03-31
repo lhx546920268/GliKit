@@ -1,6 +1,6 @@
 //
 //  UIViewController+GKPush.m
-//  AFNetworking
+//  GliKit
 //
 //  Created by 罗海雄 on 2020/3/27.
 //
@@ -9,7 +9,6 @@
 #import "UIViewController+GKUtils.h"
 #import "UIViewController+GKTransition.h"
 #import "GKPartialPresentTransitionDelegate.h"
-
 
 @implementation NSObject (GKUIViewControllerUtils)
 

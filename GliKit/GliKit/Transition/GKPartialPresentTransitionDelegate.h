@@ -11,6 +11,44 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///部分显示属性
+@interface GKPartialPresentProps : NSObject
+
+///部分显示大小
+@property(nonatomic, assign) CGSize contentSize;
+
+///部分显示区域 默认通过 contentSize 和动画样式计算
+@property(nonatomic, assign) CGRect frame;
+
+///是否需要自动加上安全区域 default YES
+@property(nonatomic, assign) BOOL frameUseSafeArea;
+
+///圆角
+@property(nonatomic, assign) CGFloat cornerRadius;
+
+///圆角位置 默认是左上角和右上角
+@property(nonatomic, assign) UIRectCorner corners;
+
+///样式
+@property(nonatomic, assign) GKPresentTransitionStyle transitionStyle;
+
+///背景颜色 黑色 0.5透明度
+@property(nonatomic, strong, null_resettable) UIColor *backgroundColor;
+
+///点击背景是否会关闭当前显示的viewController，default is 'YES'
+@property(nonatomic, assign) BOOL cancelable;
+
+///动画时间 default is '0.25'
+@property(nonatomic, assign) NSTimeInterval transitionDuration;
+
+///点击半透明背景回调 设置这个时，弹窗不会关闭
+@property(nonatomic, copy, nullable) void(^cancelCallback)(void);
+
+///消失时的回调
+@property(nonatomic, copy, nullable) void(^dismissCallback)(void);
+
+@end
+
 ///使用方法
 
 /*
@@ -19,7 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
  vc.view.backgroundColor = UIColor.whiteColor;
  
  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
- nav.partialContentSize = CGSizeMake(UIScreen.gkScreenWidth, 400);
+ nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkScreenWidth, 400);
+ nav.partialPresentProps.cornerRadius = 10;
  [nav partialPresentFromBottom];
  */
 
@@ -30,26 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface GKPartialPresentTransitionDelegate : NSObject<UIViewControllerTransitioningDelegate>
 
-///部分显示大小
-@property(nonatomic, assign) CGSize partialContentSize;
-
-///背景颜色
-@property(nonatomic, strong) UIColor *backgroundColor;
-
-///点击背景是否会关闭当前显示的viewController，default is 'YES'
-@property(nonatomic, assign) BOOL dismissWhenTapBackground;
-
-///动画时间 default is '0.25'
-@property(nonatomic, assign) NSTimeInterval duration;
-
-///动画样式 default is 'GKPresentTransitionStyleCoverVerticalFromBottom'
-@property(nonatomic, assign) GKPresentTransitionStyle transitionStyle;
-
-///点击半透明背景回调 设置这个时，弹窗不会关闭
-@property(nonatomic, copy, nullable) void(^tapBackgroundHandler)(void);
-
-///消失时的回调
-@property(nonatomic, copy, nullable) void(^dismissHandler)(void);
+///部分显示属性
+@property(nonatomic, strong) GKPartialPresentProps *props;
 
 ///显示一个 视图
 - (void)showViewController:(UIViewController*) viewController;
