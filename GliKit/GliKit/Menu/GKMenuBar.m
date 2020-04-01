@@ -227,7 +227,7 @@
 {
     if(!_indicator && self.indicatorHeight > 0){
         _indicator = [UIView new];
-        self.indicator.backgroundColor = self.indicatorColor;
+        _indicator.backgroundColor = self.indicatorColor;
         [self.collectionView addSubview:_indicator];
     }
     

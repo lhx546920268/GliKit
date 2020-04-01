@@ -47,15 +47,27 @@
     CGSize parentSize = UIScreen.gkScreenSize;
     switch (self.transitionStyle) {
         case GKPresentTransitionStyleFromTop : {
+            if(self.frameUseSafeArea){
+                size.height += UIApplication.sharedApplication.keyWindow.gkSafeAreaInsets.top;
+            }
             return CGRectMake((parentSize.width - size.width) / 2.0, 0, size.width, size.height);
         }
         case GKPresentTransitionStyleFromLeft : {
+            if(self.frameUseSafeArea){
+                size.width += UIApplication.sharedApplication.keyWindow.gkSafeAreaInsets.left;
+            }
             return CGRectMake(size.width, (parentSize.height - size.height) / 2.0, size.width, size.height);
         }
         case GKPresentTransitionStyleFromBottom : {
+            if(self.frameUseSafeArea){
+                size.height += UIApplication.sharedApplication.keyWindow.gkSafeAreaInsets.bottom;
+            }
             return CGRectMake((parentSize.width - size.width) / 2.0, parentSize.height - size.height, size.width, size.height);
         }
         case GKPresentTransitionStyleFromRight : {
+            if(self.frameUseSafeArea){
+                size.width += UIApplication.sharedApplication.keyWindow.gkSafeAreaInsets.right;
+            }
             return CGRectMake(parentSize.width - size.width, (parentSize.height - size.height) / 2.0, size.width, size.height);
         }
     }
@@ -82,8 +94,10 @@
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
-    self.animator = [[GKPartialPresentTransitionAnimator alloc] init];
-    self.animator.props = self.props;
+    if(!self.animator){
+        self.animator = [[GKPartialPresentTransitionAnimator alloc] init];
+        self.animator.props = self.props;
+    }
     
     return self.animator;
 }
@@ -104,11 +118,13 @@
     return controller;
 }
 
-- (void)showViewController:(UIViewController *)viewController
+- (void)showViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     viewController.gkTransitioningDelegate = self;
-    [UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:nil];
+    [UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:completion];
 }
+
+
 
 @end
 
@@ -135,14 +151,11 @@
     ///是否是弹出
     BOOL isPresenting = toViewController.presentingViewController == fromViewController;
     
-    CGRect fromFrame = fromView.frame;
-    CGRect toFrame = toView.frame;
-    
     CGRect frame = self.props.frame;
+    CGRect fromFrame = fromView.frame;
+    CGRect toFrame = frame;
     
     if(isPresenting){
-        fromView.frame = fromFrame;
-        toFrame = frame;
         
         switch (self.props.transitionStyle){
                 
@@ -167,10 +180,9 @@
         [containerView addSubview:toView];
     }else{
         
-        fromView.frame = fromFrame;
         switch (self.props.transitionStyle){
             case GKPresentTransitionStyleFromLeft : {
-                fromFrame = CGRectOffset(frame, CGRectGetMaxX(frame), 0);
+                fromFrame = CGRectOffset(frame, -CGRectGetMaxX(frame), 0);
             }
                 break;
             case GKPresentTransitionStyleFromBottom : {
@@ -182,18 +194,9 @@
             }
                 break;
             case GKPresentTransitionStyleFromRight : {
-                fromFrame = CGRectOffset(frame, -CGRectGetMaxX(frame), 0);
+                fromFrame = CGRectOffset(frame, CGRectGetMaxX(frame), 0);
             }
                 break;
-        }
-        
-        //当 fromViewController.modalPresentationStyle = UIModalPresentationCustom, UIModalPresentationOverCurrentContext 时， toView 为nil
-        if(toView){
-            toView.frame = toFrame;
-            [containerView insertSubview:toView belowSubview:fromView];
-        }else{
-            CGSize size = [UIScreen mainScreen].bounds.size;
-            toFrame = CGRectMake(0, 0, size.width, size.height);
         }
     }
     

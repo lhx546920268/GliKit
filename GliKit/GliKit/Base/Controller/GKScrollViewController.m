@@ -93,6 +93,9 @@
 {
     if(self.loadingMore && !self.coexistRefreshAndLoadMore){
         [self stopLoadMoreWithMore:YES];
+        if(self.curPage > GKHttpFirstPage){
+            self.curPage --;
+        }
         [self onLoadMoreCancel];
     }
     _refreshing = YES;

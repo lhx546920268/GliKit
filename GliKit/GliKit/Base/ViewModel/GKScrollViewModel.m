@@ -66,6 +66,16 @@
     return self.viewController.curPage;
 }
 
+- (void)setHasMore:(BOOL)hasMore
+{
+    self.viewController.hasMore = hasMore;
+}
+
+- (BOOL)hasMore
+{
+    return self.viewController.hasMore;
+}
+
 - (BOOL)loadingMore
 {
     return self.viewController.loadingMore;

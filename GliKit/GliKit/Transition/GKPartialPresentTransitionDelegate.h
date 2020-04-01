@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) GKPartialPresentProps *props;
 
 ///显示一个 视图
-- (void)showViewController:(UIViewController*) viewController;
+- (void)showViewController:(UIViewController*) viewController completion:(void (^ __nullable)(void))completion;
 
 @end
 

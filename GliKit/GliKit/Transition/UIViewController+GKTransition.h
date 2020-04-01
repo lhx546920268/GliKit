@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)partialPresentFromTop;
 
 ///部分显示
-- (void)partialPresent;
+- (void)partialPresentWithCompletion:(void(^ __nullable)(void)) completion;
 
 // MARK: - push
 

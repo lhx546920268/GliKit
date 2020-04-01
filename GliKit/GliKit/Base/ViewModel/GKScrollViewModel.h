@@ -58,6 +58,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) int curPage;
 
 /**
+ 是否还有更多
+ */
+@property(nonatomic, assign) BOOL hasMore;
+
+/**
  是否正在加载更多
  */
 @property(nonatomic, readonly) BOOL loadingMore;

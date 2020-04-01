@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, GKPresentTransitionStyle)
     GKPresentTransitionStyleFromRight,
 };
 
+
 /**
  *自定义Present类型的过度动画代理 效果类似UINavigationController push 通过init初始化，设置UIViewController 的 gkTransitionDelegate来使用
  *@warning UIViewController中的 transitioningDelegate 是 weak引用

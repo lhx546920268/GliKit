@@ -385,7 +385,7 @@
             break;
         case UIGestureRecognizerStateEnded :
         case UIGestureRecognizerStateCancelled : {
-            if([self percentForGesture:pan] >= self.delegate.completePercent){
+            if([self percentForGesture:pan] >= 0.5){
                 [self finishInteractiveTransition];
             }else{
                 [self cancelInteractiveTransition];
