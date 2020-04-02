@@ -120,6 +120,8 @@
 
 - (void)showViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
+    if(viewController.presentingViewController)
+        return;
     viewController.gkTransitioningDelegate = self;
     [UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:completion];
 }
