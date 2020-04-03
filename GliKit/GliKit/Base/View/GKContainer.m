@@ -133,6 +133,7 @@
             
         }else{
             
+            self.contentView.gkTopLayoutConstraint.active = NO;
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
                 if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
                     make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop);
@@ -284,6 +285,7 @@
             
         }else{
             
+            self.contentView.gkBottomLayoutConstraint.active = NO;
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
                 if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
                     make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom);

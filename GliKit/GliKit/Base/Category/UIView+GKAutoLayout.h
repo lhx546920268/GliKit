@@ -31,12 +31,12 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
  */
 @property(nonatomic, readonly) BOOL gkExistConstraints;
 
-// MARK: - 获取约束 constraint
-
 /**
  清空约束
  */
 - (void)gkRemoveAllContraints;
+
+// MARK: - 获取约束 constraint
 
 /**
  @warning 根据 item1.attribute1 = multiplier × item2.attribute2 + constant

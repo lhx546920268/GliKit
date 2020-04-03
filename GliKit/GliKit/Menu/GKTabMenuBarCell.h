@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GKTabMenuBarItem, GKButton;
+@class GKTabMenuBarItem, GKButton, GKDivider;
 
 /**
  菜单按钮
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  分隔符
  */
-@property(nonatomic, readonly) UIView *separator;
+@property(nonatomic, readonly) GKDivider *divider;
 
 /**
  是否选中

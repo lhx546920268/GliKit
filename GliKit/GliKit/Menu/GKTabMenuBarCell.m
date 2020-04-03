@@ -11,6 +11,7 @@
 #import "GKBaseDefines.h"
 #import "UIButton+GKUtils.h"
 #import "GKButton.h"
+#import "GKDivider.h"
 
 @implementation GKTabMenuBarCell
 
@@ -25,19 +26,18 @@
         _button.titleLabel.numberOfLines = 0;
         [self.contentView addSubview:_button];
         
-        _separator = [UIView new];
-        _separator.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-        _separator.userInteractionEnabled = NO;
-        [self.contentView addSubview:_separator];
+        _divider = [GKDivider verticalDivider];
+        _divider.userInteractionEnabled = NO;
+        [self.contentView addSubview:_divider];
         
         [_button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
         }];
        
-        [_separator mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_divider mas_makeConstraints:^(MASConstraintMaker *make) {
             make.trailing.equalTo(self);
             make.centerY.equalTo(self);
-            make.size.equalTo(CGSizeMake(0.5, 15));
+            make.height.equalTo(15);
         }];
     }
     return self;
@@ -53,12 +53,7 @@
     _button.imagePadding = _item.iconPadding;
     _button.imagePosition = _item.iconPosition;
     
-    UIEdgeInsets insets = _button.titleEdgeInsets;
-    insets.left += _item.titleInsets.left;
-    insets.right += _item.titleInsets.right;
-    insets.bottom += _item.titleInsets.bottom;
-    insets.top += _item.titleInsets.top;
-    _button.titleEdgeInsets = insets;
+    _button.titleEdgeInsets = _item.titleInsets;
     
     self.customView = _item.customView;
 }

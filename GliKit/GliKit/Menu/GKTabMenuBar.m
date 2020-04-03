@@ -16,6 +16,7 @@
 #import "UIColor+GKTheme.h"
 #import "UIApplication+GKTheme.h"
 #import "UIView+GKUtils.h"
+#import "GKDivider.h"
 
 @interface GKTabMenuBar ()
 
@@ -83,7 +84,7 @@
     [cell.button.titleLabel setFont:self.selectedIndex == indexPath.item ? self.selectedFont : self.normalFont];
     cell.item = item;
     cell.tick = self.selectedIndex == indexPath.item;
-    cell.separator.hidden = !self.displayItemDidvider || indexPath.item == self.items.count - 1 || self.currentStyle == GKMenuBarStyleFit;
+    cell.divider.hidden = !self.displayItemDidvider || indexPath.item == self.items.count - 1 || self.currentStyle == GKMenuBarStyleFit;
     
     return cell;
 }

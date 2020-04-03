@@ -30,8 +30,6 @@
     return NO;
 }
 
-// MARK: - 获取约束 constraint
-
 - (void)gkRemoveAllContraints
 {
     [self removeConstraints:self.constraints];
@@ -48,6 +46,8 @@
     }
 }
 
+// MARK: - 获取约束 constraint
+
 - (NSLayoutConstraint*)gkHeightLayoutConstraint
 {
     return [self gkLayoutConstraintForAttribute:NSLayoutAttributeHeight];
@@ -60,12 +60,20 @@
 
 - (NSLayoutConstraint*)gkLeftLayoutConstraint
 {
-    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeLeading];
+    NSLayoutConstraint *constraint = [self gkLayoutConstraintForAttribute:NSLayoutAttributeLeading];
+    if(!constraint){
+        constraint = [self gkLayoutConstraintForAttribute:NSLayoutAttributeLeft];
+    }
+    return constraint;
 }
 
 - (NSLayoutConstraint*)gkRightLayoutConstraint
 {
-    return [self gkLayoutConstraintForAttribute:NSLayoutAttributeTrailing];
+    NSLayoutConstraint *constraint = [self gkLayoutConstraintForAttribute:NSLayoutAttributeTrailing];
+    if(!constraint){
+        constraint = [self gkLayoutConstraintForAttribute:NSLayoutAttributeRight];
+    }
+    return constraint;
 }
 
 - (NSLayoutConstraint*)gkTopLayoutConstraint
@@ -109,7 +117,7 @@
             constraints = self.constraints;
             for(NSLayoutConstraint *constraint in constraints){
                 //固定值，纵横比 放在本身
-                if([self gk_conformToConstraint:constraint]){
+                if([self gkConformToConstraint:constraint]){
                     if(constraint.firstAttribute == attribute && constraint.firstItem == self && constraint.secondAttribute == NSLayoutAttributeNotAnAttribute){
                         //忽略纵横比
                         [matchs addObject:constraint];
@@ -121,7 +129,7 @@
                 //等于某个item的宽高 放在父视图
                 constraints = self.superview.constraints;
                 for(NSLayoutConstraint *constraint in constraints){
-                    if([self gk_conformToConstraint:constraint]){
+                    if([self gkConformToConstraint:constraint]){
                         if((constraint.firstAttribute == attribute && constraint.firstItem == self) || (constraint.secondAttribute == attribute && constraint.secondItem == self)){
                             //忽略纵横比
                             [matchs addObject:constraint];
@@ -139,7 +147,7 @@
             //item2.attribute2 = item1.attribute1 - constant
             constraints = self.superview.constraints;
             for(NSLayoutConstraint *constraint in constraints){
-                if([self gk_conformToConstraint:constraint]){
+                if([self gkConformToConstraint:constraint]){
                     if(constraint.firstItem == self && constraint.firstAttribute == attribute){
                         [matchs addObject:constraint];
                     }else if (constraint.secondItem == self && constraint.secondAttribute == attribute){
@@ -156,7 +164,7 @@
             //item2.attribute2 = item1.attribute1 + constant
             constraints = self.superview.constraints;
             for(NSLayoutConstraint *constraint in constraints){
-                if([self gk_conformToConstraint:constraint]){
+                if([self gkConformToConstraint:constraint]){
                     if(constraint.firstItem == self && constraint.firstAttribute == attribute){
                         [matchs addObject:constraint];
                     }else if (constraint.secondItem == self && constraint.secondAttribute == attribute){
@@ -170,7 +178,7 @@
             //居中约束 必定在父视图
             constraints = self.superview.constraints;
             for(NSLayoutConstraint *constraint in constraints){
-                if([self gk_conformToConstraint:constraint]){
+                if([self gkConformToConstraint:constraint]){
                     if(constraint.firstItem == self && constraint.firstAttribute == attribute){
                         [matchs addObject:constraint];
                     }
@@ -199,7 +207,7 @@
 }
 
 ///判断是否是自己设定的约束
-- (BOOL)gk_conformToConstraint:(id) constraint
+- (BOOL)gkConformToConstraint:(id) constraint
 {
     return [constraint isMemberOfClass:NSLayoutConstraint.class] || [constraint isMemberOfClass:MASLayoutConstraint.class];
 }
