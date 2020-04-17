@@ -77,7 +77,7 @@ static char GKTintColorKey;
     }
     
     if(height == 0){
-        height = height = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        height = [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
     
     if(height == 0){

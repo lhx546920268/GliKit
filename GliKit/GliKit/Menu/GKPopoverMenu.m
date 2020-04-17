@@ -45,7 +45,7 @@
         _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _button.adjustsImageWhenDisabled = NO;
         _button.adjustsImageWhenHighlighted = NO;
-        _button.enabled = NO;
+        _button.userInteractionEnabled = NO;
         _button.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_button];
         

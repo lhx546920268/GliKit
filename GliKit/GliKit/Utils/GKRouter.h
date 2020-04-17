@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^GKRounterOpenCompletion)(void);
 
 ///页面初始化处理
-typedef UIViewController* (^GKRounterHandler)(NSDictionary * _Nullable rounterParams);
+typedef UIViewController* _Nonnull (^GKRounterHandler)(NSDictionary * _Nullable rounterParams);
 
 ///路由 在URLString中的特殊字符和参数值必须编码
 @interface GKRouter : NSObject

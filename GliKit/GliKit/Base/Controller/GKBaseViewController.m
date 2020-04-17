@@ -7,7 +7,6 @@
 //
 
 #import "GKBaseViewController.h"
-#import "GKWeakObjectContainer.h"
 #import "NSObject+GKUtils.h"
 #import "GKContainer.h"
 #import "GKHttpTask.h"
@@ -27,7 +26,7 @@
 @interface GKBaseViewController ()<UIGestureRecognizerDelegate>
 
 ///用来在delloc之前 要取消的请求
-@property(nonatomic, strong) NSMutableSet<GKWeakObjectContainer*> *currentTasks;
+@property(nonatomic, strong) NSHashTable *currentTasks;
 
 ///点击回收键盘手势
 @property(nonatomic, strong) UITapGestureRecognizer *dismissKeyboardGestureRecognizer;
@@ -187,7 +186,7 @@
     if(self.isShowAsDialog){
         if(self.container){
             self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
-
+            
             //当 self.view 不是 container时， container中的子视图布局完成不会调用 viewDidLayoutSubviews 要手动，否则在 viewDidLayoutSubviews中获取 self.contentView的大小时会失败
             WeakObj(self);
             self.container.layoutSubviewsHandler = ^(void){
@@ -196,7 +195,7 @@
             [self.view addSubview:self.container];
         }
     }else{
-    
+        
         self.view.backgroundColor = [UIColor whiteColor];
         if(!self.gkShowBackItem && (self.navigationController.viewControllers.count > 1 || self.navigationController.presentingViewController)){
             self.gkShowBackItem = YES;
@@ -314,6 +313,15 @@
 
 // MARK: - Task
 
+- (NSHashTable *)currentTasks
+{
+    if(!_currentTasks){
+        _currentTasks = [NSHashTable weakObjectsHashTable];
+    }
+    
+    return _currentTasks;
+}
+
 - (void)addCanceledTask:(GKHttpTask*) task
 {
     [self addCanceledTask:task cancelTheSame:NO];
@@ -321,44 +329,31 @@
 
 - (void)addCanceledTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
 {
-    [self removeInvalidTasksAndCancelTheSame:cancel forName:task.name];
+    if(cancel){
+        [self cancelTaskforName:task.name];
+    }
     if(task){
-        if(!self.currentTasks){
-            self.currentTasks = [NSMutableSet set];
-        }
-        [self.currentTasks addObject:[GKWeakObjectContainer containerWithObject:task]];
+        [self.currentTasks addObject:task];
     }
 }
 
 - (void)addCanceledTasks:(GKHttpMultiTasks*) tasks
 {
-    [self removeInvalidTasksAndCancelTheSame:NO forName:nil];
     if(tasks){
-        if(!self.currentTasks){
-            self.currentTasks = [NSMutableSet set];
-        }
-        [self.currentTasks addObject:[GKWeakObjectContainer containerWithObject:tasks]];
+        [self.currentTasks addObject:tasks];
     }
 }
 
 ///移除无效的请求
-- (void)removeInvalidTasksAndCancelTheSame:(BOOL) cancel forName:(NSString*) name
+- (void)cancelTaskforName:(NSString*) name
 {
-    if(self.currentTasks.count > 0){
-        NSMutableSet *toRemoveTasks = [NSMutableSet set];
-        for(GKWeakObjectContainer *obj in self.currentTasks){
-            if(obj.weakObject == nil){
-                [toRemoveTasks addObject:obj];
-            }else if([obj.weakObject isKindOfClass:[GKHttpTask class]]){
-                GKHttpTask *task = (GKHttpTask*)obj.weakObject;
-                if([task.name isEqualToString:name]){
-                    [task cancel];
-                    [toRemoveTasks addObject:obj];
-                }
+    for(id obj in _currentTasks){
+        if([obj isKindOfClass:GKHttpTask.class]){
+            GKHttpTask *task = (GKHttpTask*)obj;
+            if([task.name isEqualToString:name]){
+                [task cancel];
             }
         }
-        
-        [self.currentTasks minusSet:toRemoveTasks];
     }
 }
 
@@ -377,12 +372,12 @@
 - (void)dealloc
 {
     //取消正在执行的请求
-    for(GKWeakObjectContainer *obj in self.currentTasks){
-        if([obj.weakObject isKindOfClass:[GKHttpTask class]]){
-            GKHttpTask *task = (GKHttpTask*)obj.weakObject;
+    for(id obj in _currentTasks){
+        if([obj isKindOfClass:GKHttpTask.class]){
+            GKHttpTask *task = (GKHttpTask*)obj;
             [task cancel];
-        }else if ([obj.weakObject isKindOfClass:[GKHttpMultiTasks class]]){
-            GKHttpMultiTasks *tasks = (GKHttpMultiTasks*)obj.weakObject;
+        }else if ([obj isKindOfClass:GKHttpMultiTasks.class]){
+            GKHttpMultiTasks *tasks = (GKHttpMultiTasks*)obj;
             [tasks cancelAllTasks];
         }
     }
@@ -408,7 +403,7 @@
 - (void)keyboardWillChangeFrame:(NSNotification*) notification
 {
     [super keyboardWillChangeFrame:notification];
-
+    
     ///弹出键盘，改变弹窗位置
     if(self.isShowAsDialog){
         [self adjustDialogPosition];

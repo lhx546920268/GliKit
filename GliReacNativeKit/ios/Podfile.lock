@@ -286,7 +286,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - boost-for-react-native
     - FMDB
@@ -388,6 +388,6 @@ SPEC CHECKSUMS:
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: e1db7a56082e1b2a70f3b4ceb378647d0aa6fcbd
+PODFILE CHECKSUM: 3e115281cb305c98388bf8a3eb4dd746d8b2492f
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.9.1

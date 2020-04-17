@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, GKSkeletonStatus){
 - (void)gkHideSkeletonWithAnimate:(BOOL) animate;
 
 ///隐藏骨架
-- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(NS_NOESCAPE ^ __nullable)(BOOL finished)) completion;
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^ __nullable)(BOOL finished)) completion;
 
 ///是否需要添加骨架图层 某些视图会自己处理 默认YES
 - (BOOL)gkShouldAddSkeletonLayer;

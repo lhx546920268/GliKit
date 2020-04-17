@@ -170,7 +170,6 @@ static NSRegularExpression *URLRegularExpression = nil;
 - (void)showMenuItems
 {
     //计算高亮区域
-    CGRect rect = self.bounds;
     CGRect highlightedRect = self.textDrawRect;
     self.highlightedRects = @[[NSValue valueWithCGRect:highlightedRect]];
     

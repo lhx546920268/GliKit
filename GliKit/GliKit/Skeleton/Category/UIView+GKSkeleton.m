@@ -118,7 +118,7 @@ static char GKSkeletonAnimationHelperKey;
     [self gkHideSkeletonWithAnimate:animate completion:nil];
 }
 
-- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(NS_NOESCAPE ^)(BOOL finished)) completion
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion
 {
     GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing || status == GKSkeletonStatusWillShow){

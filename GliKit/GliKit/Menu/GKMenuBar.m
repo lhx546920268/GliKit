@@ -341,15 +341,14 @@
     if(selectedIndex >= self.items.count)
         return;
     
-    if(_selectedIndex == selectedIndex && (_isClickItem || _callDelegateWhenSetSelectedIndex)){
-        if([self.delegate respondsToSelector:@selector(menuBar:didSelectHighlightedItemAtIndex:)]){
-            [self.delegate menuBar:self didSelectHighlightedItemAtIndex:selectedIndex];
+    if(_selectedIndex == selectedIndex){
+        if(_isClickItem || _callDelegateWhenSetSelectedIndex){
+            if([self.delegate respondsToSelector:@selector(menuBar:didSelectHighlightedItemAtIndex:)]){
+                [self.delegate menuBar:self didSelectHighlightedItemAtIndex:selectedIndex];
+            }
         }
         return;
     }
-    
-    if(_selectedIndex == selectedIndex)
-        return;
     
     NSInteger oldIndex = _selectedIndex;
     _selectedIndex = selectedIndex;

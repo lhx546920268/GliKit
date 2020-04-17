@@ -8,9 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */; };
+		CE01C515243EC7DD000D0268 /* GKScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C514243EC7DD000D0268 /* GKScanViewController.m */; };
+		CE01C518243EC88D000D0268 /* GKScanBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C517243EC88D000D0268 /* GKScanBoxView.m */; };
+		CE01C51B243ECA7C000D0268 /* GKScanBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C51A243ECA7C000D0268 /* GKScanBackgroundView.m */; };
 		CE1194282368122800987274 /* UICollectionView+GKCellSize.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2B7230BC6250057D405 /* UICollectionView+GKCellSize.m */; };
 		CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C671233B410100C4F196 /* UIImage+GKTheme.m */; };
 		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
+		CE4A912C243EF84100B8C1AA /* UIViewController+GKPush.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */; };
 		CE525DA723C704EA00EB082E /* GKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE525DA623C704EA00EB082E /* GKLabel.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
@@ -21,6 +25,7 @@
 		CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F412325FCF70045CB38 /* UIScrollView+GKNestedScroll.m */; };
 		CEB85F452326021A0045CB38 /* GKNestedScrollHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */; };
 		CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F47232622DA0045CB38 /* GKWeakProxy.m */; };
+		CEBAB9EA243F1ECF005C0E7D /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBAB9E8243F1E0A005C0E7D /* GKImagePicker.m */; };
 		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
 		CEC2D970239F4D5400F14210 /* UIApplication+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */; };
 		CEC9C327242B4A420082E631 /* GKKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC9C326242B4A420082E631 /* GKKeyChainStore.m */; };
@@ -158,10 +163,18 @@
 		0BEDB41C20325014EA1F86BB /* Pods-GliKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.release.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.release.xcconfig"; sourceTree = "<group>"; };
 		13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
+		CE01C513243EC7DD000D0268 /* GKScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanViewController.h; sourceTree = "<group>"; };
+		CE01C514243EC7DD000D0268 /* GKScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKScanViewController.m; sourceTree = "<group>"; };
+		CE01C516243EC88D000D0268 /* GKScanBoxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanBoxView.h; sourceTree = "<group>"; };
+		CE01C517243EC88D000D0268 /* GKScanBoxView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKScanBoxView.m; sourceTree = "<group>"; };
+		CE01C519243ECA7C000D0268 /* GKScanBackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanBackgroundView.h; sourceTree = "<group>"; };
+		CE01C51A243ECA7C000D0268 /* GKScanBackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKScanBackgroundView.m; sourceTree = "<group>"; };
 		CE37C671233B410100C4F196 /* UIImage+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C672233B410100C4F196 /* UIFont+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C673233B410100C4F196 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
 		CE37C674233B410100C4F196 /* UIImage+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GKTheme.h"; sourceTree = "<group>"; };
+		CE4A912A243EF84100B8C1AA /* UIViewController+GKPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GKPush.h"; sourceTree = "<group>"; };
+		CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GKPush.m"; sourceTree = "<group>"; };
 		CE525DA523C704EA00EB082E /* GKLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLabel.h; sourceTree = "<group>"; };
 		CE525DA623C704EA00EB082E /* GKLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLabel.m; sourceTree = "<group>"; };
 		CE61DD48235D5A9B00701675 /* GKMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBar.h; sourceTree = "<group>"; };
@@ -182,6 +195,8 @@
 		CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNestedScrollHelper.m; sourceTree = "<group>"; };
 		CEB85F46232622DA0045CB38 /* GKWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKWeakProxy.h; sourceTree = "<group>"; };
 		CEB85F47232622DA0045CB38 /* GKWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKWeakProxy.m; sourceTree = "<group>"; };
+		CEBAB9E8243F1E0A005C0E7D /* GKImagePicker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKImagePicker.m; sourceTree = "<group>"; };
+		CEBAB9E9243F1E0A005C0E7D /* GKImagePicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKImagePicker.h; sourceTree = "<group>"; };
 		CEBFAA48230CD5DD007B8D47 /* UIColor+GKTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+GKTheme.h"; sourceTree = "<group>"; };
 		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
 		CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+GKUtils.h"; sourceTree = "<group>"; };
@@ -440,6 +455,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE01C510243EC7C7000D0268 /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				CE01C511243EC7C8000D0268 /* Controller */,
+				CE01C512243EC7C8000D0268 /* View */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
+		CE01C511243EC7C8000D0268 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CE01C513243EC7DD000D0268 /* GKScanViewController.h */,
+				CE01C514243EC7DD000D0268 /* GKScanViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE01C512243EC7C8000D0268 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE01C516243EC88D000D0268 /* GKScanBoxView.h */,
+				CE01C517243EC88D000D0268 /* GKScanBoxView.m */,
+				CE01C519243ECA7C000D0268 /* GKScanBackgroundView.h */,
+				CE01C51A243ECA7C000D0268 /* GKScanBackgroundView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		CEB85F3C2325FB5C0045CB38 /* NestedScroll */ = {
 			isa = PBXGroup;
 			children = (
@@ -449,6 +493,15 @@
 				CEB85F442326021A0045CB38 /* GKNestedScrollHelper.m */,
 			);
 			path = NestedScroll;
+			sourceTree = "<group>";
+		};
+		CEBAB9E7243F1E0A005C0E7D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CEBAB9E9243F1E0A005C0E7D /* GKImagePicker.h */,
+				CEBAB9E8243F1E0A005C0E7D /* GKImagePicker.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		CED0D1C5230BC5BE0057D405 = {
@@ -472,6 +525,7 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
+				CE01C510243EC7C7000D0268 /* Scan */,
 				CED0D229230BC6250057D405 /* Alert */,
 				CED0D285230BC6250057D405 /* Api */,
 				CED0D2A7230BC6250057D405 /* Base */,
@@ -837,6 +891,7 @@
 		CED0D28D230BC6250057D405 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
+				CEBAB9E7243F1E0A005C0E7D /* Utils */,
 				CED0D28E230BC6250057D405 /* Controller */,
 				CED0D295230BC6250057D405 /* Model */,
 				CED0D29A230BC6250057D405 /* View */,
@@ -961,6 +1016,8 @@
 				CED0D423230BECF20057D405 /* UIViewController+GKSafeAreaCompatible.m */,
 				CED0D414230BECF10057D405 /* UIViewController+GKUtils.h */,
 				CED0D41B230BECF20057D405 /* UIViewController+GKUtils.m */,
+				CE4A912A243EF84100B8C1AA /* UIViewController+GKPush.h */,
+				CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1185,6 +1242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEBAB9EA243F1ECF005C0E7D /* GKImagePicker.m in Sources */,
 				CE1194282368122800987274 /* UICollectionView+GKCellSize.m in Sources */,
 				CED3A80A230D45A000C304B3 /* UIScrollView+GKRefresh.m in Sources */,
 				CED3A80B230D45A000C304B3 /* GKDataControl.m in Sources */,
@@ -1231,6 +1289,7 @@
 				CEB85F422325FCF70045CB38 /* UIScrollView+GKNestedScroll.m in Sources */,
 				CED0D32F230BC8780057D405 /* GKScrollViewController.m in Sources */,
 				CED0D437230BED160057D405 /* UIViewController+GKLoading.m in Sources */,
+				CE01C515243EC7DD000D0268 /* GKScanViewController.m in Sources */,
 				CED0D330230BC8780057D405 /* GKPageViewController.m in Sources */,
 				CED0D332230BC8780057D405 /* GKCollectionViewController.m in Sources */,
 				CED0D33A230BC8780057D405 /* GKContainer.m in Sources */,
@@ -1245,6 +1304,7 @@
 				CED0D426230BECF20057D405 /* UIViewController+GKDialog.m in Sources */,
 				CED0D36E230BC8790057D405 /* GKPageLoadingContainer.m in Sources */,
 				CED0D36F230BC8790057D405 /* GKProgressHUD.m in Sources */,
+				CE01C518243EC88D000D0268 /* GKScanBoxView.m in Sources */,
 				CED0D372230BC8790057D405 /* GKTabMenuBarItem.m in Sources */,
 				CED0D373230BC8790057D405 /* GKTabMenuBar.m in Sources */,
 				CEFE9087230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m in Sources */,
@@ -1293,6 +1353,7 @@
 				CED0D427230BECF20057D405 /* UIViewController+GKKeyboard.m in Sources */,
 				CED0D403230BECD00057D405 /* NSArray+GKUtils.m in Sources */,
 				CED0D3FD230BECD00057D405 /* NSObject+GKUtils.m in Sources */,
+				CE4A912C243EF84100B8C1AA /* UIViewController+GKPush.m in Sources */,
 				CED0D3AF230BC8790057D405 /* GKAlertUtils.m in Sources */,
 				CED0D3B4230BC8790057D405 /* GKRouter.m in Sources */,
 				CED0D401230BECD00057D405 /* UITextField+GKUtils.m in Sources */,
@@ -1314,6 +1375,7 @@
 				CED0D3D5230BC8790057D405 /* GKTextField.m in Sources */,
 				CED0D3DB230BC8790057D405 /* GKBadgeValueView.m in Sources */,
 				CEB85F48232622DA0045CB38 /* GKWeakProxy.m in Sources */,
+				CE01C51B243ECA7C000D0268 /* GKScanBackgroundView.m in Sources */,
 				CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */,
 				CED0D400230BECD00057D405 /* NSAttributedString+GKUtils.m in Sources */,
 				CED0D436230BED160057D405 /* UIView+GKLoading.m in Sources */,

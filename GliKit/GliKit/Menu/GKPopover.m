@@ -109,10 +109,11 @@
     self.transform = CGAffineTransformMakeScale(0.1, 0.1);
     
     if(overlay){
-        [view addSubview:self.overlay];
+        
         CGRect frame = view.bounds;
         frame.origin.y += self.offset;
         self.overlay.frame = frame;
+        [view addSubview:self.overlay];
     }
     
     if(animated){
@@ -134,8 +135,8 @@
              }
          }];
     }else{
-        self.alpha = 0;
-        _overlay.alpha = 0;
+        self.alpha = 1.0;
+        _overlay.alpha = 1.0;
         self.frame = toFrame;
         if([self.delegate respondsToSelector:@selector(popoverDidShow:)]){
             [self.delegate popoverDidShow:self];
@@ -195,6 +196,7 @@
 - (void)setContentView:(UIView *)contentView
 {
     if(_contentView != contentView){
+        [_contentView removeFromSuperview];
         _contentView = contentView;
         _contentView.layer.masksToBounds = YES;
         _contentView.layer.cornerRadius = _cornerRadius;
@@ -419,7 +421,6 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //设置绘制属性
-    CGFloat radius = 8; //尖角圆弧
     CGFloat cornerRadius = _cornerRadius;//矩形圆角
     CGContextSetStrokeColorWithColor(context, _strokeColor.CGColor);
     CGContextSetFillColorWithColor(context, _fillColor.CGColor);
@@ -434,6 +435,7 @@
     
     switch(self.arrowDirection){
         case GKPopoverArrowDirectionTop : {
+            arrowPoint = CGPointMake(_arrowPoint.x, _arrowPoint.y + lineWidth / 2.0);
             arrowPoint1 = CGPointMake(_arrowPoint.x - arrowWidth * 0.5, _arrowPoint.y + arrowHeight);
             arrowPoint2 = CGPointMake(_arrowPoint.x + arrowWidth * 0.5, _arrowPoint.y + arrowHeight);
             rectangular = CGRectMake(lineWidth, arrowHeight, self.bounds.size.width - lineWidth * 2.0, self.bounds.size.height - arrowHeight - lineWidth);
@@ -444,8 +446,6 @@
             
             //绘制尖角左边
             CGContextMoveToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
-//            CGContextAddLineToPoint(context, _arrowPoint.x - radius / 4.0, _arrowPoint.y + radius / 2.0);
-//            CGContextAddArcToPoint(context, arrowPoint1.x, arrowPoint1.y, arrowPoint1.x - radius / 2.0, arrowPoint1.y, radius);
             CGContextAddLineToPoint(context, arrowPoint1.x, arrowPoint1.y);
             
             //绘制圆角矩形
@@ -472,15 +472,11 @@
             
             //向尖角右下角连接
             CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y);
-            CGContextAddLineToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
-//            CGContextAddLineToPoint(context, arrowPoint2.x + radius / 2.0, arrowPoint2.y);
-            
-            //绘制尖角右边
-//            CGContextAddArcToPoint(context, arrowPoint2.x, arrowPoint2.y, _arrowPoint.x + radius / 4.0, _arrowPoint.y + radius / 2.0, radius);
-//            CGContextAddLineToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
+            CGContextAddLineToPoint(context, arrowPoint.x, arrowPoint.y);
         }
             break;
         case GKPopoverArrowDirectionBottom : {
+            arrowPoint = CGPointMake(_arrowPoint.x, _arrowPoint.y - lineWidth / 2.0);
             arrowPoint1 = CGPointMake(_arrowPoint.x - arrowWidth * 0.5, _arrowPoint.y - arrowHeight);
             arrowPoint2 = CGPointMake(_arrowPoint.x + arrowWidth * 0.5, _arrowPoint.y - arrowHeight);
             rectangular = CGRectMake(lineWidth, 0, self.bounds.size.width - lineWidth * 2.0, self.bounds.size.height - arrowHeight - lineWidth);
@@ -490,9 +486,8 @@
             
             
             //绘制尖角 左边
-            CGContextMoveToPoint(context, _arrowPoint.x, _arrowPoint.y - lineWidth);
-            CGContextAddLineToPoint(context, _arrowPoint.x - radius / 4.0, _arrowPoint.y - radius / 2.0);
-            CGContextAddArcToPoint(context, arrowPoint1.x, arrowPoint1.y, arrowPoint1.x - radius / 2.0, arrowPoint1.y, radius);
+            CGContextMoveToPoint(context, arrowPoint.x, arrowPoint.y);
+            CGContextAddLineToPoint(context, arrowPoint1.x, arrowPoint1.y);
             
             //绘制圆角矩形
             //向左边连接
@@ -517,11 +512,8 @@
             CGContextAddArcToPoint(context, rectangularRight, rectangularBottom, rectangularRight - cornerRadius, rectangularBottom, cornerRadius);
             
             //向尖角右上角连接
-            CGContextAddLineToPoint(context, arrowPoint2.x + radius / 2.0, arrowPoint2.y);
-            
-            //绘制尖角右边
-            CGContextAddArcToPoint(context, arrowPoint2.x, arrowPoint2.y, _arrowPoint.x + radius / 4.0, _arrowPoint.y - radius / 2.0, radius);
-            CGContextAddLineToPoint(context, _arrowPoint.x, _arrowPoint.y - lineWidth);
+            CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y);
+            CGContextAddLineToPoint(context, arrowPoint.x, arrowPoint.y);
         }
             break;
         case GKPopoverArrowDirectionLeft : {
@@ -535,8 +527,7 @@
             
             //绘制尖角下面
             CGContextMoveToPoint(context, arrowPoint.x, arrowPoint.y);
-            CGContextAddLineToPoint(context, arrowPoint.x + radius / 2.0, arrowPoint.y + radius / 4.0);
-            CGContextAddArcToPoint(context, arrowPoint1.x, arrowPoint1.y, arrowPoint1.x, arrowPoint1.y + radius / 2.0, radius);
+            CGContextAddLineToPoint(context, arrowPoint1.x, arrowPoint1.y);
             
             //绘制圆角矩形
             //向下连接
@@ -561,10 +552,7 @@
             CGContextAddArcToPoint(context, rectangular.origin.x, rectangular.origin.y, rectangular.origin.x, rectangular.origin.y + cornerRadius, cornerRadius);
 
             //向尖角上面连接
-            CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y - radius / 2.0);
-
-            //绘制尖角右边
-            CGContextAddArcToPoint(context, arrowPoint2.x, arrowPoint2.y, arrowPoint.x + radius / 2.0, arrowPoint.y - radius / 4.0, radius);
+            CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y);
             CGContextAddLineToPoint(context, arrowPoint.x, arrowPoint.y);
         }
             break;
@@ -579,8 +567,7 @@
             
             //绘制尖角下面
             CGContextMoveToPoint(context, arrowPoint.x, arrowPoint.y);
-            CGContextAddLineToPoint(context, arrowPoint.x - radius / 2.0, arrowPoint.y + radius / 4.0);
-            CGContextAddArcToPoint(context, arrowPoint1.x, arrowPoint1.y, arrowPoint1.x, arrowPoint1.y + radius / 2.0, radius);
+            CGContextAddLineToPoint(context, arrowPoint1.x, arrowPoint.y);
             
             //绘制圆角矩形
             //向右下连接
@@ -605,10 +592,7 @@
             CGContextAddArcToPoint(context, rectangularRight, rectangular.origin.y, rectangularRight, rectangular.origin.y - cornerRadius, cornerRadius);
 
             //向尖角上面连接
-            CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y - radius / 2.0);
-
-            //绘制尖角右边
-            CGContextAddArcToPoint(context, arrowPoint2.x, arrowPoint2.y, arrowPoint.x + radius / 2.0, arrowPoint.y + radius / 4.0, radius);
+            CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y);
             CGContextAddLineToPoint(context, arrowPoint.x, arrowPoint.y);
         }
             break;

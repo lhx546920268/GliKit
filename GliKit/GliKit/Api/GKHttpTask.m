@@ -200,10 +200,12 @@ static NSMutableSet* GKSharedTasks()
 
 - (void)cancel
 {
-    if(self.isSuspended || self.isExecuting){
+    if(!_isCanceled){
         _isCanceled = YES;
-        [_URLSessionTask cancel];
-        [self onComplete];
+        if(self.isSuspended || self.isExecuting){
+            [_URLSessionTask cancel];
+            [self onComplete];
+        }
     }
 }
 
@@ -218,8 +220,10 @@ static NSMutableSet* GKSharedTasks()
     }
     WeakObj(self)
     dispatch_async(dispatch_get_main_queue(), ^{
-        !selfWeak.successHandler ?: selfWeak.successHandler(selfWeak);
-        [selfWeak onComplete];
+        if(selfWeak && !selfWeak.isCanceled){
+            !selfWeak.successHandler ?: selfWeak.successHandler(selfWeak);
+            [selfWeak onComplete];
+        }
     });
 }
 
@@ -228,13 +232,15 @@ static NSMutableSet* GKSharedTasks()
 {
     WeakObj(self)
     dispatch_async(dispatch_get_main_queue(), ^{
-        !selfWeak.willFailHandler ?: selfWeak.willFailHandler(selfWeak);
-        [selfWeak onFail];
-        !selfWeak.failHandler ?: selfWeak.failHandler(selfWeak);
-        if([selfWeak.delegate respondsToSelector:@selector(taskDidFail:)]){
-            [selfWeak.delegate taskDidFail:self];
+        if(selfWeak && !selfWeak.isCanceled){
+            !selfWeak.willFailHandler ?: selfWeak.willFailHandler(selfWeak);
+            [selfWeak onFail];
+            !selfWeak.failHandler ?: selfWeak.failHandler(selfWeak);
+            if([selfWeak.delegate respondsToSelector:@selector(taskDidFail:)]){
+                [selfWeak.delegate taskDidFail:self];
+            }
+            [selfWeak onComplete];
         }
-        [selfWeak onComplete];
     });
 }
 

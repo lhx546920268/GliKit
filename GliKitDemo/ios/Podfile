@@ -1,19 +1,60 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
 inhibit_all_warnings!
+
+rnDir = "../node_modules/"
+require_relative "#{rnDir}@react-native-community/cli-platform-ios/native_modules"
+
 target 'GliKitDemo' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
-
+  
   # Pods for GliKitDemo
-  pod 'GliKit', :path => '../../GliKit'
+  # pod 'GliKit', :path => '../../GliKit'
+  pod 'GliReacNativeKit', :path => '../../GliReacNativeKit'
   pod 'UICKeyChainStore'
+  
+  
+  #React Native
+  pod "FBLazyVector", :path => "#{rnDir}react-native/Libraries/FBLazyVector"
+  pod "FBReactNativeSpec", :path => "#{rnDir}react-native/Libraries/FBReactNativeSpec"
+  pod "RCTRequired", :path => "#{rnDir}react-native/Libraries/RCTRequired"
+  pod "RCTTypeSafety", :path => "#{rnDir}react-native/Libraries/TypeSafety"
+  pod "React", :path => "#{rnDir}react-native/"
+  pod "React-Core", :path => "#{rnDir}react-native/"
+  pod "React-CoreModules", :path => "#{rnDir}react-native/React/CoreModules"
+  pod "React-Core/DevSupport", :path => "#{rnDir}react-native/"
+  pod "React-RCTActionSheet", :path => "#{rnDir}react-native/Libraries/ActionSheetIOS"
+  pod "React-RCTAnimation", :path => "#{rnDir}react-native/Libraries/NativeAnimation"
+  pod "React-RCTBlob", :path => "#{rnDir}react-native/Libraries/Blob"
+  pod "React-RCTImage", :path => "#{rnDir}react-native/Libraries/Image"
+  pod "React-RCTLinking", :path => "#{rnDir}react-native/Libraries/LinkingIOS"
+  pod "React-RCTNetwork", :path => "#{rnDir}react-native/Libraries/Network"
+  pod "React-RCTSettings", :path => "#{rnDir}react-native/Libraries/Settings"
+  pod "React-RCTText", :path => "#{rnDir}react-native/Libraries/Text"
+  pod "React-RCTVibration", :path => "#{rnDir}react-native/Libraries/Vibration"
+  pod "React-Core/RCTWebSocket", :path => "#{rnDir}react-native/"
+  
+  pod "React-cxxreact", :path => "#{rnDir}react-native/ReactCommon/cxxreact"
+  pod "React-jsi", :path => "#{rnDir}react-native/ReactCommon/jsi"
+  pod "React-jsiexecutor", :path => "#{rnDir}react-native/ReactCommon/jsiexecutor"
+  pod "React-jsinspector", :path => "#{rnDir}react-native/ReactCommon/jsinspector"
+  pod "ReactCommon/jscallinvoker", :path => "#{rnDir}react-native/ReactCommon"
+  pod "ReactCommon/turbomodule/core", :path => "#{rnDir}react-native/ReactCommon"
+  pod "Yoga", :path => "#{rnDir}react-native/ReactCommon/yoga"
+  
+  pod "DoubleConversion", :podspec => "#{rnDir}react-native/third-party-podspecs/DoubleConversion.podspec"
+  pod "glog", :podspec => "#{rnDir}react-native/third-party-podspecs/glog.podspec"
+  pod "Folly", :podspec => "#{rnDir}react-native/third-party-podspecs/Folly.podspec"
+  
+  
+  use_native_modules!
 end
 
 target 'GliKitApp' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
-
+  
   # Pods for GliKitDemo
   pod 'GliKit', :path => '../../GliKit'
 end

@@ -27,8 +27,6 @@
 @dynamic items;
 @dynamic delegate;
 
-@synthesize titles = _titles;
-
 - (instancetype)initWithTitles:(NSArray<NSString*> *)titles
 {
     return [self initWithFrame:CGRectZero titles:titles];
@@ -64,7 +62,7 @@
         item.itemWidth = size.width + self.itemPadding;
         
         totalWidth += item.itemWidth;
-        if(i != self.items.count){
+        if(i != self.items.count - 1){
             totalWidth += self.itemInterval;
         }
         i ++;
@@ -136,34 +134,29 @@
 
 - (void)setTitles:(NSArray *)titles
 {
-    if(_titles != titles){
-        NSMutableArray *items = [NSMutableArray arrayWithCapacity:titles.count];
-        
-        for(NSString *title in titles){
-            [items addObject:[GKTabMenuBarItem itemWithTitle:title]];
-        }
-        self.items = items;
+    NSMutableArray *items = [NSMutableArray arrayWithCapacity:titles.count];
+    
+    for(NSString *title in titles){
+        [items addObject:[GKTabMenuBarItem itemWithTitle:title]];
     }
+    self.items = items;
 }
 
 - (NSArray<NSString *> *)titles
 {
-    if(!_titles){
-        if(self.items.count > 0){
-            NSMutableArray *titles = [NSMutableArray arrayWithCapacity:self.items.count];
-            for(GKTabMenuBarItem *item in self.items){
-                NSString *title = item.title;
-                if(title == nil){
-                    title = @"";
-                }
-                [titles addObject:title];
+    if(self.items.count > 0){
+        NSMutableArray *titles = [NSMutableArray arrayWithCapacity:self.items.count];
+        for(GKTabMenuBarItem *item in self.items){
+            NSString *title = item.title;
+            if(title == nil){
+                title = @"";
             }
-            
-            _titles = [titles copy];
+            [titles addObject:title];
         }
+        
+        return [titles copy];
     }
-    
-    return _titles;
+    return nil;
 }
 
 // MARK: - 设置
@@ -175,7 +168,7 @@
     GKTabMenuBarItem *item = [self.items objectAtIndex:index];
     item.badgeNumber = badgeValue;
     
-    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
+    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
 
 - (void)setTitle:(NSString*) title forIndex:(NSUInteger) index
@@ -185,7 +178,7 @@
     GKTabMenuBarItem *item = [self.items objectAtIndex:index];
     item.title = title;
     
-    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
+    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
 
 - (void)setIcon:(UIImage*) icon forIndex:(NSUInteger) index
@@ -195,7 +188,7 @@
     GKTabMenuBarItem *item = [self.items objectAtIndex:index];
     item.icon = icon;
     
-    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
+    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
 
 - (void)setSelectedIcon:(UIImage*) icon forIndex:(NSUInteger) index
@@ -205,7 +198,7 @@
     GKTabMenuBarItem *item = [self.items objectAtIndex:index];
     item.selectedIcon = icon;
     
-    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
+    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
 
 @end

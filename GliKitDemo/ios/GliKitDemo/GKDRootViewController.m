@@ -47,6 +47,18 @@
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
 
+///xx
+@property(nonatomic, strong) NSPointerArray *pointerArray;
+
+///xx
+@property(nonatomic, strong) NSMapTable *mapTable;
+
+///xx
+@property(nonatomic, strong) NSHashTable *hashTable;
+
+///xx
+@property(nonatomic, strong) NSString *xxStr;
+
 @end
 
 @implementation GKDRootViewController
@@ -57,6 +69,11 @@
     self.aac = @"aac";
     self.abc = @"abc";
     
+    self.xxStr = @"Pointer";
+    
+    self.pointerArray = [NSPointerArray pointerArrayWithOptions:NSPointerFunctionsWeakMemory];
+    self.mapTable = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsWeakMemory valueOptions:NSPointerFunctionsStrongMemory];
+    self.hashTable = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     
   
     self.navigationItem.title = GKAppUtils.appName;
@@ -69,6 +86,7 @@
                    [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
                    [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
                    [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
                    ];
   
     [self initViews];
