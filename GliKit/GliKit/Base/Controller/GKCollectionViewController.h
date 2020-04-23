@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///基础集合视图控制器
-@interface GKCollectionViewController : GKScrollViewController<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
+@interface GKCollectionViewController : GKScrollViewController<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 /**
  构造方法

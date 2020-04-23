@@ -62,7 +62,7 @@ static char GKOldSizeKey;
 - (void)setGkEmptyViewDelegate:(id<GKEmptyViewDelegate>)gkEmptyViewDelegate
 {
     GKWeakObjectContainer *container = objc_getAssociatedObject(self, &GKEmptyViewDelegateKey);
-    if(!container){
+    if(gkEmptyViewDelegate && !container){
         container = [[GKWeakObjectContainer alloc] init];
     }
     

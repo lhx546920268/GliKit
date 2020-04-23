@@ -12,13 +12,13 @@
 @interface UIScreen (GKUtils)
 
 ///获取屏幕宽度
-@property (class, nonatomic, readonly) CGFloat gkScreenWidth;
+@property (class, nonatomic, readonly) CGFloat gkWidth;
 
 ///获取屏幕高度
-@property (class, nonatomic, readonly) CGFloat gkScreenHeight;
+@property (class, nonatomic, readonly) CGFloat gkHeight;
 
 ///获取屏幕大小
-@property (class, nonatomic, readonly) CGSize gkScreenSize;
+@property (class, nonatomic, readonly) CGSize gkSize;
 
 @end
 

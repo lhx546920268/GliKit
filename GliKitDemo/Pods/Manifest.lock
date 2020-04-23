@@ -1,0 +1,53 @@
+PODS:
+  - AFNetworking (4.0.0):
+    - AFNetworking/NSURLSession (= 4.0.0)
+    - AFNetworking/Reachability (= 4.0.0)
+    - AFNetworking/Security (= 4.0.0)
+    - AFNetworking/Serialization (= 4.0.0)
+    - AFNetworking/UIKit (= 4.0.0)
+  - AFNetworking/NSURLSession (4.0.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.0)
+  - AFNetworking/Security (4.0.0)
+  - AFNetworking/Serialization (4.0.0)
+  - AFNetworking/UIKit (4.0.0):
+    - AFNetworking/NSURLSession
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GliKit (0.0.1):
+    - AFNetworking
+    - FMDB
+    - Masonry
+    - SDWebImage
+  - Masonry (1.1.0)
+  - SDWebImage (5.7.2):
+    - SDWebImage/Core (= 5.7.2)
+  - SDWebImage/Core (5.7.2)
+
+DEPENDENCIES:
+  - GliKit (from `../GliKit`)
+
+SPEC REPOS:
+  trunk:
+    - AFNetworking
+    - FMDB
+    - Masonry
+    - SDWebImage
+
+EXTERNAL SOURCES:
+  GliKit:
+    :path: "../GliKit"
+
+SPEC CHECKSUMS:
+  AFNetworking: d9fdf484a3c723ec3c558a41cc5754c7e845ee77
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GliKit: ca1a88d2b81ed92c78313de6589410df32ddb175
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDWebImage: d9ea4959d99c52276dfada481987018fcaea3d58
+
+PODFILE CHECKSUM: 2d5ac1ee9cd6019f797033297664089248dd8770
+
+COCOAPODS: 1.9.1

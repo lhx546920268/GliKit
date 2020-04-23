@@ -127,7 +127,7 @@
     if(_menuWidth == 0){
         CGFloat contentWidth = 0;
         for(GKPopoverMenuItem *item in self.menuItems){
-            CGSize size = [item.title gkStringSizeWithFont:_font contraintWith:UIScreen.gkScreenWidth];
+            CGSize size = [item.title gkStringSizeWithFont:_font contraintWith:UIScreen.gkWidth];
             contentWidth = MAX(contentWidth, size.width + item.icon.size.width + _iconTitleInterval);
         }
         
@@ -290,25 +290,6 @@
     cell.button.imagePadding = _iconTitleInterval;
     
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [cell setSeparatorInset:UIEdgeInsetsZero];
-    
-    if([cell respondsToSelector:@selector(setLayoutMargins:)]){
-        [cell setLayoutMargins:UIEdgeInsetsZero];
-    }
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    
-    if([self.tableView respondsToSelector:@selector(setLayoutMargins:)]){
-        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

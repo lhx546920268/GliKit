@@ -114,7 +114,7 @@
 
     CGFloat width = self.layoutAttributes.layout.collectionView.frame.size.width;
     if(width == 0){
-        width = UIScreen.gkScreenWidth;
+        width = UIScreen.gkWidth;
     }
     
     if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost > width){
@@ -454,7 +454,7 @@
     [self.collectionView.superview layoutIfNeeded];
     CGFloat width = self.collectionView.bounds.size.width;
     if(width == 0){
-        width = UIScreen.gkScreenWidth;
+        width = UIScreen.gkWidth;
     }
     //计算内容高度
     CGFloat height = 0;
@@ -680,7 +680,7 @@
     }
     
     if(rect.size.width == 0){
-        rect.size.width = UIScreen.gkScreenWidth;
+        rect.size.width = UIScreen.gkWidth;
     }
     
 

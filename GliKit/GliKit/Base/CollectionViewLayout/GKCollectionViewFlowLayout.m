@@ -253,7 +253,7 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
                 if(headerItem || firstItem || lastItem || footerItem || insets.top > 0 || insets.bottom > 0){
                     
                     CGRect rect = CGRectZero;
-                    rect.size.width = UIScreen.gkScreenWidth;
+                    rect.size.width = UIScreen.gkWidth;
                     if(headerItem){
                         rect.origin.y = headerItem.frame.origin.y;
                     }else if (firstItem){

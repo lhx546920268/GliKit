@@ -50,8 +50,8 @@
         }];
         
         //扫描框大小
-        CGFloat x = UIScreen.gkScreenWidth / 6;
-        CGFloat width = UIScreen.gkScreenWidth - x * 2;
+        CGFloat x = UIScreen.gkWidth / 6;
+        CGFloat width = UIScreen.gkWidth - x * 2;
         _scanBoxSize = CGSizeMake(width, width);
         
         self.boxView = GKScanBoxView.new;

@@ -51,13 +51,13 @@
 ///初始化默认数据
 - (void)initlization
 {
+    self.clipsToBounds = YES;
     self.backgroundColor = [UIColor clearColor];
 }
 
 - (UIView*)contentView
 {
     if(!_contentView){
-        self.clipsToBounds = YES;
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor clearColor];
         
@@ -139,7 +139,7 @@
             [_contentView removeFromSuperview];
             [self addSubview:_customView];
             [_customView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self);
+                make.edges.equalTo(0);
             }];
         }
     }

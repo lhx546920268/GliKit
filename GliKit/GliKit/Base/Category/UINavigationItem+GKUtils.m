@@ -45,7 +45,7 @@
         //只有当 item是自定义item 和 图标，系统item 才需要修正
         
         UIBarButtonItem *fixedItem = [self fixedBarButtonItem];
-        if(!(leftBarButtonItem.customView || leftBarButtonItem.image || [self isSystemItem:leftBarButtonItem])){
+        if([self shouldFixBarButtonItem:leftBarButtonItem]){
             fixedItem.width -= 8;
         }
         [self gk_setLeftBarButtonItems:@[fixedItem, leftBarButtonItem] animated:animated];
@@ -64,7 +64,7 @@
         UIBarButtonItem *fixedItem = [self fixedBarButtonItem];
         
         //只有当第一个 item是自定义item 和 图标，系统item 才需要修正
-        if(!(item.customView || item.image || [self isSystemItem:item])){
+        if([self shouldFixBarButtonItem:item]){
             fixedItem.width += 8;
         }
         
@@ -82,7 +82,7 @@
         UIBarButtonItem *item = [self fixedBarButtonItem];
         
         //只有当 item是自定义item 和 图标，系统item 才需要修正
-        if(!(rightBarButtonItem.customView || rightBarButtonItem.image || [self isSystemItem:rightBarButtonItem])){
+        if([self shouldFixBarButtonItem:rightBarButtonItem]){
             item.width += 8;
         }
         [self gk_setRightBarButtonItems:@[item, rightBarButtonItem] animated:animated];
@@ -101,7 +101,7 @@
         
         UIBarButtonItem *fixedItem = [self fixedBarButtonItem];;
         //只有当第一个 item是自定义item 和 图标，系统item 才需要修正
-        if(!(item.customView || item.image || [self isSystemItem:item])){
+        if([self shouldFixBarButtonItem:item]){
             fixedItem.width += 8;
         }
         [items insertObject:fixedItem atIndex:0];
@@ -117,6 +117,12 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     item.width = -(UIScreen.mainScreen.scale == 2 ? 16 : 20);
     return item;
+}
+
+///判断是否需要修正
+- (BOOL)shouldFixBarButtonItem:(UIBarButtonItem*) item
+{
+    return !(item.customView || item.image || [self isSystemItem:item]);
 }
 
 ///判断是否是system item

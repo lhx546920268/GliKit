@@ -107,7 +107,7 @@
     self.flowLayout.minimumLineSpacing = spacing;
     self.flowLayout.minimumInteritemSpacing = spacing;
     self.flowLayout.sectionInset = UIEdgeInsetsMake(spacing, spacing, spacing, spacing);
-    CGFloat size = floor((UIScreen.gkScreenWidth - (self.photosOptions.numberOfItemsPerRow + 1) * spacing) / self.photosOptions.numberOfItemsPerRow);
+    CGFloat size = floor((UIScreen.gkWidth - (self.photosOptions.numberOfItemsPerRow + 1) * spacing) / self.photosOptions.numberOfItemsPerRow);
     self.flowLayout.itemSize = CGSizeMake(size, size);
     
     [self registerClass:GKPhotosGridCell.class];

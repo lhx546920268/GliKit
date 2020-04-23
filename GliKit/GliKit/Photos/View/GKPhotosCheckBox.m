@@ -50,7 +50,7 @@
 {
     if(![_checkedText isEqualToString:checkedText]){
         _checkedText = checkedText;
-        self.checkedTextSize = [_checkedText gkStringSizeWithFont:self.font contraintWith:UIScreen.gkScreenWidth];
+        self.checkedTextSize = [_checkedText gkStringSizeWithFont:self.font contraintWith:UIScreen.gkWidth];
         [self setNeedsDisplay];
     }
 }

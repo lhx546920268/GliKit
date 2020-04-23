@@ -10,17 +10,17 @@
 
 @implementation UIScreen (GKUtils)
 
-+ (CGFloat)gkScreenWidth
++ (CGFloat)gkWidth
 {
-    return self.gkScreenSize.width;
+    return self.gkSize.width;
 }
 
-+ (CGFloat)gkScreenHeight
++ (CGFloat)gkHeight
 {
-    return self.gkScreenSize.height;
+    return self.gkSize.height;
 }
 
-+ (CGSize)gkScreenSize
++ (CGSize)gkSize
 {
     return UIScreen.mainScreen.bounds.size;
 }

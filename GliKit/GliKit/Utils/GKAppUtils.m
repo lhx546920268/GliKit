@@ -14,7 +14,6 @@
 #import <dlfcn.h>
 #import "GKAlertUtils.h"
 #import "GKKeyChainStore.h"
-#import <sys/utsname.h>
 #import "NSString+GKUtils.h"
 #import <Photos/Photos.h>
 #import <SDWebImageDefine.h>
@@ -86,12 +85,7 @@ static NSString *sharedUUID = nil;
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         
-        //添加手机型号
-        struct utsname systemInfo;
-        uname(&systemInfo);
-        NSString *deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
-        
-        sharedUUID = [NSString stringWithFormat:@"%@_%@", uuid, deviceModel];
+        sharedUUID = uuid;
         if(!sharedUUID){
             sharedUUID = @"";
         }

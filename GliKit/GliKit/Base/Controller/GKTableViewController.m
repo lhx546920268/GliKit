@@ -11,6 +11,7 @@
 #import "UIView+GKEmptyView.h"
 #import "UIColor+GKTheme.h"
 #import "UIView+GKUtils.h"
+#import "NSObject+GKUtils.h"
 
 @interface GKTableViewController ()
 
@@ -72,11 +73,7 @@
         }
         _tableView.gkEmptyViewDelegate = self;
         
-        [_tableView setSeparatorInset:self.separatorEdgeInsets];
         
-        if([_tableView respondsToSelector:@selector(setLayoutMargins:)]){
-            [_tableView setLayoutMargins:self.separatorEdgeInsets];
-        }
         
         self.scrollView = _tableView;
     }
@@ -85,13 +82,8 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    if(_tableView){
-        [_tableView setSeparatorInset:self.separatorEdgeInsets];
-        
-        if([_tableView respondsToSelector:@selector(setLayoutMargins:)]){
-            [_tableView setLayoutMargins:self.separatorEdgeInsets];
-        }
-    }
+    _tableView.separatorInset = self.separatorEdgeInsets;
+    _tableView.layoutMargins = self.separatorEdgeInsets;
 }
 
 // MARK: - Register Cell
@@ -158,25 +150,13 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if(cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    
-    return cell;
+    @throw [[NSException alloc] initWithName:@"GKTableViewControllerNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", self.gkNameOfClass, NSStringFromSelector(_cmd)] userInfo:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [cell setSeparatorInset:self.separatorEdgeInsets];
-    
-    if([cell respondsToSelector:@selector(setLayoutMargins:)])
-    {
-        [cell setLayoutMargins:self.separatorEdgeInsets];
-    }
+    cell.separatorInset = self.separatorEdgeInsets;
+    cell.layoutMargins = self.separatorEdgeInsets;
     
     [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
 }

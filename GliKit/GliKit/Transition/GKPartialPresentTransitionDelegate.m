@@ -44,7 +44,7 @@
     
     //弹窗大小位置
     CGSize size = self.contentSize;
-    CGSize parentSize = UIScreen.gkScreenSize;
+    CGSize parentSize = UIScreen.gkSize;
     switch (self.transitionStyle) {
         case GKPresentTransitionStyleFromTop : {
             if(self.frameUseSafeArea){

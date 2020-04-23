@@ -265,7 +265,7 @@
 ///当前下标
 - (NSInteger)selectedIndex
 {
-    return floor(MAX(0, self.collectionView.contentOffset.x) / UIScreen.gkScreenWidth);
+    return floor(MAX(0, self.collectionView.contentOffset.x) / UIScreen.gkWidth);
 }
 
 ///更新标题

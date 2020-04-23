@@ -17,8 +17,11 @@
 ///导航栏间距
 @property (class, nonatomic, assign) CGFloat gkNavigationBarMargin;
 
-///导航栏titleView 和 item的间距
-@property (class, nonatomic, assign) CGFloat gkNavigationBarTitleViewItemMargin;
+///导航栏中的标题和按钮间距
+@property(class, nonatomic, readonly) CGFloat gkNavigationBarMarginForItem;
+
+///导航栏中的标题和屏幕间距
+@property(class, nonatomic, readonly) CGFloat gkNavigationBarMarginForScreen;
 
 ///状态栏样式
 @property (class, nonatomic, assign) UIStatusBarStyle gkStatusBarStyle;

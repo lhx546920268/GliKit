@@ -28,9 +28,15 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
  */
 @property(nonatomic, assign) UITableViewStyle style;
 
-/**分割线位置 default is '(0, 15.0, 0, 0)'
+/**
+ 分割线位置 default is '(0, 15.0, 0, 0)'
  */
 @property(nonatomic, assign) UIEdgeInsets separatorEdgeInsets;
+
+/**
+ tableView类，必须是UITableView 或者其子类
+ */
+@property(nonatomic, readonly) Class tableViewClass;
 
 /**
  构造方法
@@ -46,14 +52,6 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
 ///注册header footer
 - (void)registerNibForHeaderFooterView:(Class) clazz;
 - (void)registerClassForHeaderFooterView:(Class) clazz;
-
-
-/**
- 获取tableView类，必须是UITableView 或者其子类
- 
- @return class
- */
-- (Class)tableViewClass;
 
 ///需要调用super
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath NS_REQUIRES_SUPER;

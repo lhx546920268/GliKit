@@ -10,7 +10,6 @@
 
 static CGFloat appSeparatorHeight = 0;
 static CGFloat appNavigationBarMargin = 15;
-static CGFloat appNavigationBarTitleViewItemMargin = -6;
 static UIStatusBarStyle appStatusBarStyle = UIStatusBarStyleDefault;
 static NSString *appKeychainAccessGroup = nil;
 
@@ -39,14 +38,18 @@ static NSString *appKeychainAccessGroup = nil;
     appNavigationBarMargin = gkNavigationBarMargin;
 }
 
-+ (CGFloat)gkNavigationBarTitleViewItemMargin
++ (CGFloat)gkNavigationBarMarginForItem
 {
-    return appNavigationBarTitleViewItemMargin;
+    return 6;
 }
 
-+ (void)setGkNavigationBarTitleViewItemMargin:(CGFloat)gkNavigationBarTitleViewItemMargin
++ (CGFloat)gkNavigationBarMarginForScreen
 {
-    appNavigationBarTitleViewItemMargin = gkNavigationBarTitleViewItemMargin;
+    if(@available(iOS 11, *)){
+        return 0;
+    }else{
+        return UIScreen.mainScreen.scale >= 3.0 ? 12 : 8;
+    }
 }
 
 + (UIStatusBarStyle)gkStatusBarStyle
