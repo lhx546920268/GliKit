@@ -182,17 +182,12 @@ static char GKInPresentWayKey;
     return number != nil ? number.boolValue : YES;
 }
 
-- (void)setTapDialogBackgroundGestureRecognizer:(UITapGestureRecognizer*) tap
-{
-    objc_setAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey, tap, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
 - (UIGestureRecognizer*)tapDialogBackgroundGestureRecognizer
 {
     UITapGestureRecognizer *tap = objc_getAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey);
     if(!tap){
         tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissDialog)];
-        self.tapDialogBackgroundGestureRecognizer = tap;
+        objc_setAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey, tap, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return tap;
 }

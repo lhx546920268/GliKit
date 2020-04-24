@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 /**
  关联的窗口
  */
-@property(nonatomic, readonly) UIWindow *dialogWindow;
+@property(nonatomic, readonly, nullable) UIWindow *dialogWindow;
 
 /**
  是否要点击透明背景dismiss default is 'YES'
@@ -70,7 +70,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 /**
  点击背景手势
  */
-@property(nonatomic, readonly, nullable) UITapGestureRecognizer *tapDialogBackgroundGestureRecognizer;
+@property(nonatomic, readonly) UITapGestureRecognizer *tapDialogBackgroundGestureRecognizer;
 
 /**
  出现动画 default is 'GKDialogAnimateNone'

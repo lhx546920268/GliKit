@@ -12,8 +12,8 @@
 #import "UIView+GKEmptyView.h"
 #import "UIView+GKUtils.h"
 
-static char GKShouldShowEmptyViewWhenExistSectionHeaderKey;
-static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
+static char GKShouldIgnoreSectionHeaderKey;
+static char GKShouldIgnoreSectionFooterKey;
 
 @implementation UICollectionView (GKEmptyView)
 
@@ -34,7 +34,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
         }
         
         ///获取sectionHeader 高度
-        if(self.gkShouldShowEmptyViewWhenExistSectionHeader && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+        if(self.gkShouldIgnoreSectionHeader && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
             
@@ -48,7 +48,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
         }
         
         ///获取section footer 高度
-        if(self.gkShouldShowEmptyViewWhenExistSectionFooter && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+        if(self.gkShouldIgnoreSectionFooter && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.delegate;
             
@@ -84,13 +84,11 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
             section = [self.dataSource numberOfSectionsInCollectionView:self];
         }
         
-        if([self.dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)]){
-            for(NSInteger i = 0;i < section;i ++){
-                NSInteger items = [self.dataSource collectionView:self numberOfItemsInSection:i];
-                if(items > 0){
-                    empty = NO;
-                    break;
-                }
+        for(NSInteger i = 0;i < section;i ++){
+            NSInteger items = [self.dataSource collectionView:self numberOfItemsInSection:i];
+            if(items > 0){
+                empty = NO;
+                break;
             }
         }
         
@@ -99,7 +97,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
             
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
-            if(!self.gkShouldShowEmptyViewWhenExistSectionHeader){
+            if(!self.gkShouldIgnoreSectionHeader){
 
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
@@ -114,7 +112,7 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
                 }
             }
             
-            if(empty && !self.gkShouldShowEmptyViewWhenExistSectionFooter){
+            if(empty && !self.gkShouldIgnoreSectionFooter){
 
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
@@ -136,14 +134,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
 
 // MARK: - Property
 
-- (void)setGkShouldShowEmptyViewWhenExistSectionHeader:(BOOL) header
+- (void)setGkShouldIgnoreSectionHeader:(BOOL) ignore
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderKey, @(header), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldIgnoreSectionHeaderKey, @(ignore), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistSectionHeader
+- (BOOL)gkShouldIgnoreSectionHeader
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionHeaderKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreSectionHeaderKey);
     if(number){
         return [number boolValue];
     }
@@ -152,14 +150,14 @@ static char GKShouldShowEmptyViewWhenExistSectionFooterKey;
 }
 
 
-- (void)setGkShouldShowEmptyViewWhenExistSectionFooter:(BOOL) footer
+- (void)setGkShouldIgnoreSectionFooter:(BOOL) ignore
 {
-    objc_setAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterKey, @(footer), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKShouldIgnoreSectionFooterKey, @(ignore), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldShowEmptyViewWhenExistSectionFooter
+- (BOOL)gkShouldIgnoreSectionFooter
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKShouldShowEmptyViewWhenExistSectionFooterKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreSectionFooterKey);
     if(number){
         return [number boolValue];
     }

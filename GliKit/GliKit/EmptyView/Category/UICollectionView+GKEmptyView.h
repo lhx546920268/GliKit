@@ -12,9 +12,9 @@
 @interface UICollectionView (GKEmptyView)
 
 ///存在 sectionHeader 时，是否显示空视图 default is 'NO'
-@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistSectionHeader;
+@property(nonatomic, assign) BOOL gkShouldIgnoreSectionHeader;
 
 ///存在 sectionFooter 时，是否显示空视图 default is 'NO'
-@property(nonatomic, assign) BOOL gkShouldShowEmptyViewWhenExistSectionFooter;
+@property(nonatomic, assign) BOOL gkShouldIgnoreSectionFooter;
 
 @end
