@@ -10,6 +10,7 @@
 #import <GKAlertUtils.h>
 #import <GKLabel.h>
 #import <GKAlertController.h>
+#import "GKDialogViewController.h"
 
 @interface AppearanceView : UIView
 
@@ -95,12 +96,12 @@
 
 - (void)handleTapImageView
 {
-    
+    [GKDialogViewController.new showAsDialogInViewController:self layoutHandler:nil];
 }
 
 - (void)handleTapLabel
 {
-    
+    [GKDialogViewController.new showAsDialog];
 }
 
 - (IBAction)handleAlert:(id)sender

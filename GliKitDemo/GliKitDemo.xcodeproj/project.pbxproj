@@ -34,6 +34,7 @@
 		CEC3C858231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C857231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m */; };
 		CEC3C85C231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC3C85A231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m */; };
 		CEC3C85D231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */; };
+		CEC6AF44245671E0006B22BB /* GKDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC6AF43245671E0006B22BB /* GKDialogViewController.m */; };
 		CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */; };
 		CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */; };
 		CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C893231911E900E7CA75 /* AppDelegate.m */; };
@@ -97,6 +98,8 @@
 		CEC3C859231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDCollectionViewSkeletonHeader.h; sourceTree = "<group>"; };
 		CEC3C85A231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDCollectionViewSkeletonHeader.m; sourceTree = "<group>"; };
 		CEC3C85B231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDCollectionViewSkeletonHeader.xib; sourceTree = "<group>"; };
+		CEC6AF42245671E0006B22BB /* GKDialogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDialogViewController.h; sourceTree = "<group>"; };
+		CEC6AF43245671E0006B22BB /* GKDialogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDialogViewController.m; sourceTree = "<group>"; };
 		CEC9C321242B14A90082E631 /* GliKitDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GliKitDemo.entitlements; sourceTree = "<group>"; };
 		CED1B13E2320FAC1009C4D6C /* GKDTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTransitionViewController.h; sourceTree = "<group>"; };
 		CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTransitionViewController.m; sourceTree = "<group>"; };
@@ -253,6 +256,8 @@
 				CEC2D973239F8C0900F14210 /* GKDAlertViewController.h */,
 				CEC2D974239F8C0900F14210 /* GKDAlertViewController.m */,
 				CEC2D975239F8C0900F14210 /* GKDAlertViewController.xib */,
+				CEC6AF42245671E0006B22BB /* GKDialogViewController.h */,
+				CEC6AF43245671E0006B22BB /* GKDialogViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -500,6 +505,7 @@
 				CEB85F56232630DA0045CB38 /* GKDNestedPageViewController.m in Sources */,
 				CEC3C846231E5971003ADE7A /* GKDNormalSkeletonViewController.m in Sources */,
 				CEB85F59232630FA0045CB38 /* GKDChildPageViewController.m in Sources */,
+				CEC6AF44245671E0006B22BB /* GKDialogViewController.m in Sources */,
 				CEE8C8A2231911EB00E7CA75 /* main.m in Sources */,
 				CEC3C855231E5AB9003ADE7A /* GKDTableViewSkeletonHeader.m in Sources */,
 				CEE8C8AD231915DB00E7CA75 /* GKDRootViewController.m in Sources */,

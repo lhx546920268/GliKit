@@ -27,12 +27,11 @@ static char GKDialogShowAnimateKey;
 static char GKDialogDismissAnimateKey;
 static char GKisDialogShowingKey;
 static char GKDialogShowCompletionHandlerKey;
+static char GKDialogWillDismissnHandlerKey;
 static char GKDialogDismissCompletionHandlerKey;
 static char GKDialogShouldAnimateKey;
 static char GKTapDialogBackgroundGestureRecognizerKey;
 static char GKIsDialogViewDidLayoutSubviewsKey;
-static char GKInPresentWayKey;
-
 
 @implementation UIViewController (GKDialog)
 
@@ -242,6 +241,16 @@ static char GKInPresentWayKey;
     return objc_getAssociatedObject(self, &GKDialogShowCompletionHandlerKey);
 }
 
+- (void)setDialogWillDismissHandler:(void (^)(BOOL)) handler
+{
+    objc_setAssociatedObject(self, &GKDialogWillDismissnHandlerKey, handler, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void (^)(BOOL))dialogWillDismissHandler
+{
+    return objc_getAssociatedObject(self, &GKDialogWillDismissnHandlerKey);
+}
+
 - (void)setDialogDismissCompletionHandler:(void (^)(void)) handler
 {
     objc_setAssociatedObject(self, &GKDialogDismissCompletionHandlerKey, handler, OBJC_ASSOCIATION_COPY_NONATOMIC);
@@ -270,16 +279,6 @@ static char GKInPresentWayKey;
 - (BOOL)isDialogViewDidLayoutSubviews
 {
     return [objc_getAssociatedObject(self, &GKIsDialogViewDidLayoutSubviewsKey) boolValue];
-}
-
-- (BOOL)inPresentWay
-{
-    return [objc_getAssociatedObject(self, &GKInPresentWayKey) boolValue];
-}
-
-- (void)setInPresentWay:(BOOL) value
-{
-    objc_setAssociatedObject(self, &GKInPresentWayKey, @(value), OBJC_ASSOCIATION_RETAIN);
 }
 
 // MARK: - public method
@@ -324,12 +323,10 @@ static char GKInPresentWayKey;
     self.dialogShouldAnimate = YES;
     
     if(inPresentWay){
-        ///设置使背景透明
-        [self setInPresentWay:YES];
+        //设置使背景透明
         self.modalPresentationStyle = UIModalPresentationCustom;
         [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
     }else{
-        [self willMoveToParentViewController:viewController];
         [viewController.view addSubview:self.view];
         [viewController addChildViewController:self];
         if(layoutHandler){
@@ -339,10 +336,11 @@ static char GKInPresentWayKey;
                 make.edges.equalTo(viewController.view);
             }];
         }
-        [self didMoveToParentViewController:viewController];
         !self.dialogShowCompletionHandler ?: self.dialogShowCompletionHandler();
     }
 }
+
+// MARK: - 动画
 
 ///执行出场动画
 - (void)executeShowAnimate
@@ -419,86 +417,106 @@ static char GKInPresentWayKey;
 
 - (void)dismissDialog
 {
+    [self dismissDialogAnimated:YES];
+}
+
+- (void)dismissDialogAnimated:(BOOL)animated
+{
+    [self dismissDialogAnimated:animated completion:nil];
+}
+
+- (void)dismissDialogAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
+    !self.dialogWillDismissHandler ?: self.dialogWillDismissHandler(animated);
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    switch (self.dialogDismissAnimate) {
-        case GKDialogAnimateNone : {
-            [self onDialogDismiss];
+    
+    if(animated){
+        switch (self.dialogDismissAnimate) {
+            case GKDialogAnimateNone : {
+                [self onDialogDismissWithCompletion:completion];
+            }
+                break;
+            case GKDialogAnimateScale : {
+                
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    
+                    [self setNeedsStatusBarAppearanceUpdate];
+                    self.dialogBackgroundView.alpha = 0;
+                    self.dialog.alpha = 0;
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                    animation.fromValue = @(1.0);
+                    animation.toValue = @(1.3);
+                    animation.duration = 0.25;
+                    animation.fillMode = kCAFillModeForwards;
+                    animation.removedOnCompletion = NO;
+                    [self.dialog.layer addAnimation:animation forKey:@"scale"];
+                    
+                }completion:^(BOOL finish){
+                    [self onDialogDismissWithCompletion:completion];
+                }];
+            }
+                break;
+            case GKDialogAnimateFromTop : {
+                
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    
+                    [self setNeedsStatusBarAppearanceUpdate];
+                    self.dialogBackgroundView.alpha = 0;
+                    self.dialog.alpha = 0;
+                    
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                    animation.fromValue = @(self.dialog.layer.position.y);
+                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                    animation.toValue = @(- self.dialog.gkHeight / 2.0);
+                    animation.duration = 0.25;
+                    animation.fillMode = kCAFillModeForwards;
+                    animation.removedOnCompletion = NO;
+                    [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    
+                }completion:^(BOOL finish){
+                    [self onDialogDismissWithCompletion:completion];
+                }];
+            }
+                break;
+            case GKDialogAnimateFromBottom : {
+                
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    
+                    [self setNeedsStatusBarAppearanceUpdate];
+                    self.dialogBackgroundView.alpha = 0;
+                    self.dialog.alpha = 0;
+                    
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                    animation.fromValue = @(self.dialog.layer.position.y);
+                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                    animation.toValue = @(self.view.gkHeight + self.dialog.gkHeight / 2);
+                    animation.duration = 0.25;
+                    animation.fillMode = kCAFillModeForwards;
+                    animation.removedOnCompletion = NO;
+                    [self.dialog.layer addAnimation:animation forKey:@"position"];
+                }completion:^(BOOL finish){
+                    
+                    [self onDialogDismissWithCompletion:completion];
+                }];
+            }
+                break;
+            case GKDialogAnimateCustom : {
+                
+                WeakObj(self);
+                [self didExecuteDialogDismissCustomAnimate:^(BOOL finish){
+                    
+                    [selfWeak onDialogDismissWithCompletion:completion];
+                }];
+            }
+                break;
         }
-            break;
-        case GKDialogAnimateScale : {
-            
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                [self setNeedsStatusBarAppearanceUpdate];
-                self.dialogBackgroundView.alpha = 0;
-                self.dialog.alpha = 0;
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                animation.fromValue = @(1.0);
-                animation.toValue = @(1.3);
-                animation.duration = 0.25;
-                animation.fillMode = kCAFillModeForwards;
-                animation.removedOnCompletion = NO;
-                [self.dialog.layer addAnimation:animation forKey:@"scale"];
-                
-            }completion:^(BOOL finish){
-                [self onDialogDismiss];
-            }];
-        }
-            break;
-        case GKDialogAnimateFromTop : {
-            
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                [self setNeedsStatusBarAppearanceUpdate];
-                self.dialogBackgroundView.alpha = 0;
-                
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
-                animation.fromValue = @(self.dialog.layer.position.y);
-                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-                animation.toValue = @(- self.dialog.gkHeight / 2.0);
-                animation.duration = 0.25;
-                animation.fillMode = kCAFillModeForwards;
-                animation.removedOnCompletion = NO;
-                [self.dialog.layer addAnimation:animation forKey:@"position"];
-                
-            }completion:^(BOOL finish){
-                [self onDialogDismiss];
-            }];
-        }
-            break;
-        case GKDialogAnimateFromBottom : {
-            
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                self.dialogBackgroundView.alpha = 0;
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
-                animation.fromValue = @(self.dialog.layer.position.y);
-                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-                animation.toValue = @(self.view.gkHeight + self.dialog.gkHeight / 2);
-                animation.duration = 0.25;
-                animation.fillMode = kCAFillModeForwards;
-                animation.removedOnCompletion = NO;
-                [self.dialog.layer addAnimation:animation forKey:@"position"];
-            }completion:^(BOOL finish){
-                
-                [self onDialogDismiss];
-            }];
-        }
-            break;
-        case GKDialogAnimateCustom : {
-            
-            WeakObj(self);
-            [self didExecuteDialogDismissCustomAnimate:^(BOOL finish){
-                
-                [selfWeak onDialogDismiss];
-            }];
-        }
-            break;
+    }else{
+        [self onDialogDismissWithCompletion:completion];
     }
 }
 
 ///消失动画完成
-- (void)onDialogDismiss
+- (void)onDialogDismissWithCompletion:(void(^)(void)) completion
 {
     if(self.dialogShouldUseNewWindow){
         
@@ -510,7 +528,7 @@ static char GKInPresentWayKey;
             [self afterDialogDismiss];
         }
     }else{
-        if(self.inPresentWay){
+        if(self.presentingViewController){
             [self dismissViewControllerAnimated:NO completion:^{
                 [self afterDialogDismiss];
             }];
@@ -523,8 +541,9 @@ static char GKInPresentWayKey;
 }
 
 ///弹窗消失
-- (void)afterDialogDismiss
+- (void)afterDialogDismissWithCompletion:(void(^)(void)) completion
 {
+    !completion ?: completion();
     !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
     if(self.dialogShouldUseNewWindow && self.dialogWindow.rootViewController == self){
         self.dialogWindow.rootViewController = nil;

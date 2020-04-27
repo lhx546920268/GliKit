@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        CGFloat size = (UIScreen.gkScreenWidth - 10 * 4) / 3;
+        CGFloat size = (UIScreen.gkWidth - 10 * 4) / 3;
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"test_1"]];
         [self.contentView addSubview:imageView];

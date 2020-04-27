@@ -11,14 +11,15 @@
 
 static char GKKeyboardHiddenKey;
 static char GKKeyboardFrameKey;
+static char GKKeyboardAnimationDurationKey;
 
 @implementation UIViewController (GKKeyboard)
 
 // MARK: - property
 
-- (void)setKeyboardHidden:(BOOL)keyboardHidden
+- (void)setKeyboardHidden:(BOOL) hidden
 {
-    objc_setAssociatedObject(self, &GKKeyboardHiddenKey, @(keyboardHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKKeyboardHiddenKey, @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)keyboardHidden
@@ -31,14 +32,24 @@ static char GKKeyboardFrameKey;
     }
 }
 
-- (void)setKeyboardFrame:(CGRect)keyboardFrame
+- (void)setKeyboardFrame:(CGRect) frame
 {
-    objc_setAssociatedObject(self, &GKKeyboardFrameKey, [NSValue valueWithCGRect:keyboardFrame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKKeyboardFrameKey, [NSValue valueWithCGRect:frame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CGRect)keyboardFrame
 {
     return [objc_getAssociatedObject(self, &GKKeyboardFrameKey) CGRectValue];
+}
+
+- (void)setKeyboardAnimationDuration:(NSTimeInterval) duration
+{
+    objc_setAssociatedObject(self, &GKKeyboardAnimationDurationKey, @(duration), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSTimeInterval)keyboardAnimationDuration
+{
+    return [objc_getAssociatedObject(self, &GKKeyboardAnimationDurationKey) doubleValue];
 }
 
 - (void)addKeyboardNotification
@@ -61,8 +72,10 @@ static char GKKeyboardFrameKey;
 {
     if(!self.keyboardHidden){
         self.keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        self.keyboardAnimationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     }else{
         self.keyboardFrame = CGRectZero;
+        self.keyboardAnimationDuration = 0.25;
     }
 }
 

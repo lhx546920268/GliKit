@@ -93,6 +93,11 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 @property(nonatomic, copy, nullable) void(^dialogShowCompletionHandler)(void);
 
 /**
+ 弹窗将要消失回调
+ */
+@property(nonatomic,copy) void(^dialogWillDismissHandler)(BOOL animate);
+
+/**
  消失动画完成回调
  */
 @property(nonatomic, copy, nullable) void(^dialogDismissCompletionHandler)(void);
@@ -117,6 +122,16 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
  隐藏
  */
 - (void)dismissDialog;
+
+/**
+ 隐藏
+ */
+- (void)dismissDialogAnimated:(BOOL) animated;
+
+/**
+ 隐藏
+ */
+- (void)dismissDialogAnimated:(BOOL) animated completion:(void(^)(void)) completion;
 
 /**
  执行自定义显示动画 子类重写

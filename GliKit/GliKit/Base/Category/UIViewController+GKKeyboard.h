@@ -24,6 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) CGRect keyboardFrame;
 
 /**
+ 键盘动画时长
+ */
+@property(nonatomic, readonly) NSTimeInterval keyboardAnimationDuration;
+
+/**
  添加键盘监听
  */
 - (void)addKeyboardNotification;

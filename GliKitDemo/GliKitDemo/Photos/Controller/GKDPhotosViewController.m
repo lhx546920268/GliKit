@@ -53,7 +53,7 @@
     self.flowLayout.minimumLineSpacing = 5;
     self.flowLayout.minimumLineSpacing = 5;
     self.flowLayout.sectionInset = UIEdgeInsetsMake(15, 15, 15, 15);
-    CGFloat size = floor((UIScreen.gkScreenWidth - 15 * 2 - 5 * 2) / 3);
+    CGFloat size = floor((UIScreen.gkWidth - 15 * 2 - 5 * 2) / 3);
     self.flowLayout.itemSize = CGSizeMake(size, size);
     [self registerClass:GKDPhotosCollectionViewCell.class];
     [super initViews];

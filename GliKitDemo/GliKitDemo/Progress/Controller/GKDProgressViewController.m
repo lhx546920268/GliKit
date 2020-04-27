@@ -52,7 +52,7 @@
     self.straightLineProgressView = view;
     
     CGFloat margin = 15;
-    CGFloat width = floor((UIScreen.gkScreenWidth - margin * 5) / 3.0);
+    CGFloat width = floor((UIScreen.gkWidth - margin * 5) / 3.0);
     
     view = [[GKProgressView alloc] initWithStyle:GKProgressViewStyleCircle];
     [self.view addSubview:view];

@@ -36,7 +36,7 @@
     }];
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkScreenWidth, 400);
+    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
     nav.partialPresentProps.cornerRadius = 10;
     [nav partialPresentFromBottom];
 }
