@@ -242,6 +242,33 @@ static char GKTintColorKey;
     }
 }
 
+- (void)gkBackToViewController:(Class)cls
+{
+    [self gkBackToViewController:cls animated:YES];
+}
+
+- (void)gkBackToViewController:(Class)cls animated:(BOOL)flag
+{
+    [self gkBackToViewController:cls animated:flag completion:nil];
+}
+
+- (void)gkBackToViewController:(Class)cls animated:(BOOL)flag completion:(void (^)(void))completion
+{
+    UIViewController *viewController = nil;
+    for(UIViewController *vc in self.navigationController.viewControllers){
+        if([vc isKindOfClass:cls]){
+            viewController = vc;
+            break;
+        }
+    }
+    if(viewController){
+        [self gkSetTransitionCompletion:completion];
+        [self.navigationController popToViewController:viewController animated:flag];
+    }else{
+        [self gkBackAnimated:flag completion:completion];
+    }
+}
+
 ///返回之前
 - (void)gkBeforeBack
 {

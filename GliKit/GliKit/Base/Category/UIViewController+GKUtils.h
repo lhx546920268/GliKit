@@ -73,7 +73,12 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 - (void)gkBackAnimated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
 
 ///返回最前面
-- (void)gkBackToRootViewControllerAnimated:(BOOL) flag completion:(void (^)(void))completion;
+- (void)gkBackToRootViewControllerAnimated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
+
+///返回某个视图 是否动画 返回完成回调
+- (void)gkBackToViewController:(Class) cls;
+- (void)gkBackToViewController:(Class) cls animated:(BOOL) flag;
+- (void)gkBackToViewController:(Class) cls animated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
 
 @end
 
