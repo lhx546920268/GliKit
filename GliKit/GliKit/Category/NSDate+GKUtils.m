@@ -30,52 +30,37 @@
 
 - (int)gkSecond
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitSecond fromDate:self];
-    return (int)components.second;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitSecond fromDate:self];
 }
 
 - (int)gkMinute
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitMinute fromDate:self];
-    return (int)components.minute;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitMinute fromDate:self];
 }
 
 - (int)gkHour
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitHour fromDate:self];
-    return (int)components.hour;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:self];
 }
 
 - (int)gkDay
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitDay fromDate:self];
-    return (int)components.day;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitDay fromDate:self];
 }
 
 - (int)gkMonth
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitMonth fromDate:self];
-    return (int)components.month;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitMonth fromDate:self];
 }
 
 - (int)gkYear
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitYear fromDate:self];
-    return (int)components.year;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitYear fromDate:self];
 }
 
 - (NSInteger)gkWeekday
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitWeekday fromDate:self];
-    
-    return components.weekday;
+    return (int)[NSCalendar.currentCalendar component:NSCalendarUnitWeekday fromDate:self];
 }
 
 // MARK: - 时间获取

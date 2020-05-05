@@ -101,6 +101,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
                 progressBlock(receivedSize, expectedSize, targetURL);
             }
         };
+        
         id <SDWebImageOperation> operation = [manager loadImageWithURL:url options:options context:context progress:combinedProgressBlock completed:^(UIImage *image, NSData *data, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
             @strongify(self);
             if (!self) { return; }

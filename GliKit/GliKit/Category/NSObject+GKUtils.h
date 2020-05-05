@@ -10,6 +10,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define GKConvenientCoder \
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{ \
+    self = [super init]; \
+    if(self){ \
+        [self gkInitWithCoder:aDecoder]; \
+    } \
+    return self; \
+} \
+- (void)encodeWithCoder:(NSCoder *)aCoder{ \
+    [self gkEncodeWithCoder:aCoder]; \
+} \
+
+#define GKConvenientSecureCoder \
+GKConvenientCoder \
++ (BOOL)supportsSecureCoding \
+{ \
+    return YES; \
+} \
+
 ///扩展
 @interface NSObject (GKUtils)
 
