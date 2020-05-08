@@ -162,14 +162,13 @@
             self.topView.hidden = hidden;
         }
         
-        WeakObj(self);
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            constraint.constant = hidden ? 0 : -selfWeak.topViewOriginalHeight;
-            [selfWeak layoutIfNeeded];
+            constraint.constant = hidden ? 0 : -self.topViewOriginalHeight;
+            [self layoutIfNeeded];
         } completion:^(BOOL finished){
             
-            selfWeak.topView.hidden = hidden;
+            self.topView.hidden = hidden;
         }];
     }
 }
@@ -315,14 +314,13 @@
             self.bottomView.hidden = hidden;
         }
         
-        WeakObj(self);
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            constraint.constant = !hidden ? 0 : -selfWeak.bottomViewOriginalHeight;
-            [selfWeak layoutIfNeeded];
+            constraint.constant = !hidden ? 0 : -self.bottomViewOriginalHeight;
+            [self layoutIfNeeded];
         } completion:^(BOOL finished){
             
-            selfWeak.bottomView.hidden = hidden;
+            self.bottomView.hidden = hidden;
         }];
     }
 }

@@ -131,17 +131,17 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 /**
  隐藏
  */
-- (void)dismissDialogAnimated:(BOOL) animated completion:(void(^)(void)) completion;
+- (void)dismissDialogAnimated:(BOOL) animated completion:(void(^ _Nullable)(void)) completion;
 
 /**
  执行自定义显示动画 子类重写
  */
-- (void)didExecuteDialogShowCustomAnimate:(void(^_Nullable)(BOOL finish)) completion;
+- (void)didExecuteDialogShowCustomAnimate:(void(^ _Nullable)(BOOL finish)) completion;
 
 /**
  执行自定义消失动画 子类重写
  */
-- (void)didExecuteDialogDismissCustomAnimate:(void(^_Nullable)(BOOL finish)) completion;
+- (void)didExecuteDialogDismissCustomAnimate:(void(^ _Nullable)(BOOL finish)) completion;
 
 /**
  键盘弹出来，调整弹窗位置，子类可重写

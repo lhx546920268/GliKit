@@ -19,8 +19,14 @@
 #define NSLog(...) {}
 #endif
 
+//拼接2个
+#define GKConcat(a, b) a##b
+
 //weak 使用 WeakObj(self);  selfWeak
-#define WeakObj(o) __weak typeof(o) o##Weak = o;
+#define WeakObj(o) __weak typeof(o) GKConcat(o, Weak) = o;
+
+//strong 使用
+#define StrongObj(o) __strong typeof(o) o = GKConcat(o, Weak);
 
 #import <Masonry.h>
 

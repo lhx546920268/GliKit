@@ -84,6 +84,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
         }
         
         @weakify(self);
+        
         SDImageLoaderProgressBlock combinedProgressBlock = ^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
             @strongify(self);
             NSProgress *imageProgress = self.sd_imageProgress;

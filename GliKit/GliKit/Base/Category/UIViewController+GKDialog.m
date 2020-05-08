@@ -522,20 +522,20 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
         
         if(self.dialogWindow.rootViewController != self){
             [self dismissViewControllerAnimated:NO completion:^{
-                [self afterDialogDismiss];
+                [self afterDialogDismissWithCompletion:completion];
             }];
         }else{
-            [self afterDialogDismiss];
+            [self afterDialogDismissWithCompletion:completion];
         }
     }else{
         if(self.presentingViewController){
             [self dismissViewControllerAnimated:NO completion:^{
-                [self afterDialogDismiss];
+                [self afterDialogDismissWithCompletion:completion];
             }];
         }else{
             [self.view removeFromSuperview];
             [self removeFromParentViewController];
-            [self afterDialogDismiss];
+            [self afterDialogDismissWithCompletion:completion];
         }
     }
 }

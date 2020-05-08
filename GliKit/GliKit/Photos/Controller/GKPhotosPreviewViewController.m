@@ -157,9 +157,9 @@
         if(self.selectedAssets.count >= self.photosOptions.maxCount){
             
             [[GKAlertController alertWithTitle:[NSString stringWithFormat:@"您最多能选择%d张图片", (int)self.photosOptions.maxCount]
-                                        message:nil
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@[@"我知道了"]] show];
+                                       message:nil
+                             cancelButtonTitle:nil
+                             otherButtonTitles:@[@"我知道了"]] show];
             
         }else{
             [self.selectedAssets addObject:asset];
@@ -215,12 +215,15 @@
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [selfWeak gkDismissProgress];
-            !selfWeak.photosOptions.completion ?: selfWeak.photosOptions.completion(results);
-   
-            [selfWeak dismissViewControllerAnimated:YES completion:nil];
-        });
+        StrongObj(self)
+        if(self){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self gkDismissProgress];
+                !self.photosOptions.completion ?: self.photosOptions.completion(results);
+                
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
+        }
     });
 }
 
@@ -319,7 +322,7 @@
     
     CGSize size = [UIImage gkFitImageSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) size:CGSizeMake(collectionView.frame.size.width * GKImageScale, 0) type:GKImageFitTypeWidth];
     [PHImageManager.defaultManager requestImageForAsset:asset targetSize:size contentMode:PHImageContentModeAspectFit options:self.imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-
+        
         if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){
             [cell onLoadImage:result];
         }

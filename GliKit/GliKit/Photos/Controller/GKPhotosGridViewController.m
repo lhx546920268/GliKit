@@ -184,11 +184,14 @@
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [selfWeak gkDismissProgress];
-            !selfWeak.photosOptions.completion ?: selfWeak.photosOptions.completion(results);
-            [selfWeak handleCancel];
-        });
+        StrongObj(self)
+        if(self){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self gkDismissProgress];
+                !self.photosOptions.completion ?: self.photosOptions.completion(results);
+                [self handleCancel];
+            });
+        }
     });
 }
 
@@ -202,15 +205,18 @@
     WeakObj(self)
     [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         
-        selfWeak.gkBackBarButtonItem.enabled = YES;
-        selfWeak.navigationItem.rightBarButtonItem.enabled = YES;
-        
-        if(imageData){
-            [selfWeak gkDismissProgress];
-            selfWeak.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:GKImageScale];
-            [selfWeak goToCropImage];
-        }else{
-            [selfWeak gkShowErrorWithText:@"加载图片失败"];
+        StrongObj(self)
+        if(self){
+            self.gkBackBarButtonItem.enabled = YES;
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+            
+            if(imageData){
+                [self gkDismissProgress];
+                self.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:GKImageScale];
+                [self goToCropImage];
+            }else{
+                [self gkShowErrorWithText:@"加载图片失败"];
+            }
         }
     }];
 }

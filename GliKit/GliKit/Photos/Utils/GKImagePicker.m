@@ -130,27 +130,29 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
             
             image = [UIImage gkFixOrientation:image];
-            if(selfWeak.options.cropSettings){
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [selfWeak.viewController gkDismissProgress];
-                    if(selfWeak){
-                        selfWeak.options.cropSettings.image = image;
-                        GKImageCropViewController *imageCrop = [[GKImageCropViewController alloc] initWithOptions:selfWeak.options];
-                        [selfWeak.viewController.navigationController pushViewController:imageCrop animated:YES];
-                    }
-                });
-                
-            }else{
-                GKPhotosPickResult *result = [GKPhotosPickResult resultWithImage:image options:self.options];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
+            StrongObj(self)
+            if(self){
+                if(self.options.cropSettings){
                     
-                    [selfWeak.viewController gkDismissProgress];
-                    if(result && selfWeak){
-                        !selfWeak.completionHandler ?: selfWeak.completionHandler(@[result]);
-                    }
-                });
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [self.viewController gkDismissProgress];
+                        self.options.cropSettings.image = image;
+                        GKImageCropViewController *imageCrop = [[GKImageCropViewController alloc] initWithOptions:self.options];
+                        [self.viewController.navigationController pushViewController:imageCrop animated:YES];
+                    });
+                    
+                }else{
+                    GKPhotosPickResult *result = [GKPhotosPickResult resultWithImage:image options:self.options];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [self.viewController gkDismissProgress];
+                        if(result){
+                            !self.completionHandler ?: self.completionHandler(@[result]);
+                        }
+                    });
+                }
             }
         });
     }
