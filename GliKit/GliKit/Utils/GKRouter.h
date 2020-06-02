@@ -28,6 +28,9 @@ typedef UIViewController* _Nonnull (^GKRounterHandler)(NSDictionary * _Nullable 
 ///当scheme不支持时，是否用 UIApplication 打开 default YES
 @property(nonatomic, assign) BOOL openURLWhileSchemeNotSupport;
 
+///找不到回调
+@property(nonatomic, copy) void(^viewControllerCanNotFoundHandler)(NSString *URLString, NSDictionary * _Nullable rounterParams);
+
 /**
  注册一个页面
  

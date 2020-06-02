@@ -81,7 +81,7 @@
     [super willMoveToWindow:newWindow];
     
     CGSize size = self.contentSize;
-    self.frame = CGRectMake(0, 0, size.width, size.height);
+    self.bounds = CGRectMake(0, 0, size.width, size.height);
 }
 
 - (void)layoutSubviews

@@ -181,5 +181,18 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 
 @end
 
+@class GKTabBarController;
+
+///自定义tabBar扩展
+@interface UIViewController (GKTabBarExtension)
+
+///当前tabBarController
+@property(nonatomic, readonly) GKTabBarController *gkTabBarController;
+
+///是否有tabBar
+@property(nonatomic, assign) BOOL gkHasTabBar;
+
+@end
+
 NS_ASSUME_NONNULL_END
 

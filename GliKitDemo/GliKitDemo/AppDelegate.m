@@ -7,11 +7,19 @@
 //
 
 #import "AppDelegate.h"
-#import "GKDRootViewController.h"
+#import "GKDTabBarController.h"
 #import <GKBaseNavigationController.h>
 #import <GKHttpTask.h>
+#import <SDImageWebPCoder.h>
+#import <SDImageCodersManager.h>
+
+static void uncaughtExceptionHandler(NSException *exception){
+    NSLog(@"%@", exception);
+}
 
 @interface AppDelegate ()
+
+
 
 @end
 
@@ -21,11 +29,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-    self.window.rootViewController = [[GKBaseNavigationController alloc] initWithRootViewController:GKDRootViewController.new];
+    self.window.rootViewController = [GKDTabBarController new];
     [self.window makeKeyAndVisible];
+    
+    [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
 
     return YES;
 }

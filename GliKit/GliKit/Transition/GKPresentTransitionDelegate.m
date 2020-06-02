@@ -180,17 +180,8 @@
     // For a Dismissal:
     //      fromView = The presented view.
     //      toView   = The presenting view.
-    UIView *fromView;
-    UIView *toView;
-    
-    ///ios 8 才有的api
-    if([transitionContext respondsToSelector:@selector(viewForKey:)]){
-        fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    }else{
-        fromView = fromViewController.view;
-        toView = toViewController.view;
-    }
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     
     BOOL isPresenting = toViewController.presentingViewController == fromViewController;
     

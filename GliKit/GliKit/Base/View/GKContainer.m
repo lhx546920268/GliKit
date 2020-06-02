@@ -15,6 +15,7 @@
 #import "GKNavigationBar.h"
 #import "GKBaseViewController.h"
 #import "GKBaseDefines.h"
+#import "UIViewController+GKUtils.h"
 
 @interface GKContainer()
 
@@ -57,6 +58,7 @@
 ///初始化
 - (void)initParams
 {
+    self.clipsToBounds = YES;
     self.backgroundColor = [UIColor whiteColor];
     self.safeLayoutGuide = GKSafeLayoutGuideTop;
 }
@@ -75,6 +77,58 @@
     }
 }
 
+- (MASLayoutConstraint *)topLayoutConstraint
+{
+    if(_topView){
+        return _topView.mas_bottom;
+    }
+    
+    if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
+        return self.viewController.gkSafeAreaLayoutGuideTop;
+    }else{
+        return self.mas_top;
+    }
+}
+
+- (MASLayoutConstraint *)bottomLayoutConstraint
+{
+    if(_bottomView){
+        return _bottomView.mas_top;
+    }
+    
+    if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
+        return self.viewController.gkSafeAreaLayoutGuideBottom;
+    }else{
+        return self.mas_bottom;
+    }
+}
+
+- (CGFloat)bottomLayoutConstraintOffset
+{
+    if(!_bottomView && self.viewController.gkHasTabBar){
+        return -self.viewController.gkTabBarHeight;
+    }
+    return 0;
+}
+
+- (MASLayoutConstraint *)leftLayoutConstraint
+{
+    if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
+        return self.viewController.gkSafeAreaLayoutGuideLeft;
+    }else{
+        return self.mas_leading;
+    }
+}
+
+- (MASLayoutConstraint *)rightLayoutConstraint
+{
+    if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
+        return self.viewController.gkSafeAreaLayoutGuideRight;
+    }else{
+        return self.mas_trailing;
+    }
+}
+
 // MARK: - topView
 
 - (void)setTopView:(UIView *)topView
@@ -89,38 +143,23 @@
         if(_topView){
             [_topView removeFromSuperview];
         }
+        _topView = nil;
         
-        _topView = topView;
-        if(_topView){
-            if(_topView.superview != self){
-                [_topView removeFromSuperview];
-                [self addSubview:_topView];
+        if(topView){
+            if(topView.superview != self){
+                [topView removeFromSuperview];
+                [self addSubview:topView];
             }
             
-            [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+            [topView mas_makeConstraints:^(MASConstraintMaker *make) {
                 
-                if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
-                    make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop);
-                }else{
-                    make.top.equalTo(self.mas_top);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
-                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft);
-                }else{
-                    make.leading.equalTo(self.mas_leading);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
-                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight);
-                }else{
-                    make.trailing.equalTo(self.mas_trailing);
-                }
-                
+                make.top.equalTo(self.topLayoutConstraint);
+                make.leading.equalTo(self.leftLayoutConstraint);
+                make.trailing.equalTo(self.rightLayoutConstraint);
+
                 if(height != GKWrapContent){
                     make.height.equalTo(@(height));
                 }
-                
             }];
             
             if(self.contentView){
@@ -130,16 +169,12 @@
                     make.top.equalTo(self.topView.mas_bottom);
                 }];
             }
-            
+            _topView = topView;
         }else{
             
             self.contentView.gkTopLayoutConstraint.active = NO;
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
-                    make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop);
-                }else{
-                    make.top.equalTo(self.mas_top);
-                }
+                make.top.equalTo(self.topLayoutConstraint);
             }];
         }
     }
@@ -191,37 +226,10 @@
             }
             
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
-                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft);
-                }else{
-                    make.leading.equalTo(self.mas_leading);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
-                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight);
-                }else{
-                    make.trailing.equalTo(self.mas_trailing);
-                }
-                
-                if(self.topView){
-                    make.top.equalTo(self.topView.mas_bottom);
-                }else{
-                    if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
-                        make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop);
-                    }else{
-                        make.top.equalTo(self.mas_top);
-                    }
-                }
-                
-                if(self.bottomView){
-                    make.bottom.equalTo(self.bottomView.mas_top);
-                }else{
-                    if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom);
-                    }else{
-                        make.bottom.equalTo(self.mas_bottom);
-                    }
-                }
+                make.leading.equalTo(self.leftLayoutConstraint);
+                make.trailing.equalTo(self.rightLayoutConstraint);
+                make.top.equalTo(self.topLayoutConstraint);
+                make.bottom.equalTo(self.bottomLayoutConstraint).offset(self.bottomLayoutConstraintOffset);
             }];
         }
     }
@@ -242,32 +250,18 @@
             [_bottomView removeFromSuperview];
         }
         
-        _bottomView = bottomView;
-        if(_bottomView){
-            if(_bottomView.superview != self){
-                [_bottomView removeFromSuperview];
-                [self addSubview:_bottomView];
+        _bottomView = nil;
+        if(bottomView){
+            if(bottomView.superview != self){
+                [bottomView removeFromSuperview];
+                [self addSubview:bottomView];
             }
             
-            [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+            [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
                 
-                if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                    make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom);
-                }else{
-                    make.bottom.equalTo(self.mas_bottom);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
-                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft);
-                }else{
-                    make.leading.equalTo(self.mas_leading);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
-                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight);
-                }else{
-                    make.trailing.equalTo(self.mas_trailing);
-                }
+                make.leading.equalTo(self.leftLayoutConstraint);
+                make.trailing.equalTo(self.rightLayoutConstraint);
+                make.bottom.equalTo(self.bottomLayoutConstraint).offset(self.bottomLayoutConstraintOffset);
                 
                 if(height != GKWrapContent){
                     make.height.equalTo(@(height));
@@ -281,16 +275,12 @@
                     make.bottom.equalTo(self.bottomView.mas_top);
                 }];
             }
-            
+            _bottomView = bottomView;
         }else{
             
             self.contentView.gkBottomLayoutConstraint.active = NO;
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                    make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom);
-                }else{
-                    make.bottom.equalTo(self.mas_bottom);
-                }
+                make.bottom.equalTo(self.bottomLayoutConstraint).offset(self.bottomLayoutConstraintOffset);
             }];
         }
     }
@@ -340,17 +330,8 @@
             [self addSubview:emptyView];
             
             [emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
-                if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
-                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft);
-                }else{
-                    make.leading.equalTo(self);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
-                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight);
-                }else{
-                    make.trailing.equalTo(self);
-                }
+                make.leading.equalTo(self.leftLayoutConstraint);
+                make.trailing.equalTo(self.rightLayoutConstraint);
                 
                 if(self.topView && !(self.overlayArea & GKOverlayAreaEmptyViewTop)){
                     make.top.equalTo(self.topView.mas_bottom);
@@ -366,9 +347,9 @@
                     make.bottom.equalTo(self.bottomView.mas_top);
                 }else{
                     if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom);
+                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom).offset(self.bottomLayoutConstraintOffset);
                     }else{
-                        make.bottom.equalTo(self);
+                        make.bottom.equalTo(self).offset(self.bottomLayoutConstraintOffset);
                     }
                 }
             }];
@@ -396,17 +377,8 @@
             UIEdgeInsets insets = self.gkPageLoadingViewInsets;
             [gkPageLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideLeft && self.viewController){
-                    make.leading.equalTo(self.viewController.gkSafeAreaLayoutGuideLeft).offset(insets.left);
-                }else{
-                    make.leading.equalTo(self).offset(insets.left);
-                }
-                
-                if(self.safeLayoutGuide & GKSafeLayoutGuideRight && self.viewController){
-                    make.trailing.equalTo(self.viewController.gkSafeAreaLayoutGuideRight).offset(-insets.right);
-                }else{
-                    make.trailing.equalTo(self).offset(-insets.right);
-                }
+                make.leading.equalTo(self.leftLayoutConstraint).offset(insets.left);
+                make.trailing.equalTo(self.rightLayoutConstraint).offset(-insets.right);
                 
                 if(self.topView && !(self.overlayArea & GKOverlayAreaPageLoadingTop)){
                     make.top.equalTo(self.topView.mas_bottom).offset(insets.top);
@@ -422,9 +394,9 @@
                     make.bottom.equalTo(self.bottomView.mas_top).offset(-insets.bottom);
                 }else{
                     if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom).offset(-insets.bottom);
+                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom).offset(-insets.bottom + self.bottomLayoutConstraintOffset);
                     }else{
-                        make.bottom.equalTo(self).offset(-insets.bottom);
+                        make.bottom.equalTo(self).offset(-insets.bottom + self.bottomLayoutConstraintOffset);
                     }
                 }
             }];

@@ -16,8 +16,13 @@
 		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
 		CE4A912C243EF84100B8C1AA /* UIViewController+GKPush.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */; };
 		CE525DA723C704EA00EB082E /* GKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE525DA623C704EA00EB082E /* GKLabel.m */; };
+		CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B432480E4B400534D91 /* GKTabBarController.m */; };
+		CE549B472480E4B400534D91 /* GKTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B442480E4B400534D91 /* GKTabBarItem.m */; };
+		CE549B482480E4B400534D91 /* GKTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B452480E4B400534D91 /* GKTabBar.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
+		CE9B66D42484EE2E00825F90 /* GKNavigationTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B66D32484EE2E00825F90 /* GKNavigationTransitionAnimator.m */; };
+		CE9B66D72484F30400825F90 /* GKNavigationInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B66D62484F30400825F90 /* GKNavigationInteractiveTransition.m */; };
 		CEA569F123A0CCCC0005A5EA /* UIView+GKStateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */; };
 		CEAC863723AA106C00A0B949 /* UITextView+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAC863623AA106C00A0B949 /* UITextView+GKUtils.m */; };
 		CEAF25522341FEA30038BD89 /* GKPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF25512341FEA30038BD89 /* GKPopover.m */; };
@@ -143,6 +148,7 @@
 		CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */; };
 		CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */; };
 		CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */; };
+		CEFCCBD1246CE35000488388 /* GKPhotosBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFCCBD0246CE35000488388 /* GKPhotosBrowseViewController.m */; };
 		CEFE9084230F9D47006A0EBD /* GKImageCropSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */; };
 		CEFE9087230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9086230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m */; };
 /* End PBXBuildFile section */
@@ -177,10 +183,20 @@
 		CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GKPush.m"; sourceTree = "<group>"; };
 		CE525DA523C704EA00EB082E /* GKLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLabel.h; sourceTree = "<group>"; };
 		CE525DA623C704EA00EB082E /* GKLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLabel.m; sourceTree = "<group>"; };
+		CE549B402480E4B400534D91 /* GKTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarController.h; sourceTree = "<group>"; };
+		CE549B412480E4B400534D91 /* GKTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBar.h; sourceTree = "<group>"; };
+		CE549B422480E4B400534D91 /* GKTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarItem.h; sourceTree = "<group>"; };
+		CE549B432480E4B400534D91 /* GKTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBarController.m; sourceTree = "<group>"; };
+		CE549B442480E4B400534D91 /* GKTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBarItem.m; sourceTree = "<group>"; };
+		CE549B452480E4B400534D91 /* GKTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBar.m; sourceTree = "<group>"; };
 		CE61DD48235D5A9B00701675 /* GKMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBar.h; sourceTree = "<group>"; };
 		CE61DD49235D5A9B00701675 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
 		CE61DD4B235D5D4E00701675 /* GKMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarItem.h; sourceTree = "<group>"; };
 		CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
+		CE9B66D22484EE2E00825F90 /* GKNavigationTransitionAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNavigationTransitionAnimator.h; sourceTree = "<group>"; };
+		CE9B66D32484EE2E00825F90 /* GKNavigationTransitionAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNavigationTransitionAnimator.m; sourceTree = "<group>"; };
+		CE9B66D52484F30400825F90 /* GKNavigationInteractiveTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNavigationInteractiveTransition.h; sourceTree = "<group>"; };
+		CE9B66D62484F30400825F90 /* GKNavigationInteractiveTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNavigationInteractiveTransition.m; sourceTree = "<group>"; };
 		CEA569EF23A0CCCC0005A5EA /* UIView+GKStateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GKStateUtils.h"; sourceTree = "<group>"; };
 		CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GKStateUtils.m"; sourceTree = "<group>"; };
 		CEAC863523AA106C00A0B949 /* UITextView+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+GKUtils.h"; sourceTree = "<group>"; };
@@ -437,6 +453,8 @@
 		CEE8C8832319066700E7CA75 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
 		CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
 		CEE8C8B323191A6400E7CA75 /* GliKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliKit.h; sourceTree = "<group>"; };
+		CEFCCBCF246CE35000488388 /* GKPhotosBrowseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosBrowseViewController.h; sourceTree = "<group>"; };
+		CEFCCBD0246CE35000488388 /* GKPhotosBrowseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPhotosBrowseViewController.m; sourceTree = "<group>"; };
 		CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropSettings.m; sourceTree = "<group>"; };
 		CEFE9083230F9D47006A0EBD /* GKImageCropSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropSettings.h; sourceTree = "<group>"; };
 		CEFE9085230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewLayoutInvalidationContext.h; sourceTree = "<group>"; };
@@ -484,6 +502,19 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		CE549B3F2480E4B400534D91 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				CE549B402480E4B400534D91 /* GKTabBarController.h */,
+				CE549B432480E4B400534D91 /* GKTabBarController.m */,
+				CE549B412480E4B400534D91 /* GKTabBar.h */,
+				CE549B452480E4B400534D91 /* GKTabBar.m */,
+				CE549B422480E4B400534D91 /* GKTabBarItem.h */,
+				CE549B442480E4B400534D91 /* GKTabBarItem.m */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		CEB85F3C2325FB5C0045CB38 /* NestedScroll */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,6 +556,7 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
+				CE549B3F2480E4B400534D91 /* TabBar */,
 				CE01C510243EC7C7000D0268 /* Scan */,
 				CED0D229230BC6250057D405 /* Alert */,
 				CED0D285230BC6250057D405 /* Api */,
@@ -561,6 +593,10 @@
 				CED0D441230BED7F0057D405 /* UIViewController+GKTransition.m */,
 				CED1B1392320F4BE009C4D6C /* GKPartialPresentationController.h */,
 				CED1B13A2320F4BE009C4D6C /* GKPartialPresentationController.m */,
+				CE9B66D22484EE2E00825F90 /* GKNavigationTransitionAnimator.h */,
+				CE9B66D32484EE2E00825F90 /* GKNavigationTransitionAnimator.m */,
+				CE9B66D52484F30400825F90 /* GKNavigationInteractiveTransition.h */,
+				CE9B66D62484F30400825F90 /* GKNavigationInteractiveTransition.m */,
 			);
 			path = Transition;
 			sourceTree = "<group>";
@@ -910,6 +946,8 @@
 				CED0D291230BC6250057D405 /* GKPhotosPreviewViewController.m */,
 				CED0D293230BC6250057D405 /* GKPhotosViewController.h */,
 				CED0D290230BC6250057D405 /* GKPhotosViewController.m */,
+				CEFCCBCF246CE35000488388 /* GKPhotosBrowseViewController.h */,
+				CEFCCBD0246CE35000488388 /* GKPhotosBrowseViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1250,6 +1288,7 @@
 				CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */,
 				CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */,
 				CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */,
+				CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */,
 				CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */,
 				CED0D40A230BECD00057D405 /* NSDate+GKUtils.m in Sources */,
 				CED0D3FF230BECD00057D405 /* UIButton+GKUtils.m in Sources */,
@@ -1275,12 +1314,14 @@
 				CED0D42C230BECF20057D405 /* UIViewController+GKUtils.m in Sources */,
 				CED0D404230BECD00057D405 /* NSDictionary+GKUtils.m in Sources */,
 				CED0D3FE230BECD00057D405 /* NSString+GKUtils.m in Sources */,
+				CE9B66D42484EE2E00825F90 /* GKNavigationTransitionAnimator.m in Sources */,
 				CED0D31E230BC8780057D405 /* UICollectionView+GKUtils.m in Sources */,
 				CED0D32A230BC8780057D405 /* GKNavigationItemHelper.m in Sources */,
 				CED0D32B230BC8780057D405 /* GKTableViewController.m in Sources */,
 				CED0D428230BECF20057D405 /* UITableView+GKUtils.m in Sources */,
 				CED0D44F230BF9E80057D405 /* GKKeyboardHelper.m in Sources */,
 				CED0D32C230BC8780057D405 /* GKBaseNavigationController.m in Sources */,
+				CE549B472480E4B400534D91 /* GKTabBarItem.m in Sources */,
 				CED0D43E230BED690057D405 /* UICollectionView+GKSkeleton.m in Sources */,
 				CED0D32D230BC8780057D405 /* GKBaseViewController.m in Sources */,
 				CED0D429230BECF20057D405 /* UIView+GKOptimize.m in Sources */,
@@ -1329,11 +1370,13 @@
 				CED0D387230BC8790057D405 /* GKPhotosPreviewViewController.m in Sources */,
 				CED0D388230BC8790057D405 /* GKPhotosGridViewController.m in Sources */,
 				CED0D38D230BC8790057D405 /* GKPhotosCollection.m in Sources */,
+				CE9B66D72484F30400825F90 /* GKNavigationInteractiveTransition.m in Sources */,
 				CECE565523A88387007A96C4 /* GKButton.m in Sources */,
 				CED0D38E230BC8790057D405 /* GKPhotosOptions.m in Sources */,
 				CED0D38F230BC8790057D405 /* GKPhotosListCell.m in Sources */,
 				CED0D402230BECD00057D405 /* UICollectionReusableView+GKUtils.m in Sources */,
 				CED0D390230BC8790057D405 /* GKPhotosGridCell.m in Sources */,
+				CE549B482480E4B400534D91 /* GKTabBar.m in Sources */,
 				CED0D392230BC8790057D405 /* GKPhotosToolBar.m in Sources */,
 				CED0D393230BC8790057D405 /* GKPhotosPreviewCell.m in Sources */,
 				CEA569F123A0CCCC0005A5EA /* UIView+GKStateUtils.m in Sources */,
@@ -1379,6 +1422,7 @@
 				CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */,
 				CED0D400230BECD00057D405 /* NSAttributedString+GKUtils.m in Sources */,
 				CED0D436230BED160057D405 /* UIView+GKLoading.m in Sources */,
+				CEFCCBD1246CE35000488388 /* GKPhotosBrowseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

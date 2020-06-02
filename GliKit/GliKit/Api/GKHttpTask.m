@@ -11,6 +11,7 @@
 #import "GKHttpSessionManager.h"
 #import "NSDictionary+GKUtils.h"
 #import "UIView+GKLoading.h"
+#import <SDWebImageCompat.h>
 
 ///保存请求队列的单例
 static NSMutableSet* GKSharedTasks()
@@ -123,6 +124,7 @@ static NSMutableSet* GKSharedTasks()
     }
     
     switch (error.code) {
+        case NSURLErrorInternationalRoamingOff :
         case NSURLErrorTimedOut :
         case NSURLErrorCannotFindHost :
         case NSURLErrorCannotConnectToHost :
@@ -191,19 +193,23 @@ static NSMutableSet* GKSharedTasks()
 
 - (void)start
 {
-    if(self.isExecuting)
-        return;
-    
-    [self onStart];
-    [self.URLSessionTask resume];
+    @synchronized (self) {
+        if(self.isExecuting)
+            return;
+        
+        [self onStart];
+        [self.URLSessionTask resume];
+    }
 }
 
 - (void)cancel
 {
-    if(!_isCanceled){
-        _isCanceled = YES;
-        if(self.isSuspended || self.isExecuting){
-            [_URLSessionTask cancel];
+    @synchronized (self) {
+        if(!_isCanceled){
+            _isCanceled = YES;
+            if(self.isSuspended || self.isExecuting){
+                [_URLSessionTask cancel];
+            }
             [self onComplete];
         }
     }
@@ -219,20 +225,20 @@ static NSMutableSet* GKSharedTasks()
         [self.delegate taskDidSuccess:self];
     }
     WeakObj(self)
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_main_async_safe(^{
         StrongObj(self)
         if(self && !self.isCanceled){
             !self.successHandler ?: self.successHandler(self);
             [self onComplete];
         }
-    });
+    })
 }
 
 ///请求失败
 - (void)requestDidFail
 {
     WeakObj(self)
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_main_async_safe(^{
         StrongObj(self)
         if(self && !self.isCanceled){
             !self.willFailHandler ?: self.willFailHandler(self);
@@ -243,7 +249,7 @@ static NSMutableSet* GKSharedTasks()
             }
             [self onComplete];
         }
-    });
+    })
 }
 
 

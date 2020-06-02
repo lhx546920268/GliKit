@@ -11,34 +11,43 @@
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
 
-@interface OriginObject : NSObject
-
-- (void)originMethod;
-
-@end
-
-@implementation OriginObject
-
-- (void)originMethod
+@interface GKDStream : NSObject
 {
-    NSLog(@"originMethod");
-    NSLog(@"%@", self);
+    CFWriteStreamRef writeStream;
+    CFReadStreamRef readStream;
 }
 
-@end
-
-@interface ReplaceObject : NSObject
-
-- (void)replaceMethod;
+- (void)initStream;
 
 @end
 
-@implementation ReplaceObject
+@implementation GKDStream
 
-- (void)replaceMethod
+- (void)onTack
 {
-    NSLog(@"replaceMethod");
-    NSLog(@"%@", self);
+    NSLog(@"GKDStream onTack");
+}
+
+- (void)initStream
+{
+    CFStreamCreatePairWithSocketToHost(NULL, CFBridgingRetain(@""), 0, &readStream, &writeStream);
+    NSLog(@"readStream begin");
+    if( random() % 2 == 0){
+        [self releaseStream];
+    }
+}
+
+- (void)releaseStream
+{
+    if(readStream){
+        CFRelease(readStream);
+        readStream = NULL;
+    }
+    
+    if(writeStream){
+        CFRelease(writeStream);
+        writeStream = NULL;
+    }
 }
 
 @end
@@ -57,42 +66,50 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.opaque = NO;
         _contentView = [UIView new];
         [self addSubview:_contentView];
         
         [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
-            
-            if(@available(iOS 11, *)){
-                make.height.equalTo(frame.size.height);
-            }
+        
         }];
     }
     return self;
 }
 
-- (CGSize)intrinsicContentSize
+- (void)drawRect:(CGRect)rect
 {
-    return CGSizeMake(200, UILayoutFittingExpandedSize.height);
+//    [super drawRect:rect];
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+
+    CGContextSetFillColorWithColor(context, UIColor.redColor.CGColor);
+    CGContextAddPath(context, [UIBezierPath bezierPathWithOvalInRect:rect].CGPath);
+    CGContextDrawPath(context, kCGPathFill);
+
+    CGContextRestoreGState(context);
+    NSLog(@"drawRect");
 }
 
 @end
 
-@interface GKDRootViewController ()<CAAnimationDelegate>
+@interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate>
+
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
 
-///xx
-@property(nonatomic, strong) NSPointerArray *pointerArray;
+@property(nonatomic, strong) NSLock *lock;
 
 ///xx
-@property(nonatomic, strong) NSMapTable *mapTable;
+@property(nonatomic, strong) NSConditionLock *conditionLock;
 
 ///xx
-@property(nonatomic, strong) NSHashTable *hashTable;
+@property(nonatomic, assign) int amount;
 
 ///xx
-@property(nonatomic, strong) NSString *xxStr;
+@property(nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -101,16 +118,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.aac = @"aac";
-    self.abc = @"abc";
-    
-    self.xxStr = @"Pointer";
-    
-    self.pointerArray = [NSPointerArray pointerArrayWithOptions:NSPointerFunctionsWeakMemory];
-    self.mapTable = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsWeakMemory valueOptions:NSPointerFunctionsStrongMemory];
-    self.hashTable = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
-    
-  
+    self.conditionLock = [[NSConditionLock alloc] initWithCondition:2];
+
+    self.lock = [NSLock new];
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
@@ -126,27 +136,48 @@
   
     [self initViews];
     
-    Method method1 = class_getInstanceMethod(OriginObject.class, @selector(originMethod));
-    Method method2 = class_getInstanceMethod(ReplaceObject.class, @selector(replaceMethod));
-    method_exchangeImplementations(method1, method2);
-    
-    [OriginObject.new originMethod];
-    [ReplaceObject.new replaceMethod];
-    
-    GKDNavigationBarTitleView *titleView = [[GKDNavigationBarTitleView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, 30)];
-    UIView *view = UIView.new;
-    view.backgroundColor = UIColor.redColor;
-    view.layer.cornerRadius = 10;
-    
-    [titleView.contentView addSubview:view];
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(0);
-    }];
-    
-    self.navigationItem.titleView = titleView;
-    
+
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
-//    [self gkSetRightItemWithTitle:@"右边" action:nil];
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation
+{
+    [anInvocation invokeWithTarget:GKDStream.new];
+    NSLog(@"forwardInvocation");
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+    if(sel == @selector(onTack)){
+        NSLog(@"resolveInstanceMethod");
+        return NO;
+    }
+    
+    return [super resolveInstanceMethod:sel];
+}
+
++ (BOOL)resolveClassMethod:(SEL)sel
+{
+    if(sel == @selector(onTack)){
+        NSLog(@"resolveClassMethod");
+        return YES;
+    }
+    
+    return [super resolveClassMethod:sel];
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
+{
+    NSLog(@"methodSignatureForSelector");
+    
+    NSMethodSignature *signature = [GKDStream instanceMethodSignatureForSelector:aSelector];
+    
+    return signature;
+}
+
+- (void)doesNotRecognizeSelector:(SEL)aSelector
+{
+    NSLog(@"doesNotRecognizeSelector");
 }
 
 - (void)initViews

@@ -29,7 +29,6 @@
         make.center.equalTo(0);
     }];
     
-    
     [self.container mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(0);
         make.size.equalTo(CGSizeMake(240, 100));

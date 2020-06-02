@@ -136,9 +136,6 @@
                 
                 Class clazz1 = NSClassFromString(type);
                 value = [decoder decodeObjectOfClass:clazz1 forKey:name];
-                if(!value){
-                    value = [[clazz1 alloc] init];
-                }
             }else{
                 value = [decoder decodeObjectForKey:name];
                 if(!value){

@@ -94,7 +94,12 @@
     return [self initWithTitle:title message:message icon:icon style:style cancelButtonTitle:cancelButtonTitle otherButtonActions:actions];
 }
 
-- (instancetype)initWithTitle:(id)title message:(id)message icon:(UIImage *)icon style:(GKAlertControllerStyle)style cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonActions:(NSArray<GKAlertAction *> *)actions
+- (instancetype)initWithTitle:(id)title
+                      message:(id)message
+                         icon:(UIImage *)icon
+                        style:(GKAlertControllerStyle)style
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+           otherButtonActions:(NSArray<GKAlertAction *> *)actions
 {
     NSAssert(!title || [title isKindOfClass:[NSString class]] || [title isKindOfClass:[NSAttributedString class]], @"GKAlertController title 必须为 nil 或者 NSString 或者 NSAttributedString");
     NSAssert(!message || [message isKindOfClass:[NSString class]] || [message isKindOfClass:[NSAttributedString class]], @"GKAlertController message 必须为 nil 或者 NSString 或者 NSAttributedString");
@@ -139,11 +144,6 @@
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    
 }
 
 - (void)viewDidLoad {
@@ -619,6 +619,7 @@
     [cell.button setImage:action.icon forState:UIControlStateNormal];
     cell.button.imagePadding = action.spacing;
     cell.button.imagePosition = action.imagePosition;
+    cell.selectedBackgroundView.backgroundColor = self.props.highlightedBackgroundColor;
     
     if(indexPath.item == _destructiveButtonIndex && props.destructiveButtonBackgroundColor){
         cell.backgroundColor = props.destructiveButtonBackgroundColor;
@@ -652,18 +653,6 @@
 {
     GKAlertAction *action = [self.actions objectAtIndex:indexPath.item];
     return action.enable;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    GKAlertCell *cell = (GKAlertCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.contentView.backgroundColor = UIColor.clearColor;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    GKAlertCell *cell = (GKAlertCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.contentView.backgroundColor = self.props.highlightedBackgroundColor;
 }
 
 // MARK: - property

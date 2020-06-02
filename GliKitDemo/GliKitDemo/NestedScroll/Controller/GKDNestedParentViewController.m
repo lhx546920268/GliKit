@@ -50,17 +50,37 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 3 : 1;
+    switch (section) {
+        case 0 :
+            return 0;
+        case 1 :
+            return 3;
+        case 2 :
+            return 1;
+        default:
+            break;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return indexPath.section == 0 ? 45 : tableView.gkHeight;
+     switch (indexPath.section) {
+           case 0 :
+               return 0;
+           case 1 :
+               return 45;
+           case 2 :
+               return tableView.gkHeight;
+           default:
+               break;
+       }
+       return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -82,7 +102,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == 0){
+    if(indexPath.section == 1){
         GKDNestedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[GKDNestedTableViewCell gkNameOfClass] forIndexPath:indexPath];
         
         [cell.btn setTitle:[NSString stringWithFormat:@"第%ld个按钮", indexPath.row] forState:UIControlStateNormal];

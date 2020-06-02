@@ -135,7 +135,6 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
             if(should){
                 CGPoint contentOffset = self.collectionView.contentOffset;
                 CGPoint originInCollectionView = CGPointMake(attr.frame.origin.x - contentOffset.x, attr.frame.origin.y - contentOffset.y);
-                originInCollectionView.y -= self.collectionView.contentInset.top;
                 
                 CGRect frame = attr.frame;
                 
@@ -156,10 +155,9 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
                     }
                 }
                 attr.frame = frame;
+                //防止后面的cell覆盖header
+                attr.zIndex = NSNotFound;
             }
-            
-            ///防止后面的cell覆盖header
-            attr.zIndex = NSNotFound;
         }
     }
     

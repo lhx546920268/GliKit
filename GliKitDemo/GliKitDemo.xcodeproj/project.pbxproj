@@ -13,6 +13,8 @@
 		CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C680233B49D500C4F196 /* GKDCollectionEmptyViewController.m */; };
 		CE37C684233B4A2700C4F196 /* GKDEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C683233B4A2700C4F196 /* GKDEmptyViewController.m */; };
 		CE37C687233B4AAA00C4F196 /* GKDRowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C686233B4AAA00C4F196 /* GKDRowModel.m */; };
+		CE549B4B2481027900534D91 /* GKDTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B4A2481027900534D91 /* GKDTabBarController.m */; };
+		CE8CC363246BC9E600EE6414 /* 512x384.webp in Resources */ = {isa = PBXBuildFile; fileRef = CE8CC362246BC9E600EE6414 /* 512x384.webp */; };
 		CE97636323B59F27001A5DD3 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = CE97636223B59F27001A5DD3 /* test.html */; };
 		CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */; };
 		CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB85F4D232630210045CB38 /* GKDNestedParentViewController.m */; };
@@ -62,6 +64,9 @@
 		CE37C683233B4A2700C4F196 /* GKDEmptyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDEmptyViewController.m; sourceTree = "<group>"; };
 		CE37C685233B4AAA00C4F196 /* GKDRowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDRowModel.h; sourceTree = "<group>"; };
 		CE37C686233B4AAA00C4F196 /* GKDRowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDRowModel.m; sourceTree = "<group>"; };
+		CE549B492481027900534D91 /* GKDTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTabBarController.h; sourceTree = "<group>"; };
+		CE549B4A2481027900534D91 /* GKDTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTabBarController.m; sourceTree = "<group>"; };
+		CE8CC362246BC9E600EE6414 /* 512x384.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 512x384.webp; sourceTree = "<group>"; };
 		CE97636223B59F27001A5DD3 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
 		CEAB052E236FB17600D2A4CF /* GKDWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDWebViewController.h; sourceTree = "<group>"; };
 		CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDWebViewController.m; sourceTree = "<group>"; };
@@ -343,6 +348,7 @@
 		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CE8CC362246BC9E600EE6414 /* 512x384.webp */,
 				CEC9C321242B14A90082E631 /* GliKitDemo.entitlements */,
 				CEC2D971239F8BD400F14210 /* Alert */,
 				CEAB052C236FB15900D2A4CF /* Web */,
@@ -364,6 +370,8 @@
 				CEE8C8A0231911EB00E7CA75 /* Info.plist */,
 				CEE8C8A1231911EB00E7CA75 /* main.m */,
 				CEE8C8B423191BAE00E7CA75 /* PrefixHeader.pch */,
+				CE549B492481027900534D91 /* GKDTabBarController.h */,
+				CE549B4A2481027900534D91 /* GKDTabBarController.m */,
 			);
 			path = GliKitDemo;
 			sourceTree = "<group>";
@@ -456,6 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEC2D977239F8C0900F14210 /* GKDAlertViewController.xib in Resources */,
+				CE8CC363246BC9E600EE6414 /* 512x384.webp in Resources */,
 				CEE8C89F231911EB00E7CA75 /* LaunchScreen.storyboard in Resources */,
 				CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */,
 				CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */,
@@ -525,6 +534,7 @@
 				CEC3C842231E5612003ADE7A /* GKDSkeletonViewController.m in Sources */,
 				CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */,
 				CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */,
+				CE549B4B2481027900534D91 /* GKDTabBarController.m in Sources */,
 				CEB85F52232630560045CB38 /* GKDNestedTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

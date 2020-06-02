@@ -244,7 +244,7 @@
     }
     
     if(!viewController){
-        [self cannotFound:components.string];
+        [self cannotFound:components.string params:params];
     }else if(!alreadSetParams && params.count > 0){
         
         if(params.count > 0){
@@ -291,7 +291,7 @@
 {
     NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
     if(!components){
-        [self cannotFound:URLString];
+        [self cannotFound:URLString params:params];
         return NO;
     }
     
@@ -328,11 +328,12 @@
        
 
 ///找不到对应的页面
-- (void)cannotFound:(NSString*) URLString
+- (void)cannotFound:(NSString*) URLString params:(NSDictionary*) params
 {
 #ifdef DEBUG
     NSLog(@"Can not found viewControlelr for %@", URLString);
 #endif
+    !self.viewControllerCanNotFoundHandler ?: self.viewControllerCanNotFoundHandler(URLString, params);
 }
 
 ///判断scheme是否支持

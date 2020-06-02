@@ -11,6 +11,7 @@
 #import <GKLabel.h>
 #import <GKAlertController.h>
 #import "GKDialogViewController.h"
+#import <UIImageView+WebCache.h>
 
 @interface AppearanceView : UIView
 
@@ -83,6 +84,8 @@
     [self.imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapImageView)]];
     
     [self.label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapLabel)]];
+    
+    [self.imageView sd_setImageWithURL:[NSBundle.mainBundle URLForResource:@"512x384" withExtension:@"webp"]];
 }
 
 - (IBAction)handleSystemAlert:(id)sender {

@@ -8,8 +8,11 @@
 
 #import "GKAlertProps.h"
 #import "NSObject+GKUtils.h"
+#import "UIColor+GKTheme.h"
 
 @implementation GKAlertProps
+
+GKConvenientCopying
 
 - (instancetype)init
 {
@@ -36,7 +39,7 @@
         self.disableButtonTextColor = [UIColor grayColor];
         self.disableButtonFont = [UIFont systemFontOfSize:17];
         
-        self.highlightedBackgroundColor = [UIColor colorWithWhite:0.6 alpha:0.3];
+        self.highlightedBackgroundColor = UIColor.gkSkeletonBackgroundColor;
         
         self.cornerRadius = 8.0;
         self.contentInsets = UIEdgeInsetsMake(15, 15, 15, 15);
@@ -70,14 +73,6 @@
     });
     
     return alertStyle;
-}
-
-- (instancetype)copyWithZone:(NSZone *)zone
-{
-    GKAlertProps *style = [GKAlertProps allocWithZone:zone];
-    [style gkCopyObject:self];
-    
-    return style;
 }
 
 @end

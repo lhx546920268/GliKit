@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///方便的编码
 #define GKConvenientCoder \
 - (instancetype)initWithCoder:(NSCoder *)aDecoder{ \
     self = [super init]; \
@@ -22,11 +23,20 @@ NS_ASSUME_NONNULL_BEGIN
     [self gkEncodeWithCoder:aCoder]; \
 } \
 
+///方便的安全编码
 #define GKConvenientSecureCoder \
 GKConvenientCoder \
 + (BOOL)supportsSecureCoding \
 { \
     return YES; \
+} \
+
+///方便的拷贝
+#define GKConvenientCopying \
+- (instancetype)copyWithZone:(NSZone *)zone { \
+    id obj = [[self.class allocWithZone:zone] init]; \
+    [obj gkCopyObject:self]; \
+    return obj; \
 } \
 
 ///扩展

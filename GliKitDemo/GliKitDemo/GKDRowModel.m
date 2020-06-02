@@ -28,11 +28,21 @@
 
 @implementation GKDRowModel
 
+GKConvenientSecureCoder
+GKConvenientCopying
+
 + (instancetype)modelWithTitle:(NSString *)title clazz:(NSString*)clazz
 {
     GKDRowModel *model = GKDRowModel.new;
     model.title = title;
     model.className = clazz;
+    
+    return model;
+}
+
+- (id)mutableCopyWithZone:(nullable NSZone *)zone
+{
+    GKDRowModel *model = [GKDRowModel new];
     
     return model;
 }

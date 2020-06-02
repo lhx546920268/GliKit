@@ -115,7 +115,7 @@ static UIColor *appPlaceholderColor = nil;
 + (UIColor *)gkSkeletonBackgroundColor
 {
     if(!appSkeletonBackgroundColor){
-        appSkeletonBackgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        appSkeletonBackgroundColor = [UIColor colorWithWhite:0.92 alpha:1.0];
     }
     return appSkeletonBackgroundColor;
 }

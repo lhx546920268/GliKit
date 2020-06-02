@@ -10,21 +10,28 @@
 #import "GKSystemNavigationBar.h"
 #import "UIApplication+GKTheme.h"
 #import "UIViewController+GKUtils.h"
+#import "GKNavigationTransitionAnimator.h"
+#import "GKNavigationInteractiveTransition.h"
 
 @interface GKBaseNavigationController ()<UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 ///其他代理
 @property(nonatomic, weak) id<UINavigationControllerDelegate> otherDelegate;
 
+///设置是否可以使用滑动返回
+@property(nonatomic, assign) BOOL interactivePodEnabled;
+
 @end
 
 @implementation GKBaseNavigationController
+
+@synthesize customInteractivePopGestureRecognizer = _customInteractivePopGestureRecognizer;
 
 - (instancetype)init
 {
     self = [super initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
     if (self) {
-        self.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self initParams];
     }
     return self;
 }
@@ -33,21 +40,54 @@
 {
     self = [super initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
     if(self){
-        self.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self initParams];
         self.viewControllers = @[rootViewController];
     }
     return self;
+}
+
+///初始化参数
+- (void)initParams
+{
+    self.customTransitionDuration = 0.25;
+    self.modalPresentationStyle = UIModalPresentationFullScreen;
+}
+
+- (UIScreenEdgePanGestureRecognizer *)customInteractivePopGestureRecognizer
+{
+    if(!_customInteractivePopGestureRecognizer){
+        _customInteractivePopGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteractivePop:)];
+        _customInteractivePopGestureRecognizer.edges = UIRectEdgeLeft;
+    }
+    return _customInteractivePopGestureRecognizer;
+}
+
+- (void)setShouldUseCustomTransition:(BOOL)shouldUseCustomTransition
+{
+    if(_shouldUseCustomTransition != shouldUseCustomTransition){
+        _shouldUseCustomTransition = shouldUseCustomTransition;
+        if(_shouldUseCustomTransition){
+            if(_customInteractivePopGestureRecognizer.view == nil){
+                [self.view addGestureRecognizer:self.customInteractivePopGestureRecognizer];
+            }
+            _customInteractivePopGestureRecognizer.enabled = YES;
+        }else{
+            _customInteractivePopGestureRecognizer.enabled = NO;
+        }
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    __weak GKBaseNavigationController *weakSelf = self;
+    if(self.shouldUseCustomTransition){
+        [self.view addGestureRecognizer:self.customInteractivePopGestureRecognizer];
+    }
     
-    self.interactivePopGestureRecognizer.delegate = weakSelf;
+    self.interactivePopGestureRecognizer.delegate = self;
     [self.interactivePopGestureRecognizer addTarget:self action:@selector(handleInteractivePop:)];
-    self.delegate = weakSelf;
+    self.delegate = self;
 }
 
 - (void)setDelegate:(id<UINavigationControllerDelegate>)delegate
@@ -69,6 +109,13 @@
 - (void)handleInteractivePop:(UIScreenEdgePanGestureRecognizer*) sender
 {
     switch (sender.state) {
+        case UIGestureRecognizerStateBegan : {
+            _isInteractivePop = YES;
+            if(sender == self.customInteractivePopGestureRecognizer){
+                [self popViewControllerAnimated:YES];
+            }
+        }
+            break;
         case UIGestureRecognizerStateCancelled :
         case UIGestureRecognizerStateEnded : {
             
@@ -81,12 +128,23 @@
     }
 }
 
+///设置是否可以使用滑动返回
+- (void)setInteractivePodEnabled:(BOOL) enabled
+{
+    _interactivePodEnabled = enabled;
+    if(self.shouldUseCustomTransition){
+        self.customInteractivePopGestureRecognizer.enabled = enabled;
+    }else{
+        self.interactivePopGestureRecognizer.enabled = enabled;
+    }
+}
+
 // MARK: - Push
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if(animated){
-        self.interactivePopGestureRecognizer.enabled = NO;
+        self.interactivePodEnabled = NO;
     }
     
     [super pushViewController:viewController animated:animated];
@@ -95,7 +153,7 @@
 - (NSArray*)popToRootViewControllerAnimated:(BOOL)animated
 {
     if(animated){
-        self.interactivePopGestureRecognizer.enabled = NO;
+        self.interactivePodEnabled = NO;
     }
     
     return [super popToRootViewControllerAnimated:animated];
@@ -103,7 +161,7 @@
 
 - (NSArray*)popToViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    self.interactivePopGestureRecognizer.enabled = NO;
+    self.interactivePodEnabled = NO;
     
     return [super popToViewController:viewController animated:animated];
 }
@@ -121,7 +179,7 @@
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animate
 {
-    self.interactivePopGestureRecognizer.enabled = viewController.gkInteractivePopEnable;
+    self.interactivePodEnabled = viewController.gkInteractivePopEnable;
     if([self.otherDelegate respondsToSelector:@selector(navigationController:didShowViewController:animated:)]){
         [self.otherDelegate navigationController:self didShowViewController:viewController animated:animate];
     }
@@ -130,6 +188,29 @@
         self.transitionCompletion();
         self.transitionCompletion = nil;
     }
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    if(self.shouldUseCustomTransition){
+        GKNavigationTransitionAnimator *animator = GKNavigationTransitionAnimator.new;
+        animator.operation = operation;
+        animator.transitionDuration = self.customTransitionDuration;
+        
+        return animator;
+    }
+    return nil;
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
+{
+    if(self.shouldUseCustomTransition && self.isInteractivePop){
+        GKNavigationInteractiveTransition *transition = GKNavigationInteractiveTransition.new;
+        transition.gestureRecognizer = self.customInteractivePopGestureRecognizer;
+
+        return transition;
+    }
+    return nil;
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -144,7 +225,6 @@
         }
     }
     
-    _isInteractivePop = YES;
     return YES;
 }
 

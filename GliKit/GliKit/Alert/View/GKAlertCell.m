@@ -17,6 +17,7 @@
     self = [super initWithFrame:frame];
     if(self){
 
+        self.selectedBackgroundView = [UIView new];
         _button = [GKButton new];
         _button.adjustsImageWhenHighlighted = NO;
         _button.adjustsImageWhenDisabled = NO;

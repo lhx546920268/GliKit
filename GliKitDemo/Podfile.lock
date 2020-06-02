@@ -22,20 +22,35 @@ PODS:
     - FMDB
     - Masonry
     - SDWebImage
+  - libwebp (1.1.0):
+    - libwebp/demux (= 1.1.0)
+    - libwebp/mux (= 1.1.0)
+    - libwebp/webp (= 1.1.0)
+  - libwebp/demux (1.1.0):
+    - libwebp/webp
+  - libwebp/mux (1.1.0):
+    - libwebp/demux
+  - libwebp/webp (1.1.0)
   - Masonry (1.1.0)
   - SDWebImage (5.7.2):
     - SDWebImage/Core (= 5.7.2)
   - SDWebImage/Core (5.7.2)
+  - SDWebImageWebPCoder (0.6.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.7)
 
 DEPENDENCIES:
   - GliKit (from `../GliKit`)
+  - SDWebImageWebPCoder
 
 SPEC REPOS:
   trunk:
     - AFNetworking
     - FMDB
+    - libwebp
     - Masonry
     - SDWebImage
+    - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
   GliKit:
@@ -45,9 +60,11 @@ SPEC CHECKSUMS:
   AFNetworking: d9fdf484a3c723ec3c558a41cc5754c7e845ee77
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GliKit: ca1a88d2b81ed92c78313de6589410df32ddb175
+  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SDWebImage: d9ea4959d99c52276dfada481987018fcaea3d58
+  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
 
-PODFILE CHECKSUM: 2d5ac1ee9cd6019f797033297664089248dd8770
+PODFILE CHECKSUM: fdcf7354ce4a88c987e364084bc6bac5823b76b9
 
 COCOAPODS: 1.9.1

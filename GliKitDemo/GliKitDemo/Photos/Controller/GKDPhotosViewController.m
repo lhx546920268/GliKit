@@ -26,7 +26,6 @@
         
         GKDPhotosViewController *vc = [GKDPhotosViewController new];
         [vc setRouterParams:rounterParams];
-        
         return vc;
     }];
 }

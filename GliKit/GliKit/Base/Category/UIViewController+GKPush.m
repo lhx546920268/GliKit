@@ -9,20 +9,19 @@
 #import "UIViewController+GKUtils.h"
 #import "UIViewController+GKTransition.h"
 #import "GKPartialPresentTransitionDelegate.h"
+#import "GKTabBarController.h"
 
 @implementation NSObject (GKUIViewControllerUtils)
 
 + (UIViewController*)gkCurrentViewController
 {
+    UIViewController *parentViewControlelr = UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController;
     //刚开始启动 不一定是tabBar
-    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
-        return UIApplication.sharedApplication.delegate.window.rootViewController;
-    }
-    
-    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
-    if(parentViewControlelr == tab){
-        parentViewControlelr = tab.selectedViewController;
+    if([UIApplication.sharedApplication.delegate.window.rootViewController conformsToProtocol:@protocol(GKTabBarController)]){
+        UIViewController<GKTabBarController> *tab = (UIViewController<GKTabBarController>*)UIApplication.sharedApplication.delegate.window.rootViewController;
+        if(parentViewControlelr == tab){
+            parentViewControlelr = tab.selectedViewController;
+        }
     }
 
     if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
@@ -44,22 +43,18 @@
 
 + (UINavigationController*)gkCurrentNavigationController
 {
+    UIViewController *parentViewControlelr = UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController;
     //刚开始启动 不一定是tabBar
-    if(![UIApplication.sharedApplication.delegate.window.rootViewController isKindOfClass:[UITabBarController class]]){
-        return UIApplication.sharedApplication.delegate.window.rootViewController.navigationController;
+    if([UIApplication.sharedApplication.delegate.window.rootViewController conformsToProtocol:@protocol(GKTabBarController)]){
+        UIViewController<GKTabBarController> *tab = (UIViewController<GKTabBarController>*)UIApplication.sharedApplication.delegate.window.rootViewController;
+        if(parentViewControlelr == tab){
+            parentViewControlelr = tab.selectedViewController;
+        }
     }
-    
-    UITabBarController *tab = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-    UIViewController *parentViewControlelr = tab.gkTopestPresentedViewController;
     
     if([parentViewControlelr.gkTransitioningDelegate isKindOfClass:[GKPartialPresentTransitionDelegate class]]){
         parentViewControlelr = parentViewControlelr.presentingViewController;
     }
-    
-    if(parentViewControlelr == tab){
-        parentViewControlelr = tab.selectedViewController;
-    }
-
     
     if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
         return (UINavigationController*)parentViewControlelr;

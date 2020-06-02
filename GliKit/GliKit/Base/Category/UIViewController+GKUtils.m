@@ -17,15 +17,10 @@
 #import "UIColor+GKUtils.h"
 #import "UIImage+GKTheme.h"
 #import "UIView+GKStateUtils.h"
+#import "GKTabBarController.h"
 
 ///是否可以活动返回
 static char GKInteractivePopEnableKey;
-
-///是否显示返回按钮
-static char GKShowBackItemKey;
-
-///导航栏按钮tintColor
-static char GKTintColorKey;
 
 @implementation UIViewController (Utils)
 
@@ -166,6 +161,9 @@ static char GKTintColorKey;
 
 @end
 
+///是否显示返回按钮
+static char GKShowBackItemKey;
+
 @implementation UIViewController (GKNavigationBarBackItem)
 
 - (void)setGkShowBackItem:(BOOL)gkShowBackItem
@@ -286,6 +284,9 @@ static char GKTintColorKey;
 }
 
 @end
+
+///导航栏按钮tintColor
+static char GKTintColorKey;
 
 @implementation UIViewController (GKNavigationBarItemUtils)
 
@@ -455,6 +456,40 @@ static char GKTintColorKey;
 + (UIBarButtonItem*)gkBarItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action
 {
     return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:target action:action];
+}
+
+@end
+
+static char GKHasTabBarKey;
+
+@implementation UIViewController (GKTabBarExtension)
+
+- (GKTabBarController *)gkTabBarController
+{
+    UIViewController *vc = UIApplication.sharedApplication.delegate.window.rootViewController;
+    if([vc isKindOfClass:GKTabBarController.class]){
+        return (GKTabBarController*)vc;
+    }
+    
+    vc = self.gkRootPresentingViewController;
+    if([vc isKindOfClass:GKTabBarController.class]){
+        return (GKTabBarController*)vc;
+    }
+    
+    return nil;
+}
+
+- (void)setGkHasTabBar:(BOOL)gkHasTabBar
+{
+    objc_setAssociatedObject(self, &GKHasTabBarKey, @(gkHasTabBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)gkHasTabBar
+{
+    if([self.parentViewController isKindOfClass:UINavigationController.class]){
+        return self.parentViewController.gkHasTabBar;
+    }
+    return [objc_getAssociatedObject(self, &GKHasTabBarKey) boolValue];
 }
 
 @end

@@ -63,7 +63,7 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
     GKOverlayAreaAll = GKOverlayAreaTop | GKOverlayAreaBottom,
 };
 
-@class GKBaseViewController;
+@class GKBaseViewController, MASLayoutConstraint;
 
 /**
  基础容器视图
@@ -96,6 +96,23 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
 
 ///布局完成回调
 @property(nullable, nonatomic, copy) void(^layoutSubviewsHandler)(void);
+
+///顶部约束 如果有topView，就是 topView.mas_bottom，否则如果包含safeLayoutGuide.top，就是 safeAreaTop，否则就是self.mas_top
+@property(nonatomic, readonly) MASLayoutConstraint *topLayoutConstraint;
+
+///底部约束 如果有bottomView，就是 bottomView.mas_top
+///如果包含safeLayoutGuide.bottom，就是 safeAreaBottom
+///否则就是self.mas_bottom，如果有tabBar 还会减去 tabBar.height
+@property(nonatomic, readonly) MASLayoutConstraint *bottomLayoutConstraint;
+
+///底部约束偏移量
+@property(nonatomic, readonly) CGFloat bottomLayoutConstraintOffset;
+
+///左边约束 如果包含safeLayoutGuide.left，就是 safeAreaLeft，否则就是self.mas_leading
+@property(nonatomic, readonly) MASLayoutConstraint *leftLayoutConstraint;
+
+///右边约束 如果包含safeLayoutGuide.right，就是 safeAreaRight，否则就是self.mas_trail
+@property(nonatomic, readonly) MASLayoutConstraint *rightLayoutConstraint;
 
 ///初始化
 - (void)initParams;

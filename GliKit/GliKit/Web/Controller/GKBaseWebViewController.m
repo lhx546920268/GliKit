@@ -31,7 +31,7 @@ static WKProcessPool *sharedProcessPool;
 @property(nonatomic, strong) GKProgressView *progressView;
 
 /**
- 获取userAgent的 webView，因为 在iOS 12中，在调用 navigatior.userAgent 后，设置customUserAgent会无效
+ 获取userAgent的 webView，因为 在iOS 12中，在调用 navigatior.userAgent 后，设置customUserAgent会不生效
  */
 @property(nonatomic, strong) WKWebView *userAgentWebView;
 

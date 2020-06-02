@@ -17,6 +17,11 @@
 
 @implementation GKDEmptyViewController
 
+- (void)dealloc
+{
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

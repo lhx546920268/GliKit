@@ -145,7 +145,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    @throw [[NSException alloc] initWithName:@"GKTableViewControllerNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", self.gkNameOfClass, NSStringFromSelector(_cmd)] userInfo:nil];
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
