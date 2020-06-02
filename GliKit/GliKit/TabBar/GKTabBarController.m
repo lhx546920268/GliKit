@@ -57,6 +57,9 @@
 @implementation GKTabBarController
 
 @synthesize tabBar = _tabBar;
+@synthesize normalColor = _normalColor;
+@synthesize selectedColor = _selectedColor;
+@synthesize font = _font;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,9 +67,6 @@
     if(self){
         _selectedIndex = NSNotFound;
         _selectedItemIndex = NSNotFound;
-        _normalColor = [UIColor gkColorFromHex:@"95959a"];
-        _font = [UIFont systemFontOfSize:12];
-        _selectedColor = UIColor.gkThemeColor;
     }
     
     return self;
@@ -172,44 +172,65 @@
 - (void)setNormalColor:(UIColor *)normalColor
 {
     if(![_normalColor isEqualToColor:normalColor]){
-        if(!normalColor)
-            normalColor = [UIColor gkColorFromHex:@"95959a"];
         _normalColor = normalColor;
+        
         for(NSUInteger i = 0;i < self.tabBarItems.count;i ++){
             if(i != self.tabBar.selectedIndex){
                 GKTabBarItem *item = self.tabBarItems[i];
-                item.imageView.tintColor = normalColor;
-                item.textLabel.textColor = normalColor;
+                item.imageView.tintColor = self.normalColor;
+                item.textLabel.textColor = self.normalColor;
             }
         }
     }
+}
+
+- (UIColor *)normalColor
+{
+    if(!_normalColor){
+        _normalColor = [UIColor gkColorFromHex:@"95959a"];
+    }
+    return _normalColor;
 }
 
 - (void)setSelectedColor:(UIColor *)selectedColor
 {
     if(![_selectedColor isEqualToColor:selectedColor]){
         _selectedColor = selectedColor;
-        if(!_selectedColor)
-            _selectedColor = UIColor.gkThemeColor;
+        
         if(self.tabBar.selectedIndex < self.tabBarItems.count){
             GKTabBarItem *item = self.tabBarItems[self.tabBar.selectedIndex];
-            item.imageView.tintColor = _selectedColor;
-            item.textLabel.textColor = _selectedColor;
+            item.imageView.tintColor = self.selectedColor;
+            item.textLabel.textColor = self.selectedColor;
         }
     }
+}
+
+- (UIColor *)selectedColor
+{
+    if(!_selectedColor){
+        _selectedColor = UIColor.gkThemeColor;
+    }
+    return _selectedColor;
 }
 
 - (void)setFont:(UIFont *)font
 {
     if(![_font isEqual:font]){
-        if(!font)
-            font = [UIFont systemFontOfSize:12];
         _font = font;
+        
         for(NSUInteger i = 0;i < self.tabBarItems.count;i ++){
             GKTabBarItem *item = self.tabBarItems[i];
-            item.textLabel.font = _font;
+            item.textLabel.font = self.font;
         }
     }
+}
+
+- (UIFont *)font
+{
+    if(!_font){
+        _font = [UIFont systemFontOfSize:12];
+    }
+    return _font;
 }
 
 //设置item 选中

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKTabBar, GKTabBarItem;
 
 /**
@@ -37,12 +39,12 @@
 /**
  选项卡按钮
  */
-@property(nonatomic, copy) NSArray<GKTabBarItem*> *items;
+@property(nonatomic, copy, nullable) NSArray<GKTabBarItem*> *items;
 
 /**
  背景视图 default is 'nil' ,如果设置，大小会调节到选项卡的大小
  */
-@property(nonatomic, strong) UIView *backgroundView;
+@property(nonatomic, strong, nullable) UIView *backgroundView;
 
 /**
  设置选中 default is 'NSNotFound'
@@ -52,7 +54,7 @@
 /**
  选中按钮的背景颜色 default is 'nil'
  */
-@property(nonatomic, strong) UIColor *selectedButtonBackgroundColor;
+@property(nonatomic, strong, nullable) UIColor *selectedButtonBackgroundColor;
 
 /**
  分割线
@@ -62,7 +64,7 @@
 /**
  代理
  */
-@property(nonatomic, weak) id<GKTabBarDelegate> delegate;
+@property(nonatomic, weak, nullable) id<GKTabBarDelegate> delegate;
 
 /**
  通过tabBar按钮构建
@@ -70,7 +72,7 @@
  @param items 按钮信息
  @return 一个实例
  */
-- (instancetype)initWithItems:(NSArray<GKTabBarItem*>*) items;
+- (instancetype)initWithItems:(nullable NSArray<GKTabBarItem*>*) items;
 
 /**
  设置选项卡边缘值
@@ -78,6 +80,8 @@
  @param badgeValue 边缘值
  @param index 下标
  */
-- (void)setBadgeValue:(NSString*) badgeValue forIndex:(NSInteger) index;
+- (void)setBadgeValue:(nullable NSString*) badgeValue forIndex:(NSInteger) index;
 
 @end
+
+NS_ASSUME_NONNULL_END

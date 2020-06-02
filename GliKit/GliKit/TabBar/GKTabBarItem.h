@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKBadgeValueView;
 
 /**
@@ -23,12 +25,12 @@
 /**
  边缘数值
  */
-@property(nonatomic, copy) NSString *badgeValue;
+@property(nonatomic, copy, nullable) NSString *badgeValue;
 
 /**
  边缘视图
  */
-@property(nonatomic, readonly) GKBadgeValueView *badge;
+@property(nonatomic, readonly, nullable) GKBadgeValueView *badge;
 
 /**
  图片
@@ -41,3 +43,5 @@
 - (void)initBadge;
 
 @end
+
+NS_ASSUME_NONNULL_END
