@@ -162,18 +162,19 @@
 {
     //文件不存在
     NSString *filePath = [self reactNativeBundlePath];
+    NSURL *URL = nil;
     if(![[NSFileManager defaultManager] fileExistsAtPath:filePath]){
         
         //压缩包不存在
         NSString *zipPath = [self reactNativeZipPath];
         if([[NSFileManager defaultManager] fileExistsAtPath:zipPath]){
             [self unpackZip];
-        }else{
-            
+            return;
         }
     }else{
-        !self.completionHandler ?: self.completionHandler([NSURL fileURLWithPath:filePath], self.moduleName, nil);
+        URL = [NSURL fileURLWithPath:filePath];
     }
+    !self.completionHandler ?: self.completionHandler(URL, self.moduleName, nil);
 }
 
 ///解压

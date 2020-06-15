@@ -166,7 +166,7 @@
                 
                 self.contentView.gkTopLayoutConstraint.active = NO;
                 [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.topView.mas_bottom);
+                    make.top.equalTo(topView.mas_bottom);
                 }];
             }
             _topView = topView;
@@ -266,13 +266,12 @@
                 if(height != GKWrapContent){
                     make.height.equalTo(@(height));
                 }
-                
             }];
             
             if(self.contentView){
                 self.contentView.gkBottomLayoutConstraint.active = NO;
                 [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.equalTo(self.bottomView.mas_top);
+                    make.bottom.equalTo(bottomView.mas_top);
                 }];
             }
             _bottomView = bottomView;

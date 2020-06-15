@@ -10,7 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static NSString *const constStr = @"a";
+
 @interface GKDRowModel : NSObject<NSSecureCoding, NSMutableCopying>
+{
+   @private NSString *_stringValue;
+}
 
 ///xx
 @property(nonatomic, strong) NSString *title;

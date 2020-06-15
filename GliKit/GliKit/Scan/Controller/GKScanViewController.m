@@ -93,11 +93,14 @@
         switch (status) {
             case AVAuthorizationStatusNotDetermined : {
                 [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-                    if(granted){
-                        [selfWeak setupSession];
-                    }else{
-                        [selfWeak onAuthorizationDenied];
-                    }
+                    //可能不在主线程
+                    dispatch_main_async_safe(^{
+                        if(granted){
+                            [selfWeak setupSession];
+                        }else{
+                            [selfWeak onAuthorizationDenied];
+                        }
+                    })
                 }];
             }
                 break;
@@ -262,7 +265,16 @@
     }
     
     //设置可扫描的类型
-    self.output.metadataObjectTypes = self.supportedTypes;
+    NSArray *supportedTypes = self.supportedTypes;
+    NSMutableArray *availableTypes = [NSMutableArray arrayWithCapacity:supportedTypes.count];
+    NSArray *availableMetadataObjectTypes = self.output.availableMetadataObjectTypes;
+    
+    for(NSString *type in supportedTypes){
+        if([availableMetadataObjectTypes containsObject:type]){
+            [availableTypes addObject:type];
+        }
+    }
+    self.output.metadataObjectTypes = availableTypes;
     [self setRectOfInterest];
     
     //要判断是否支持，否则会蹦

@@ -28,6 +28,9 @@
 //strong 使用
 #define StrongObj(o) __strong typeof(o) o = GKConcat(o, Weak);
 
+//未实现某个方法
+#define GKThrowNotImplException @throw [[NSException alloc] initWithName:@"GKNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd)] userInfo:nil];
+
 #import <Masonry.h>
 
 #endif /* GKBaseDefines_h */

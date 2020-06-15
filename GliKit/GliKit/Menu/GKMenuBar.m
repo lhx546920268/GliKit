@@ -15,6 +15,7 @@
 #import "UIColor+GKTheme.h"
 #import "UIApplication+GKTheme.h"
 #import "UIView+GKUtils.h"
+#import "GKBaseDefines.h"
 
 @interface GKMenuBar ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -154,8 +155,7 @@
 
 - (CGFloat)onMeasureItems
 {
-    @throw [NSException exceptionWithName:@"CASubClassNotImplExpection" reason:[NSString stringWithFormat:@"%@ 必须重写 %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd)] userInfo:nil];
-    return 0;
+    GKThrowNotImplException
 }
 
 - (CGFloat)contentWidth
@@ -191,8 +191,7 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    @throw [NSException exceptionWithName:@"CASubClassNotImplExpection" reason:[NSString stringWithFormat:@"%@ 必须重写 %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd)] userInfo:nil];
-    return nil;
+    GKThrowNotImplException
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

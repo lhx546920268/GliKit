@@ -12,6 +12,7 @@
 #import "UIColor+GKTheme.h"
 #import "UIView+GKUtils.h"
 #import "NSObject+GKUtils.h"
+#import "GKBaseDefines.h"
 
 @interface GKTableViewController ()
 
@@ -72,8 +73,6 @@
             _tableView.backgroundColor = UIColor.gkGrayBackgroundColor;
         }
         _tableView.gkEmptyViewDelegate = self;
-        
-        
         
         self.scrollView = _tableView;
     }
@@ -145,12 +144,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    @throw [[NSException alloc] initWithName:@"GKTableViewControllerNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", self.gkNameOfClass, NSStringFromSelector(_cmd)] userInfo:nil];
+    GKThrowNotImplException
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    @throw [[NSException alloc] initWithName:@"GKTableViewControllerNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", self.gkNameOfClass, NSStringFromSelector(_cmd)] userInfo:nil];
+    GKThrowNotImplException
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -158,17 +157,23 @@
     cell.separatorInset = self.separatorEdgeInsets;
     cell.layoutMargins = self.separatorEdgeInsets;
     
-    [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
+    if(self.shouldUseEstimatedHeight){
+        [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    [tableView gkSetHeaderHeight:@(view.gkHeight) forSection:section];
+    if(self.shouldUseEstimatedHeight){
+        [tableView gkSetHeaderHeight:@(view.gkHeight) forSection:section];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
-    [tableView gkSetFooterHeight:@(view.gkHeight) forSection:section];
+    if(self.shouldUseEstimatedHeight){
+        [tableView gkSetFooterHeight:@(view.gkHeight) forSection:section];
+    }
 }
 
 // MARK: - 屏幕旋转

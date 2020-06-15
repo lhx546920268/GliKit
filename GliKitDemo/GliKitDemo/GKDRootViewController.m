@@ -10,6 +10,7 @@
 #import "GKDRowModel.h"
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
+#import <AFNetworking.h>
 
 @interface GKDStream : NSObject
 {
@@ -84,7 +85,7 @@
 
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
-
+    
     CGContextSetFillColorWithColor(context, UIColor.redColor.CGColor);
     CGContextAddPath(context, [UIBezierPath bezierPathWithOvalInRect:rect].CGPath);
     CGContextDrawPath(context, kCGPathFill);
@@ -118,9 +119,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.conditionLock = [[NSConditionLock alloc] initWithCondition:2];
-
-    self.lock = [NSLock new];
+    NSNumber *stra = @1;
+    NSNumber *strb = @1;
+    
+    if([stra isEqual:strb]){
+        NSLog(@"isEqual");
+    }
+    
+    if(stra == strb){
+        NSLog(@"==");
+    }
+    
+    UILabel *label = UILabel.new;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = @"这是一个顶部";
+    [self setTopView:label height:45];
+    
+    
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
@@ -136,8 +151,14 @@
   
     [self initViews];
     
-
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
+    
+    label = [UILabel new];
+    label.backgroundColor = UIColor.whiteColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = @"这是一个底部";
+    
+    [self setBottomView:label height:45];
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation

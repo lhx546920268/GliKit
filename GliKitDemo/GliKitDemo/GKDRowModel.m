@@ -47,4 +47,9 @@ GKConvenientCopying
     return model;
 }
 
+- (NSString *)description
+{
+    return _stringValue;
+}
+
 @end

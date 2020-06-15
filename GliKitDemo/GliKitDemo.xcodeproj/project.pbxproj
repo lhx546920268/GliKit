@@ -673,6 +673,10 @@
 				CODE_SIGN_ENTITLEMENTS = GliKitDemo/GliKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F4797G69ZD;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;
@@ -694,6 +698,10 @@
 				CODE_SIGN_ENTITLEMENTS = GliKitDemo/GliKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F4797G69ZD;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;

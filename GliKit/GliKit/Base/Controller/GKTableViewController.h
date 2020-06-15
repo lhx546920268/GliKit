@@ -39,6 +39,11 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
 @property(nonatomic, readonly) Class tableViewClass;
 
 /**
+ 是否有自动计算高度 default NO
+ */
+@property(nonatomic, assign) BOOL shouldUseEstimatedHeight;
+
+/**
  构造方法
  *@param style 列表风格
  *@return 一个初始化的 GKTableViewController 对象
