@@ -91,7 +91,7 @@
     [super initViews];
     
     CGFloat size = self.gkNavigationBarHeight;
-    _checkBox = [[GKPhotosCheckBox alloc] initWithFrame:CGRectMake(0, 0, size - UIApplication.gkNavigationBarMargin * 2, size)];
+    _checkBox = [[GKPhotosCheckBox alloc] initWithFrame:CGRectMake(0, 0, size - UIApplication.gkNavigationBarMargin * 2 + 6, size)];
     [_checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
     _checkBox.contentInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
     [self gkSetRightItemWithCustomView:_checkBox];

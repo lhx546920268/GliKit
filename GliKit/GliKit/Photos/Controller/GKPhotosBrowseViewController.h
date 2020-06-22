@@ -19,11 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
 ///图片路径
 @property(nonatomic, copy, nullable) NSURL *URL;
 
+///缩略图链接
+@property(nonatomic, copy, nullable) NSURL *thumbnailURL;
+
 ///通过图片初始化
 + (instancetype)modelWithImage:(UIImage*) image;
 
 ///通过图片路径初始化
 + (instancetype)modelWithURL:(NSString*) URL;
+
+///通过图片路径初始化
++ (instancetype)modelWithURL:(NSString*) URL thumnbailURL:(NSString*) thumbnailURL;
 
 @end
 
@@ -54,18 +60,25 @@ NS_ASSUME_NONNULL_BEGIN
 ///动画时间长度 default is '0.25'
 @property(nonatomic, assign) CGFloat animateDuration;
 
+///图片间隔 default 15
+@property(nonatomic, assign) CGFloat imageSpacing;
+
 ///图片信息
-@property(nonatomic, readonly) NSArray<GKPhotosBrowseModel*> *sources;
+@property(nonatomic, readonly) NSArray<GKPhotosBrowseModel*> *models;
 
 ///当前显示的图片下标
 @property(nonatomic, readonly) NSUInteger visibleIndex;
 
-///获取动画的视图，如果需要显示和隐藏动画， index 图片下标
+///获取动画的视图，如果需要显示和隐藏动画， index 图片下标，将使用到view.frame 和 view.contentMode
 @property(nonatomic, copy, nullable) UIView *(^animatedViewHandler)(NSUInteger index);
 
 ///代理
 @property(nonatomic, weak, nullable) id<GKPhotosBrowseViewControllerDelegate> delegate;
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 /**
  通过图片初始化
@@ -74,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param visibleIndex 当前可见位置
  @return 一个实例
  */
-- (instancetype)initWithImages:(NSArray<UIImage*>*) images visibleIndex:(NSInteger) visibleIndex;
+- (instancetype)initWithImages:(NSArray<UIImage*>*) images visibleIndex:(NSInteger) visibleIndex NS_DESIGNATED_INITIALIZER;
 
 /**
  通过图片路径初始化
@@ -83,7 +96,16 @@ NS_ASSUME_NONNULL_BEGIN
  @param visibleIndex 当前可见位置
  @return 一个实例
  */
-- (instancetype)initWithURLs:(NSArray<NSString*>*) URLs visibleIndex:(NSInteger) visibleIndex;
+- (instancetype)initWithURLs:(NSArray<NSString*>*) URLs visibleIndex:(NSInteger) visibleIndex NS_DESIGNATED_INITIALIZER;
+
+/**
+ 通过图片数据初始化
+ 
+ @param models 图片数据
+ @param visibleIndex 当前可见位置
+ @return 一个实例
+ */
+- (instancetype)initWithModels:(NSArray<GKPhotosBrowseModel*>*) models visibleIndex:(NSInteger) visibleIndex NS_DESIGNATED_INITIALIZER;
 
 ///显示
 - (void)showAnimated:(BOOL) animated;

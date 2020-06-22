@@ -23,7 +23,7 @@
 @interface GKScanViewController ()<AVCaptureMetadataOutputObjectsDelegate>
 
 ///二维码扫描背景
-@property(nonatomic, strong) GKScanBackgroundView *scanBackgroundView;
+@property (nonatomic, strong) GKScanBackgroundView *scanBackgroundView;
 
 ///摄像头调用会话
 @property (nonatomic, strong) AVCaptureSession *session;
@@ -36,6 +36,9 @@
 
 ///摄像头图像预览
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
+
+///解码队列
+@property (nonatomic, strong) dispatch_queue_t decodeQueue;
 
 @end
 
@@ -253,8 +256,8 @@
     self.input = [[AVCaptureDeviceInput alloc] initWithDevice:[self backFacingCamera] error:nil];
     self.output = [[AVCaptureMetadataOutput alloc] init];
 
-    dispatch_queue_t videoQueue = dispatch_queue_create("queue", NULL);
-    [self.output setMetadataObjectsDelegate:self queue:videoQueue];
+    self.decodeQueue = dispatch_queue_create("com.glikit.scanDecode", NULL);
+    [self.output setMetadataObjectsDelegate:self queue:self.decodeQueue];
     
     self.session = [[AVCaptureSession alloc] init];
     if ([self.session canAddInput:self.input]) {
@@ -333,8 +336,10 @@
 
                 dispatch_main_async_safe((^(void){
                     
-                    self.pausing = YES;
-                    [self processResult:code.stringValue];
+                    if(!self.pausing){
+                        self.pausing = YES;
+                        [self processResult:code.stringValue];
+                    }
                 }));
             }
         }

@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import <GKAppUtils.h>
 #import <AFNetworking.h>
+#import "GKDEmitterView.h"
 
 @interface GKDStream : NSObject
 {
@@ -112,6 +113,9 @@
 ///xx
 @property(nonatomic, strong) UIView *titleView;
 
+///xx
+@property(nonatomic, strong) dispatch_queue_t queue;
+
 @end
 
 @implementation GKDRootViewController
@@ -119,46 +123,66 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSNumber *stra = @1;
-    NSNumber *strb = @1;
+    NSData *data = [NSData dataWithContentsOfURL:[NSBundle.mainBundle URLForResource:@"meat_1" withExtension:@"jpg"]];
+    UIImage *image = [UIImage imageWithData:data scale:1.0];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [self.view addSubview:imageView];
     
-    if([stra isEqual:strb]){
-        NSLog(@"isEqual");
-    }
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(0);
+        make.top.equalTo(0);
+    }];
     
-    if(stra == strb){
-        NSLog(@"==");
-    }
+    data = [NSData dataWithContentsOfURL:[NSBundle.mainBundle URLForResource:@"meat_2" withExtension:@"jpg"]];
+       image = [UIImage imageWithData:data scale:2.0];
+       UIImageView *imageView2 = [[UIImageView alloc] initWithImage:image];
+       [self.view addSubview:imageView2];
+       
+       [imageView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.centerX.equalTo(0);
+           make.top.equalTo(imageView.mas_bottom).offset(20);
+       }];
     
-    UILabel *label = UILabel.new;
-    label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"这是一个顶部";
-    [self setTopView:label height:45];
+    data = [NSData dataWithContentsOfURL:[NSBundle.mainBundle URLForResource:@"meat_2" withExtension:@"jpg"]];
+          image = [UIImage imageWithData:data scale:3.0];
+          UIImageView *imageView3 = [[UIImageView alloc] initWithImage:image];
+          [self.view addSubview:imageView3];
+          
+          [imageView3 mas_makeConstraints:^(MASConstraintMaker *make) {
+              make.centerX.equalTo(0);
+              make.top.equalTo(imageView2.mas_bottom).offset(20);
+              make.size.equalTo(CGSizeMake(213, 213));
+          }];
     
+//    UILabel *label = UILabel.new;
+//    label.textAlignment = NSTextAlignmentCenter;
+//    label.text = @"这是一个顶部";
+//    [self setTopView:label height:45];
+//
+//    self.queue = dispatch_queue_create("xx", NULL);
+//    self.navigationItem.title = GKAppUtils.appName;
+//    self.datas = @[
+//                   [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
+//                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
+//                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+//                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+//                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+//                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+//                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+//                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+//                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+//                   ];
+//
+//    [self initViews];
+//
+//    [self gkSetLeftItemWithTitle:@"左边" action:nil];
     
-    self.navigationItem.title = GKAppUtils.appName;
-    self.datas = @[
-                   [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
-                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
-                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
-                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
-                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
-                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
-                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
-                   ];
-  
-    [self initViews];
-    
-    [self gkSetLeftItemWithTitle:@"左边" action:nil];
-    
-    label = [UILabel new];
-    label.backgroundColor = UIColor.whiteColor;
-    label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"这是一个底部";
-    
-    [self setBottomView:label height:45];
+//    GKDEmitterView *view = GKDEmitterView.new;
+//    [self.view addSubview:view];
+//
+//    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(0);
+//    }];
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation

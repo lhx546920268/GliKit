@@ -15,7 +15,10 @@
 #import "NSObject+GKUtils.h"
 #import <UIImageView+WebCache.h>
 #import <UIView+WebCache.h>
+#import "SDWebImagePrefetcher.h"
 #import <SDImageCache.h>
+#import <GKProgressView.h>
+#import <UIViewController+GKSafeAreaCompatible.h>
 
 @implementation GKPhotosBrowseModel
 
@@ -29,8 +32,14 @@
 
 + (instancetype)modelWithURL:(NSString *)URL
 {
+    return [self modelWithURL:URL thumnbailURL:nil];
+}
+
++ (instancetype)modelWithURL:(NSString *)URL thumnbailURL:(NSString *)thumbnailURL
+{
     GKPhotosBrowseModel *model = [GKPhotosBrowseModel new];
     model.URL = [NSURL URLWithString:URL];
+    model.thumbnailURL = [NSURL URLWithString:thumbnailURL];
     
     return model;
 }
@@ -56,11 +65,14 @@
 ///图片
 @property(nonatomic, readonly) UIImageView *imageView;
 
+///加载进度条
+@property(nonatomic, readonly) GKProgressView *progressView;
+
 ///代理
 @property(nonatomic, weak) id<GKPhotosBrowseCellDelegate> delegate;
 
 ///重新布局图片当图片加载完成时
-- (void)layoutImageAfterLoad;
+- (void)layoutImageAfterLoadWithAnimated:(BOOL) animated;
 
 ///计算imageView的位置大小
 - (CGRect)rectFromImage:(UIImage*) image;
@@ -84,10 +96,14 @@
         _scrollView.delegate = self;
         _scrollView.scrollsToTop = NO;
         _scrollView.bouncesZoom = YES;
+        _scrollView.alwaysBounceVertical = NO;
+        _scrollView.alwaysBounceHorizontal = NO;
         [self.contentView addSubview:_scrollView];
         
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        _imageView.sd_imageIndicator = [SDWebImageActivityIndicator new];
+        SDWebImageActivityIndicator *indicator = [SDWebImageActivityIndicator new];
+        indicator.indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        _imageView.sd_imageIndicator = indicator;
         [_scrollView addSubview:_imageView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -144,15 +160,23 @@
     _imageView.center = CGPointMake(x + _imageView.gkWidth / 2.0, y + _imageView.gkHeight / 2.0);
 }
 
-- (void)layoutImageAfterLoad
+- (void)layoutImageAfterLoadWithAnimated:(BOOL) animated
 {
+    CGRect frame;
     UIImage *image = self.imageView.image;
     if(image){
-        _imageView.frame = [self rectFromImage:image];
+        frame = [self rectFromImage:image];
         _scrollView.contentSize = CGSizeMake(_scrollView.gkWidth, MAX(_scrollView.gkHeight, _imageView.gkHeight));
     }else{
-        _imageView.frame = CGRectMake(0, 0, _scrollView.gkWidth, _scrollView.gkHeight);
+        frame = CGRectMake(0, 0, _scrollView.gkWidth, _scrollView.gkHeight);
         _scrollView.contentSize = CGSizeZero;
+    }
+    if(animated){
+        [UIView animateWithDuration:0.25 animations:^{
+            self.imageView.frame = frame;
+        }];
+    }else{
+        self.imageView.frame = frame;
     }
 }
 
@@ -189,30 +213,29 @@
 
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images visibleIndex:(NSInteger)visibleIndex
 {
-    self = [super init];
-    if(self){
-        NSMutableArray *models = [NSMutableArray arrayWithCapacity:images.count];
-        for(UIImage *image in images){
-            [models addObject:[GKPhotosBrowseModel modelWithImage:image]];
-        }
-        
-        _sources = [models copy];
-        _visibleIndex = visibleIndex;
+    NSMutableArray *models = [NSMutableArray arrayWithCapacity:images.count];
+    for(UIImage *image in images){
+        [models addObject:[GKPhotosBrowseModel modelWithImage:image]];
     }
-    
-    return self;
+    return [self initWithModels:models visibleIndex:visibleIndex];
 }
 
 - (instancetype)initWithURLs:(NSArray<NSString *> *)URLs visibleIndex:(NSInteger)visibleIndex
 {
+    NSMutableArray *models = [NSMutableArray arrayWithCapacity:URLs.count];
+    for(NSString *URL in URLs){
+        [models addObject:[GKPhotosBrowseModel modelWithURL:URL]];
+    }
+    return [self initWithModels:models visibleIndex:visibleIndex];
+}
+
+- (instancetype)initWithModels:(NSArray<GKPhotosBrowseModel *> *)models visibleIndex:(NSInteger)visibleIndex
+{
     self = [super init];
     if(self){
-        NSMutableArray *models = [NSMutableArray arrayWithCapacity:URLs.count];
-        for(NSString *URL in URLs){
-            [models addObject:[GKPhotosBrowseModel modelWithURL:URL]];
-        }
-        _sources = [models copy];
+        _models = [models copy];
         _visibleIndex = visibleIndex;
+        _imageSpacing = 15;
     }
     
     return self;
@@ -222,12 +245,16 @@
 {
     [super viewDidLoad];
     
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.flowLayout.minimumLineSpacing = self.imageSpacing;
+    self.flowLayout.sectionInset = UIEdgeInsetsMake(0, self.imageSpacing / 2.0, 0, self.imageSpacing / 2.0);
+    self.flowLayout.itemSize = UIScreen.mainScreen.bounds.size;
+    
     self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
     self.animateDuration = 0.25;
     _backgroundView = [UIView new];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.userInteractionEnabled = NO;
-    _backgroundView.alpha = 0;
     [self.view addSubview:_backgroundView];
     
     [_backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -241,24 +268,29 @@
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.alwaysBounceHorizontal = YES;
+    self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.collectionView.pagingEnabled = YES;
+    self.collectionView.alwaysBounceVertical = NO;
+    [self.view addSubview:self.collectionView];
     
-    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    
-    [self initViews];
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(-self.imageSpacing / 2.0);
+        make.trailing.equalTo(self.imageSpacing / 2.0);
+        make.top.bottom.equalTo(0);
+    }];
     
     _pageLabel = [UILabel new];
     _pageLabel.textAlignment = NSTextAlignmentCenter;
     _pageLabel.textColor = [UIColor whiteColor];
-    _pageLabel.font = [UIFont systemFontOfSize:14];
+    _pageLabel.font = [UIFont systemFontOfSize:18];
     _pageLabel.shadowColor = [UIColor blackColor];
-    _pageLabel.text = [NSString stringWithFormat:@"%d/%d", (int)_visibleIndex + 1, (int)self.sources.count];
+    _pageLabel.text = [NSString stringWithFormat:@"%d/%d", (int)_visibleIndex + 1, (int)self.models.count];
     _pageLabel.hidden = YES;
     [self.view addSubview:_pageLabel];
     
     [_pageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.equalTo(0);
-        make.bottom.equalTo(-20);
+        make.bottom.equalTo(self.gkSafeAreaLayoutGuideBottom).offset(-20);
     }];
 }
 
@@ -297,7 +329,6 @@
     
     self.shouldShowAnimate = animated;
     if(!animated){
-        self.backgroundView.alpha = 1.0;
         [self showCompletion];
     }
 }
@@ -347,10 +378,16 @@
                 }
             }];
         }else{
+            UIViewContentMode contentMode = UIViewContentModeScaleAspectFill;
+            if(self.animatedViewHandler){
+                contentMode = self.animatedViewHandler(self.visibleIndex).contentMode;
+            }
             self.isAnimating = YES;
             [UIView animateWithDuration:self.animateDuration animations:^(void){
                 
                 cell.imageView.frame = rect;
+                cell.imageView.contentMode = contentMode;
+                cell.imageView.clipsToBounds = YES;
      
             }completion:^(BOOL finish){
                 
@@ -397,12 +434,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.sources.count;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return collectionView.frame.size;
+    return self.models.count;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -412,20 +444,42 @@
     cell.scrollView.zoomScale = 1.0;
     cell.scrollView.contentSize = cell.bounds.size;
     
-    GKPhotosBrowseModel *model = self.sources[indexPath.item];
+    GKPhotosBrowseModel *model = self.models[indexPath.item];
     WeakObj(self)
     
     if(model.image){
         [cell.imageView sd_cancelCurrentImageLoad];
         cell.imageView.image = model.image;
         if(!self.shouldShowAnimate){
-            [cell layoutImageAfterLoad];
+            [cell layoutImageAfterLoadWithAnimated:NO];
         }
     }else{
-        [cell.imageView sd_setImageWithURL:model.URL placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            if(!selfWeak.shouldShowAnimate)
-            {
-                [cell layoutImageAfterLoad];
+
+        BOOL hasThumbnail = model.thumbnailURL && [SDImageCache.sharedImageCache diskImageDataExistsWithKey:model.thumbnailURL.absoluteString];
+        BOOL hasImage = [SDImageCache.sharedImageCache diskImageDataExistsWithKey:model.URL.absoluteString];
+        
+        SDWebImageOptions options = 0;
+        //加载缩率图
+        if(!hasImage && hasThumbnail){
+            [cell.imageView sd_setImageWithURL:model.thumbnailURL
+                              placeholderImage:nil
+                                       options:SDWebImageQueryDiskDataSync | SDWebImageQueryMemoryDataSync
+                                     completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if(!selfWeak.shouldShowAnimate){
+                    [cell layoutImageAfterLoadWithAnimated:NO];
+                }
+            }];
+            //有缩率图，加载原图时不要把缩率图清空
+            options = SDWebImageDelayPlaceholder;
+        }
+        
+        //加载原图
+        [cell.imageView sd_setImageWithURL:model.URL
+                          placeholderImage:nil
+                                   options:options
+                                 completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if(!selfWeak.shouldShowAnimate){
+                [cell layoutImageAfterLoadWithAnimated:cacheType == SDImageCacheTypeNone];
             }
         }];
     }
@@ -441,11 +495,14 @@
         self.shouldShowAnimate = NO;
         
         UIImage *image = nil;
-        GKPhotosBrowseModel *model = self.sources[indexPath.item];
+        GKPhotosBrowseModel *model = self.models[indexPath.item];
         if(model.image){
             image = model.image;
         }else{
             image = [SDImageCache.sharedImageCache imageFromCacheForKey:model.URL.absoluteString];
+            if(!image){
+                image = [SDImageCache.sharedImageCache imageFromCacheForKey:model.thumbnailURL.absoluteString];
+            }
         }
         
         GKPhotosBrowseCell *cell1 = (GKPhotosBrowseCell*)cell;
@@ -461,15 +518,26 @@
             [UIView animateWithDuration:self.animateDuration animations:^(void){
                 
                 cell1.imageView.image = image;
-                self.backgroundView.alpha = 1.0;
                 cell1.imageView.frame = frame;
             }completion:^(BOOL finish){
                 
-                [cell1 layoutImageAfterLoad];
+                [cell1 layoutImageAfterLoadWithAnimated:NO];
                 [self showCompletion];
             }];
-        }else{
-            self.backgroundView.alpha = 1.0;
+        }
+    }
+    
+    [self prefetchImageForIndex:indexPath.item - 1];
+    [self prefetchImageForIndex:indexPath.item + 1];
+}
+
+///预加载图片
+- (void)prefetchImageForIndex:(NSInteger) index
+{
+    if(index >= 0 && index < self.models.count){
+        GKPhotosBrowseModel *model = self.models[index];
+        if(model.URL){
+            [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:@[model.URL]];
         }
     }
 }
@@ -479,7 +547,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSInteger index = scrollView.bounds.origin.x / scrollView.gkWidth;
-    _pageLabel.text = [NSString stringWithFormat:@"%d/%d", (int)index + 1, (int)self.sources.count];
+    _pageLabel.text = [NSString stringWithFormat:@"%d/%d", (int)index + 1, (int)self.models.count];
 }
 
 // MARK: - GKPhotosBrowseCellDelegate

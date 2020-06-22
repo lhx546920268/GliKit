@@ -75,7 +75,7 @@
     CGContextSetLineWidth(context, lineWidth);
     
     CGFloat radius = MIN(rect.size.width - _contentInsets.left - _contentInsets.right, rect.size.height - _contentInsets.top - _contentInsets.bottom) / 2.0;
-    CGPoint center = CGPointMake(_contentInsets.left + radius, _contentInsets.top + radius);
+    CGPoint center = CGPointMake(rect.size.width / 2, rect.size.height / 2);
     
     if(self.checked){
         CGContextSetFillColorWithColor(context, UIColor.gkThemeColor.CGColor);
