@@ -239,7 +239,7 @@
         resultRect = CGRectMake(x, y, contentSize.width, contentSize.height + arrowHeight);
         _arrowPoint = CGPointMake(MIN(relateX - x + relateWidth * 0.5, resultRect.origin.x + resultRect.size.width - _cornerRadius - _arrowSize.width), 0);
         self.originalPoint = CGPointMake(x + _arrowPoint.x, y);
-    }else if((superHeight - (relateY + relateHeight)) * scale < contentSize.height){
+    }else if(relateY * scale < contentSize.height){
         _arrowDirection = GKPopoverArrowDirectionBottom;
 
         CGFloat x = relateX + relateWidth * 0.5 - contentSize.width * 0.5;

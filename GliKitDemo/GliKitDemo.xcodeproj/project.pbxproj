@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9D579E2A746EA0B9579B1F7C /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A5D8FBA0C349B9F190F7C10 /* libPods-GliKitDemo.a */; };
+		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
 		CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */; };
 		CE37C67E233B49C000C4F196 /* GKDTableEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67D233B49C000C4F196 /* GKDTableEmptyViewController.m */; };
 		CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C680233B49D500C4F196 /* GKDCollectionEmptyViewController.m */; };
@@ -51,6 +51,7 @@
 		CEC6AF44245671E0006B22BB /* GKDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC6AF43245671E0006B22BB /* GKDialogViewController.m */; };
 		CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */; };
 		CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */; };
+		CEDEC98B24B6A669001B623D /* icon_filled_brand_head_dark.svg in Resources */ = {isa = PBXBuildFile; fileRef = CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */; };
 		CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C893231911E900E7CA75 /* AppDelegate.m */; };
 		CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE8C89B231911EB00E7CA75 /* Assets.xcassets */; };
 		CEE8C89F231911EB00E7CA75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */; };
@@ -62,7 +63,6 @@
 
 /* Begin PBXFileReference section */
 		4FD52519E97361498535A3AF /* libPods-GliKitApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A5D8FBA0C349B9F190F7C10 /* libPods-GliKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85141611C461B48B8263ABC7 /* Pods-GliKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.release.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.release.xcconfig"; sourceTree = "<group>"; };
 		B183DC3A9632FD62AABE12BD /* Pods-GliKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.debug.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.debug.xcconfig"; sourceTree = "<group>"; };
 		C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitDemo.release.xcconfig"; path = "Target Support Files/Pods-GliKitDemo/Pods-GliKitDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,6 +135,7 @@
 		CED1B13E2320FAC1009C4D6C /* GKDTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTransitionViewController.h; sourceTree = "<group>"; };
 		CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTransitionViewController.m; sourceTree = "<group>"; };
 		CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDTransitionViewController.xib; sourceTree = "<group>"; };
+		CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = icon_filled_brand_head_dark.svg; sourceTree = "<group>"; };
 		CEE8C88F231911E900E7CA75 /* GliKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GliKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEE8C892231911E900E7CA75 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CEE8C893231911E900E7CA75 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 		CEE8C8B523191CE400E7CA75 /* GKDPhotosCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDPhotosCollectionViewCell.h; sourceTree = "<group>"; };
 		CEE8C8B623191CE400E7CA75 /* GKDPhotosCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDPhotosCollectionViewCell.m; sourceTree = "<group>"; };
 		DD740E3E13DC2B05CC565386 /* Pods-GliKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitDemo.debug.xcconfig"; path = "Target Support Files/Pods-GliKitDemo/Pods-GliKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,7 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D579E2A746EA0B9579B1F7C /* libPods-GliKitDemo.a in Frameworks */,
+				1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,8 +180,8 @@
 		9BB3C0682925525264F42BDB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7A5D8FBA0C349B9F190F7C10 /* libPods-GliKitDemo.a */,
 				4FD52519E97361498535A3AF /* libPods-GliKitApp.a */,
+				EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -415,6 +417,7 @@
 		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */,
 				CEB37EBB249B6A8D00C15460 /* meat_1.jpg */,
 				CEB37EBC249B6A8D00C15460 /* meat_2.jpg */,
 				CEB37EB9249B698A00C15460 /* meat.jpg */,
@@ -552,6 +555,7 @@
 				CEB37EB4249B42EF00C15460 /* confeti2.png in Resources */,
 				CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */,
 				CEB37EB2249B42EF00C15460 /* star_white.png in Resources */,
+				CEDEC98B24B6A669001B623D /* icon_filled_brand_head_dark.svg in Resources */,
 				CEC3C852231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib in Resources */,
 				CE97636323B59F27001A5DD3 /* test.html in Resources */,
 				CEB37EB7249B42EF00C15460 /* ic_launcher.png in Resources */,
@@ -764,9 +768,31 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;
+				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				ORDER_FILE = "${SRCROOT}/lb.order";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/GliKit\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
+					"-fsanitize-coverage=func,trace-pc-guard",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.luohaixiong.GliKitDemo;
 				PRODUCT_NAME = GliKitDemo;
@@ -789,9 +815,31 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;
+				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				ORDER_FILE = "${SRCROOT}/lb.order";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/GliKit\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
+					"-fsanitize-coverage=func,trace-pc-guard",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.luohaixiong.GliKitDemo;
 				PRODUCT_NAME = GliKitDemo;

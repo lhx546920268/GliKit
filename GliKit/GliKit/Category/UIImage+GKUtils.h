@@ -75,6 +75,8 @@ static const CGFloat GKImageScale = 2.0;
 
 // MARK: - resize
 
+///可使用 AVFoundation 中的AVMakeRectWithAspectRatioInsideRect
+
 /**
  通过给定的大小，获取等比例缩小后的图片尺寸
  *@param size 要缩小的图片最大尺寸

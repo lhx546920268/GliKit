@@ -7,7 +7,7 @@
 //
 
 #import "UIView+GKAutoLayout.h"
-#import <Masonry.h>
+#import <Masonry/Masonry.h>
 
 @implementation UIView (GKAutoLayout)
 

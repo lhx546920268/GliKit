@@ -117,7 +117,7 @@
         width = UIScreen.gkWidth;
     }
     
-    if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost > width){
+    if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost >= width){
         ///这一行已经没有位置可以放item了
         if(self.outmostItemInfos.count < 2){
             point.x = -1;
@@ -131,16 +131,14 @@
                
                 point.y = frame.size.height + frame.origin.y + self.layoutAttributes.minimumLineSpacing;
 
-                CGRect rect;
+                CGRect rect = CGRectMake(point.x, point.y, size.width, size.height);
                 if(size.width < frame.size.width){
                     ///只挡住上面的item的一部分
                     [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:CGRectMake(point.x + size.width + self.layoutAttributes.minimumInteritemSpacing, frame.origin.y, frame.size.width - size.width - self.layoutAttributes.minimumInteritemSpacing, frame.size.height)]];
                     
-                    rect = CGRectMake(point.x, point.y, size.width, size.height);
                     [self.outmostItemInfos insertObject:[NSValue valueWithCGRect:rect] atIndex:index];
                 }else{
                     ///已完全挡住上一个item
-                    rect = CGRectMake(point.x, point.y, size.width, size.height);
                     [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:rect]];
                 }
                 [self updateHighestFrame:rect];
@@ -422,6 +420,7 @@
 {
     [self.attributes removeAllObjects];
 
+    NSNotificationCenter
     NSInteger numberOfSections = [self.collectionView numberOfSections];
 
     //原始属性，如果不实现代理，则使用这些值
@@ -451,7 +450,6 @@
     NSAssert(sizeForItemDelegate, @"必须实现 collectionViewFlowFillLayout:itemSizeForIndexPath:");
 #endif
 
-    [self.collectionView.superview layoutIfNeeded];
     CGFloat width = self.collectionView.bounds.size.width;
     if(width == 0){
         width = UIScreen.gkWidth;

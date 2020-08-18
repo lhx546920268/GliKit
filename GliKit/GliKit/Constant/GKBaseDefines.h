@@ -31,6 +31,6 @@
 //未实现某个方法
 #define GKThrowNotImplException @throw [[NSException alloc] initWithName:@"GKNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd)] userInfo:nil];
 
-#import <Masonry.h>
+#import <Masonry/Masonry.h>
 
 #endif /* GKBaseDefines_h */

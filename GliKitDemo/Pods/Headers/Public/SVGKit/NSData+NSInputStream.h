@@ -1,0 +1,1 @@
+../../../SVGKit/Source/Foundation additions/NSData+NSInputStream.h

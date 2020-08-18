@@ -7,7 +7,7 @@
 //
 
 #import "GKAlertCell.h"
-#import <Masonry.h>
+#import <Masonry/Masonry.h>
 #import "GKButton.h"
 
 @implementation GKAlertCell

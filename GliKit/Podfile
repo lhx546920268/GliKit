@@ -7,11 +7,11 @@ target 'GliKit' do
   # use_frameworks!
 
   # Pods for GliKit
-  pod 'SDWebImage'
-  pod 'Masonry'
-  pod 'AFNetworking'
+  pod 'SDWebImage', '~> 5.7.4'
+  pod 'Masonry', '~> 1.1.0'
+  pod 'AFNetworking', '~> 4.0.1'
   
   #数据库
-  pod 'FMDB'
+  pod 'FMDB', '~> 2.7.5'
 
 end

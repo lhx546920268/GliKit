@@ -158,6 +158,7 @@ static NSMutableSet* GKSharedTasks()
 {
     [GKSharedTasks() addObject:self];
     if(self.shouldShowloadingHUD){
+        [UIApplication.sharedApplication.keyWindow endEditing:YES];
         if(self.view != nil){
             [self.view gkShowProgressWithText:nil delay:self.loadingHUDDelay];
         }

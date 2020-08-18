@@ -14,6 +14,7 @@
 		CE1194282368122800987274 /* UICollectionView+GKCellSize.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2B7230BC6250057D405 /* UICollectionView+GKCellSize.m */; };
 		CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C671233B410100C4F196 /* UIImage+GKTheme.m */; };
 		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
+		CE4805F924C53DE900606778 /* GKBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4805F824C53DE800606778 /* GKBannerView.m */; };
 		CE4A912C243EF84100B8C1AA /* UIViewController+GKPush.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */; };
 		CE525DA723C704EA00EB082E /* GKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE525DA623C704EA00EB082E /* GKLabel.m */; };
 		CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B432480E4B400534D91 /* GKTabBarController.m */; };
@@ -179,6 +180,8 @@
 		CE37C672233B410100C4F196 /* UIFont+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C673233B410100C4F196 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
 		CE37C674233B410100C4F196 /* UIImage+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GKTheme.h"; sourceTree = "<group>"; };
+		CE4805F724C53DE800606778 /* GKBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKBannerView.h; sourceTree = "<group>"; };
+		CE4805F824C53DE800606778 /* GKBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKBannerView.m; sourceTree = "<group>"; };
 		CE4A912A243EF84100B8C1AA /* UIViewController+GKPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GKPush.h"; sourceTree = "<group>"; };
 		CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GKPush.m"; sourceTree = "<group>"; };
 		CE525DA523C704EA00EB082E /* GKLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLabel.h; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 		CED0D1ED230BC6250057D405 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				CE4805F724C53DE800606778 /* GKBannerView.h */,
+				CE4805F824C53DE800606778 /* GKBannerView.m */,
 				CECE565323A88387007A96C4 /* GKButton.h */,
 				CECE565423A88387007A96C4 /* GKButton.m */,
 				CED0D1F9230BC6250057D405 /* GKBadgeValueView.h */,
@@ -1406,6 +1411,7 @@
 				CED0D3BB230BC8790057D405 /* GKBaseWebViewController.m in Sources */,
 				CED0D3C7230BC8790057D405 /* GKCountDownButton.m in Sources */,
 				CED0D3CE230BC8790057D405 /* GKDivider.m in Sources */,
+				CE4805F924C53DE900606778 /* GKBannerView.m in Sources */,
 				CED0D407230BECD00057D405 /* UIFont+GKUtils.m in Sources */,
 				CED0D3CF230BC8790057D405 /* GKNavigationBarTitleView.m in Sources */,
 				CED0D3D3230BC8790057D405 /* GKProgressView.m in Sources */,

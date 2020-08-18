@@ -56,7 +56,7 @@
         for(NSUInteger i = 0;i < _items.count;i ++){
             GKTabBarItem *item = _items[i];
             [item addTarget:self action:@selector(handleTouchupInside:) forControlEvents:UIControlEventTouchUpInside];
-            [self insertSubview:item atIndex:self.separator];
+            [self insertSubview:item belowSubview:self.separator];
             
             [item mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(0);

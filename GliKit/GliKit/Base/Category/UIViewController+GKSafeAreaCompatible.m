@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+GKSafeAreaCompatible.h"
-#import <Masonry.h>
+#import <Masonry/Masonry.h>
 
 @implementation UIViewController (GKSafeAreaCompatible)
 

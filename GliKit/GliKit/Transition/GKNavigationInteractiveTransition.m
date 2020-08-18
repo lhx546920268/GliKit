@@ -76,7 +76,6 @@
             //更新UI位置
             CGFloat percent = [self percentForGesture:pan];
             [self updateInteractiveTransition:percent];
-            UIView *containerView = self.transitionContext.containerView;
                
             UIView *fromView = [self.transitionContext viewForKey:UITransitionContextFromViewKey];
             UIView *toView = [self.transitionContext viewForKey:UITransitionContextToViewKey];

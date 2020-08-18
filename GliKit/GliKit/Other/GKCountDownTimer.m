@@ -79,6 +79,11 @@
 - (void)start
 {
     @synchronized(self){
+        
+        if(_isExcuting){
+            return;
+        }
+        
         _isCancel = NO;
         _ongoingTimeInterval = 0;
         if(self.timeToCountDown <= 0 || self.timeInterval <= 0){
@@ -88,7 +93,13 @@
         
         self.timeToStop = self.timeToCountDown;
         _isExcuting = YES;
-        [self startTimer];
+        if(self.shouldStartImmediately){
+            [self timerFired];
+        }
+        
+        if(_isExcuting){
+            [self startTimer];
+        }
     }
 }
 
@@ -101,14 +112,8 @@
     if(!self.weakProxy){
         self.weakProxy = [GKWeakProxy weakProxyWithTarget:self];
     }
-    self.timer = [NSTimer timerWithTimeInterval:self.timeInterval target:self.weakProxy selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    if(self.shouldStartImmediately){
-        [self timerFired:self.timer];
-    }
-    
-    if(self.isExcuting){
-        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-    }
+    self.timer = [NSTimer timerWithTimeInterval:self.timeInterval target:self.weakProxy selector:@selector(timerFired) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)stop
@@ -133,9 +138,9 @@
 }
 
 ///计时器触发
-- (void)timerFired:(id) sender
+- (void)timerFired
 {
-    if(!_isCancel){
+    if(_isExcuting){
         _ongoingTimeInterval += self.timeInterval;
         if(self.timeToCountDown == GKCountDownInfinite){
             !self.tickHandler ?: self.tickHandler(GKCountDownInfinite);

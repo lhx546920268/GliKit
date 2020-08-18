@@ -23,13 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSURL *thumbnailURL;
 
 ///通过图片初始化
-+ (instancetype)modelWithImage:(UIImage*) image;
++ (instancetype)modelWithImage:(nullable UIImage*) image;
 
 ///通过图片路径初始化
-+ (instancetype)modelWithURL:(NSString*) URL;
++ (instancetype)modelWithURL:(nullable NSString*) URL;
 
 ///通过图片路径初始化
-+ (instancetype)modelWithURL:(NSString*) URL thumnbailURL:(NSString*) thumbnailURL;
++ (instancetype)modelWithURL:(nullable NSString*) URL thumnbailURL:(nullable NSString*) thumbnailURL;
 
 @end
 

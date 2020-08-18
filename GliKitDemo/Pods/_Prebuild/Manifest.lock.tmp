@@ -1,0 +1,70 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GliKit (0.0.1):
+    - AFNetworking (~> 4.0.0)
+    - FMDB (~> 2.7.5)
+    - Masonry (~> 1.1.0)
+    - SDWebImage (~> 5.7.2)
+  - libwebp (1.1.0):
+    - libwebp/demux (= 1.1.0)
+    - libwebp/mux (= 1.1.0)
+    - libwebp/webp (= 1.1.0)
+  - libwebp/demux (1.1.0):
+    - libwebp/webp
+  - libwebp/mux (1.1.0):
+    - libwebp/demux
+  - libwebp/webp (1.1.0)
+  - Masonry (1.1.0)
+  - SDWebImage (5.7.4):
+    - SDWebImage/Core (= 5.7.4)
+  - SDWebImage/Core (5.7.4)
+  - SDWebImageWebPCoder (0.6.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.7)
+
+DEPENDENCIES:
+  - GliKit (from `../GliKit`)
+  - SDWebImageWebPCoder
+
+SPEC REPOS:
+  trunk:
+    - AFNetworking
+    - FMDB
+    - libwebp
+    - Masonry
+    - SDWebImage
+    - SDWebImageWebPCoder
+
+EXTERNAL SOURCES:
+  GliKit:
+    :path: "../GliKit"
+
+SPEC CHECKSUMS:
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GliKit: 5d381643dcb3c1ad3771634d9408bcd499c53c8f
+  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDWebImage: 48b88379b798fd1e4298f95bb25d2cdabbf4deb3
+  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
+
+PODFILE CHECKSUM: 259095456ae95f18abc67aaef2628490ebdf9c9a
+
+COCOAPODS: 1.9.1

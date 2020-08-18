@@ -12,6 +12,8 @@
 #import <GKHttpTask.h>
 #import <SDImageWebPCoder.h>
 #import <SDImageCodersManager.h>
+#import <SDWebImageSVGCoder.h>
+
 
 static void uncaughtExceptionHandler(NSException *exception){
     NSLog(@"%@", exception);
@@ -37,6 +39,8 @@ static void uncaughtExceptionHandler(NSException *exception){
     [self.window makeKeyAndVisible];
     
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
+    [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
+    
 
     return YES;
 }
@@ -51,6 +55,8 @@ static void uncaughtExceptionHandler(NSException *exception){
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    
 }
 
 
@@ -67,6 +73,5 @@ static void uncaughtExceptionHandler(NSException *exception){
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
 
 @end

@@ -17,8 +17,8 @@
 #import <UIView+WebCache.h>
 #import "SDWebImagePrefetcher.h"
 #import <SDImageCache.h>
-#import <GKProgressView.h>
-#import <UIViewController+GKSafeAreaCompatible.h>
+#import "GKProgressView.h"
+#import "UIViewController+GKSafeAreaCompatible.h"
 
 @implementation GKPhotosBrowseModel
 
@@ -211,6 +211,9 @@
 
 @synthesize visibleIndex = _visibleIndex;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
+
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images visibleIndex:(NSInteger)visibleIndex
 {
     NSMutableArray *models = [NSMutableArray arrayWithCapacity:images.count];
@@ -228,6 +231,8 @@
     }
     return [self initWithModels:models visibleIndex:visibleIndex];
 }
+
+#pragma clang diagnostic pop
 
 - (instancetype)initWithModels:(NSArray<GKPhotosBrowseModel *> *)models visibleIndex:(NSInteger)visibleIndex
 {

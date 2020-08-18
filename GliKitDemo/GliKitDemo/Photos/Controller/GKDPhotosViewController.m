@@ -104,8 +104,7 @@
     };
 
     [controller showAnimated:YES];
-    
-    return;
+
     
     if(indexPath.item < self.results.count){
         
