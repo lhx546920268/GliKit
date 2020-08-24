@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) UICollectionViewScrollDirection scrollDirection;
 
 /**
- 动画间隔 default is '2.0'
+ 动画间隔 default is '5.0'
  */
 @property(nonatomic, assign) NSTimeInterval animatedTimeInterval;
 

@@ -198,6 +198,14 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
  */
 - (void)setPercent:(float) percent forIndex:(NSUInteger) index;
 
+/**
+ 通过下标获取按钮
+ 
+ @param index 按钮下标
+ @return 如果没有或者UI开没开始布局则返回nil
+ */
+- (__kindof UICollectionViewCell*)cellForIndex:(NSUInteger) index;
+
 @end
 
 NS_ASSUME_NONNULL_END

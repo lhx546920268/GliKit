@@ -106,7 +106,7 @@
 - (CGFloat)bottomLayoutConstraintOffset
 {
     if(!_bottomView && self.viewController.gkHasTabBar){
-        return -self.viewController.gkTabBarHeight;
+         return -self.viewController.gkTabBarHeight;
     }
     return 0;
 }
@@ -166,7 +166,7 @@
                 
                 self.contentView.gkTopLayoutConstraint.active = NO;
                 [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(topView.mas_bottom);
+                    make.top.equalTo(topView.mas_bottom).offset(self.contentInsets.top);
                 }];
             }
             _topView = topView;
@@ -174,7 +174,7 @@
             
             self.contentView.gkTopLayoutConstraint.active = NO;
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.topLayoutAttribute);
+                make.top.equalTo(self.topLayoutAttribute).offset(self.contentInsets.top);
             }];
         }
     }
@@ -226,10 +226,10 @@
             }
             
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.leading.equalTo(self.leftLayoutAttribute);
-                make.trailing.equalTo(self.rightLayoutAttribute);
-                make.top.equalTo(self.topLayoutAttribute);
-                make.bottom.equalTo(self.bottomLayoutAttribute).offset(self.bottomLayoutConstraintOffset);
+                make.leading.equalTo(self.leftLayoutAttribute).offset(self.contentInsets.left);
+                make.trailing.equalTo(self.rightLayoutAttribute).offset(-self.contentInsets.right);
+                make.top.equalTo(self.topLayoutAttribute).offset(self.contentInsets.top);
+                make.bottom.equalTo(self.bottomLayoutAttribute).offset(self.bottomLayoutConstraintOffset - self.contentInsets.bottom);
             }];
         }
     }
@@ -271,7 +271,7 @@
             if(self.contentView){
                 self.contentView.gkBottomLayoutConstraint.active = NO;
                 [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.equalTo(bottomView.mas_top);
+                    make.bottom.equalTo(bottomView.mas_top).offset(-self.contentInsets.bottom);
                 }];
             }
             _bottomView = bottomView;
@@ -279,7 +279,7 @@
             
             self.contentView.gkBottomLayoutConstraint.active = NO;
             [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(self.bottomLayoutAttribute).offset(self.bottomLayoutConstraintOffset);
+                make.bottom.equalTo(self.bottomLayoutAttribute).offset(self.bottomLayoutConstraintOffset - self.contentInsets.bottom);
             }];
         }
     }

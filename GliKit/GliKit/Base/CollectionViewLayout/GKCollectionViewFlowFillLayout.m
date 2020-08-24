@@ -420,7 +420,6 @@
 {
     [self.attributes removeAllObjects];
 
-    NSNotificationCenter
     NSInteger numberOfSections = [self.collectionView numberOfSections];
 
     //原始属性，如果不实现代理，则使用这些值

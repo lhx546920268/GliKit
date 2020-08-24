@@ -100,7 +100,8 @@
 - (void)initialization
 {
     if(!_collectionView){
-        _animatedTimeInterval = 2;
+        
+        _animatedTimeInterval = 5;
         _enableScrollCircularly = YES;
         _showPageControl = NO;
         _enableAutoScroll = YES;

@@ -85,6 +85,9 @@ typedef NS_OPTIONS(NSUInteger, GKOverlayArea){
 ///内容视图
 @property(nonatomic, strong, nullable) UIView *contentView;
 
+///内容视图间距 default is `zero`
+@property(nonatomic, assign) UIEdgeInsets contentInsets;
+
 ///关联的viewController
 @property(nonatomic, weak, readonly, nullable) GKBaseViewController *viewController;
 

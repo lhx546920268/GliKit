@@ -102,7 +102,12 @@
         
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         SDWebImageActivityIndicator *indicator = [SDWebImageActivityIndicator new];
-        indicator.indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        indicator.indicatorView.color = UIColor.whiteColor;
+        if(@available(iOS 13, *)){
+            indicator.indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
+        }else{
+            indicator.indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        }
         _imageView.sd_imageIndicator = indicator;
         [_scrollView addSubview:_imageView];
         

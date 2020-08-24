@@ -276,7 +276,7 @@
 ///获取下划线x轴位置
 - (CGFloat)indicatorXForIndex:(NSUInteger) index
 {
-    UICollectionViewCell *cell = [self itemForIndex:index];
+    UICollectionViewCell *cell = [self cellForIndex:index];
     GKMenuBarItem *item = self.items[index];
     
     CGFloat x = 0;
@@ -411,7 +411,7 @@
 }
 
 ///通过下标获取按钮
-- (UICollectionViewCell*)itemForIndex:(NSUInteger) index
+- (__kindof UICollectionViewCell*)cellForIndex:(NSUInteger) index
 {
     if(index >= _items.count || !self.measureEnable)
         return nil;

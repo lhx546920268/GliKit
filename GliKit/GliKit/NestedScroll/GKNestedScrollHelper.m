@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, GKNestedScrollContentOffsetStatus){
     GKNestedScrollContentOffsetStatusBounceBack,
 };
 
-///减速筛检比例
+///减速衰减比例
 static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
 
 @interface GKNestedScrollHelper ()
@@ -161,12 +161,12 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     CGFloat speed = velocity.y;
     while (speed > 0.01) {
         
-        speed *= 0.81;
+        speed *= GKNestedScrollSlowDampingRaito;
         i ++;
     }
     
     //估算滑动距离超过容器可滑动距离的最大值时，模拟系统的滑动
-    
+    //解决当快速滑动的时候 两个ScrollView 不连贯的问题
     if(floor(i * 100.0f * velocity.y + scrollView.contentOffset.y) > maxOffsetY){
         //模拟系统的滑动减速衰减
         self.parentMaxOffset = maxOffsetY;
@@ -207,7 +207,7 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     //每帧 毫秒数
     self.frames ++;
     if(self.frames * self.timePerFrame >= 100){
-        //没100毫秒衰减一次
+        //每100毫秒衰减一次
         self.frames = 0;
         self.currentSpeed *= GKNestedScrollSlowDampingRaito;
     }

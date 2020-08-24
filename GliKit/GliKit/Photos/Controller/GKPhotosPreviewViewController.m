@@ -50,6 +50,15 @@
 
 @implementation GKPhotosPreviewViewController
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        _imageSpacing = 15.0;
+    }
+    return self;
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -83,6 +92,8 @@
     self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
     
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.flowLayout.minimumLineSpacing = self.imageSpacing;
+    self.flowLayout.sectionInset = UIEdgeInsetsMake(0, self.imageSpacing / 2.0, 0, self.imageSpacing / 2.0);
     
     [self registerClass:GKPhotosPreviewCell.class];
     self.collectionView.showsVerticalScrollIndicator = NO;
@@ -307,7 +318,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return collectionView.frame.size;
+    CGSize size = collectionView.frame.size;
+    size.width -= self.imageSpacing;
+    return size;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

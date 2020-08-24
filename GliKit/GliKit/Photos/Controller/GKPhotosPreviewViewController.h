@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///相册预览
 @interface GKPhotosPreviewViewController : GKCollectionViewController
 
+///图片间隔 default 15
+@property(nonatomic, assign) CGFloat imageSpacing;
+
 ///选项
 @property(nonatomic, strong) GKPhotosOptions *photosOptions;
 

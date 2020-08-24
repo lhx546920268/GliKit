@@ -97,6 +97,15 @@
     }
 }
 
+- (void)onSelectItemAtIndex:(NSUInteger)index oldIndex:(NSUInteger)oldIndex
+{
+    //取消以前的选中状态
+    GKTabMenuBarCell *cell = [self cellForIndex:oldIndex];
+    cell.tick = NO;
+    cell = [self cellForIndex:index];
+    cell.tick = YES;
+}
+
 // MARK: - Property
 
 - (UIColor *)normalTextColor

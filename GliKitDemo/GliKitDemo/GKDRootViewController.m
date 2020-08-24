@@ -41,6 +41,7 @@ typedef void(^GKDCommonBlock)(void);
                    [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
                    [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
                    [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
                    ];
 
     [self initViews];

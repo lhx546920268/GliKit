@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
+		CE134D5F24F363BE00F34CB4 /* GKDBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */; };
 		CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */; };
 		CE37C67E233B49C000C4F196 /* GKDTableEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67D233B49C000C4F196 /* GKDTableEmptyViewController.m */; };
 		CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C680233B49D500C4F196 /* GKDCollectionEmptyViewController.m */; };
@@ -66,6 +67,8 @@
 		85141611C461B48B8263ABC7 /* Pods-GliKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.release.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.release.xcconfig"; sourceTree = "<group>"; };
 		B183DC3A9632FD62AABE12BD /* Pods-GliKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.debug.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.debug.xcconfig"; sourceTree = "<group>"; };
 		C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitDemo.release.xcconfig"; path = "Target Support Files/Pods-GliKitDemo/Pods-GliKitDemo.release.xcconfig"; sourceTree = "<group>"; };
+		CE134D5D24F363BE00F34CB4 /* GKDBannerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDBannerViewController.h; sourceTree = "<group>"; };
+		CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDBannerViewController.m; sourceTree = "<group>"; };
 		CE37C679233B49AF00C4F196 /* GKDNormalEmptyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNormalEmptyViewController.h; sourceTree = "<group>"; };
 		CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNormalEmptyViewController.m; sourceTree = "<group>"; };
 		CE37C67C233B49C000C4F196 /* GKDTableEmptyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTableEmptyViewController.h; sourceTree = "<group>"; };
@@ -184,6 +187,23 @@
 				EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE134D5B24F363A900F34CB4 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				CE134D5C24F363A900F34CB4 /* Controller */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
+		CE134D5C24F363A900F34CB4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CE134D5D24F363BE00F34CB4 /* GKDBannerViewController.h */,
+				CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		CE37C677233B499000C4F196 /* EmptyView */ = {
@@ -417,6 +437,7 @@
 		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CE134D5B24F363A900F34CB4 /* Banner */,
 				CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */,
 				CEB37EBB249B6A8D00C15460 /* meat_1.jpg */,
 				CEB37EBC249B6A8D00C15460 /* meat_2.jpg */,
@@ -606,6 +627,7 @@
 				CEE8C8AD231915DB00E7CA75 /* GKDRootViewController.m in Sources */,
 				CEC3C85C231E5B15003ADE7A /* GKDCollectionViewSkeletonHeader.m in Sources */,
 				CEE8C8B1231917AB00E7CA75 /* GKDPhotosViewController.m in Sources */,
+				CE134D5F24F363BE00F34CB4 /* GKDBannerViewController.m in Sources */,
 				CEC3C84A231E5990003ADE7A /* GKDTableViewSkeletonViewController.m in Sources */,
 				CEBBC8072499BE4300F334CC /* GKDEmitterCell.m in Sources */,
 				CEE8C8B723191CE400E7CA75 /* GKDPhotosCollectionViewCell.m in Sources */,
