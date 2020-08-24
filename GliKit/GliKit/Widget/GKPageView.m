@@ -653,6 +653,15 @@ static char GKPageIndexKey;
     return pageIndex;
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *view = [super hitTest:point withEvent:event];
+    if(!view && CGRectContainsPoint(self.frame, point)){
+        view = self.scrollView;
+    }
+    return view;
+}
+
 // MARK: -  timer
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
