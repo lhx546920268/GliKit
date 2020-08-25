@@ -73,7 +73,7 @@
 
 - (NSInteger)numberOfItemsInPageView:(GKPageView *)pageView
 {
-    return 2;
+    return 3;
 }
 
 - (UIView*)pageView:(GKPageView *)pageView cellForItemAtIndex:(NSInteger)index

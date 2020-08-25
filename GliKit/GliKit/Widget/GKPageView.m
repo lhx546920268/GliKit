@@ -274,6 +274,9 @@ static char GKPageIndexKey;
 
 - (UIView *)cellForIndex:(NSInteger)index
 {
+    if(self.shouldScrollInfinitely){
+        index += 2;
+    }
     return [self cellForIndex:index shouldInit:NO];
 }
 
@@ -400,7 +403,7 @@ static char GKPageIndexKey;
         previousPageIndex --;
     }
     
-    [self recycleInvisibleCells];
+//    [self recycleInvisibleCells];
 }
 
 - (void)layoutVerticalItems
@@ -471,7 +474,7 @@ static char GKPageIndexKey;
         }
             break;
     }
-    self.visibleCells[@([self getActualIndexFromIndex:index])] = cell;
+    self.visibleCells[@(index)] = cell;
     [self.visibleSet addObject:cell];
 }
 
@@ -484,12 +487,9 @@ static char GKPageIndexKey;
 ///获取某个cell，如果shouldInit，可见的cell不存在时会创建一个
 - (UIView*)cellForIndex:(NSInteger) index shouldInit:(BOOL) shouldInit
 {
-    if(shouldInit){
-        index = [self getActualIndexFromIndex:index];
-    }
     UIView *cell = self.visibleCells[@(index)];
     if(!cell && shouldInit){
-        cell = [self.delegate pageView:self cellForItemAtIndex:index];
+        cell = [self.delegate pageView:self cellForItemAtIndex:[self getActualIndexFromIndex:index]];
     }
     
     return cell;
