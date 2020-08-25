@@ -49,6 +49,35 @@ static char GKPageIndexKey;
 
 @end
 
+///主要是为了重写hitTest
+@interface GKPageScrollView : UIScrollView
+
+@end
+
+@implementation GKPageScrollView
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    //让超出UIScrollView范围的 响应点击事件
+    UIView *view = [super hitTest:point withEvent:event];
+    
+    if(!view){
+        NSArray *subviews = self.subviews;
+        for(NSInteger i = subviews.count - 1;i >= 0;i --){
+            UIView *subview = subviews[i];
+            if(!subview.hidden && subview.alpha > 0.01
+               && subview.userInteractionEnabled
+               && CGRectContainsPoint(subview.frame, point)){
+                return subview;
+            }
+        }
+    }
+    
+    return view;
+}
+
+@end
+
 @interface GKPageView ()<UIScrollViewDelegate>
 
 ///item总数
@@ -56,6 +85,7 @@ static char GKPageIndexKey;
 
 ///当前可见的cell
 @property(nonatomic, strong) NSMutableDictionary<NSNumber*, UIView*> *visibleCells;
+@property(nonatomic, strong) NSMutableSet<UIView*> *visibleSet;
 
 ///可重用的cell
 @property(nonatomic, strong) NSMutableDictionary<NSString*, NSMutableSet<UIView*>*> *reusableCells;
@@ -110,7 +140,7 @@ static char GKPageIndexKey;
 
 - (instancetype)initWithScrollDirection:(GKPageViewScrollDirection)scrollDirection
 {
-    self = [super init];
+    self = [super initWithFrame:CGRectZero];
     if(self){
         _scrollDirection = scrollDirection;
         [self initParams];
@@ -127,10 +157,11 @@ static char GKPageIndexKey;
     _scrollInfinitely = YES;
     _autoPlay = YES;
     _playTimeInterval = 5.0;
+    _shouldMiddleItem = YES;
     
     self.clipsToBounds = YES;
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    _scrollView = [[GKPageScrollView alloc] initWithFrame:self.bounds];
     _scrollView.delegate = self;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
@@ -150,6 +181,14 @@ static char GKPageIndexKey;
         _visibleCells = [NSMutableDictionary new];
     }
     return _visibleCells;
+}
+
+- (NSMutableSet<UIView *> *)visibleSet
+{
+    if(!_visibleSet){
+        _visibleSet = [NSMutableSet set];
+    }
+    return _visibleSet;
 }
 
 - (NSMutableDictionary<NSString *,NSMutableSet<UIView *> *> *)reusableCells
@@ -203,19 +242,30 @@ static char GKPageIndexKey;
 - (void)scrollToIndex:(NSInteger)index animated:(BOOL)flag
 {
     NSInteger count = self.numberOfItems;
+    NSInteger originIndex = index;
     if(self.shouldScrollInfinitely){
         index += 2;
         count += 4;
     }
     
     if(index >= 0 && index < count){
+        self.contentOffset = self.scrollView.contentOffset;
+        //如果当前是第一个或者最后一个item，反向滑动
+        if(self.currentPage == 0 && originIndex == self.numberOfItems - 1){
+            index = 1;
+        }else if(self.currentPage == self.numberOfItems - 1 && originIndex == self.numberOfItems - 2){
+            index = 0;
+        }
+        
+        CGFloat offset = [self offsetForIndex:index];
+        
         switch (self.scrollDirection) {
             case GKPageViewScrollDirectionHorizontal : {
-                [self.scrollView setContentOffset:CGPointMake([self offsetForIndex:index], 0) animated:flag];
+                [self.scrollView setContentOffset:CGPointMake(offset, 0) animated:flag];
             }
                 break;
             case GKPageViewScrollDirectionVertical : {
-                [self.scrollView setContentOffset:CGPointMake(0, [self offsetForIndex:index]) animated:flag];
+                [self.scrollView setContentOffset:CGPointMake(0, offset) animated:flag];
             }
                 break;
         }
@@ -325,7 +375,6 @@ static char GKPageIndexKey;
     NSInteger count = self.numberOfNeededItems;
     
     NSInteger pageIndex = MAX(floor(offsetX / (pageWidth + self.spacing)), 0);
-    CGFloat extraOffsetX = (NSInteger)offsetX % (NSInteger)(pageWidth + self.spacing);
     
     //显示当前item
     UIView *cell = [self cellForIndex:pageIndex shouldInit:YES];
@@ -351,7 +400,7 @@ static char GKPageIndexKey;
         previousPageIndex --;
     }
     
-    [self recycleInvisibleCellsForBefore:previousPageIndex after:nextPageIndex];
+    [self recycleInvisibleCells];
 }
 
 - (void)layoutVerticalItems
@@ -362,7 +411,6 @@ static char GKPageIndexKey;
     NSInteger count = self.numberOfNeededItems;
     
     NSInteger pageIndex = MAX(floor(offsetY / (pageHeight + self.spacing)), 0);
-    CGFloat extraOffsetY = (NSInteger)offsetY % (NSInteger)(pageHeight + self.spacing);
     
     //显示当前item
     UIView *cell = [self cellForIndex:pageIndex shouldInit:YES];
@@ -388,7 +436,7 @@ static char GKPageIndexKey;
         previousPageIndex --;
     }
 
-    [self recycleInvisibleCellsForBefore:previousPageIndex after:nextPageIndex];
+    [self recycleInvisibleCells];
 }
 
 //配置cell
@@ -423,6 +471,8 @@ static char GKPageIndexKey;
         }
             break;
     }
+    self.visibleCells[@([self getActualIndexFromIndex:index])] = cell;
+    [self.visibleSet addObject:cell];
 }
 
 ///获取对应下标的偏移量
@@ -434,7 +484,9 @@ static char GKPageIndexKey;
 ///获取某个cell，如果shouldInit，可见的cell不存在时会创建一个
 - (UIView*)cellForIndex:(NSInteger) index shouldInit:(BOOL) shouldInit
 {
-    index = [self getActualIndexFromIndex:index];
+    if(shouldInit){
+        index = [self getActualIndexFromIndex:index];
+    }
     UIView *cell = self.visibleCells[@(index)];
     if(!cell && shouldInit){
         cell = [self.delegate pageView:self cellForItemAtIndex:index];
@@ -476,7 +528,6 @@ static char GKPageIndexKey;
     }
     
     cell.gkPageIndex = index;
-    self.visibleCells[@(index)] = cell;
     [self.scrollView addSubview:cell];
     
     return cell;
@@ -494,10 +545,8 @@ static char GKPageIndexKey;
         cell = [[cls alloc] init];
     }
     cell.gkReusableIdentifier = identifier;
-    if([self.delegate respondsToSelector:@selector(pageView:didSelectItemAtIndex:)]){
-        [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)]];
-        cell.userInteractionEnabled = YES;
-    }
+    [cell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)]];
+    cell.userInteractionEnabled = YES;
  
     return cell;
 }
@@ -505,50 +554,43 @@ static char GKPageIndexKey;
 ///点击某个item了
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    [self.delegate pageView:self didSelectItemAtIndex:tap.view.gkPageIndex];
+    NSInteger index = tap.view.gkPageIndex;
+    if(self.shouldMiddleItem && index != self.currentPage){
+        [self scrollToIndex:index animated:YES];
+        if([self.delegate respondsToSelector:@selector(pageView:didMiddleItemAtIndex:)]){
+            [self.delegate pageView:self didMiddleItemAtIndex:index];
+        }
+    }else{
+        if([self.delegate respondsToSelector:@selector(pageView:didSelectItemAtIndex:)]){
+            [self.delegate pageView:self didSelectItemAtIndex:index];
+        }
+    }
 }
 
 // MARK: - Recycle
 
-- (void)recycleInvisibleCellsForBefore:(NSInteger) before after:(NSInteger) after
+/////回收不可见的
+- (void)recycleInvisibleCells
 {
-    //回收不可见的界面
-    NSInteger index = before;
-    while (index >= 0) {
-        if(![self recycleViewForIndex:index])
-            break;
-        index --;
-    }
-
-    index = after;
-    NSInteger count = self.numberOfNeededItems;
-    while (index < count) {
-        if(![self recycleViewForIndex:index])
-            break;
-        index ++;
+    NSArray *subviews = self.scrollView.subviews;
+    for(UIView *view in subviews){
+        if(![self.visibleSet containsObject:view]){
+            [self recycleCell:view];
+        }
     }
 }
 
 ///回收
-- (BOOL)recycleViewForIndex:(NSInteger) index
+- (void)recycleCell:(UIView*) cell
 {
-    index = [self getActualIndexFromIndex:index];
-    UIView *cell = self.visibleCells[@(index)];
-    if(cell){
-        NSMutableSet *set = self.reusableCells[cell.gkReusableIdentifier];
-        if(!set){
-            set = [NSMutableSet set];
-            self.reusableCells[cell.gkReusableIdentifier] = set;
-        }
-        [set addObject:cell];
-        
-        [cell removeFromSuperview];
-        [self.visibleCells removeObjectForKey:@(index)];
-        
-        return YES;
+    NSMutableSet *set = self.reusableCells[cell.gkReusableIdentifier];
+    if(!set){
+        set = [NSMutableSet set];
+        self.reusableCells[cell.gkReusableIdentifier] = set;
     }
-    
-    return NO;
+    [set addObject:cell];
+    [self.visibleCells removeObjectForKey:@(cell.gkPageIndex)];
+    [cell removeFromSuperview];
 }
 
 // MARK: - UIScrollViewDelegate
@@ -565,14 +607,14 @@ static char GKPageIndexKey;
                     if(self.contentOffset.x > scrollView.contentOffset.x){
                         self.contentOffset = CGPointMake([self offsetForIndex:self.numberOfItems + 1], 0);
                         [self.scrollView setContentOffset:self.contentOffset]; // 最后+1,循环到第1页
-                        _currentPage = self.numberOfItems - 1;
+                        _currentPage = 0;
                     }
                 }else if (page >= (self.numberOfItems + 1)){
                     
                     if(self.contentOffset.x < scrollView.contentOffset.x){
                         self.contentOffset = CGPointMake([self offsetForIndex:1], 0);
                         [self.scrollView setContentOffset:self.contentOffset];// 最后+1,循环第1页
-                        _currentPage = 0;
+                        _currentPage = self.numberOfItems - 1;
                     }
                 }else{
                     _currentPage = [self getActualIndexFromIndex:page];
@@ -590,13 +632,13 @@ static char GKPageIndexKey;
                     if(self.contentOffset.y > scrollView.contentOffset.y){
                         self.contentOffset = CGPointMake(0, [self offsetForIndex:self.numberOfItems + 1]);
                         [self.scrollView setContentOffset:self.contentOffset]; // 最后+1,循环到第1页
-                        _currentPage = self.numberOfItems - 1;
+                        _currentPage = 0;
                     }
                 }else if (page >= (self.numberOfItems + 1)){
                     if(self.contentOffset.y < scrollView.contentOffset.y){
                         self.contentOffset = CGPointMake(0, [self offsetForIndex:1]);
                         [self.scrollView setContentOffset:self.contentOffset]; // 最后+1,循环第1页
-                        _currentPage = 0;
+                        _currentPage = self.numberOfItems - 1;
                     }
                 }else{
                     _currentPage = [self getActualIndexFromIndex:page];
@@ -655,10 +697,12 @@ static char GKPageIndexKey;
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
+    //让超出UIScrollView范围的 响应点击事件
     UIView *view = [super hitTest:point withEvent:event];
-    if(!view && CGRectContainsPoint(self.frame, point)){
+    if(view == self){
         view = self.scrollView;
     }
+    
     return view;
 }
 

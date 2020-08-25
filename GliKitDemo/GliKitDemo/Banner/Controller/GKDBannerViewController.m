@@ -73,7 +73,7 @@
 
 - (NSInteger)numberOfItemsInPageView:(GKPageView *)pageView
 {
-    return self.colors.count;
+    return 2;
 }
 
 - (UIView*)pageView:(GKPageView *)pageView cellForItemAtIndex:(NSInteger)index
@@ -87,6 +87,11 @@
 - (void)pageView:(GKPageView *)pageView didSelectItemAtIndex:(NSInteger)index
 {
     NSLog(@"didSelectItemAtIndex %ld", index);
+}
+
+- (void)pageView:(GKPageView *)pageView didMiddleItemAtIndex:(NSInteger)index
+{
+    NSLog(@"didMiddleItemAtIndex %ld", index);
 }
 
 // MARK: - Action

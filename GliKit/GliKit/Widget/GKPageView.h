@@ -36,6 +36,9 @@ typedef NS_ENUM(NSInteger, GKPageViewScrollDirection){
 ///点击某个item了
 - (void)pageView:(GKPageView*) pageView didSelectItemAtIndex:(NSInteger) index;
 
+///某个item居中了
+- (void)pageView:(GKPageView*) pageView didMiddleItemAtIndex:(NSInteger) index;
+
 @end
 
 ///翻页视图
@@ -58,6 +61,11 @@ typedef NS_ENUM(NSInteger, GKPageViewScrollDirection){
 
 ///当前位置
 @property(nonatomic, readonly) NSInteger currentPage;
+
+///点击边缘item时是否先居中，如果YES
+///pageView:(GKPageView*) pageView didSelectItemAtIndex:(NSInteger) index将不会回调
+///default is `YES`
+@property(nonatomic, assign) BOOL shouldMiddleItem;
 
 ///播放间隔 default is '5.0'
 @property(nonatomic, assign) NSTimeInterval playTimeInterval;
