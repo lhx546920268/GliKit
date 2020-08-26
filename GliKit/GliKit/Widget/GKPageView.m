@@ -232,6 +232,7 @@ static char GKPageIndexKey;
 
 - (void)reloadData
 {
+    [self.visibleSet removeAllObjects];
     [self.visibleCells removeAllObjects];
     [self.reusableCells removeAllObjects];
     [self gkRemoveAllSubviews];
@@ -380,15 +381,13 @@ static char GKPageIndexKey;
     NSInteger pageIndex = MAX(floor(offsetX / (pageWidth + self.spacing)), 0);
     
     //显示当前item
-    UIView *cell = [self cellForIndex:pageIndex shouldInit:YES];
-    [self configureCell:cell forIndex:pageIndex];
+    [self configureCellforIndex:pageIndex];
     
     //显示后面的 并且在可见范围内的
     NSInteger nextPageIndex = pageIndex + 1;
     CGFloat x = left + nextPageIndex * (pageWidth + self.spacing);
     while (nextPageIndex < count && x < offsetX + self.scrollView.gkRight) {
-        cell = [self cellForIndex:nextPageIndex shouldInit:YES];
-        [self configureCell:cell forIndex:nextPageIndex];
+        [self configureCellforIndex:nextPageIndex];
         x += pageWidth + self.spacing;
         nextPageIndex ++;
     }
@@ -397,13 +396,12 @@ static char GKPageIndexKey;
     NSInteger previousPageIndex = pageIndex - 1;
     x = left + previousPageIndex * (pageWidth + self.spacing);
     while (previousPageIndex >= 0 && x + pageWidth > offsetX - self.scrollView.gkLeft) {
-        cell = [self cellForIndex:previousPageIndex shouldInit:YES];
-        [self configureCell:cell forIndex:previousPageIndex];
+        [self configureCellforIndex:previousPageIndex];
         x -= pageWidth + self.spacing;
         previousPageIndex --;
     }
     
-//    [self recycleInvisibleCells];
+    [self recycleInvisibleCells];
 }
 
 - (void)layoutVerticalItems
@@ -416,15 +414,13 @@ static char GKPageIndexKey;
     NSInteger pageIndex = MAX(floor(offsetY / (pageHeight + self.spacing)), 0);
     
     //显示当前item
-    UIView *cell = [self cellForIndex:pageIndex shouldInit:YES];
-    [self configureCell:cell forIndex:pageIndex];
+    [self configureCellforIndex:pageIndex];
     
     //显示后面的 并且在可见范围内的
     NSInteger nextPageIndex = pageIndex + 1;
     CGFloat y = top + nextPageIndex * (pageHeight + self.spacing);
     while (nextPageIndex < count && y < offsetY + self.scrollView.gkBottom) {
-        cell = [self cellForIndex:nextPageIndex shouldInit:YES];
-        [self configureCell:cell forIndex:nextPageIndex];
+        [self configureCellforIndex:nextPageIndex];
         y += pageHeight + self.spacing;
         nextPageIndex ++;
     }
@@ -433,8 +429,7 @@ static char GKPageIndexKey;
     NSInteger previousPageIndex = pageIndex - 1;
     y = top + previousPageIndex * (pageHeight + self.spacing);
     while (previousPageIndex >= 0 && y + pageHeight > offsetY - self.scrollView.gkTop) {
-        cell = [self cellForIndex:previousPageIndex shouldInit:YES];
-        [self configureCell:cell forIndex:previousPageIndex];
+        [self configureCellforIndex:previousPageIndex];
         y -= pageHeight + self.spacing;
         previousPageIndex --;
     }
@@ -443,10 +438,12 @@ static char GKPageIndexKey;
 }
 
 //配置cell
-- (void)configureCell:(UIView*) cell forIndex:(NSInteger) index
+- (void)configureCellforIndex:(NSInteger) index
 {
+    UIView *cell = [self cellForIndex:index shouldInit:YES];
     cell.transform = CGAffineTransformIdentity;
     CGFloat pageSize = self.pageSize;
+    
     switch (self.scrollDirection) {
         case GKPageViewScrollDirectionHorizontal : {
             
@@ -456,8 +453,6 @@ static char GKPageIndexKey;
                 CGPoint center = [self.scrollView convertPoint:cell.center toView:self];
                 CGFloat scale = 1.0 - (1.0 - self.scale) * fabs(center.x - self.scrollView.center.x) / (pageSize + self.spacing);
                 cell.transform = CGAffineTransformMakeScale(scale, scale);
-            }else{
-                cell.transform = CGAffineTransformIdentity;
             }
         }
             break;
@@ -468,8 +463,6 @@ static char GKPageIndexKey;
                 CGPoint center = [self.scrollView convertPoint:cell.center toView:self];
                 CGFloat scale = 1.0 - (1.0 - self.scale) * fabs(center.y - self.scrollView.center.y) / (pageSize + self.spacing);
                 cell.transform = CGAffineTransformMakeScale(scale, scale);
-            }else{
-                cell.transform = CGAffineTransformIdentity;
             }
         }
             break;
@@ -538,6 +531,8 @@ static char GKPageIndexKey;
 {
     UIView *cell = nil;
     Class cls = self.registerCells[identifier];
+    NSAssert(cls != nil, @"%@ cell for %@ does not register", NSStringFromClass(self), identifier);
+    
     if([cls isKindOfClass:UINib.class]){
         UINib *nib = (UINib*)cls;
         cell = [nib instantiateWithOwner:nil options:nil].lastObject;
@@ -590,6 +585,7 @@ static char GKPageIndexKey;
     }
     [set addObject:cell];
     [self.visibleCells removeObjectForKey:@(cell.gkPageIndex)];
+    [self.visibleSet removeObject:cell];
     [cell removeFromSuperview];
 }
 
