@@ -39,7 +39,7 @@ GKConvenientCopying
         self.disableButtonTextColor = [UIColor grayColor];
         self.disableButtonFont = [UIFont systemFontOfSize:17];
         
-        self.highlightedBackgroundColor = UIColor.gkSkeletonBackgroundColor;
+        self.highlightedBackgroundColor = UIColor.gkHighlightedBackgroundColor;
         
         self.cornerRadius = 8.0;
         self.contentInsets = UIEdgeInsetsMake(15, 15, 15, 15);
@@ -51,28 +51,28 @@ GKConvenientCopying
     return self;
 }
 
-+ (instancetype)actionSheetInstance
++ (GKAlertProps *)defaultAlertProps
 {
-    static GKAlertProps *actionSheetStyle = nil;
+    static GKAlertProps *alertProps = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        actionSheetStyle = [GKAlertProps new];
-        actionSheetStyle.buttonHeight = 50;
+        alertProps = [GKAlertProps new];
+        alertProps.buttonHeight = 45;
     });
     
-    return actionSheetStyle;
+    return alertProps;
 }
 
-+ (instancetype)alertInstance
++ (GKAlertProps *)defaultactionSheetProps
 {
-    static GKAlertProps *alertStyle = nil;
+    static GKAlertProps *actionSheetProps = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        alertStyle = [GKAlertProps new];
-        alertStyle.buttonHeight = 45;
+        actionSheetProps = [GKAlertProps new];
+        actionSheetProps.buttonHeight = 50;
     });
     
-    return alertStyle;
+    return actionSheetProps;
 }
 
 @end

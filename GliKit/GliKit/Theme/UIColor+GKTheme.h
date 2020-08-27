@@ -36,6 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///骨架层背景颜色
 @property(class, nonatomic, strong) UIColor *gkSkeletonBackgroundColor;
 
+///高亮灰色背景
+@property(class, nonatomic, strong) UIColor *gkHighlightedBackgroundColor;
+
 ///输入框placeholder 颜色
 @property(class, nonatomic, strong) UIColor *gkPlaceholderColor;
 

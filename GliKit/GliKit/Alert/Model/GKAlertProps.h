@@ -155,14 +155,14 @@ NS_ASSUME_NONNULL_BEGIN
 //MARK: - Init
 
 /**
- alert 单例
+ 默认的alert属性
  */
-+ (instancetype)alertInstance;
+@property(class, nonatomic, readonly) GKAlertProps *defaultAlertProps;
 
 /**
- actionSheet 单例
+ 默认的actionSheet属性
  */
-+ (instancetype)actionSheetInstance;
+@property(class, nonatomic, readonly) GKAlertProps *defaultactionSheetProps;
 
 @end
 

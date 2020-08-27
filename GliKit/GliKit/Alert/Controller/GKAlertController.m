@@ -660,7 +660,7 @@
 - (GKAlertProps*)props
 {
     if(!_props){
-        _props = _style == GKAlertControllerStyleActionSheet ? [GKAlertProps actionSheetInstance] : [GKAlertProps alertInstance];
+        _props = _style == GKAlertControllerStyleActionSheet ? [GKAlertProps defaultactionSheetProps] : [GKAlertProps defaultAlertProps];
     }
     return _props;
 }
