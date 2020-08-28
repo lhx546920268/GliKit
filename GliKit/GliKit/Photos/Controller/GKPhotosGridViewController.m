@@ -212,7 +212,7 @@
             
             if(imageData){
                 [self gkDismissProgress];
-                self.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:GKImageScale];
+                self.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:self.photosOptions.scale];
                 [self goToCropImage];
             }else{
                 [self gkShowErrorWithText:@"加载图片失败"];

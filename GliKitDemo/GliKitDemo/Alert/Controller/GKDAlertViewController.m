@@ -12,6 +12,7 @@
 #import <GKAlertController.h>
 #import "GKDialogViewController.h"
 #import <UIImageView+WebCache.h>
+#import <UIImage+GKUtils.h>
 
 @interface AppearanceView : UIView
 
@@ -85,7 +86,9 @@
     
     [self.label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapLabel)]];
     
-    [self.imageView sd_setImageWithURL:[NSBundle.mainBundle URLForResource:@"512x384" withExtension:@"webp"]];
+    
+    UIImage *image = [UIImage gkQRCodeImageWithString:@"xxx" correctionLevel:GKQRCodeImageCorrectionLevelPercent7 size:CGSizeMake(100, 100) contentColor:UIColor.redColor backgroundColor:nil logo:nil logoSize:CGSizeZero];
+    self.imageView.image = image;
 }
 
 - (IBAction)handleSystemAlert:(id)sender {
@@ -119,6 +122,7 @@
 - (IBAction)handleActionSheet:(id)sender
 {
     WeakObj(self)
+    
     NSArray *titles = @[@"取消", @"确定", @"不能点的"];
     GKAlertController *alert = [[GKAlertController alloc] initWithTitle:@"这是一个Alert标题" message:@"这是一个Alert副标题" icon:[UIImage imageNamed:@"swift"] style:GKAlertControllerStyleActionSheet cancelButtonTitle:@"取消" otherButtonTitles:titles];
     alert.destructiveButtonIndex = 1;

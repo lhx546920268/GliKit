@@ -21,7 +21,7 @@
         _button = [GKButton new];
         _button.adjustsImageWhenHighlighted = NO;
         _button.adjustsImageWhenDisabled = NO;
-        _button.enabled = NO;
+        _button.userInteractionEnabled = NO;
         [self.contentView addSubview:_button];
         
         [_button mas_makeConstraints:^(MASConstraintMaker *make) {

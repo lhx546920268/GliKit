@@ -13,26 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 ///图片等比例缩小方式
 typedef NS_ENUM(NSInteger, GKImageFitType)
 {
-    ///宽和高
+    ///宽和高 宽高有一个大于指定值都会整体缩放
     GKImageFitTypeSize = 0,
     
-    ///宽
+    ///宽 只有宽度大于指定宽度时，才缩放
     GKImageFitTypeWidth,
     
-    ///高
+    ///高 只有高度度大于指定宽度时，才缩放
     GKImageFitTypeHeight,
-};
-
-/**
- 从资源文件中获取图片的选项
- */
-typedef NS_ENUM(NSInteger, GKAssetImageOptions)
-{
-    ///适合当前屏幕大小的图片
-    GKAssetImageOptionsFullScreenImage = 0,
-    
-    ///完整的图片
-    GKAssetImageOptionsResolutionImage,
 };
 
 ///二维码容错率
@@ -50,8 +38,6 @@ typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
     /// 30% 容错率 H
     GKQRCodeImageCorrectionLevelPercent30,
 };
-
-static const CGFloat GKImageScale = 2.0;
 
 ///图片扩展
 @interface UIImage (GKUtils)
@@ -134,12 +120,12 @@ static const CGFloat GKImageScale = 2.0;
  *@param logoSize logo 大小 0则表示是用图片大小
  *@return 成功返回二维码图片，否则nil
  */
-+ (UIImage*)gkQRCodeImageWithString:(NSString*) string
++ (nullable UIImage*)gkQRCodeImageWithString:(NSString*) string
                   correctionLevel:(GKQRCodeImageCorrectionLevel) correctionLevel
                              size:(CGSize) size
-                     contentColor:(UIColor*) contentColor
-                  backgroundColor:(UIColor*) backgroundColor
-                             logo:(UIImage*) logo
+                     contentColor:(nullable UIColor*) contentColor
+                  backgroundColor:(nullable UIColor*) backgroundColor
+                             logo:(nullable UIImage*) logo
                             logoSize:(CGSize) logoSize;
 
 @end

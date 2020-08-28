@@ -333,7 +333,7 @@
     PHAsset *asset = [self.assets objectAtIndex:indexPath.item];
     cell.asset = asset;
     
-    CGSize size = [UIImage gkFitImageSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) size:CGSizeMake(collectionView.frame.size.width * GKImageScale, 0) type:GKImageFitTypeWidth];
+    CGSize size = [UIImage gkFitImageSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) size:CGSizeMake(collectionView.frame.size.width * self.photosOptions.scale, 0) type:GKImageFitTypeWidth];
     [PHImageManager.defaultManager requestImageForAsset:asset targetSize:size contentMode:PHImageContentModeAspectFit options:self.imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         
         if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){

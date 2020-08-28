@@ -9,6 +9,7 @@
 #import "UIColor+GKTheme.h"
 
 static UIImage *appNavigationBarBackIcon = nil;
+static CGFloat appImageScale = 2.0;
 
 @implementation UIImage (GKTheme)
 
@@ -48,6 +49,16 @@ static UIImage *appNavigationBarBackIcon = nil;
 + (void)setGkNavigationBarBackIcon:(UIImage *)gkNavigationBarBackIcon
 {
     appNavigationBarBackIcon = gkNavigationBarBackIcon;
+}
+
++ (void)setGkImageScale:(CGFloat)gkImageScale
+{
+    appImageScale = gkImageScale;
+}
+
++ (CGFloat)gkImageScale
+{
+    return appImageScale;
 }
 
 @end

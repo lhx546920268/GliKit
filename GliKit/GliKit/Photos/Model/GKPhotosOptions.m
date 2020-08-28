@@ -9,6 +9,7 @@
 #import "GKPhotosOptions.h"
 #import <ImageIO/ImageIO.h>
 #import "UIImage+GKUtils.h"
+#import "UIImage+GKTheme.h"
 
 @implementation GKPhotosPickResult
 
@@ -121,7 +122,7 @@
         self.shouldDisplayAllPhotos = YES;
         self.displayFistCollection = YES;
         self.compressedImageSize = CGSizeMake(512, 512);
-        self.scale = GKImageScale;
+        self.scale = UIImage.gkImageScale;
     }
     return self;
 }

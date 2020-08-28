@@ -59,7 +59,7 @@ static char GKTintColorKey;
 
 - (UIColor*)gkCurrentBackgroundColor
 {
-    UIColor *color = [self.gkBackgroundColorsForState objectForKey:@(UIControlStateNormal)];
+    UIColor *color = [self.gkBackgroundColorsForState objectForKey:@(self.gkState)];
  
     if(!color){
         color = self.backgroundColor;

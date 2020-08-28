@@ -39,7 +39,6 @@
 		CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertController.m */; };
 		CED0D2F0230BC8780057D405 /* GKAlertProps.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22E230BC6250057D405 /* GKAlertProps.m */; };
 		CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D231230BC6250057D405 /* GKAlertAction.m */; };
-		CED0D2F5230BC8780057D405 /* GKAlertButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D234230BC6250057D405 /* GKAlertButton.m */; };
 		CED0D2F6230BC8780057D405 /* GKAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D235230BC6250057D405 /* GKAlertCell.m */; };
 		CED0D2F8230BC8780057D405 /* GKAlertHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D237230BC6250057D405 /* GKAlertHeader.m */; };
 		CED0D2FC230BC8780057D405 /* GKHttpMultiTasks.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D288230BC6250057D405 /* GKHttpMultiTasks.m */; };
@@ -255,9 +254,7 @@
 		CED0D230230BC6250057D405 /* GKAlertProps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKAlertProps.h; sourceTree = "<group>"; };
 		CED0D231230BC6250057D405 /* GKAlertAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAlertAction.m; sourceTree = "<group>"; };
 		CED0D233230BC6250057D405 /* GKAlertHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKAlertHeader.h; sourceTree = "<group>"; };
-		CED0D234230BC6250057D405 /* GKAlertButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAlertButton.m; sourceTree = "<group>"; };
 		CED0D235230BC6250057D405 /* GKAlertCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAlertCell.m; sourceTree = "<group>"; };
-		CED0D236230BC6250057D405 /* GKAlertButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKAlertButton.h; sourceTree = "<group>"; };
 		CED0D237230BC6250057D405 /* GKAlertHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKAlertHeader.m; sourceTree = "<group>"; };
 		CED0D238230BC6250057D405 /* GKAlertCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKAlertCell.h; sourceTree = "<group>"; };
 		CED0D23E230BC6250057D405 /* GKBaseWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseWebViewController.m; sourceTree = "<group>"; };
@@ -741,8 +738,6 @@
 		CED0D232230BC6250057D405 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CED0D236230BC6250057D405 /* GKAlertButton.h */,
-				CED0D234230BC6250057D405 /* GKAlertButton.m */,
 				CED0D238230BC6250057D405 /* GKAlertCell.h */,
 				CED0D235230BC6250057D405 /* GKAlertCell.m */,
 				CED0D233230BC6250057D405 /* GKAlertHeader.h */,
@@ -1308,7 +1303,6 @@
 				CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */,
 				CEAC863723AA106C00A0B949 /* UITextView+GKUtils.m in Sources */,
 				CED0D2F3230BC8780057D405 /* GKAlertAction.m in Sources */,
-				CED0D2F5230BC8780057D405 /* GKAlertButton.m in Sources */,
 				CED0D2F6230BC8780057D405 /* GKAlertCell.m in Sources */,
 				CED0D2F8230BC8780057D405 /* GKAlertHeader.m in Sources */,
 				CED0D2FC230BC8780057D405 /* GKHttpMultiTasks.m in Sources */,

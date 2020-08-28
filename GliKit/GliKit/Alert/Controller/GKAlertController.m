@@ -11,13 +11,13 @@
 #import "UIImage+GKUtils.h"
 #import "GKButton.h"
 #import "NSAttributedString+GKUtils.h"
-#import "GKAlertButton.h"
 #import "GKAlertCell.h"
 #import "GKAlertHeader.h"
 #import "UIViewController+GKDialog.h"
 #import "UIView+GKUtils.h"
 #import "NSString+GKUtils.h"
 #import "UIApplication+GKTheme.h"
+#import "UIView+GKStateUtils.h"
 
 @interface GKAlertController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate>
 
@@ -34,7 +34,7 @@
 /**
  取消按钮 用于 actionSheet
  */
-@property(nonatomic, strong) GKAlertButton *cancelButton;
+@property(nonatomic, strong) UIButton *cancelButton;
 
 /**
  取消按钮标题
@@ -139,7 +139,6 @@
                 break;
         }
         
-        
         [self initilization];
     }
     
@@ -173,7 +172,7 @@
         CGFloat width = [self alertViewWidth];
         CGFloat margin = (self.view.gkWidth - width) / 2.0;
         
-        self.container.backgroundColor = [UIColor redColor];
+        self.container.backgroundColor = props.mainColor;
         self.container.layer.cornerRadius = props.cornerRadius;
         self.container.layer.masksToBounds = YES;
         
@@ -279,14 +278,14 @@
                 self.container.frame = CGRectMake(props.contentInsets.left, margin, width, 0);
                 
                 if(![NSString isEmpty:self.cancelTitle]){
-                    self.cancelButton = [[GKAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, props.buttonHeight)];
+                    self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin, width, props.buttonHeight)];
                     self.cancelButton.layer.cornerRadius = props.cornerRadius;
-                    self.cancelButton.backgroundColor = props.mainColor;
-                    self.cancelButton.titleLabel.text = self.cancelTitle;
-                    self.cancelButton.titleLabel.textColor = props.cancelButtonTextColor;
+                    [self.cancelButton gkSetBackgroundColor:props.mainColor forState:UIControlStateNormal];
+                    [self.cancelButton setTitle:self.cancelTitle forState:UIControlStateNormal];
+                    [self.cancelButton setTitleColor:props.cancelButtonTextColor forState:UIControlStateNormal];
                     self.cancelButton.titleLabel.font = props.cancelButtonFont;
-                    self.cancelButton.highlightView.backgroundColor = props.highlightedBackgroundColor;
-                    [self.cancelButton addTarget:self action:@selector(cancel:)];
+                    [self.cancelButton gkSetBackgroundColor:props.highlightedBackgroundColor forState:UIControlStateHighlighted];
+                    [self.cancelButton addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
                     
                     //取消按钮和 内容视图的间隔
                     if(props.spacingBackgroundColor && props.cancelButtonVerticalSpacing > 0){
@@ -327,8 +326,8 @@
         }
             break;
         case GKAlertControllerStyleActionSheet : {
-            GKAlertProps *style = self.props;
-            return self.view.gkWidth - style.contentInsets.left - style.contentInsets.right;
+            GKAlertProps *props = self.props;
+            return self.view.gkWidth - props.contentInsets.left - props.contentInsets.right;
         }
             break;
     }

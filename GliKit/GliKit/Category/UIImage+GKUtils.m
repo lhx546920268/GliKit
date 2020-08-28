@@ -8,6 +8,7 @@
 
 #import "UIImage+GKUtils.h"
 #import "UIColor+GKUtils.h"
+#import "UIImage+GKTheme.h"
 
 @implementation UIImage (GKUtils)
 
@@ -18,7 +19,7 @@
 
 + (UIImage*)gkImageFromLayer:(CALayer*) layer
 {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(floor(layer.bounds.size.width), floor(layer.bounds.size.height)), layer.opaque, [UIScreen mainScreen].scale);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(floor(layer.bounds.size.width), floor(layer.bounds.size.height)), layer.opaque, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     [layer renderInContext:context];
@@ -30,7 +31,7 @@
 
 + (UIImage*)gkImageWithColor:(UIColor*) color size:(CGSize) size
 {
-    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     [color setFill];
     CGContextAddRect(context, CGRectMake(0, 0, size.width, size.height));
@@ -51,7 +52,6 @@
 
 + (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size type:(GKImageFitType) type
 {
-    CGSize retSize = CGSizeZero;
     CGFloat width = imageSize.width;
     CGFloat height = imageSize.height;
     
@@ -102,24 +102,21 @@
         }
     }
     
-    retSize = CGSizeMake(width, height);
-    return retSize;
+    return CGSizeMake(width, height);
 }
 
 - (UIImage*)gkAspectFitWithSize:(CGSize)size
 {
-    CGImageRef cgImage = self.CGImage;
-    size_t width = CGImageGetWidth(cgImage) / 2.0;
-    size_t height = CGImageGetHeight(cgImage) / 2.0;
+    CGFloat width = self.size.width;
+    CGFloat height = self.size.height;
     
     size = [UIImage gkFitImageSize:CGSizeMake(width, height) size:size type:GKImageFitTypeSize];
     
     if(size.height >= height || size.width >= width)
         return self;
     
-    UIGraphicsBeginImageContextWithOptions(size, NO, 2.0);
-    CGRect imageRect = CGRectMake(0.0, 0.0, floorf(size.width), floorf(size.height));
-    [self drawInRect:imageRect];
+    UIGraphicsBeginImageContextWithOptions(size, NO, UIImage.gkImageScale);
+    [self drawInRect:CGRectMake(0.0, 0.0, floorf(size.width), floorf(size.height))];
     UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -154,7 +151,7 @@
     
     UIImage *img = nil;
     
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(floorf(rect.size.width), floorf(rect.size.height)), NO, 2.0);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(floorf(rect.size.width), floorf(rect.size.height)), NO, UIImage.gkImageScale);
     
     [self drawAtPoint:origin];
     img = UIGraphicsGetImageFromCurrentImageContext();
@@ -206,10 +203,14 @@
     }
     // Now we draw the underlying CGImage into a new context, applying the transform
     // calculated above.
-    CGContextRef ctx = CGBitmapContextCreate(NULL, aImage.size.width, aImage.size.height,
-                         CGImageGetBitsPerComponent(aImage.CGImage), 0,
-                         CGImageGetColorSpace(aImage.CGImage),
-                         CGImageGetBitmapInfo(aImage.CGImage));
+    CGImageRef cgImage = aImage.CGImage;
+    size_t width = CGImageGetWidth(cgImage);
+    size_t height = CGImageGetHeight(cgImage);
+    
+    CGContextRef ctx = CGBitmapContextCreate(NULL, width, height,
+                         CGImageGetBitsPerComponent(cgImage), 0,
+                         CGImageGetColorSpace(cgImage),
+                         CGImageGetBitmapInfo(cgImage));
     CGContextConcatCTM(ctx, transform);
     switch (aImage.imageOrientation) {
       case UIImageOrientationLeft:
@@ -217,15 +218,16 @@
       case UIImageOrientationRight:
       case UIImageOrientationRightMirrored:
         // Grr...
-        CGContextDrawImage(ctx,CGRectMake(0,0,aImage.size.height,aImage.size.width), aImage.CGImage);
+        CGContextDrawImage(ctx, CGRectMake(0, 0, height, width), cgImage);
         break;
       default:
-        CGContextDrawImage(ctx,CGRectMake(0,0,aImage.size.width,aImage.size.height), aImage.CGImage);
+        CGContextDrawImage(ctx, CGRectMake(0 ,0, width, height), cgImage);
         break;
     }
+    
     // And now we just create a new UIImage from the drawing context
-    CGImageRef cgimg =CGBitmapContextCreateImage(ctx);
-    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg scale:aImage.scale orientation:UIImageOrientationUp];
     CGContextRelease(ctx);
     CGImageRelease(cgimg);
     
@@ -342,16 +344,15 @@
         uint32_t *tmpData = data; ///创建临时的数组指针，保持data的指针指向为起始位置
         for(size_t i = 0;i < height; i ++){
             for(size_t j = 0;j < width; j ++){
-                if((*tmpData & 0xFFFFFF) < 0x999999){ ///判断是否是背景像素，白色是背景
+                uint8_t *ptr = (uint8_t*)tmpData;
+                if(ptr[3] < 255){ ///判断是否是背景像素，白色是背景
                     ///改变二维码颜色
-                    uint8_t *ptr = (uint8_t*)tmpData;
                     ptr[3] = c_red;
                     ptr[2] = c_green;
                     ptr[1] = c_blue;
                     ptr[0] = c_alpha;
                 }else{
                     ///改变背景颜色
-                    uint8_t *ptr = (uint8_t*)tmpData;
                     ptr[3] = b_red;
                     ptr[2] = b_green;
                     ptr[1] = b_blue;
@@ -393,7 +394,7 @@
         
         size = CGSizeMake(floorf(image.size.width), floorf(image.size.height));
         
-        UIGraphicsBeginImageContextWithOptions(size, NO, GKImageScale);
+        UIGraphicsBeginImageContextWithOptions(size, NO, UIImage.gkImageScale);
         
         [image drawAtPoint:CGPointZero];
         [logo drawInRect:CGRectMake((size.width - logoSize.width) / 2.0, (size.height - logoSize.height) / 2.0, logoSize.width, logoSize.height)];
