@@ -1,0 +1,179 @@
+//
+//  GKObservable.m
+//  GliKit
+//
+//  Created by 罗海雄 on 2020/9/8.
+//  Copyright © 2020 luohaixiong. All rights reserved.
+//
+
+#import "GKObservable.h"
+#import <objc/runtime.h>
+
+static void* const GKObservableContext = "com.glikit.GKObservableContext";
+
+@interface GKObservable()
+
+///当前监听的属性
+@property(nonatomic, strong) NSMutableSet<NSString*> *observingKeyPaths;
+
+///回调
+@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSMutableDictionary<NSString*, GKObserverCallback>*> *observerCallbacks;
+
+
+@end
+
+@implementation GKObservable
+
+- (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback
+{
+    [self addObserver:observer callback:callback forKeyPaths:@[]];
+}
+
+- (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
+{
+    [self _addObserver:observer callback:callback forKeyPath:keyPath];
+}
+
+- (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPaths:(NSArray<NSString *> *)keyPaths
+{
+    NSParameterAssert(observer != nil);
+    NSParameterAssert(callback != nil);
+    
+    if(keyPaths.count > 0){
+        for(NSString *keyPath in keyPaths){
+            [self _addObserver:observer callback:callback forKeyPath:keyPath];
+        }
+    }else{
+        [self addObserver:observer callback:callback forClaass:self.class];
+    }
+}
+
+- (void)removeObserver:(NSObject*)observer
+{
+    NSParameterAssert(observer != nil);
+    
+    [_observerCallbacks removeObjectForKey:@(observer.hash)];
+}
+
+- (void)removeObserver:(NSObject*)observer forKeyPath:(NSString *)keyPath
+{
+    NSParameterAssert(observer != nil);
+    NSParameterAssert(keyPath != nil);
+    
+    id key = @(observer.hash);
+    NSMutableDictionary *dic = _observerCallbacks[key];
+    [dic removeObjectForKey:keyPath];
+    
+    if(dic.count == 0){
+        [_observerCallbacks removeObjectForKey:key];
+    }
+}
+
+- (void)removeObserver:(NSObject*)observer forKeyPaths:(NSArray<NSString *> *)keyPaths
+{
+    NSParameterAssert(observer != nil);
+    NSParameterAssert(keyPaths != nil);
+    
+    id key = @(observer.hash);
+    NSMutableDictionary *dic = _observerCallbacks[key];
+    for(NSString *keyPath in keyPaths){
+        [dic removeObjectForKey:keyPath];
+    }
+    
+    if(dic.count == 0){
+        [_observerCallbacks removeObjectForKey:key];
+    }
+}
+
+// MARK: - KVO
+
+- (NSMutableSet<NSString *> *)observingKeyPaths
+{
+    if(!_observingKeyPaths){
+        _observingKeyPaths = [NSMutableSet new];
+    }
+    
+    return _observingKeyPaths;
+}
+
+- (NSMutableDictionary<NSNumber *,NSMutableDictionary<NSString *,GKObserverCallback> *> *)observerCallbacks
+{
+    if(!_observerCallbacks){
+        _observerCallbacks = [NSMutableDictionary new];
+    }
+    
+    return _observerCallbacks;
+}
+
+- (void)addObserver:(NSObject*) observer callback:(GKObserverCallback) callback forClaass:(Class) cls
+{
+    if(cls == [GKObservable class]){
+        return;
+    }
+    
+    //获取当前类的所有属性，该方法无法获取父类或者子类的属性
+    unsigned int count;
+    objc_property_t *properties = class_copyPropertyList(cls, &count);
+    for(int i = 0;i < count;i ++){
+        
+        objc_property_t property = properties[i];
+        NSString *name = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
+        BOOL enable = YES;
+        if(!self.shouldObserveReadonly){
+            //类型地址 https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
+                           NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
+                           NSArray *attrs = [attr componentsSeparatedByString:@","];
+                           
+                           //判断是否是只读属性
+                           if(attrs.count > 0 && [attrs containsObject:@"R"]){
+                               enable = false;
+                           }
+        }
+        if(enable){
+            [self _addObserver:observer callback:callback forKeyPath:name];
+        }
+    }
+    
+    if(properties != NULL){
+        free(properties);
+    }
+    
+    //递归获取父类的属性
+    [self addObserver: observer callback: callback forClaass:[cls superclass]];
+}
+
+- (void)_addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
+{
+    if(![self.observingKeyPaths containsObject:keyPath]){
+        [self addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:GKObservableContext];
+        [self.observingKeyPaths addObject:keyPath];
+    }
+    
+    id key = @(observer.hash);
+    NSMutableDictionary *dic = self.observerCallbacks[key];
+    if(!dic){
+        dic = [NSMutableDictionary dictionary];
+        self.observerCallbacks[key] = dic;
+    }
+    
+    dic[keyPath] = callback;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if(context == GKObservableContext){
+        for(id key in _observerCallbacks){
+            GKObserverCallback callback = _observerCallbacks[key][keyPath];
+            callback(keyPath, change[NSKeyValueChangeNewKey], change[NSKeyValueChangeOldKey]);
+        }
+    }
+}
+
+- (void)dealloc
+{
+    for(NSString *keyPath in _observingKeyPaths){
+        [self removeObserver:self forKeyPath:keyPath context:GKObservableContext];
+    }
+}
+
+@end

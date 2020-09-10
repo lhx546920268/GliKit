@@ -22,6 +22,7 @@
 		CE549B482480E4B400534D91 /* GKTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B452480E4B400534D91 /* GKTabBar.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
+		CE94331725079417001EC5D0 /* GKObservable.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94331625079417001EC5D0 /* GKObservable.m */; };
 		CE9B66D42484EE2E00825F90 /* GKNavigationTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B66D32484EE2E00825F90 /* GKNavigationTransitionAnimator.m */; };
 		CE9B66D72484F30400825F90 /* GKNavigationInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B66D62484F30400825F90 /* GKNavigationInteractiveTransition.m */; };
 		CEA569F123A0CCCC0005A5EA /* UIView+GKStateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA569F023A0CCCC0005A5EA /* UIView+GKStateUtils.m */; };
@@ -196,6 +197,8 @@
 		CE61DD49235D5A9B00701675 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
 		CE61DD4B235D5D4E00701675 /* GKMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarItem.h; sourceTree = "<group>"; };
 		CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBarItem.m; sourceTree = "<group>"; };
+		CE94331525079417001EC5D0 /* GKObservable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKObservable.h; sourceTree = "<group>"; };
+		CE94331625079417001EC5D0 /* GKObservable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKObservable.m; sourceTree = "<group>"; };
 		CE9B66D22484EE2E00825F90 /* GKNavigationTransitionAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNavigationTransitionAnimator.h; sourceTree = "<group>"; };
 		CE9B66D32484EE2E00825F90 /* GKNavigationTransitionAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNavigationTransitionAnimator.m; sourceTree = "<group>"; };
 		CE9B66D52484F30400825F90 /* GKNavigationInteractiveTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNavigationInteractiveTransition.h; sourceTree = "<group>"; };
@@ -821,6 +824,8 @@
 		CED0D254230BC6250057D405 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				CE94331525079417001EC5D0 /* GKObservable.h */,
+				CE94331625079417001EC5D0 /* GKObservable.m */,
 				CEB85F46232622DA0045CB38 /* GKWeakProxy.h */,
 				CEB85F47232622DA0045CB38 /* GKWeakProxy.m */,
 				CED0D256230BC6250057D405 /* GKCountDownTimer.h */,
@@ -1293,6 +1298,7 @@
 				CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */,
 				CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */,
 				CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */,
+				CE94331725079417001EC5D0 /* GKObservable.m in Sources */,
 				CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */,
 				CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */,
 				CED0D40A230BECD00057D405 /* NSDate+GKUtils.m in Sources */,

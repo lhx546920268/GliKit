@@ -12,7 +12,7 @@
 
 + (instancetype)modelFromDictionary:(NSDictionary*) dic
 {
-    GKObject *obj = [[[self class] alloc] init];
+    id obj = [[[self class] alloc] init];
     [obj setDictionary:dic];
     
     return obj;

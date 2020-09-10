@@ -10,21 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///通过字典初始化
-@interface GKObject : NSObject
+@interface GKObject: NSObject
 
 /**
-通过字典创建
-
-@param dic 数据
-@return 一个实例
-*/
+ 通过字典创建
+ 
+ @param dic 数据
+ @return 一个实例
+ */
 + (instancetype)modelFromDictionary:(nullable NSDictionary*) dic;
-
 
 /**
  通过数组字典创建一个数组
-
+ 
  @param array 包含字典的数组
  @return 如果array 大于0 返回包含对应子类的数组，否则返回nil
  */
@@ -33,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  通过数组字典创建一个数组
-
+ 
  @param array 包含字典的数组
  @param maxCount 最大数量
  @return 如果array 大于0 返回包含对应子类的数组，否则返回nil
