@@ -15,7 +15,7 @@
   "source_files": "GliKit/**/*.{h,m}",
   "dependencies": {
     "SDWebImage": [
-      "~> 5.7.2"
+      "~> 5.9.2"
     ],
     "Masonry": [
       "~> 1.1.0"

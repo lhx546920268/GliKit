@@ -93,7 +93,7 @@
 - (void)initViews
 {
     //要授权才调用，否则在dealloc会闪退
-    if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
+    if(GKAppUtils.hasPhotosAuthorization){
         self.imageManager = [PHCachingImageManager new];
         self.imageManager.allowsCachingHighQualityImages = NO;
     }
@@ -120,7 +120,7 @@
 - (void)emptyViewWillAppear:(GKEmptyView *)view
 {
     NSString *msg = nil;
-    if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusDenied){
+    if(!GKAppUtils.hasPhotosAuthorization){
         msg = [NSString stringWithFormat:@"无法访问您的照片，请在本机的“设置-隐私-照片”中设置,允许%@访问您的照片", GKAppUtils.appName];
     }else{
         msg = @"暂无照片信息";
@@ -136,18 +136,13 @@
     self.gkShowPageLoading = YES;
     
     WeakObj(self)
-    if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined){
-        //没有权限 先申请授权
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            if(status == PHAuthorizationStatusAuthorized){
-                [selfWeak loadPhotos];
-            }else{
-                [selfWeak initViews];
-            }
-        }];
-    }else{
-        [selfWeak loadPhotos];
-    }
+    [GKAppUtils requestPhotosAuthorizationWithCompletion:^(BOOL hasAuth) {
+        if(hasAuth){
+            [selfWeak loadPhotos];
+        }else{
+            [selfWeak initViews];
+        }
+    }];
 }
 
 ///加载相册信息
@@ -242,10 +237,15 @@
         [self.imageManager requestImageForAsset:asset targetSize:CGSizeMake(60, 60) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
             if([asset.localIdentifier isEqualToString:cell.assetLocalIdentifier]){
                 cell.thumbnailImageView.image = result;
+                if(!result){
+                    cell.thumbnailImageView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+                }else{
+                    cell.thumbnailImageView.backgroundColor = UIColor.clearColor;
+                }
             }
         }];
     }else{
-        cell.thumbnailImageView.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
+        cell.thumbnailImageView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
         cell.thumbnailImageView.image = nil;
         cell.assetLocalIdentifier = nil;
     }

@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///获取ip地址
 @property(class, nonatomic, readonly) NSString *currentIP;
 
+///是否有相册权限
+@property(class, nonatomic, readonly) BOOL hasPhotosAuthorization;
+
 ///拨打电话 是否显示提示框
 + (void)makePhoneCall:(nullable NSString*) mobile shouldAlert:(BOOL) alert;
 

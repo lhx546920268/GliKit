@@ -162,19 +162,43 @@ static NSString *sharedUUID = nil;
     [GKAppUtils openCompatURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
++ (BOOL)hasPhotosAuthorization
+{
+    if(@available(iOS 14, *)){
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+        if(status == PHAuthorizationStatusAuthorized){
+            return YES;
+        }
+        if(status == PHAuthorizationStatusLimited){
+            return YES;
+        }
+    }else{
+        return PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusAuthorized;
+    }
+    return NO;
+}
+
 + (void)requestPhotosAuthorizationWithCompletion:(void (^)(BOOL))completion
 {
-    PHAuthorizationStatus status = PHPhotoLibrary.authorizationStatus;
-    if(status == PHAuthorizationStatusNotDetermined){
+    if(PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusNotDetermined){
         //没有权限 先申请授权
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            //可能在其他线程回调
-            dispatch_main_async_safe(^{
-                !completion ?: completion(status == PHAuthorizationStatusAuthorized);
-            })
-        }];
+        if(@available(iOS 14, *)){
+            [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+                //可能在其他线程回调
+                dispatch_main_async_safe(^{
+                    !completion ?: completion(GKAppUtils.hasPhotosAuthorization);
+                })
+            }];
+        }else{
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                //可能在其他线程回调
+                dispatch_main_async_safe(^{
+                    !completion ?: completion(GKAppUtils.hasPhotosAuthorization);
+                })
+            }];
+        }
     }else{
-        !completion ?: completion(status == PHAuthorizationStatusAuthorized);
+        !completion ?: completion(GKAppUtils.hasPhotosAuthorization);
     }
 }
 

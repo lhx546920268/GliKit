@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
 
   spec.source = { :git => "https://www.github.com/lhx546920268/GliKit"}
   spec.source_files  = "GliKit/**/*.{h,m}"
-  spec.dependency 'SDWebImage', '~> 5.7.2'
+  spec.dependency 'SDWebImage', '~> 5.9.2'
   spec.dependency 'Masonry', '~> 1.1.0'
   spec.dependency 'AFNetworking', '~> 4.0.0'
   spec.dependency 'FMDB', '~> 2.7.5'

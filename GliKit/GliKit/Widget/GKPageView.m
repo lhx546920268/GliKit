@@ -531,7 +531,7 @@ static char GKPageIndexKey;
 {
     UIView *cell = nil;
     Class cls = self.registerCells[identifier];
-    NSAssert(cls != nil, @"%@ cell for %@ does not register", NSStringFromClass(self), identifier);
+    NSAssert(cls != nil, @"%@ cell for %@ does not register", NSStringFromClass(self.class), identifier);
     
     if([cls isKindOfClass:UINib.class]){
         UINib *nib = (UINib*)cls;

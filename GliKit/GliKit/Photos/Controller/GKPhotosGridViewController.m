@@ -25,6 +25,7 @@
 #import "UIViewController+GKTransition.h"
 #import "GKImageCropViewController.h"
 #import "UIImage+GKUtils.h"
+#import "GKAppUtils.h"
 
 @interface GKPhotosGridViewController ()<GKPhotosGridCellDelegate>
 
@@ -98,7 +99,7 @@
     }
     
     //要授权才调用，否则在dealloc会闪退
-    if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
+    if(GKAppUtils.hasPhotosAuthorization){
         self.imageManager = [PHCachingImageManager new];
         self.imageManager.allowsCachingHighQualityImages = NO;
     }
@@ -380,6 +381,11 @@
         
         if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){
             cell.imageView.image = result;
+            if(!result){
+                cell.imageView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+            }else{
+                cell.imageView.backgroundColor = UIColor.clearColor;
+            }
         }
     }];
     

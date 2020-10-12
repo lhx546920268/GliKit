@@ -18,30 +18,29 @@ PODS:
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - Masonry (1.1.0)
-  - SDWebImage (5.7.4):
-    - SDWebImage/Core (= 5.7.4)
-  - SDWebImage/Core (5.7.4)
+  - SDWebImage (5.9.2):
+    - SDWebImage/Core (= 5.9.2)
+  - SDWebImage/Core (5.9.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 4.0.1)
   - FMDB (~> 2.7.5)
   - Masonry (~> 1.1.0)
-  - SDWebImage (~> 5.7.4)
+  - SDWebImage (~> 5.9.2)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - FMDB
-    - Masonry
   trunk:
     - AFNetworking
+    - FMDB
+    - Masonry
     - SDWebImage
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  SDWebImage: 48b88379b798fd1e4298f95bb25d2cdabbf4deb3
+  SDWebImage: 0b42b8719ab0c5257177d5894306e8a336b21cbb
 
-PODFILE CHECKSUM: 98c2b7e2c6b6c7820485b211fb5bc809f19abc99
+PODFILE CHECKSUM: 88f9b2a09330a7a392754fca7699d7bff09ed9ce
 
 COCOAPODS: 1.9.1
