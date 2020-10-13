@@ -122,10 +122,16 @@
     NSString *msg = nil;
     if(!GKAppUtils.hasPhotosAuthorization){
         msg = [NSString stringWithFormat:@"无法访问您的照片，请在本机的“设置-隐私-照片”中设置,允许%@访问您的照片", GKAppUtils.appName];
+        [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSettings)]];
     }else{
         msg = @"暂无照片信息";
     }
     view.textLabel.text = msg;
+}
+
+- (void)handleSettings
+{
+    [GKAppUtils openSettings];
 }
 
 // MARK: - load
@@ -151,11 +157,19 @@
     WeakObj(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-        if(selfWeak.photosOptions.shouldDisplayAllPhotos){
-            selfWeak.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
+        BOOL onlyAllPhotos = NO;
+        if(@available(iOS 14, *)){
+            onlyAllPhotos = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] == PHAuthorizationStatusLimited;
         }
-        selfWeak.smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-        selfWeak.userAlbums = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+        if(onlyAllPhotos){
+            selfWeak.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
+        }else{
+            if(selfWeak.photosOptions.shouldDisplayAllPhotos){
+                selfWeak.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
+            }
+            selfWeak.smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+            selfWeak.userAlbums = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [selfWeak generateDatas];
@@ -170,7 +184,15 @@
     NSMutableArray *datas = [NSMutableArray array];
     if(self.allPhotos.count > 0){
         GKPhotosCollection *photosCollection = [GKPhotosCollection new];
-        photosCollection.title = @"所有图片";
+        BOOL onlyAllPhotos = NO;
+        if(@available(iOS 14, *)){
+            onlyAllPhotos = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] == PHAuthorizationStatusLimited;
+        }
+        if(onlyAllPhotos){
+            photosCollection.title = @"可访问的图片";
+        }else{
+            photosCollection.title = @"所有图片";
+        }
         photosCollection.assets = self.allPhotos;
         [datas addObject:photosCollection];
     }

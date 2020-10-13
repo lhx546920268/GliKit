@@ -26,6 +26,7 @@
 #import "GKImageCropViewController.h"
 #import "UIImage+GKUtils.h"
 #import "GKAppUtils.h"
+#import "UIColor+GKTheme.h"
 
 @interface GKPhotosGridViewController ()<GKPhotosGridCellDelegate>
 
@@ -91,12 +92,53 @@
 
 - (void)initViews
 {
+    UIView *bottomView = nil;
+    UIButton *tipButton = nil;
+    if(@available(iOS 14, *)){
+        if([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] == PHAuthorizationStatusLimited){
+            tipButton = [UIButton new];
+            NSString *title = [NSString stringWithFormat:@"无法访问您的照片，请在本机的“设置-隐私-照片”中设置,允许%@访问您的照片", GKAppUtils.appName];
+            [tipButton setTitle:title forState:UIControlStateNormal];
+            [tipButton setTitleColor:UIColor.gkThemeTintColor forState:UIControlStateNormal];
+            [tipButton setBackgroundColor:UIColor.gkThemeColor];
+            tipButton.titleLabel.font = [UIFont systemFontOfSize:13];
+            tipButton.titleLabel.numberOfLines = 0;
+            tipButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [tipButton addTarget:self action:@selector(handleSettings) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIEdgeInsets insets = UIEdgeInsetsMake(15, 15, 15, 15);
+            if(self.photosOptions.intention != GKPhotosIntentionMultiSelection){
+                insets.bottom += UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
+                bottomView = tipButton;
+            }else{
+                bottomView = [UIView new];
+                [bottomView addSubview:tipButton];
+                [tipButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.leading.top.trailing.equalTo(0);
+                }];
+            }
+            tipButton.contentEdgeInsets = insets;
+        }
+    }
+    
     if(self.photosOptions.intention == GKPhotosIntentionMultiSelection){
         self.photosToolBar = [GKPhotosToolBar new];
-        [self.photosToolBar.previewButton addTarget:self action:@selector(handlePreview) forControlEvents:UIControlEventTouchUpInside];
         [self.photosToolBar.useButton addTarget:self action:@selector(handleUse) forControlEvents:UIControlEventTouchUpInside];
-        [self setBottomView:self.photosToolBar];
+        [self.photosToolBar.previewButton addTarget:self action:@selector(handlePreview) forControlEvents:UIControlEventTouchUpInside];
+        
+        if(bottomView != nil){
+            [bottomView addSubview:self.photosToolBar];
+            [self.photosToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.leading.trailing.bottom.equalTo(0);
+                make.top.equalTo(tipButton.mas_bottom);
+            }];
+            
+        }else{
+            bottomView = self.photosToolBar;
+        }
     }
+    
+    [self setBottomView:bottomView];
     
     //要授权才调用，否则在dealloc会闪退
     if(GKAppUtils.hasPhotosAuthorization){
@@ -123,6 +165,11 @@
 }
 
 // MARK: - action
+
+- (void)handleSettings
+{
+    [GKAppUtils openSettings];
+}
 
 ///取消
 - (void)handleCancel
