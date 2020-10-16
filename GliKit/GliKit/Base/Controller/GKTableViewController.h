@@ -39,11 +39,6 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
 @property(nonatomic, readonly) Class tableViewClass;
 
 /**
- 是否有自动计算高度 default NO
- */
-@property(nonatomic, assign) BOOL shouldUseEstimatedHeight;
-
-/**
  构造方法
  *@param style 列表风格
  *@return 一个初始化的 GKTableViewController 对象
@@ -60,8 +55,6 @@ static const CGFloat GKTableViewMinHeaderFooterHeight = 0.00001;
 
 ///需要调用super
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath NS_REQUIRES_SUPER;
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section NS_REQUIRES_SUPER;
-- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section NS_REQUIRES_SUPER;
 
 @end
 

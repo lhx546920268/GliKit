@@ -214,12 +214,12 @@
 
 // MARK: - AutoLayout 计算大小
 
-- (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalculateType) type
+- (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalcType) type
 {
     CGSize size = CGSizeZero;
-    if (type != GKAutoLayoutCalculateTypeSize){
+    if (type != GKAutoLayoutCalcTypeSize){
         //添加临时约束
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:type == GKAutoLayoutCalculateTypeHeight ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:type == GKAutoLayoutCalculateTypeHeight ? fitsSize.width : fitsSize.height];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:type == GKAutoLayoutCalcTypeHeight ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:type == GKAutoLayoutCalcTypeHeight ? fitsSize.width : fitsSize.height];
         [self addConstraint:constraint];
         size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         [self removeConstraint:constraint];

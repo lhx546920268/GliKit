@@ -28,6 +28,8 @@
 
 @implementation GKDRowModel
 
+@synthesize className;
+
 GKConvenientSecureCoder
 GKConvenientCopying
 

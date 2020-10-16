@@ -20,6 +20,52 @@ static char GKShouldShowEmptyViewKey;
 ///偏移量
 static char GKEmptyViewInsetsKey;
 
+static char GKEmptyHelperKey;
+
+///空视图帮助类
+@interface GKEmptyHelper : NSObject
+
+@property(nonatomic, weak) UIScrollView *scrollView;
+@property(nonatomic, assign) CGSize contentSize;
+
+- (instancetype)initWithScrollView:(UIScrollView*) scrollView;
+
+@end
+
+static void* const GKEmptyHelperContext = "GKEmptyHelperContext";
+
+@implementation GKEmptyHelper
+
+- (instancetype)initWithScrollView:(UIScrollView *)scrollView
+{
+    self = [super init];
+    if(self){
+        self.scrollView = scrollView;
+        [scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:GKEmptyHelperContext];
+    }
+    
+    return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == GKEmptyHelperContext) {
+        if(!CGSizeEqualToSize(self.contentSize, self.scrollView.contentSize)){
+            self.contentSize = self.scrollView.contentSize;
+            [self.scrollView layoutEmtpyView];
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:GKEmptyHelperContext];
+    }
+}
+
+- (void)dealloc
+{
+    [self.scrollView removeObserver:self forKeyPath:@"contentSize" context:@"GKEmptyHelperContext"];
+}
+
+@end
+
 @implementation UIScrollView (GKEmptyView)
 
 + (void)load
@@ -29,13 +75,14 @@ static char GKEmptyViewInsetsKey;
 
 - (void)setGkShouldShowEmptyView:(BOOL)gkShouldShowEmptyView
 {
-    if(self.gkShouldShowEmptyView != gkShouldShowEmptyView)
-    {
-        objc_setAssociatedObject(self, &GKShouldShowEmptyViewKey, [NSNumber numberWithBool:gkShouldShowEmptyView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if(self.gkShouldShowEmptyView != gkShouldShowEmptyView){
+        objc_setAssociatedObject(self, &GKShouldShowEmptyViewKey, @(gkShouldShowEmptyView), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
         if(gkShouldShowEmptyView){
+            [self gkEnsureEmptyHelper];
             [self layoutEmtpyView];
         }else{
+            [self setGkEmptyHelper:nil];
             self.gkEmptyView = nil;
         }
     }
@@ -44,6 +91,20 @@ static char GKEmptyViewInsetsKey;
 - (BOOL)gkShouldShowEmptyView
 {
     return [objc_getAssociatedObject(self, &GKShouldShowEmptyViewKey) boolValue];
+}
+
+- (void)setGkEmptyHelper:(GKEmptyHelper*) helper
+{
+    objc_setAssociatedObject(self, &GKEmptyHelperKey, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)gkEnsureEmptyHelper
+{
+    GKEmptyHelper *helper = objc_getAssociatedObject(self, &GKEmptyHelperKey);
+    if(!helper){
+        helper = [[GKEmptyHelper alloc] initWithScrollView:self];
+        [self setGkEmptyHelper:helper];
+    }
 }
 
 - (void)setGkEmptyViewInsets:(UIEdgeInsets)gkEmptyViewInsets

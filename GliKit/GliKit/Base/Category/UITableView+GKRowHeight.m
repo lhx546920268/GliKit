@@ -8,228 +8,181 @@
 
 #import "UITableView+GKRowHeight.h"
 #import <objc/runtime.h>
-
-///tableView section 缓存大小
-@interface GKTableViewSectionInfo : NSObject
-
-///header 高度
-@property(nonatomic, strong) NSNumber *headerHeight;
-
-///footer高度
-@property(nonatomic, strong) NSNumber *footerHeight;
-
-///行高
-@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSNumber*> *rowHeights;
-
-@end
-
-@implementation GKTableViewSectionInfo
-
-- (instancetype)init
-{
-    self = [super init];
-    if(self){
-        self.rowHeights = [NSMutableDictionary dictionary];
-    }
-    
-    return self;
-}
-
-@end
+#import "UIView+GKAutoLayout.h"
+#import "NSObject+GKUtils.h"
 
 @implementation UITableView (GKRowHeight)
 
-+ (void)load
-{
++ (void)load {
     SEL selectors[] = {
         
-        @selector(reloadData),
-        @selector(reloadSections:withRowAnimation:),
-        @selector(deleteSections:withRowAnimation:),
-        @selector(moveSection:toSection:),
-        @selector(reloadRowsAtIndexPaths:withRowAnimation:),
-        @selector(deleteRowsAtIndexPaths:withRowAnimation:),
-        @selector(moveRowAtIndexPath:toIndexPath:),
+        @selector(registerNib:forCellReuseIdentifier:),
+        @selector(registerClass:forCellReuseIdentifier:),
+        @selector(registerNib:forHeaderFooterViewReuseIdentifier:),
+        @selector(registerClass:forHeaderFooterViewReuseIdentifier:),
     };
     
-    
     for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
-        SEL selector1 = selectors[i];
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkRowHeight_%@", NSStringFromSelector(selector1)]);
         
-        Method method1 = class_getInstanceMethod(self, selector1);
-        Method method2 = class_getInstanceMethod(self, selector2);
-        
-        method_exchangeImplementations(method1, method2);
+        [self gkExchangeImplementations:selectors[i] prefix:@"gkRowHeight_"];
     }
 }
 
-// MARK: - - data change
+// MARK: - register cells
 
-- (void)gkRowHeight_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkRowHeight_registerNib:(UINib *)nib forCellReuseIdentifier:(NSString *)identifier
 {
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    if(caches.count > 0){
-        [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
-            
-            [caches removeObjectForKey:@(section)];
-        }];
-    }
-    [self gkRowHeight_reloadSections:sections withRowAnimation:animation];
+    [self gkRowHeight_registerNib:nib forCellReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:nib forKey:identifier];
 }
 
-- (void)gkRowHeight_deleteSections:(NSIndexSet *) sections withRowAnimation:(UITableViewRowAnimation)animation
+- (void)gkRowHeight_registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
 {
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    if(caches.count > 0){
-        [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
-            
-            [caches removeObjectForKey:@(section)];
-        }];
-    }
-    [self gkRowHeight_deleteSections:sections withRowAnimation:animation];
+    [self gkRowHeight_registerClass:cellClass forCellReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:NSStringFromClass(cellClass) forKey:identifier];
 }
 
-- (void)gkRowHeight_moveSection:(NSInteger)section toSection:(NSInteger)newSection
+- (void)gkRowHeight_registerNib:(UINib *)nib forHeaderFooterViewReuseIdentifier:(NSString *)identifier
 {
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    if(caches.count > 0){
+    [self gkRowHeight_registerNib:nib forHeaderFooterViewReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:nib forKey:identifier];
+}
+
+- (void)gkRowHeight_registerClass:(Class)aClass forHeaderFooterViewReuseIdentifier:(NSString *)identifier
+{
+    [self gkRowHeight_registerClass:aClass forHeaderFooterViewReuseIdentifier:identifier];
+    [[self gkRegisterObjects] setObject:NSStringFromClass(aClass) forKey:identifier];
+}
+
+// MARK: - 计算
+
+- (CGFloat)gkRowHeightForIdentifier:(NSString *)identifier model:(id<GKRowHeightModel>)model
+{
+    if(model.rowHeight == 0){
+        //计算大小
+        UITableViewCell<GKTableConfigurableItem> *cell = [self gkCellForIdentifier:identifier];
+        if(!cell){
+            //有时候cell没有注册，而是直接创建的
+            cell = [self dequeueReusableCellWithIdentifier:identifier];
+        }
+        return [self gkRowHeightForCell:cell model:model];
+    }
+    
+    return model.rowHeight;
+}
+
+- (CGFloat)gkRowHeightForCell:(UITableViewCell<GKTableConfigurableItem>*)cell model:(id<GKRowHeightModel>)model
+{
+    NSAssert([cell conformsToProtocol:@protocol(GKTableConfigurableItem)], @"%@ must confirms protocol %@", NSStringFromClass(cell.class), NSStringFromProtocol(@protocol(GKTableConfigurableItem)));
+    if(model.rowHeight == 0){
+        CGFloat width = CGRectGetWidth(self.frame);
         
-        GKTableViewSectionInfo *info = [caches objectForKey:@(section)];
-        GKTableViewSectionInfo *newInfo = [caches objectForKey:@(newSection)];
+        //当使用系统的accessoryView时，content宽度会向右偏移
+        if(cell.accessoryView){
+            width -= 16.0 + CGRectGetWidth(cell.accessoryView.frame);
+        }else{
+            switch (cell.accessoryType){
+                case UITableViewCellAccessoryDisclosureIndicator :
+                    //箭头
+                    width -= 34.0;
+                    break;
+                case UITableViewCellAccessoryCheckmark :
+                    //勾
+                    width -= 40.0;
+                    break;
+                case UITableViewCellAccessoryDetailButton :
+                    //详情
+                    width -= 48.0;
+                    break;
+                case UITableViewCellAccessoryDetailDisclosureButton :
+                    //箭头+详情
+                    width -= 68.0;
+                    break;
+                default:
+                    break;
+            }
+        }
         
-        if(info != nil && newInfo != nil){
-            [caches setObject:info forKey:@(newSection)];
-            [caches setObject:newInfo forKey:@(section)];
-        }else if(info != nil){
-            [caches setObject:info forKey:@(newSection)];
-        }else if (newInfo != nil){
-            [caches setObject:newInfo forKey:@(section)];
+        cell.model = model;
+        CGFloat height = [cell.contentView gkSizeThatFits:CGSizeMake(width, 0) type:GKAutoLayoutCalcTypeHeight].height;
+        
+        //如果有分割线 加上1px
+        if(self.separatorStyle != UITableViewCellSeparatorStyleNone){
+            height += 1.0 / [UIScreen mainScreen].scale;
+        }
+        model.rowHeight = height;
+    }
+    
+    return model.rowHeight;
+}
+
+- (CGFloat)gkHeaderFooterHeightForIdentifier:(NSString *)identifier model:(id<GKRowHeightModel>)model
+{
+    if(model.rowHeight == 0){
+        //计算大小
+        UIView<GKTableConfigurableItem>* view = [self gkCellForIdentifier:identifier];
+        if(!view){
+            //有时候cell没有注册，而是直接创建的
+            view = (UIView<GKTableConfigurableItem>*)[self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+        }
+        model.rowHeight = [self gkHeightForHeaderFooter:view model:model];
+    }
+    
+    return model.rowHeight;
+}
+
+- (CGFloat)gkHeightForHeaderFooter:(UIView<GKTableConfigurableItem>*)headerFooter model:(id<GKRowHeightModel>)model
+{
+    if(model.rowHeight == 0){
+        NSAssert([headerFooter conformsToProtocol:@protocol(GKTableConfigurableItem)], @"%@ must confirms protocol %@", NSStringFromClass(headerFooter.class), NSStringFromProtocol(@protocol(GKTableConfigurableItem)));
+        headerFooter.model = model;
+        model.rowHeight = [headerFooter gkSizeThatFits:CGSizeMake(self.frame.size.width, 0) type:GKAutoLayoutCalcTypeHeight].height;
+    }
+    return model.rowHeight;
+}
+
+// MARK: - 注册的 cells
+
+///注册的 class nib
+- (NSMutableDictionary*)gkRegisterObjects
+{
+    NSMutableDictionary *objects = objc_getAssociatedObject(self, _cmd);
+    if (objects == nil){
+        objects = [NSMutableDictionary dictionary];
+        objc_setAssociatedObject(self, _cmd, objects, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return objects;
+}
+
+///注册的cells header footer 用来计算
+- (__kindof UIView*)gkCellForIdentifier:(NSString *)identifier
+{
+    /**
+     不用 dequeueReusableCellWithIdentifier 是因为会创建N个cell
+     */
+    
+    NSMutableDictionary<NSString*, UIView*> *cells = objc_getAssociatedObject(self, _cmd);
+    if (cells == nil){
+        cells = [NSMutableDictionary dictionary];
+        objc_setAssociatedObject(self, _cmd, cells, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    
+    UIView *view = [cells objectForKey:identifier];
+    if(view == nil){
+        NSObject *obj = [[self gkRegisterObjects] objectForKey:identifier];
+        if([obj isKindOfClass:[UINib class]]){
+            UINib *nib = (UINib*)obj;
+            view = [[nib instantiateWithOwner:nil options:nil] firstObject];
+            [cells setObject:view forKey:identifier];
+        }else if([obj isKindOfClass:[NSString class]]){
+            Class clazz = NSClassFromString((NSString*)obj);
+            view = [clazz new];
+            [cells setObject:view forKey:identifier];
         }
     }
     
-    [self gkRowHeight_moveSection:section toSection:newSection];
+    return view;
 }
 
-- (void)gkRowHeight_moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
-{
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    if(caches.count > 0){
-        NSNumber *number = [self gkRowHeightForIndexPath:indexPath];
-        NSNumber *toNumber = [self gkRowHeightForIndexPath:newIndexPath];
-        
-        if(number != nil && toNumber != nil){
-            [self gkSetRowHeight:number forIndexPath:indexPath];
-            [self gkSetRowHeight:toNumber forIndexPath:newIndexPath];
-        }else if(number != nil){
-            [self gkSetRowHeight:number forIndexPath:indexPath];
-        }else if (toNumber != nil){
-            [self gkSetRowHeight:toNumber forIndexPath:newIndexPath];
-        }
-    }
-    
-    [self gkRowHeight_moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-}
-
-- (void)gkRowHeight_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
-{
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    if(caches.count > 0){
-        for(NSIndexPath *indexPath in indexPaths){
-            [self gkSetRowHeight:nil forIndexPath:indexPath];
-        }
-    }
-    
-    [self gkRowHeight_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
-}
-
-- (void)gkRowHeight_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
-{
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    if(caches.count > 0){
-        for(NSIndexPath *indexPath in indexPaths){
-            [self gkSetRowHeight:nil forIndexPath:indexPath];
-        }
-    }
-    
-    [self gkRowHeight_reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
-}
-
-
-- (void)gkRowHeight_reloadData
-{
-    [[self gk_rowHeightCaches] removeAllObjects];
-    [self gkRowHeight_reloadData];
-}
-
-// MARK: - get and set
-
-- (NSNumber*)gkRowHeightForIndexPath:(NSIndexPath *)indexPath
-{
-    GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:indexPath.section];
-    return info.rowHeights ? info.rowHeights[@(indexPath.row)] : nil;
-}
-
-- (void)gkSetRowHeight:(NSNumber *)rowHeight forIndexPath:(NSIndexPath *)indexPath
-{
-    GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:indexPath.section];
-    
-    if(rowHeight != nil){
-        [info.rowHeights setObject:rowHeight forKey:@(indexPath.row)];
-    }else{
-        [info.rowHeights removeObjectForKey:@(indexPath.row)];
-    }
-}
-
-- (void)gkSetHeaderHeight:(NSNumber*) height forSection:(NSInteger) section
-{
-    GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:section];
-    info.headerHeight = height;
-}
-
-- (NSNumber*)gkHeaderHeightForSection:(NSInteger) section
-{
-    GKTableViewSectionInfo *info = [[self gk_rowHeightCaches] objectForKey:@(section)];
-    return info.headerHeight;
-}
-
-- (void)gkSetFooterHeight:(NSNumber*) height forSection:(NSInteger) section
-{
-    GKTableViewSectionInfo *info = [self gk_sectionInfoForSection:section];
-    info.footerHeight = height;
-}
-
-- (NSNumber*)gkFooterHeightForSection:(NSInteger) section
-{
-    GKTableViewSectionInfo *info = [[self gk_rowHeightCaches] objectForKey:@(section)];
-    return info.footerHeight;
-}
-
-// MARK: - cell大小缓存
-
-///缓存cell大小的数组
-- (NSMutableDictionary<NSNumber*, GKTableViewSectionInfo* >*)gk_rowHeightCaches
-{
-    NSMutableDictionary *caches = objc_getAssociatedObject(self, _cmd);
-    if(caches == nil){
-        caches = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, _cmd, caches, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    
-    return caches;
-}
-
-///设置缓存
-- (GKTableViewSectionInfo*)gk_sectionInfoForSection:(NSInteger) section
-{
-    NSMutableDictionary *caches = [self gk_rowHeightCaches];
-    GKTableViewSectionInfo *info = [caches objectForKey:@(section)];
-    if(info == nil)
-    {
-        info = [GKTableViewSectionInfo new];
-        [caches setObject:info forKey:@(section)];
-    }
-    return info;
-}
 
 @end

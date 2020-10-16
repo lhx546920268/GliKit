@@ -11,16 +11,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///autoLayout 计算大小方式
-typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
+typedef NS_ENUM(NSInteger, GKAutoLayoutCalcType)
 {
     ///计算宽度 需要给定高度
-    GKAutoLayoutCalculateTypeWidth = 0,
+    GKAutoLayoutCalcTypeWidth = 0,
     
     ///计算高度 需要给定宽度
-    GKAutoLayoutCalculateTypeHeight = 1,
+    GKAutoLayoutCalcTypeHeight = 1,
     
     ///计算大小，可给最大宽度和高度
-    GKAutoLayoutCalculateTypeSize = 2,
+    GKAutoLayoutCalcTypeSize = 2,
 };
 
 ///自动布局扩展
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalculateType)
  *@param type 计算方式
  *@return view 大小
  */
-- (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalculateType) type;
+- (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalcType) type;
 
 ///设置垂直方向的拥抱和压缩优先级
 - (void)gkSetVerticalHugAndCompressionPriority:(UILayoutPriority) priority;

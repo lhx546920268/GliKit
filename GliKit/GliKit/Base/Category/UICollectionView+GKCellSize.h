@@ -10,49 +10,59 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///在计算cell大小时，要先配置cell内容，否则无法准确计算cell大小
-typedef void(^GKCellConfiguration)(__kindof UICollectionReusableView *cell);
+///保存item大小的
+@protocol GKItemSizeModel <NSObject>
+
+///item大小
+@property(nonatomic, assign) CGSize itemSize;
+
+@end
+
+///可配置的item
+@protocol GKCollectionConfigurableItem <NSObject>
+
+///对应的数据
+@property(nonatomic, strong) id<GKItemSizeModel> model;
+
+@end
 
 ///cell大小
 @interface UICollectionView (GKCellSize)
 
-/**获取cell大小
+/**
+ *获取cell大小
  *@param identifier cell唯一标识
- *@param indexPath cell下标
+ *@param model 保存cell大小的
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier model:(id<GKItemSizeModel>) model;
 
-/**获取cell大小
+/**
+ *获取cell大小
  *@param identifier cell唯一标识
- *@param indexPath cell下标
  *@param constraintSize 最大，只能设置 宽度或高度
+ *@param model 保存cell大小的
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier constraintSize:(CGSize) constraintSize model:(id<GKItemSizeModel>) model;
 
-/**获取cell大小
+/**
+ *获取cell大小
  *@param identifier cell唯一标识
- *@param indexPath cell下标
  *@param width cell宽度
+ *@param model 保存cell大小的
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath width:(CGFloat) width configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier width:(CGFloat) width model:(id<GKItemSizeModel>) model;
 
-/**获取cell大小
+/**
+ *获取cell大小
  *@param identifier cell唯一标识
- *@param indexPath cell下标
  *@param height cell高度
+ *@param model 保存cell大小的
  *@return cell大小
  */
-- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath height:(CGFloat) height configuration:(nullable NS_NOESCAPE GKCellConfiguration) configuration;
-
-
-///头部
-- (NSIndexPath*)gkHeaderIndexPathForSection:(NSInteger) section;
-
-///底部
-- (NSIndexPath*)gkFooterIndexPathForSection:(NSInteger) section;
+- (CGSize)gkCellSizeForIdentifier:(NSString*) identifier height:(CGFloat) height model:(id<GKItemSizeModel>) model;
 
 @end
 

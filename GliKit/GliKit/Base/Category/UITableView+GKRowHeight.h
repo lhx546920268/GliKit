@@ -10,43 +10,59 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///保存行高的
+@protocol GKRowHeightModel <NSObject>
+
+///行高
+@property(nonatomic, assign) CGFloat rowHeight;
+
+@end
+
+///可配置的item
+@protocol GKTableConfigurableItem <NSObject>
+
+///对应的数据
+@property(nonatomic, strong) id<GKRowHeightModel> model;
+
+@end
+
 /**
  缓存行高的
- 
- 这样设置才行
- self.tableView.estimatedRowHeight = 80;
- 
- //缓存
- - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
- {
- NSNumber *number = [tableView gkRowHeightForIndexPath:indexPath];
- return number ? number.floatValue : UITableViewAutomaticDimension;
- }
- 
- - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
- }
  */
 @interface UITableView (GKRowHeight)
 
-///获取行高
-- (nullable NSNumber*)gkRowHeightForIndexPath:(NSIndexPath*) indexPath;
+/**
+ *获取cell高度
+ *@param identifier cell唯一标识
+ *@param model 保存行高的
+ *@return cell 高度
+ */
+- (CGFloat)gkRowHeightForIdentifier:(NSString*) identifier model:(id<GKRowHeightModel>) model;
 
-///设置行高
-- (void)gkSetRowHeight:(nullable NSNumber*) rowHeight forIndexPath:(NSIndexPath*) indexPath;
 
-///获取区域头部
-- (NSNumber*)gkHeaderHeightForSection:(NSInteger) section;
+/**
+ *获取cell高度 主要用于静态cell，不重用的cell
+ *@param cell 要计算高度的cell
+ *@param model 保存行高的
+ *@return cell 高度
+ */
+- (CGFloat)gkRowHeightForCell:(UITableViewCell<GKTableConfigurableItem>*) cell model:(id<GKRowHeightModel>) model;
 
-///设置区域头部高度
-- (void)gkSetHeaderHeight:(NSNumber*) headerHeight forSection:(NSInteger) section;
+/**
+ *获取header footer 高度
+ *@param identifier header唯一标识
+ *@param model 保存行高的
+ *@return header footer 高度
+ */
+- (CGFloat)gkHeaderFooterHeightForIdentifier:(NSString*) identifier model:(id<GKRowHeightModel>) model;
 
-///获取区域底部高度
-- (NSNumber*)gkFooterHeightForSection:(NSInteger) section;
-
-///设置区域底部高度
-- (void)gkSetFooterHeight:(NSNumber*) footerHeight forSection:(NSInteger) section;
+/**
+ *获取header footer 高度 主要用于静态 header footer，不重用的
+ *@param headerFooter 要计算高度的header footer
+ *@param model 保存行高的
+ *@return header footer 高度
+ */
+- (CGFloat)gkHeightForHeaderFooter:(UIView<GKTableConfigurableItem>*) headerFooter model:(id<GKRowHeightModel>) model;
 
 @end
 

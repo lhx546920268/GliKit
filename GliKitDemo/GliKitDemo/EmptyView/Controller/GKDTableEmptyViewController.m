@@ -8,7 +8,59 @@
 
 #import "GKDTableEmptyViewController.h"
 
+@interface GKDTableEmptyModel : NSObject<GKRowHeightModel>
+
+///
+@property(nonatomic, copy) NSString *title;
+
+@end
+
+@implementation GKDTableEmptyModel
+
+@synthesize rowHeight;
+
+@end
+
+@interface GKDTableEmptyCell : UITableViewCell<GKTableConfigurableItem>
+
+@property(nonatomic, readonly) UILabel *titleLabel;
+
+@property(nonatomic, strong) GKDTableEmptyModel *model;
+
+@end
+
+@implementation GKDTableEmptyCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _titleLabel = [UILabel new];
+        [self.contentView addSubview:_titleLabel];
+        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(25);
+            make.top.equalTo(15);
+            make.bottom.equalTo(-15);
+        }];
+    
+        self.backgroundColor = UIColor.whiteColor;
+    }
+    return self;
+}
+
+- (void)setModel:(GKDTableEmptyModel *)model
+{
+    _model = model;
+    _titleLabel.text = _model.title;
+}
+
+@end
+
 @interface GKDTableEmptyViewController ()
+
+@property(nonatomic, assign) NSInteger count;
+///
+@property(nonatomic, strong) NSArray<GKDTableEmptyModel*> *models;
 
 @end
 
@@ -16,24 +68,63 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.count = 10;
+    NSMutableArray *models = [NSMutableArray array];
+    
+    self.view.backgroundColor = UIColor.gkGrayBackgroundColor;
+    for(NSInteger i = 0;i < self.count;i ++){
+        GKDTableEmptyModel *model = GKDTableEmptyModel.new;
+        
+        model.title = [NSString stringWithFormat:@"%d", rand()];
+        [models addObject:model];
+    }
+    self.models = models;
+    [self registerClass:GKDTableEmptyCell.class];
     [self initViews];
+    
     self.tableView.gkShouldShowEmptyView = YES;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)emptyViewWillAppear:(GKEmptyView *)view
+{
+    [super emptyViewWillAppear:view];
+    if(view.gestureRecognizers.count == 0){
+        [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapEmpty)]];
+    }
 }
-*/
+
+- (void)handleTapEmpty
+{
+    self.count = 10;
+    [self.tableView reloadData];
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return self.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [tableView gkRowHeightForIdentifier:GKDTableEmptyCell.gkNameOfClass model:self.models[indexPath.item]];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GKDTableEmptyCell *cell = [tableView dequeueReusableCellWithIdentifier:GKDTableEmptyCell.gkNameOfClass forIndexPath:indexPath];
+    cell.model = self.models[indexPath.row];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    self.count = 0;
+    [tableView reloadData];
 }
 
 @end

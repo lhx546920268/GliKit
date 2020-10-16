@@ -156,24 +156,6 @@
 {
     cell.separatorInset = self.separatorEdgeInsets;
     cell.layoutMargins = self.separatorEdgeInsets;
-    
-    if(self.shouldUseEstimatedHeight){
-        [tableView gkSetRowHeight:@(cell.gkHeight) forIndexPath:indexPath];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    if(self.shouldUseEstimatedHeight){
-        [tableView gkSetHeaderHeight:@(view.gkHeight) forSection:section];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
-{
-    if(self.shouldUseEstimatedHeight){
-        [tableView gkSetFooterHeight:@(view.gkHeight) forSection:section];
-    }
 }
 
 // MARK: - 屏幕旋转
