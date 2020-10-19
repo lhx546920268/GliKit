@@ -113,6 +113,10 @@ static char GKSkeletonHideAnimateKey;
             }];
         }
             break;
+        case GKSkeletonStatusNone : {
+            [view gkHideSkeletonWithAnimate:NO];
+        }
+            break;
         default:
             break;
     }
@@ -139,6 +143,10 @@ static char GKSkeletonHideAnimateKey;
                     weakSelf.gkSkeletonLayer = nil;
                 }
             }];
+        }
+            break;
+        case GKSkeletonStatusNone : {
+            [view gkHideSkeletonWithAnimate:NO];
         }
             break;
         default:

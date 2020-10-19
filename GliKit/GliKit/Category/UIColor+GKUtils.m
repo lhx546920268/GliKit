@@ -18,12 +18,12 @@
     BOOL success = [self getRed:&red green:&green blue:&blue alpha:&alpha];
     
     if(success){
-        return [NSDictionary dictionaryWithObjectsAndKeys:
-                @(red), GKColorRed,
-                @(green), GKColorGreen,
-                @(blue), GKColorBlue,
-                @(alpha), GKColorAlpha,
-                nil];
+        return @{
+            GKColorRed: @(red),
+            GKColorGreen: @(green),
+            GKColorBlue: @(blue),
+            GKColorAlpha: @(alpha),
+        };
     }
     
     return nil;
@@ -39,15 +39,15 @@
     if(dic1 == nil || dic2 == nil)
         return NO;
     
-    CGFloat R1 = [[dic1 objectForKey:GKColorRed] floatValue];
-    CGFloat G1 = [[dic1 objectForKey:GKColorGreen] floatValue];
-    CGFloat B1 = [[dic1 objectForKey:GKColorBlue] floatValue];
-    CGFloat A1 = [[dic1 objectForKey:GKColorAlpha] floatValue];
+    CGFloat R1 = [dic1[GKColorRed] floatValue];
+    CGFloat G1 = [dic1[GKColorGreen] floatValue];
+    CGFloat B1 = [dic1[GKColorBlue] floatValue];
+    CGFloat A1 = [dic1[GKColorAlpha] floatValue];
     
-    CGFloat R2 = [[dic2 objectForKey:GKColorRed] floatValue];
-    CGFloat G2 = [[dic2 objectForKey:GKColorGreen] floatValue];
-    CGFloat B2 = [[dic2 objectForKey:GKColorBlue] floatValue];
-    CGFloat A2 = [[dic2 objectForKey:GKColorAlpha] floatValue];
+    CGFloat R2 = [dic2[GKColorRed] floatValue];
+    CGFloat G2 = [dic2[GKColorGreen] floatValue];
+    CGFloat B2 = [dic2[GKColorBlue] floatValue];
+    CGFloat A2 = [dic2[GKColorAlpha] floatValue];
     
     return R1 == R2 && B1 == B2 && G1 == G2 && A1 == A2;
 }
@@ -56,10 +56,10 @@
 {
     NSDictionary *dic = [self gkColorARGB];
     if(dic != nil){
-        int R = [[dic objectForKey:GKColorRed] floatValue] * 255;
-        int G = [[dic objectForKey:GKColorGreen] floatValue] * 255;
-        int B = [[dic objectForKey:GKColorBlue] floatValue] * 255;
-        CGFloat A = [[dic objectForKey:GKColorAlpha] floatValue];
+        int R = [dic[GKColorRed] floatValue] * 255;
+        int G = [dic[GKColorGreen] floatValue] * 255;
+        int B = [dic[GKColorBlue] floatValue] * 255;
+        CGFloat A = [dic[GKColorAlpha] floatValue];
         
         return [UIColor gkColorHexFromRed:R green:G blue:B alpha:A];
     }
@@ -70,9 +70,9 @@
 {
     NSDictionary *dic = [self gkColorARGB];
     if(dic != nil){
-        int R = [[dic objectForKey:GKColorRed] floatValue] * 255;
-        int G = [[dic objectForKey:GKColorGreen] floatValue] * 255;
-        int B = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+        int R = [dic[GKColorRed] floatValue] * 255;
+        int G = [dic[GKColorGreen] floatValue] * 255;
+        int B = [dic[GKColorBlue] floatValue] * 255;
         
         return [UIColor gkColorWithRed:R green:G blue:B alpha:alpha];
     }
@@ -84,63 +84,52 @@
     if([NSString isEmpty:hex])
         return nil;
     hex = [hex stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    hex = [hex lowercaseString];
     
     CGFloat alpha = 255.0f;
     CGFloat red = 0;
     CGFloat green = 0;
     CGFloat blue = 0;
     
-    int index = 0;
-    int len = 0;
     NSInteger length = hex.length;
+    NSInteger hexValue = hex.hexToDecimal;
+    
     switch (length) {
-        case 3 :
-        case 4 : {
-            len = 1;
-            if(length == 4){
-                int a = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
-                alpha = a * 16 + a;
-                index += len;
-            }
-            int value = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
-            red = value * 16 + value;
-            index += len;
-            
-            value = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
-            green = value * 16 + value;
-            index += len;
-            
-            value = [self gkDecimalFromHexChar:[hex characterAtIndex:index]];
-            blue = value * 16 + value;
+        case 3 : {
+            red = (hexValue & 0xf00) >> 8;
+            green = (hexValue & 0x0f0) >> 4;
+            blue = (hexValue & 0x00f);
         }
             break;
-        case 6 :
+        case 4 : {
+            alpha = (hexValue & 0xf000) >> 16;
+            red = (hexValue & 0x0f00) >> 8;
+            green = (hexValue & 0x00f0) >> 4;
+            blue = (hexValue & 0x000f);
+        }
+            break;
+        case 6 : {
+            red = (hexValue & 0xff0000) >> 16;
+            green = (hexValue & 0x00ff00) >> 8;
+            blue = (hexValue & 0x0000ff);
+        }
+            break;
         case 8 : {
-            len = 2;
-            if(length == 8){
-                alpha = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
-                index += len;
-            }
-            red = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
-            index += len;
-            
-            green = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
-            index += len;
-            
-            blue = [self gkDecimalFromHex:[hex substringWithRange:NSMakeRange(index, len)]];
+            alpha = (hexValue & 0xff000000) >> 32;
+            red = (hexValue & 0x00ff0000) >> 16;
+            green = (hexValue & 0x0000ff00) >> 8;
+            blue = (hexValue & 0x000000ff);
         }
             break;
         default:
             break;
     }
     
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            @(red / 255.0f), GKColorRed,
-            @(green / 255.0f), GKColorGreen,
-            @(blue / 255.0f), GKColorBlue,
-            @(alpha / 255.0f), GKColorAlpha,
-            nil];
+    return @{
+        GKColorRed: @(red / 255.0f),
+        GKColorGreen: @(green / 255.0f),
+        GKColorBlue: @(blue / 255.0f),
+        GKColorAlpha: @(alpha / 255.0f),
+    };
 }
 
 + (NSString*)gkColorHexFromRed:(int)red green:(int)green blue:(int)blue alpha:(CGFloat)alpha
@@ -152,10 +141,10 @@
 + (UIColor*)gkColorFromHex:(NSString*) hex
 {
     NSDictionary *dic = [self gkColorARGBFromHex:hex];
-    CGFloat red = [[dic objectForKey:GKColorRed] floatValue];
-    CGFloat green = [[dic objectForKey:GKColorGreen] floatValue];
-    CGFloat blue = [[dic objectForKey:GKColorBlue] floatValue];
-    CGFloat alpha = [[dic objectForKey:GKColorAlpha] floatValue];
+    CGFloat red = [dic[GKColorRed] floatValue];
+    CGFloat green = [dic[GKColorGreen] floatValue];
+    CGFloat blue = [dic[GKColorBlue] floatValue];
+    CGFloat alpha = [dic[GKColorAlpha] floatValue];
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
@@ -163,69 +152,11 @@
 + (UIColor*)gkColorFromHex:(NSString*) hex alpha:(CGFloat) alpha
 {
     NSDictionary *dic = [self gkColorARGBFromHex:hex];
-    CGFloat red = [[dic objectForKey:GKColorRed] floatValue];
-    CGFloat green = [[dic objectForKey:GKColorGreen] floatValue];
-    CGFloat blue = [[dic objectForKey:GKColorBlue] floatValue];
+    CGFloat red = [dic[GKColorRed] floatValue];
+    CGFloat green = [dic[GKColorGreen] floatValue];
+    CGFloat blue = [dic[GKColorBlue] floatValue];
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
-
-/**
- 获取10进制
- *@param hex 16进制
- *@return 10进制值
- */
-+ (int)gkDecimalFromHex:(NSString*) hex
-{
-    int result = 0;
-    int than = 1;
-    for(NSInteger i = hex.length - 1;i >= 0;i --){
-        char c = [hex characterAtIndex:i];
-        
-        result += [self gkDecimalFromHexChar:c] * than;
-        than *= 16;
-    }
-    return result;
-}
-
-/**
- 获取10进制
- *@param c 16进制
- *@return 10进制值
- */
-+ (int)gkDecimalFromHexChar:(char) c
-{
-    int value;
-    switch (c) {
-        case 'A' :
-        case 'a' :
-            value = 10;
-            break;
-        case 'B' :
-        case 'b' :
-            value = 11;
-            break;
-        case 'C' :
-        case 'c' :
-            value = 12;
-            break;
-        case 'D' :
-        case 'd' :
-            value = 13;
-            break;
-        case 'E' :
-        case 'e' :
-            value = 14;
-            break;
-        case 'F' :
-        case 'f' :
-            value = 15;
-            break;
-        default:
-            value = [[NSString stringWithFormat:@"%c", c] intValue];;
-            break;
-    }
-    return value;
 }
 
 + (UIColor*)gkColorWithRed:(int) red green:(int) green blue:(int) blue alpha:(CGFloat) alpha

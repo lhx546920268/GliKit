@@ -54,4 +54,14 @@ GKConvenientCopying
     return _stringValue;
 }
 
+- (void)setBoolValue:(BOOL)boolValue
+{
+    
+}
+
+- (BOOL)boolValue
+{
+    return YES;
+}
+
 @end

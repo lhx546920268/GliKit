@@ -122,10 +122,10 @@ static char GKSkeletonAnimationHelperKey;
 {
     GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing || status == GKSkeletonStatusWillShow){
-        self.gkSkeletonStatus = GKSkeletonStatusWillHide;
         
         if(animate){
             
+            self.gkSkeletonStatus = GKSkeletonStatusWillHide;
             __weak UIView *weakSelf = self;
             [self.gkSkeletonAnimationHelper executeOpacityAnimationForLayer:self.gkSkeletonLayer completion:^(BOOL finished) {
                 weakSelf.gkSkeletonLayer = nil;

@@ -127,4 +127,14 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 
 @end
 
+@interface NSString(GKConversion)
+
+///16进制转10进制
+@property(nonatomic, readonly) NSInteger hexToDecimal;
+
+///2进制转10进制
+@property(nonatomic, readonly) NSInteger binaryToDecimal;
+
+@end
+
 NS_ASSUME_NONNULL_END

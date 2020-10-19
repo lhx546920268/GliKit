@@ -186,3 +186,17 @@
 }
 
 @end
+
+@implementation NSString (GKConversion)
+
+- (NSInteger)hexToDecimal
+{
+    return strtoul(self.UTF8String, 0, 16);
+}
+
+- (NSInteger)binaryToDecimal
+{
+    return strtoul(self.UTF8String, 0, 2);
+}
+
+@end
