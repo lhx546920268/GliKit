@@ -12,8 +12,8 @@
 
 @implementation GKAlertUtils
 
-+ (GKAlertController*)showAlertWithTitle:(NSString*) title
-                   message:(NSString*) message
++ (GKAlertController*)showAlertWithTitle:(id) title
+                   message:(id) message
                       icon:(UIImage*) icon
               buttonTitles:(NSArray<NSString*>*) buttonTitles
     destructiveButtonIndex:(NSInteger) destructiveButtonIndex
@@ -22,8 +22,8 @@
     return [GKAlertUtils showAlertControllerWithStyle:GKAlertControllerStyleAlert title:title message:message icon:icon buttonTitles:buttonTitles cancelButtonTitle:nil destructiveButtonIndex:destructiveButtonIndex handler:handler];
 }
 
-+ (GKAlertController*)showActionSheetWithTitle:(NSString*) title
-                         message:(NSString*) message
++ (GKAlertController*)showActionSheetWithTitle:(id) title
+                         message:(id) message
                             icon:(UIImage*) icon
                     buttonTitles:(NSArray<NSString*>*) buttonTitles
                cancelButtonTitle:(NSString*) cancelButtonTitle
@@ -32,27 +32,27 @@
     return [GKAlertUtils showAlertControllerWithStyle:GKAlertControllerStyleActionSheet title:title message:message icon:icon buttonTitles:buttonTitles cancelButtonTitle:cancelButtonTitle destructiveButtonIndex:NSNotFound handler:handler];
 }
 
-+ (GKAlertController*)showAlertWithTitle:(NSString *)title handler:(GKAlertConfirmHandler)handler
++ (GKAlertController*)showAlertWithTitle:(id)title handler:(GKAlertConfirmHandler)handler
 {
     return [GKAlertUtils showAlertWithTitle:title message:nil destructiveButtonIndex:1 handler:handler];
 }
 
-+ (GKAlertController*)showAlertWithMessage:(NSString *)message handler:(GKAlertConfirmHandler)handler
++ (GKAlertController*)showAlertWithMessage:(id)message handler:(GKAlertConfirmHandler)handler
 {
     return [GKAlertUtils showAlertWithTitle:nil message:message destructiveButtonIndex:1 handler:handler];
 }
 
-+ (GKAlertController*)showAlertWithTitle:(NSString *)title destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
++ (GKAlertController*)showAlertWithTitle:(id)title destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
 {
     return [GKAlertUtils showAlertWithTitle:title message:nil destructiveButtonIndex:destructiveButtonIndex handler:handler];
 }
 
-+ (GKAlertController*)showAlertWithMessage:(NSString *)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
++ (GKAlertController*)showAlertWithMessage:(id)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
 {
     return [GKAlertUtils showAlertWithTitle:nil message:message destructiveButtonIndex:destructiveButtonIndex handler:handler];
 }
 
-+ (GKAlertController*)showAlertWithTitle:(NSString *)title message:(NSString *)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
++ (GKAlertController*)showAlertWithTitle:(id)title message:(id)message destructiveButtonIndex:(NSInteger)destructiveButtonIndex handler:(GKAlertConfirmHandler)handler
 {
     return [GKAlertUtils showAlertWithTitle:title message:message icon:nil buttonTitles:@[@"取消", @"确定"] destructiveButtonIndex:destructiveButtonIndex handler:^(NSInteger buttonIndex, NSString *title) {
         if(buttonIndex == 1){
@@ -62,8 +62,8 @@
 }
 
 + (GKAlertController*)showAlertControllerWithStyle:(GKAlertControllerStyle) style
-                           title:(NSString*) title
-                   message:(NSString*) message
+                           title:(id) title
+                   message:(id) message
                       icon:(UIImage*) icon
               buttonTitles:(NSArray<NSString*>*) buttonTitles
                    cancelButtonTitle:(NSString*) cancelButtonTitle

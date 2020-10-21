@@ -13,10 +13,12 @@
 #import "GKSkeletonLayer.h"
 #import "GKSkeletonAnimationHelper.h"
 
+
 static char GKShouldBecomeSkeletonKey;
 static char GKSkeletonLayerKey;
 static char GKSkeletonStatusKey;
 static char GKSkeletonAnimationHelperKey;
+static char GKSkeletonHideAnimateKey;
 
 @implementation UIView (GKSkeleton)
 
@@ -29,7 +31,7 @@ static char GKSkeletonAnimationHelperKey;
 {
     [self gkSkeleton_layoutSubviews];
     
-    if([self gkShouldAddSkeletonLayer] && self.gkSkeletonStatus == GKSkeletonStatusWillShow){
+    if(self.gkSkeletonStatus == GKSkeletonStatusWillShow && self.gkShouldAddSkeletonLayer){
         dispatch_async(dispatch_get_main_queue(), ^{
             self.gkSkeletonStatus = GKSkeletonStatusShowing;
             
@@ -37,6 +39,7 @@ static char GKSkeletonAnimationHelperKey;
             NSMutableArray *layers = [NSMutableArray array];
             [GKSkeletonHelper createLayers:layers fromView:self rootView:self];
             layer.skeletonSubLayers = layers;
+            layer.frame = self.bounds;
             
             [self.layer addSublayer:layer];
             self.gkSkeletonLayer = layer;
@@ -88,6 +91,15 @@ static char GKSkeletonAnimationHelperKey;
     return objc_getAssociatedObject(self, &GKSkeletonLayerKey);
 }
 
+- (BOOL)gkShouldAddSkeletonLayer
+{
+    //列表 和 集合视图 使用他们的cell header footer 来生成
+    if([self isKindOfClass:UITableView.class] || [self isKindOfClass:UICollectionView.class])
+        return NO;
+    
+    return YES;
+}
+
 - (void)gkShowSkeleton
 {
     [self gkShowSkeletonWithDuration:0 completion:nil];
@@ -118,7 +130,7 @@ static char GKSkeletonAnimationHelperKey;
     [self gkHideSkeletonWithAnimate:animate completion:nil];
 }
 
-- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(void)) completion
 {
     GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing || status == GKSkeletonStatusWillShow){
@@ -127,14 +139,14 @@ static char GKSkeletonAnimationHelperKey;
             
             self.gkSkeletonStatus = GKSkeletonStatusWillHide;
             __weak UIView *weakSelf = self;
-            [self.gkSkeletonAnimationHelper executeOpacityAnimationForLayer:self.gkSkeletonLayer completion:^(BOOL finished) {
+            [self.gkSkeletonAnimationHelper executeOpacityAnimationForLayer:self.gkSkeletonLayer completion:^ {
                 weakSelf.gkSkeletonLayer = nil;
-                !completion ?: completion(finished);
+                !completion ?: completion();
             }];
             
         }else{
             self.gkSkeletonLayer = nil;
-            !completion ?: completion(YES);
+            !completion ?: completion();
         }
     }
 }
@@ -155,13 +167,44 @@ static char GKSkeletonAnimationHelperKey;
     objc_setAssociatedObject(self, &GKSkeletonAnimationHelperKey, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)gkShouldAddSkeletonLayer
+- (void)setGkSkeletonHideAnimate:(BOOL) animate
 {
-    //列表 和 集合视图 使用他们的cell header footer 来生成
-    if([self isKindOfClass:UITableView.class] || [self isKindOfClass:UICollectionView.class])
-        return NO;
-    
-    return YES;
+    objc_setAssociatedObject(self, &GKSkeletonHideAnimateKey, @(animate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)gkSkeletonHideAnimate
+{
+    return [objc_getAssociatedObject(self, &GKSkeletonHideAnimateKey) boolValue];
+}
+
+- (void)gkSkeletonProcessView:(UIView*) view inContainer:(UIView*) container
+{
+    if(view != nil){
+        GKSkeletonStatus status = container.gkSkeletonStatus;
+        switch (status) {
+            case GKSkeletonStatusShowing : {
+                
+                [view gkShowSkeleton];
+            }
+                break;
+            case GKSkeletonStatusWillHide: {
+                
+                __weak UIView *weakSelf = container;
+                [view gkHideSkeletonWithAnimate:container.gkSkeletonHideAnimate completion:^ {
+                    if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
+                        weakSelf.gkSkeletonLayer = nil;
+                    }
+                }];
+            }
+                break;
+            case GKSkeletonStatusNone : {
+                [view gkHideSkeletonWithAnimate:NO];
+            }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 @end

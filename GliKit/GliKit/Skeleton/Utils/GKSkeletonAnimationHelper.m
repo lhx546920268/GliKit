@@ -28,7 +28,7 @@
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    !self.completion ?: self.completion(flag);
+    !self.completion ?: self.completion();
     self.completion = nil;
 }
 

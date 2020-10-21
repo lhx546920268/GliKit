@@ -68,11 +68,6 @@ static void* const GKEmptyHelperContext = "GKEmptyHelperContext";
 
 @implementation UIScrollView (GKEmptyView)
 
-+ (void)load
-{
-    [self gkExchangeImplementations:@selector(layoutSubviews) prefix:@"gkEmpty_"];
-}
-
 - (void)setGkShouldShowEmptyView:(BOOL)gkShouldShowEmptyView
 {
     if(self.gkShouldShowEmptyView != gkShouldShowEmptyView){
@@ -167,16 +162,6 @@ static void* const GKEmptyHelperContext = "GKEmptyHelperContext";
 - (BOOL)gkIsEmptyData
 {
     return YES;
-}
-
-///用于使用约束时没那么快得到 frame
-- (void)gkEmpty_layoutSubviews
-{
-    [self gkEmpty_layoutSubviews];
-    if(!CGSizeEqualToSize(self.gkOldSize, self.frame.size)){
-        self.gkOldSize = self.frame.size;
-        [self layoutEmtpyView];
-    }
 }
 
 @end

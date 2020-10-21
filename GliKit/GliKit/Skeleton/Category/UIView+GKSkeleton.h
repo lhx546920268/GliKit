@@ -43,6 +43,12 @@ typedef NS_ENUM(NSInteger, GKSkeletonStatus){
 ///骨架图层
 @property(nonatomic, strong, nullable) GKSkeletonLayer *gkSkeletonLayer;
 
+///是否需要添加骨架图层 某些视图会自己处理 默认YES
+@property(nonatomic, readonly) BOOL gkShouldAddSkeletonLayer;
+
+///隐藏骨架是否有动画
+@property(nonatomic, assign) BOOL gkSkeletonHideAnimate;
+
 ///显示骨架
 - (void)gkShowSkeleton;
 
@@ -56,10 +62,10 @@ typedef NS_ENUM(NSInteger, GKSkeletonStatus){
 - (void)gkHideSkeletonWithAnimate:(BOOL) animate;
 
 ///隐藏骨架
-- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^ __nullable)(BOOL finished)) completion;
+- (void)gkHideSkeletonWithAnimate:(BOOL) animate completion:(void(^ __nullable)(void)) completion;
 
-///是否需要添加骨架图层 某些视图会自己处理 默认YES
-- (BOOL)gkShouldAddSkeletonLayer;
+///处理在容器中的骨架，一般是内部使用
+- (void)gkSkeletonProcessView:(UIView*) view inContainer:(UIView*) container;
 
 @end
 

@@ -20,7 +20,7 @@
         return NO;
     }
     
-    if([view isMemberOfClass:UIView.class] && [view.backgroundColor isEqualToColor:UIColor.clearColor]){
+    if([view isMemberOfClass:UIView.class] && (!view.backgroundColor || [view.backgroundColor isEqualToColor:UIColor.clearColor])){
         return NO;
     }
     

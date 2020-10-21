@@ -22,38 +22,38 @@ typedef void(^GKAlertConfirmHandler)(void);
 @interface GKAlertUtils : NSObject
 
 ///显示一个提示弹出
-+ (GKAlertController*)showAlertWithTitle:(nullable NSString*) title
-                   message:(nullable NSString*) message
++ (GKAlertController*)showAlertWithTitle:(nullable id) title
+                   message:(nullable id) message
                       icon:(nullable UIImage*) icon
               buttonTitles:(nullable NSArray<NSString*>*) buttonTitles
     destructiveButtonIndex:(NSInteger) destructiveButtonIndex
                    handler:(nullable GKAlertButtonDidClickHandler) handler;
 
 ///显示一个确认 取消弹窗
-+ (GKAlertController*)showAlertWithMessage:(nullable NSString *)message
++ (GKAlertController*)showAlertWithMessage:(nullable id)message
                      handler:(nullable GKAlertConfirmHandler)handler;
 
-+ (GKAlertController*)showAlertWithTitle:(nullable NSString *)title
++ (GKAlertController*)showAlertWithTitle:(nullable id)title
                    handler:(nullable GKAlertConfirmHandler)handler;
 
-+ (GKAlertController*)showAlertWithTitle:(nullable NSString *)title
++ (GKAlertController*)showAlertWithTitle:(nullable id)title
     destructiveButtonIndex:(NSInteger)destructiveButtonIndex
                    handler:(nullable GKAlertConfirmHandler)handler;
 
-+ (GKAlertController*)showAlertWithMessage:(nullable NSString *)message
++ (GKAlertController*)showAlertWithMessage:(nullable id)message
       destructiveButtonIndex:(NSInteger)destructiveButtonIndex
                      handler:(nullable GKAlertConfirmHandler)handler;
 
-+ (GKAlertController*)showAlertWithTitle:(nullable NSString *)title
-                   message:(nullable NSString *)message
++ (GKAlertController*)showAlertWithTitle:(nullable id)title
+                   message:(nullable id)message
     destructiveButtonIndex:(NSInteger)destructiveButtonIndex
                    handler:(nullable GKAlertConfirmHandler)handler;
 
 
 
 ///显示一个actionSheet
-+ (GKAlertController*)showActionSheetWithTitle:(nullable NSString*) title
-                         message:(nullable NSString*) message
++ (GKAlertController*)showActionSheetWithTitle:(nullable id) title
+                         message:(nullable id) message
                             icon:(nullable UIImage*) icon
                     buttonTitles:(nullable NSArray<NSString*>*) buttonTitles
                cancelButtonTitle:(nullable NSString*) cancelButtonTitle

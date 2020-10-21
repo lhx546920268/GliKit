@@ -12,8 +12,6 @@
 #import <objc/runtime.h>
 #import "GKSkeletonHelper.h"
 
-static char GKSkeletonHideAnimateKey;
-
 @implementation UITableView (GKSkeleton)
 
 + (void)load
@@ -55,22 +53,12 @@ static char GKSkeletonHideAnimateKey;
     }
 }
 
-- (void)setGkSkeletonHideAnimate:(BOOL) animate
-{
-    objc_setAssociatedObject(self, &GKSkeletonHideAnimateKey, @(animate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (BOOL)gkSkeletonHideAnimate
-{
-    return [objc_getAssociatedObject(self, &GKSkeletonHideAnimateKey) boolValue];
-}
-
 - (void)gkHideSkeletonWithAnimate:(BOOL)animate completion:(void (NS_NOESCAPE ^)(BOOL))completion
 {
     GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing){
         self.gkSkeletonStatus = GKSkeletonStatusWillHide;
-        [self setGkSkeletonHideAnimate:animate];
+        self.gkSkeletonHideAnimate = YES;
         [self reloadData];
     }
 }
@@ -95,31 +83,7 @@ static char GKSkeletonHideAnimateKey;
 - (UIView*)gkSkeleton_tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView *view = [self gkSkeleton_tableView:tableView viewForFooterInSection:section];
-    
-    GKSkeletonStatus status = tableView.gkSkeletonStatus;
-    switch (status) {
-        case GKSkeletonStatusShowing : {
-            
-            [view gkShowSkeleton];
-        }
-            break;
-        case GKSkeletonStatusWillHide: {
-            
-            __weak UITableView *weakSelf = tableView;
-            [view gkHideSkeletonWithAnimate:tableView.gkSkeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gkSkeletonLayer = nil;
-                }
-            }];
-        }
-            break;
-        case GKSkeletonStatusNone : {
-            [view gkHideSkeletonWithAnimate:NO];
-        }
-            break;
-        default:
-            break;
-    }
+    [tableView gkSkeletonProcessView:view inContainer:tableView];
     
     return view;
 }
@@ -127,31 +91,7 @@ static char GKSkeletonHideAnimateKey;
 - (UIView*)gkSkeleton_tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [self gkSkeleton_tableView:tableView viewForHeaderInSection:section];
-    
-    GKSkeletonStatus status = tableView.gkSkeletonStatus;
-    switch (status) {
-        case GKSkeletonStatusShowing : {
-            
-            [view gkShowSkeleton];
-        }
-            break;
-        case GKSkeletonStatusWillHide: {
-            
-            __weak UITableView *weakSelf = tableView;
-            [view gkHideSkeletonWithAnimate:tableView.gkSkeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gkSkeletonLayer = nil;
-                }
-            }];
-        }
-            break;
-        case GKSkeletonStatusNone : {
-            [view gkHideSkeletonWithAnimate:NO];
-        }
-            break;
-        default:
-            break;
-    }
+    [tableView gkSkeletonProcessView:view inContainer:tableView];
     
     return view;
 }
@@ -159,27 +99,7 @@ static char GKSkeletonHideAnimateKey;
 - (UITableViewCell*)gkSkeleton_tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self gkSkeleton_tableView:tableView cellForRowAtIndexPath:indexPath];
-    
-    GKSkeletonStatus status = tableView.gkSkeletonStatus;
-    switch (status) {
-        case GKSkeletonStatusShowing : {
-            
-            [cell.contentView gkShowSkeleton];
-        }
-            break;
-        case GKSkeletonStatusWillHide: {
-            
-            __weak UITableView *weakSelf = tableView;
-            [cell.contentView gkHideSkeletonWithAnimate:tableView.gkSkeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gkSkeletonLayer = nil;
-                }
-            }];
-        }
-            break;
-        default:
-            break;
-    }
+    [tableView gkSkeletonProcessView:cell.contentView inContainer:tableView];
     
     return cell;
 }

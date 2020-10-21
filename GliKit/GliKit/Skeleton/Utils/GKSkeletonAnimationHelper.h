@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///动画完成回调
-typedef void(^GKSkeletonAnimationCompletion)(BOOL finished);
+typedef void(^GKSkeletonAnimationCompletion)(void);
 
 ///骨架动画帮助类
 @interface GKSkeletonAnimationHelper : NSObject<CAAnimationDelegate>

@@ -12,8 +12,6 @@
 #import <objc/runtime.h>
 #import "GKSkeletonHelper.h"
 
-static char GKSkeletonHideAnimateKey;
-
 @implementation UICollectionView (GKSkeleton)
 
 + (void)load
@@ -54,22 +52,12 @@ static char GKSkeletonHideAnimateKey;
     }
 }
 
-- (void)setGkSkeletonHideAnimate:(BOOL) animate
-{
-    objc_setAssociatedObject(self, &GKSkeletonHideAnimateKey, @(animate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (BOOL)gkSkeletonHideAnimate
-{
-    return [objc_getAssociatedObject(self, &GKSkeletonHideAnimateKey) boolValue];
-}
-
 - (void)gkHideSkeletonWithAnimate:(BOOL)animate completion:(void (^)(BOOL))completion
 {
     GKSkeletonStatus status = self.gkSkeletonStatus;
     if(status == GKSkeletonStatusShowing){
         self.gkSkeletonStatus = GKSkeletonStatusWillHide;
-        [self setGkSkeletonHideAnimate:animate];
+        self.gkSkeletonHideAnimate = YES;
         [self reloadData];
     }
 }
@@ -92,31 +80,7 @@ static char GKSkeletonHideAnimateKey;
 - (UICollectionViewCell*)gkSkeleton_collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [self gkSkeleton_collectionView:collectionView cellForItemAtIndexPath:indexPath];
-    
-    GKSkeletonStatus status = collectionView.gkSkeletonStatus;
-    switch (status) {
-        case GKSkeletonStatusShowing : {
-            
-            [cell gkShowSkeleton];
-        }
-            break;
-        case GKSkeletonStatusWillHide: {
-            
-            __weak UICollectionView *weakSelf = collectionView;
-            [cell gkHideSkeletonWithAnimate:collectionView.gkSkeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gkSkeletonLayer = nil;
-                }
-            }];
-        }
-            break;
-        case GKSkeletonStatusNone : {
-            [cell gkHideSkeletonWithAnimate:NO];
-        }
-            break;
-        default:
-            break;
-    }
+    [collectionView gkSkeletonProcessView:cell inContainer:collectionView];
     
     return cell;
 }
@@ -124,31 +88,7 @@ static char GKSkeletonHideAnimateKey;
 - (UICollectionReusableView *)gkSkeleton_collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionReusableView *view = [self gkSkeleton_collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
-    
-    GKSkeletonStatus status = collectionView.gkSkeletonStatus;
-    switch (status) {
-        case GKSkeletonStatusShowing : {
-            
-            [view gkShowSkeleton];
-        }
-            break;
-        case GKSkeletonStatusWillHide: {
-            
-            __weak UICollectionView *weakSelf = collectionView;
-            [view gkHideSkeletonWithAnimate:collectionView.gkSkeletonHideAnimate completion:^(BOOL finished) {
-                if(weakSelf.gkSkeletonStatus == GKSkeletonStatusWillHide){
-                    weakSelf.gkSkeletonLayer = nil;
-                }
-            }];
-        }
-            break;
-        case GKSkeletonStatusNone : {
-            [view gkHideSkeletonWithAnimate:NO];
-        }
-            break;
-        default:
-            break;
-    }
+    [collectionView gkSkeletonProcessView:view inContainer:collectionView];
     
     return view;
 }

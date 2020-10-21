@@ -336,19 +336,19 @@
 ///collectionView布局方式
 - (UICollectionViewFlowLayout*)layout
 {
-    GKAlertProps *style = self.props;
+    GKAlertProps *props = self.props;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = UIApplication.gkSeparatorHeight;
     layout.minimumLineSpacing = UIApplication.gkSeparatorHeight;
     
     switch (_style){
         case GKAlertControllerStyleActionSheet : {
-            layout.itemSize = CGSizeMake([self alertViewWidth], style.buttonHeight);
+            layout.itemSize = CGSizeMake([self alertViewWidth], props.buttonHeight);
         }
             break;
         case GKAlertControllerStyleAlert : {
-            layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - UIApplication.gkSeparatorHeight) / 2.0 : [self alertViewWidth], style.buttonHeight);
-            layout.scrollDirection = self.actions.count >= 3 ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
+            layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - UIApplication.gkSeparatorHeight) / 2.0 : [self alertViewWidth], props.buttonHeight);
+            layout.scrollDirection = self.actions.count > 2 ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
         }
             break;
     }
@@ -480,7 +480,7 @@
                 
                 CGFloat spacing = self.cancelButton ? props.cancelButtonVerticalSpacing : 0;
                 self.dialogBackgroundView.alpha = 1.0;
-                self.container.gkTop = self.view.gkHeight - self.container.gkHeight - props.contentInsets.bottom - self.cancelButton.gkHeight - spacing;
+                self.container.gkTop = self.view.gkHeight - self.container.gkHeight - MAX(props.contentInsets.bottom, self.view.gkSafeAreaInsets.bottom) - self.cancelButton.gkHeight - spacing;
                 self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
             }completion:completion];
         }
@@ -519,7 +519,7 @@
 - (void)reloadButtonForIndex:(NSUInteger) index
 {
     if(index < self.actions.count){
-        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
+        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
     }
 }
 
@@ -585,7 +585,7 @@
 {
     GKAlertCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GKAlertCell" forIndexPath:indexPath];
     
-    GKAlertAction *action = [self.actions objectAtIndex:indexPath.item];
+    GKAlertAction *action = self.actions[indexPath.item];
     GKAlertProps *props = self.props;
     UIFont *font;
     UIColor *textColor;
@@ -618,7 +618,7 @@
     [cell.button setImage:action.icon forState:UIControlStateNormal];
     cell.button.imagePadding = action.spacing;
     cell.button.imagePosition = action.imagePosition;
-    cell.selectedBackgroundView.backgroundColor = self.props.highlightedBackgroundColor;
+    cell.selectedBackgroundView.backgroundColor = props.highlightedBackgroundColor;
     
     if(indexPath.item == _destructiveButtonIndex && props.destructiveButtonBackgroundColor){
         cell.backgroundColor = props.destructiveButtonBackgroundColor;
@@ -633,7 +633,7 @@
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
-    GKAlertAction *action = [self.actions objectAtIndex:indexPath.item];
+    GKAlertAction *action = self.actions[indexPath.item];
     if(action.enable){
         if(self.dismissWhenSelectButton){
             
@@ -650,8 +650,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKAlertAction *action = [self.actions objectAtIndex:indexPath.item];
-    return action.enable;
+    return self.actions[indexPath.item].enable;
 }
 
 // MARK: - property

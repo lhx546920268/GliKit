@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) UIColor *skeletonBackgroundColor;
 
 ///设置骨架子图层
-@property(nonatomic, copy) NSArray<GKSkeletonSubLayer*> *skeletonSubLayers;
+@property(nonatomic, copy, nullable) NSArray<GKSkeletonSubLayer*> *skeletonSubLayers;
 
 @end
 
