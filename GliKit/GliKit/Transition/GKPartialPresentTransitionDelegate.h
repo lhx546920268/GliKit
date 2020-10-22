@@ -38,6 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///点击背景是否会关闭当前显示的viewController，default is 'YES'
 @property(nonatomic, assign) BOOL cancelable;
 
+///是否可以滑动关闭 default is 'YES'
+@property(nonatomic, assign) BOOL interactiveDismissible;
+
 ///动画时间 default is '0.25'
 @property(nonatomic, assign) NSTimeInterval transitionDuration;
 
@@ -71,6 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///部分显示属性
 @property(nonatomic, strong) GKPartialPresentProps *props;
+
+///关联的scrollView GKPresentTransitionStyleFromBottom 有效，可以让滑动列表到顶部时触发手势交互的dismiss
+@property(nonatomic, weak) UIScrollView *scrollView;
 
 ///显示一个 视图
 - (void)showViewController:(UIViewController*) viewController completion:(void (^ __nullable)(void))completion;

@@ -71,6 +71,7 @@
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer*) pan
 {
     switch (pan.state){
+        case UIGestureRecognizerStateBegan :
         case UIGestureRecognizerStateChanged: {
             
             //更新UI位置
@@ -87,9 +88,7 @@
             toView.gkCenterX = toFrame.size.width / 3 + (toFrame.size.width / 2 - toFrame.size.width / 3) * percent;
         }
             break;
-        case UIGestureRecognizerStateEnded :
-        case UIGestureRecognizerStateCancelled : {
-            
+        default: {
             UIView *fromView = [self.transitionContext viewForKey:UITransitionContextFromViewKey];
             UIView *toView = [self.transitionContext viewForKey:UITransitionContextToViewKey];
             CGRect fromFrame = fromView.frame;
@@ -110,10 +109,6 @@
             animation1.delegate = self;
             [fromView.layer addAnimation:animation1 forKey:@"position"];
             [toView.layer addAnimation:animation2 forKey:@"position"];
-        }
-            break;
-        default: {
-            [self cancelInteractiveTransition];
         }
             break;
     }

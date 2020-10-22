@@ -103,7 +103,7 @@ static char GKOldSizeKey;
 
 - (void)setGkOldSize:(CGSize)gkOldSize
 {
-    objc_setAssociatedObject(self, &GKOldSizeKey, [NSValue valueWithCGSize:gkOldSize], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKOldSizeKey, @(gkOldSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

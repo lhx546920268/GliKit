@@ -18,7 +18,7 @@ static char GKContentEdgeInsetsKey;
 
 - (void)setGkContentEdgeInsets:(UIEdgeInsets)gkContentEdgeInsets
 {
-    objc_setAssociatedObject(self, &GKContentEdgeInsetsKey, [NSValue valueWithUIEdgeInsets:gkContentEdgeInsets], OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &GKContentEdgeInsetsKey, @(gkContentEdgeInsets), OBJC_ASSOCIATION_RETAIN);
 }
 
 - (UIEdgeInsets)gkContentEdgeInsets

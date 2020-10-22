@@ -25,6 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) UIScrollView *scrollView;
 
 /**
+ scrollView 改变了
+ */
+@property(nonatomic, copy) void(^scrollViewDidChange)(UIScrollView * _Nullable scrollView);
+
+/**
  滑动时是否隐藏键盘 default is 'YES'
  */
 @property(nonatomic, assign) BOOL shouldDismissKeyboardWhileScroll;

@@ -107,7 +107,7 @@ static void* const GKEmptyHelperContext = "GKEmptyHelperContext";
     UIEdgeInsets insets = self.gkEmptyViewInsets;
     if(!UIEdgeInsetsEqualToEdgeInsets(insets, gkEmptyViewInsets))
     {
-        objc_setAssociatedObject(self, &GKEmptyViewInsetsKey, [NSValue valueWithUIEdgeInsets:gkEmptyViewInsets], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &GKEmptyViewInsetsKey, @(gkEmptyViewInsets), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self layoutEmtpyView];
     }
 }

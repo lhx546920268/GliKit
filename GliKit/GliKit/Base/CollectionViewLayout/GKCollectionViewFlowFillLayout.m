@@ -106,7 +106,7 @@
         self.rightmost = point.x + size.width;
 
         CGRect rect = CGRectMake(point.x, point.y, size.width, size.height);
-        [self.outmostItemInfos addObject:[NSValue valueWithCGRect:rect]];
+        [self.outmostItemInfos addObject:@(rect)];
         [self updateHighestFrame:rect];
         
         return point;
@@ -134,12 +134,13 @@
                 CGRect rect = CGRectMake(point.x, point.y, size.width, size.height);
                 if(size.width < frame.size.width){
                     ///只挡住上面的item的一部分
-                    [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:CGRectMake(point.x + size.width + self.layoutAttributes.minimumInteritemSpacing, frame.origin.y, frame.size.width - size.width - self.layoutAttributes.minimumInteritemSpacing, frame.size.height)]];
+                    CGRect relpacedRect = CGRectMake(point.x + size.width + self.layoutAttributes.minimumInteritemSpacing, frame.origin.y, frame.size.width - size.width - self.layoutAttributes.minimumInteritemSpacing, frame.size.height);
+                    [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(relpacedRect)];
                     
-                    [self.outmostItemInfos insertObject:[NSValue valueWithCGRect:rect] atIndex:index];
+                    [self.outmostItemInfos insertObject:@(rect) atIndex:index];
                 }else{
                     ///已完全挡住上一个item
-                    [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:rect]];
+                    [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(rect)];
                 }
                 [self updateHighestFrame:rect];
 
@@ -155,15 +156,15 @@
 
         CGRect rect = CGRectMake(point.x, point.y, size.width, size.height);
         if(self.outmostItemInfos.count == 0){
-            [self.outmostItemInfos addObject:[NSValue valueWithCGRect:rect]];
+            [self.outmostItemInfos addObject:@(rect)];
         }else{
             CGRect lastRect = [[self.outmostItemInfos lastObject] CGRectValue];
             ///相邻的item等高，合并
             if(rect.size.height == lastRect.size.height){
                 lastRect.size.width += rect.size.width + self.layoutAttributes.minimumInteritemSpacing;
-                [self.outmostItemInfos replaceObjectAtIndex:self.outmostItemInfos.count - 1 withObject:[NSValue valueWithCGRect:lastRect]];
+                [self.outmostItemInfos replaceObjectAtIndex:self.outmostItemInfos.count - 1 withObject:@(lastRect)];
             }else{
-                [self.outmostItemInfos addObject:[NSValue valueWithCGRect:rect]];
+                [self.outmostItemInfos addObject:@(rect)];
             }
         }
         [self updateHighestFrame:rect];
@@ -240,7 +241,7 @@
                 }
             }
             
-            [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:pframe]];
+            [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(pframe)];
 
             frame = pframe;
             [self.outmostItemInfos removeObjectAtIndex:index - 1];
@@ -264,7 +265,7 @@
                 }
             }
             
-            [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:pframe]];
+            [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(pframe)];
 
             [self.outmostItemInfos removeObjectAtIndex:index + 1];
         }

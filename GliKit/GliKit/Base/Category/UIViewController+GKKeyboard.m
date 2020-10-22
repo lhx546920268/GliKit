@@ -34,7 +34,7 @@ static char GKKeyboardAnimationDurationKey;
 
 - (void)setKeyboardFrame:(CGRect) frame
 {
-    objc_setAssociatedObject(self, &GKKeyboardFrameKey, [NSValue valueWithCGRect:frame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKKeyboardFrameKey, @(frame), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CGRect)keyboardFrame

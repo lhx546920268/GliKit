@@ -171,7 +171,7 @@ static NSRegularExpression *URLRegularExpression = nil;
 {
     //计算高亮区域
     CGRect highlightedRect = self.textDrawRect;
-    self.highlightedRects = @[[NSValue valueWithCGRect:highlightedRect]];
+    self.highlightedRects = @[@(highlightedRect)];
     
     //显示菜单
     [self becomeFirstResponder];

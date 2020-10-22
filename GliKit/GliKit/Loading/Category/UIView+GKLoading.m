@@ -124,7 +124,7 @@ static char GKPageLoadingViewInsetsKey;
 {
     UIEdgeInsets insets = self.gkPageLoadingViewInsets;
     if(!UIEdgeInsetsEqualToEdgeInsets(insets, gkPageLoadingViewInsets)){
-        objc_setAssociatedObject(self, &GKPageLoadingViewInsetsKey, [NSValue valueWithUIEdgeInsets:gkPageLoadingViewInsets], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &GKPageLoadingViewInsetsKey, @(gkPageLoadingViewInsets), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
