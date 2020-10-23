@@ -65,7 +65,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 - (BOOL)gkNestedScroll_touchesShouldBegin:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view
 {
-    if(self.gkNestedScrollEnable && self.gkNestedScrollHelper.gkAutoScrolling){
+    if(self.gkNestedScrollEnable && self.gkNestedScrollHelper.autoScrolling){
         [self gkOnTouchScrollView];
         return NO;
     }
@@ -192,7 +192,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     if(isParent){
         helper = objc_getAssociatedObject(self, &GKNestedScrollHelperKey);
     }else{
-        parent = self.gkNestedParentScrollView;;
+        parent = self.gkNestedParentScrollView;
         helper = objc_getAssociatedObject(parent, &GKNestedScrollHelperKey);
     }
     if(!helper){

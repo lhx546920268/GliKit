@@ -71,7 +71,6 @@ static char GKPartialPresentPropsKey;
 - (void)partialPresentWithCompletion:(void (^)(void))completion
 {
     UIViewController *viewController = self.partialViewController;
-    viewController.modalPresentationStyle = UIModalPresentationCustom;
     GKPartialPresentProps *props = self.partialPresentProps;
 
     if(props.cornerRadius > 0){

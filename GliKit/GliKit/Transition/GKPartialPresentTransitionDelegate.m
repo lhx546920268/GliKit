@@ -163,6 +163,8 @@
 {
     if(viewController.presentingViewController)
         return;
+    
+    viewController.modalPresentationStyle = UIModalPresentationCustom;
     viewController.gkTransitioningDelegate = self;
     self.viewController = viewController;
     if(self.props.interactiveDismissible){

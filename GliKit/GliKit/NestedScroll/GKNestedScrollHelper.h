@@ -22,8 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///父容器
 @property(nonatomic, weak, nullable) UIScrollView *parentScrollView;
 
-///是否在模拟系统自动滑动
-@property(nonatomic, readonly) BOOL gkAutoScrolling;
+///是否正在模拟系统自动滑动
+@property(nonatomic, readonly) BOOL autoScrolling;
 
 ///用户触摸屏幕了
 - (void)onTouchScreen;

@@ -71,7 +71,7 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     [self stopDisplayLink];
 }
 
-- (BOOL)gkAutoScrolling
+- (BOOL)autoScrolling
 {
     return self.displayLink != nil;
 }

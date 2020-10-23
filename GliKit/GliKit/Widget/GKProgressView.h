@@ -13,8 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  进度条样式
  */
-typedef NS_ENUM(NSInteger, GKProgressViewStyle)
-{
+typedef NS_ENUM(NSInteger, GKProgressViewStyle){
     ///直线
     GKProgressViewStyleStraightLine = 0,
     

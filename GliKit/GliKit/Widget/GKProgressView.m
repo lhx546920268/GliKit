@@ -177,7 +177,7 @@
     if(_progress != progress){
         if(self.hidden){
             self.hidden = NO;
-            self.alpha = 1.0;
+            self.layer.opacity = 1.0;
         }
         if(progress > 1.0){
             progress = 1.0;
@@ -236,6 +236,8 @@
 //更新进度条
 - (void)updateProgress
 {
+    [self.layer removeAllAnimations];
+    [self.progressLayer removeAllAnimations];
     switch (_style){
         case GKProgressViewStyleStraightLine :
         case GKProgressViewStyleCircle : {
@@ -349,14 +351,20 @@
 {
     if(self.hideAfterFinish){
         if(self.hideWidthAnimated){
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                self.alpha = 0.0;
-            }completion:^(BOOL finsh){
-                
+            
+            [CATransaction begin];
+            CATransaction.completionBlock = ^{
                 self.hidden = YES;
                 [self reset];
-            }];
+            };
+            
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            animation.fromValue = @(1.0);
+            animation.toValue = @(0);
+            animation.duration = 0.25;
+            [self.layer addAnimation:animation forKey:@"opacity"];
+            
+            [CATransaction commit];
         }else{
             self.hidden = YES;
             [self reset];
