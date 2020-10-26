@@ -259,7 +259,7 @@ static char GKPageIndexKey;
         }
         
         CGFloat offset = [self offsetForIndex:index];
-        
+   
         switch (self.scrollDirection) {
             case GKPageViewScrollDirectionHorizontal : {
                 [self.scrollView setContentOffset:CGPointMake(offset, 0) animated:flag];
@@ -447,7 +447,7 @@ static char GKPageIndexKey;
     switch (self.scrollDirection) {
         case GKPageViewScrollDirectionHorizontal : {
             
-            cell.frame = CGRectMake([self offsetForIndex:index], 0, pageSize, self.gkHeight);
+            cell.frame = CGRectMake([self offsetForIndex:index] + self.spacing / 2, 0, pageSize, self.gkHeight);
             
             if(self.scale < 1.0){
                 CGPoint center = [self.scrollView convertPoint:cell.center toView:self];
@@ -457,7 +457,7 @@ static char GKPageIndexKey;
         }
             break;
         case GKPageViewScrollDirectionVertical : {
-            cell.frame = CGRectMake(0, [self offsetForIndex:index], self.gkWidth, pageSize);
+            cell.frame = CGRectMake(0, [self offsetForIndex:index] + self.spacing / 2, self.gkWidth, pageSize);
             
             if(self.scale < 1.0){
                 CGPoint center = [self.scrollView convertPoint:cell.center toView:self];
@@ -474,7 +474,7 @@ static char GKPageIndexKey;
 ///获取对应下标的偏移量
 - (CGFloat)offsetForIndex:(NSInteger) index
 {
-    return self.spacing / 2 + index * (self.pageSize + self.spacing);
+    return index * (self.pageSize + self.spacing);
 }
 
 ///获取某个cell，如果shouldInit，可见的cell不存在时会创建一个

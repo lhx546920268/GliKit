@@ -32,7 +32,7 @@
     self.colors = @[UIColor.redColor, UIColor.orangeColor, UIColor.yellowColor, UIColor.greenColor, UIColor.cyanColor, UIColor.blueColor, UIColor.purpleColor];
     
     GKPageView *view = [GKPageView new];
-//    view.spacing = 20;
+    view.spacing = 20;
     view.ratio = 0.8;
     view.scale = 0.9;
     view.delegate = self;
@@ -73,7 +73,7 @@
 
 - (NSInteger)numberOfItemsInPageView:(GKPageView *)pageView
 {
-    return 3;
+    return self.colors.count;
 }
 
 - (UIView*)pageView:(GKPageView *)pageView cellForItemAtIndex:(NSInteger)index

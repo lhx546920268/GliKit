@@ -12,7 +12,7 @@
 #import "UIColor+GKUtils.h"
 #import "GKBaseDefines.h"
 
-@interface GKProgressView ()<CAAnimationDelegate>
+@interface GKProgressView ()
 
 ///原来的进度
 @property(nonatomic,assign) float previousProgress;
@@ -233,11 +233,13 @@
     }
 }
 
-//更新进度条
+///更新进度条
 - (void)updateProgress
 {
     [self.layer removeAllAnimations];
     [self.progressLayer removeAllAnimations];
+    
+    [CATransaction begin];
     switch (_style){
         case GKProgressViewStyleStraightLine :
         case GKProgressViewStyleCircle : {
@@ -255,53 +257,10 @@
             pathAnimation.toValue = @(_progress);
             pathAnimation.removedOnCompletion = YES;
             
-            //进度条圆满隐藏
-            if(_progress >= 1.0){
-                pathAnimation.delegate = self;
-            }
-            
             [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
         }
             break;
-        case GKProgressViewStyleRoundCakesFromEmpty : {
-            //动画帧数量
-            NSInteger frames = ceil(0.25 * 60);
-            NSMutableArray *animatedPaths = [NSMutableArray arrayWithCapacity:frames];
-            
-            //起始弧度 、目标弧度
-            CGFloat startAngle = - M_PI_2;
-            CGFloat endAngle = - M_PI_2 +  M_PI * 2 * _progress;
-            
-            //当前最新的弧度
-            CGFloat lastAngle = - M_PI_2 +  M_PI * 2 * _previousProgress;
-            
-            //圆心、半径
-            CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
-            CGFloat radius = MIN(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
-            
-            for(NSInteger i = 1;i <= frames;i ++){
-                UIBezierPath *path = [UIBezierPath bezierPath];
-                [path addArcWithCenter:center radius:radius startAngle:startAngle endAngle:lastAngle + ((endAngle - lastAngle) / frames * i)clockwise:YES];
-                [path addLineToPoint:center];
-                [path closePath];
-                [animatedPaths addObject:(id)path.CGPath];
-            }
-            
-            //添加动画
-            self.progressLayer.path = (__bridge CGPathRef)[animatedPaths lastObject];
-            
-            CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"path"];
-            animation.values = animatedPaths;
-            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-            animation.duration = 0.25;
-            animation.removedOnCompletion = YES;
-            //进度条圆满隐藏
-            if(_progress >= 1.0){
-                animation.delegate = self;
-            }
-            [self.progressLayer addAnimation:animation forKey:@"path"];
-        }
-            break;
+        case GKProgressViewStyleRoundCakesFromEmpty :
         case GKProgressViewStyleRoundCakesFromFull : {
             //动画帧数量
             NSInteger frames = ceil(0.25 * 60);
@@ -309,10 +268,12 @@
             
             //起始弧度 、目标弧度
             CGFloat startAngle = - M_PI_2;
-            CGFloat endAngle = - M_PI_2 +  M_PI * 2 * (1 - _progress);
+            float progress = _style == GKProgressViewStyleRoundCakesFromEmpty ? _progress : (1 - _progress);
+            CGFloat endAngle = - M_PI_2 +  M_PI * 2 * progress;
             
             //当前最新的弧度
-            CGFloat lastAngle = - M_PI_2 +  M_PI * 2 * (1 - _previousProgress);
+            progress = _style == GKProgressViewStyleRoundCakesFromEmpty ? _previousProgress : (1 - _previousProgress);
+            CGFloat lastAngle = - M_PI_2 +  M_PI * 2 * progress;
             
             //圆心、半径
             CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
@@ -320,7 +281,7 @@
             
             for(NSInteger i = 1;i <= frames;i ++) {
                 UIBezierPath *path = [UIBezierPath bezierPath];
-                [path addArcWithCenter:center radius:radius startAngle:startAngle endAngle:lastAngle + ((endAngle - lastAngle) / frames * i)clockwise:YES];
+                [path addArcWithCenter:center radius:radius startAngle:startAngle endAngle:lastAngle + ((endAngle - lastAngle) / frames * i) clockwise:YES];
                 [path addLineToPoint:center];
                 [path closePath];
                 [animatedPaths addObject:(id)path.CGPath];
@@ -334,20 +295,24 @@
             animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
             animation.duration = 0.25;
             animation.removedOnCompletion = YES;
-            //进度条圆满隐藏
-            if(_progress >= 1.0) {
-                animation.delegate = self;
-            }
             [self.progressLayer addAnimation:animation forKey:@"path"];
         }
             break;
         default:
             break;
     }
+    
+    if(_progress >= 1.0){
+        WeakObj(self)
+        CATransaction.completionBlock = ^{
+            [selfWeak hideProgressIfNeeded];
+        };
+    }
+    [CATransaction commit];
 }
 
-//动画结束，隐藏进度条
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+///动画结束，隐藏进度条
+- (void)hideProgressIfNeeded
 {
     if(self.hideAfterFinish){
         if(self.hideWidthAnimated){
@@ -374,38 +339,34 @@
 
 // MARK: - private method
 
-//重新设置
+///重新设置
 - (void)reset
 {
     _previousProgress = 0;
     _progress = 0;
 }
 
-//更新进度条样式
+///更新进度条样式
 - (void)updateProgressLayer
 {
     CGSize size = self.bounds.size;
     if(CGSizeEqualToSize(size, CGSizeZero))
         return;
-    UIBezierPath *path = nil;
+    UIBezierPath *path = [UIBezierPath bezierPath];
     
     switch (_style){
         case GKProgressViewStyleStraightLine : {
-            path = [UIBezierPath bezierPath];
             [path moveToPoint:CGPointMake(0, size.height / 2.0)];
             [path addLineToPoint:CGPointMake(size.width, size.height / 2.0)];
         }
             break;
-        case GKProgressViewStyleCircle : {
-            path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(size.width / 2.0, size.height / 2.0) radius:MIN(size.width / 2.0, size.height / 2.0) - _progressLineWidth / 2.0 startAngle:-M_PI_2 endAngle:3 * M_PI_2  clockwise:YES];
-        }
-            break;
+        case GKProgressViewStyleCircle :
         case GKProgressViewStyleRoundCakesFromEmpty :
         case GKProgressViewStyleRoundCakesFromFull : {
             CGPoint point = CGPointMake(size.width / 2.0, size.height / 2.0);
-            
-            path = [UIBezierPath bezierPath];
-            [path addArcWithCenter:point radius:MIN(size.width / 2.0, size.height / 2.0) - _progressLineWidth / 2.0 startAngle:-M_PI_2 endAngle:3 * M_PI_2 clockwise:YES];
+            CGFloat radius = MIN(size.width / 2.0, size.height / 2.0) - _progressLineWidth / 2.0;
+
+            [path addArcWithCenter:point radius:radius startAngle:-M_PI_2 endAngle:3 * M_PI_2 clockwise:YES];
             
         }
             break;

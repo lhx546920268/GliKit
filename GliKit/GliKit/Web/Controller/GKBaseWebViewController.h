@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKBaseWebViewController : GKBaseViewController<WKNavigationDelegate, WKUIDelegate, UIScrollViewDelegate>
 
 /**
- 网页视图，ios8.0新出的api，更高效地显示网页
+ 网页视图
  */
 @property(nonatomic, readonly) WKWebView *webView;
 
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) BOOL shouldCloseSystemLongPressGesture;
 
 /**
- 是否使用 web里面的标题，使用会self.title 替换成web的标题，default is 'YES'
+ 是否使用 web里面的标题，使用会self.navigationItem.title 替换成web的标题，default is 'YES'
  */
 @property(nonatomic, assign) BOOL useWebTitle;
 

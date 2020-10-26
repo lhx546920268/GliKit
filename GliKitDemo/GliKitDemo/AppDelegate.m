@@ -19,6 +19,36 @@ static void uncaughtExceptionHandler(NSException *exception){
     NSLog(@"%@", exception);
 }
 
+@interface GKDURLProtocol : NSURLProtocol
+
+@end
+
+@implementation GKDURLProtocol
+
++ (BOOL)canInitWithRequest:(NSURLRequest *)request
+{
+    NSLog(@"canInitWithRequest %@", request);
+    return YES;
+}
+
++ (BOOL)canInitWithTask:(NSURLSessionTask *)task
+{
+    NSLog(@"canInitWithTask %@", task);
+    return  YES;
+}
+
+- (void)startLoading
+{
+    NSLog(@"startLoading");
+}
+
+- (void)stopLoading
+{
+    NSLog(@"stopLoading");
+}
+
+@end
+
 @interface AppDelegate ()
 
 
@@ -32,6 +62,9 @@ static void uncaughtExceptionHandler(NSException *exception){
     // Override point for customization after application launch.
     
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    if([NSURLProtocol registerClass:GKDURLProtocol.class]){
+        NSLog(@"NSURLProtocol registerClass %@ success", NSStringFromClass(GKDURLProtocol.class));
+    }
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];

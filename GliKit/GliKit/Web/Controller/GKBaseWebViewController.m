@@ -380,6 +380,12 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
+{
+    //WkWebView的进程不知啥原因 停止了，刷新当前页面，防止白屏
+    [webView reload];
+}
+
 // MARK: - WKUIDelegate
 
 - (BOOL)webView:(WKWebView *)webView shouldPreviewElement:(WKPreviewElementInfo *)elementInfo NS_AVAILABLE_IOS(10.0)
