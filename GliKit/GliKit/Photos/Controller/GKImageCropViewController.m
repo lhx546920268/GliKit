@@ -23,7 +23,7 @@
 /**
  图片相框
  */
-@property (nonatomic, strong) UIImageView *showImgView;
+@property (nonatomic, strong) UIImageView *showImageView;
 
 /**
  图片裁剪的部分控制图层，不被裁剪的部分会覆盖黑色半透明
@@ -69,6 +69,8 @@
 
 @implementation GKImageCropViewController
 
+@synthesize cropFrame = _cropFrame;
+
 - (id)initWithOptions:(GKPhotosOptions *)options
 {
     self = [super initWithNibName:nil bundle:nil];
@@ -102,16 +104,18 @@
 //初始化视图
 - (void)initViews
 {
-    if(self.showImgView)
+    if(self.showImageView)
         return;
     
     self.gkShowBackItem = NO;
     //显示图片
     UIImage *image = self.photosOptions.cropSettings.image;
-    self.showImgView = [UIImageView new];
-    self.showImgView.multipleTouchEnabled = YES;
-    self.showImgView.userInteractionEnabled = YES;
-    self.showImgView.image = image;
+    
+    
+    self.showImageView = [UIImageView new];
+    self.showImageView.multipleTouchEnabled = YES;
+    self.showImageView.userInteractionEnabled = YES;
+    self.showImageView.image = image;
     
     CGRect cropFrame = self.cropFrame;
     
@@ -133,7 +137,7 @@
     
     self.oldFrame = CGRectMake(x, y, width, height);
     self.latestFrame = self.oldFrame;
-    self.showImgView.frame = self.oldFrame;
+    self.showImageView.frame = self.oldFrame;
     
     self.largeFrame = CGRectMake(0, 0, self.photosOptions.cropSettings.limitRatio * self.oldFrame.size.width, self.photosOptions.cropSettings.limitRatio * self.oldFrame.size.height);
     
@@ -145,7 +149,7 @@
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [self.view addGestureRecognizer:panGestureRecognizer];
     
-    [self.view addSubview:self.showImgView];
+    [self.view addSubview:self.showImageView];
     
     //裁剪区分图层
     self.overlayView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -170,23 +174,73 @@
     [self initControlBtn];
 }
 
-///裁剪框大小
-- (CGSize)cropSize
-{
-    CGSize cropSize = self.photosOptions.cropSettings.cropSize;
-    if(self.photosOptions.cropSettings.useFullScreenCropFrame){
-        cropSize = CGSizeMake(self.view.gkWidth, self.view.gkWidth * cropSize.height / cropSize.width);
-        self.photosOptions.cropSettings.cropCornerRadius *= cropSize.width / self.photosOptions.cropSettings.cropSize.width;
-    }
-    
-    return cropSize;
-}
-
 ///裁剪范围
 - (CGRect)cropFrame
 {
-    CGSize cropSize = [self cropSize];
-    return CGRectMake((self.view.gkWidth - cropSize.width) / 2.0, (self.view.gkHeight - cropSize.height) / 2.0, cropSize.width, cropSize.height);
+    if(_cropFrame.size.width == 0){
+        CGSize cropSize = self.photosOptions.cropSettings.cropSize;
+        if(self.photosOptions.cropSettings.useFullScreenCropFrame){
+            cropSize = CGSizeMake(self.view.gkWidth, self.view.gkWidth * cropSize.height / cropSize.width);
+            self.photosOptions.cropSettings.cropCornerRadius *= cropSize.width / self.photosOptions.cropSettings.cropSize.width;
+        }
+        _cropFrame = CGRectMake((self.view.gkWidth - cropSize.width) / 2.0, (self.view.gkHeight - cropSize.height) / 2.0, cropSize.width, cropSize.height);
+    }
+    return _cropFrame;
+}
+
+//绘制裁剪区分图层
+- (void)overlayClipping
+{
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    CGMutablePathRef path = CGPathCreateMutable();
+    
+    if(self.photosOptions.cropSettings.cropCornerRadius == 0){
+        //编辑框左边
+        CGPathAddRect(path, NULL, CGRectMake(0, 0,
+                                             self.ratioView.gkLeft,
+                                             self.overlayView.gkHeight));
+        //编辑框右边
+        CGPathAddRect(path, NULL, CGRectMake(self.ratioView.gkRight,
+                                             0,
+                                             self.overlayView.gkWidth - self.ratioView.gkRight,
+                                             self.overlayView.gkHeight));
+        //编辑框上面
+        CGPathAddRect(path, NULL, CGRectMake(0, 0,
+                                             self.overlayView.gkWidth,
+                                             self.ratioView.gkTop));
+        //编辑框下面
+        CGPathAddRect(path, NULL, CGRectMake(0,
+                                             self.ratioView.gkBottom,
+                                             self.overlayView.gkWidth,
+                                             self.overlayView.gkHeight - self.ratioView.gkBottom));
+    }else{
+        CGPoint point1 = CGPointMake(0, self.ratioView.gkCenterY);
+        CGPoint point2 = CGPointMake(self.ratioView.gkWidth, self.ratioView.gkCenterY);
+        
+        CGMutablePathRef path1 = CGPathCreateMutable();
+        CGPathMoveToPoint(path1, NULL, point1.x, point1.y);
+        CGPathAddLineToPoint(path1, NULL, 0, 0);
+        CGPathAddLineToPoint(path1, NULL, self.ratioView.gkWidth, 0);
+        CGPathAddLineToPoint(path1, NULL, point2.x, point2.y);
+        CGPathAddArc(path1, NULL, self.ratioView.gkWidth / 2.0, point1.y, self.ratioView.gkWidth / 2.0, 0, M_PI, YES);
+        
+        CGPathAddPath(path, NULL, path1);
+        
+        CGMutablePathRef path2 = CGPathCreateMutable();
+        CGPathMoveToPoint(path2, NULL, point1.x, point1.y);
+        CGPathAddLineToPoint(path2, NULL, 0, self.overlayView.gkHeight);
+        CGPathAddLineToPoint(path2, NULL, self.ratioView.gkWidth, self.overlayView.gkHeight);
+        CGPathAddLineToPoint(path2, NULL, point2.x, point2.y);
+        CGPathAddArc(path2, NULL, self.ratioView.gkWidth / 2.0, point1.y, self.ratioView.gkWidth / 2.0, 0, M_PI, NO);
+        
+        CGPathAddPath(path, NULL, path2);
+        
+        CGPathRelease(path1);
+        CGPathRelease(path2);
+    }
+    maskLayer.path = path;
+    self.overlayView.layer.mask = maskLayer;
+    CGPathRelease(path);
 }
 
 //初始化控制按钮
@@ -275,116 +329,80 @@
     !self.photosOptions.completion ?: self.photosOptions.completion(@[result]);
 
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    UIViewController *vc = [viewControllers objectAtIndex:viewControllers.count - 2];
-    if([vc isKindOfClass:[GKPhotosGridViewController class]]){
-        if(viewControllers.count > 3){
-            [self.navigationController popToViewController:[viewControllers objectAtIndex:viewControllers.count - 3] animated:YES];
+    if(viewControllers.count >= 2){
+        UIViewController *vc = viewControllers[viewControllers.count - 2];
+        if([vc isKindOfClass:[GKPhotosGridViewController class]]){
+            if(viewControllers.count > 3){
+                [self.navigationController popToViewController:viewControllers[viewControllers.count - 3] animated:YES];
+            }else{
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
         }else{
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self gkBack];
         }
     }else{
-        [self handleCancel];
+        [self gkBack];
     }
-}
-
-//绘制裁剪区分图层
-- (void)overlayClipping
-{
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    CGMutablePathRef path = CGPathCreateMutable();
-    
-    if(self.photosOptions.cropSettings.cropCornerRadius == 0){
-        //编辑框左边
-        CGPathAddRect(path, NULL, CGRectMake(0, 0,
-                                             self.ratioView.gkLeft,
-                                             self.overlayView.gkHeight));
-        //编辑框右边
-        CGPathAddRect(path, NULL, CGRectMake(
-                                             self.ratioView.gkLeft + self.ratioView.gkWidth,
-                                             0,
-                                             self.overlayView.gkWidth - self.ratioView.gkLeft - self.ratioView.gkWidth,
-                                             self.overlayView.gkHeight));
-        //编辑框上面
-        CGPathAddRect(path, NULL, CGRectMake(0, 0,
-                                             self.overlayView.gkWidth,
-                                             self.ratioView.gkTop));
-        //编辑框下面
-        CGPathAddRect(path, NULL, CGRectMake(0,
-                                             self.ratioView.gkTop + self.ratioView.gkHeight,
-                                             self.overlayView.gkWidth,
-                                             self.overlayView.gkHeight - self.ratioView.gkTop - self.ratioView.gkHeight));
-    }else{
-        CGPoint point1 = CGPointMake(0, self.ratioView.gkTop + self.ratioView.gkHeight / 2.0);
-        CGPoint point2 = CGPointMake(self.ratioView.gkWidth, self.ratioView.gkTop + self.ratioView.gkHeight / 2.0);
-        
-        CGMutablePathRef path1 = CGPathCreateMutable();
-        CGPathMoveToPoint(path1, NULL, point1.x, point1.y);
-        CGPathAddLineToPoint(path1, NULL, 0, 0);
-        CGPathAddLineToPoint(path1, NULL, self.ratioView.gkWidth, 0);
-        CGPathAddLineToPoint(path1, NULL, point2.x, point2.y);
-        CGPathAddArc(path1, NULL, self.ratioView.gkWidth / 2.0, point1.y, self.ratioView.gkWidth / 2.0, 0, M_PI, YES);
-        
-        CGPathAddPath(path, NULL, path1);
-        
-        CGMutablePathRef path2 = CGPathCreateMutable();
-        CGPathMoveToPoint(path2, NULL, point1.x, point1.y);
-        CGPathAddLineToPoint(path2, NULL, 0, self.overlayView.gkHeight);
-        CGPathAddLineToPoint(path2, NULL, self.ratioView.gkWidth, self.overlayView.gkHeight);
-        CGPathAddLineToPoint(path2, NULL, point2.x, point2.y);
-        CGPathAddArc(path2, NULL, self.ratioView.gkWidth / 2.0, point1.y, self.ratioView.gkWidth / 2.0, 0, M_PI, NO);
-        
-        CGPathAddPath(path, NULL, path2);
-        
-        CGPathRelease(path1);
-        CGPathRelease(path2);
-    }
-    maskLayer.path = path;
-    self.overlayView.layer.mask = maskLayer;
-    CGPathRelease(path);
 }
 
 // MARK: - Gesture
 
 //图片捏合缩放
-- (void)handlePinch:(UIPinchGestureRecognizer *)pinchGestureRecognizer
+- (void)handlePinch:(UIPinchGestureRecognizer *) pinch
 {
-    UIView *view = self.showImgView;
-    if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged){
-        view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
-        pinchGestureRecognizer.scale = 1;
-    }else if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded){
-        CGRect newFrame = self.showImgView.frame;
-        newFrame = [self handleScaleOverflow:newFrame];
-        newFrame = [self handleBorderOverflow:newFrame];
-        [UIView animateWithDuration:0.25 animations:^{
-            self.showImgView.frame = newFrame;
-            self.latestFrame = newFrame;
-        }];
+    UIView *view = self.showImageView;
+    switch (pinch.state) {
+        case UIGestureRecognizerStateBegan :
+        case UIGestureRecognizerStateChanged : {
+            view.transform = CGAffineTransformScale(view.transform, pinch.scale, pinch.scale);
+            pinch.scale = 1;
+        }
+            break;
+        case UIGestureRecognizerStateEnded : {
+            CGRect newFrame = view.frame;
+            newFrame = [self handleScaleOverflow:newFrame];
+            newFrame = [self handleBorderOverflow:newFrame];
+            [UIView animateWithDuration:0.25 animations:^{
+                view.frame = newFrame;
+                self.latestFrame = newFrame;
+            }];
+        }
+            break;
+        default:
+            break;
     }
 }
 
 //图片平移
-- (void)handlePan:(UIPanGestureRecognizer *)panGestureRecognizer
+- (void)handlePan:(UIPanGestureRecognizer *) pan
 {
-    UIView *view = self.showImgView;
-    if(panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged){
-        CGFloat absCenterX = self.cropFrame.origin.x + self.cropFrame.size.width / 2;
-        CGFloat absCenterY = self.cropFrame.origin.y + self.cropFrame.size.height / 2;
-        CGFloat scaleRatio = self.showImgView.frame.size.width / self.cropFrame.size.width;
-        
-        CGFloat acceleratorX = 1 - ABS(absCenterX - view.center.x) / (scaleRatio * absCenterX);
-        CGFloat acceleratorY = 1 - ABS(absCenterY - view.center.y) / (scaleRatio * absCenterY);
-        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        
-        [view setCenter:(CGPoint){view.center.x + translation.x * acceleratorX, view.center.y + translation.y * acceleratorY}];
-        [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-    }else if(panGestureRecognizer.state == UIGestureRecognizerStateEnded){
-        CGRect newFrame = self.showImgView.frame;
-        newFrame = [self handleBorderOverflow:newFrame];
-        [UIView animateWithDuration:0.25 animations:^{
-            self.showImgView.frame = newFrame;
-            self.latestFrame = newFrame;
-        }];
+    UIView *view = self.showImageView;
+    switch (pan.state) {
+        case UIGestureRecognizerStateBegan :
+        case UIGestureRecognizerStateChanged : {
+            CGFloat absCenterX = self.cropFrame.origin.x + self.cropFrame.size.width / 2;
+            CGFloat absCenterY = self.cropFrame.origin.y + self.cropFrame.size.height / 2;
+            CGFloat scaleRatio = view.frame.size.width / self.cropFrame.size.width;
+            
+            CGFloat acceleratorX = 1 - ABS(absCenterX - view.center.x) / (scaleRatio * absCenterX);
+            CGFloat acceleratorY = 1 - ABS(absCenterY - view.center.y) / (scaleRatio * absCenterY);
+            CGPoint translation = [pan translationInView:view.superview];
+            
+            [view setCenter:(CGPoint){view.center.x + translation.x * acceleratorX, view.center.y + translation.y * acceleratorY}];
+            [pan setTranslation:CGPointZero inView:view.superview];
+        }
+            break;
+        case UIGestureRecognizerStateEnded : {
+            CGRect newFrame = view.frame;
+            newFrame = [self handleBorderOverflow:newFrame];
+            [UIView animateWithDuration:0.25 animations:^{
+                view.frame = newFrame;
+                self.latestFrame = newFrame;
+            }];
+        }
+            break;
+        default:
+            break;
     }
 }
 
@@ -421,11 +439,11 @@
         newFrame.origin.y = self.cropFrame.origin.y + self.cropFrame.size.height - newFrame.size.height;
     
     //图片小于裁剪框 让图片居中
-    if(newFrame.size.height <= self.cropFrame.size.height){
+    if(newFrame.size.height < self.cropFrame.size.height){
         newFrame.origin.y = self.cropFrame.origin.y + (self.cropFrame.size.height - newFrame.size.height) / 2;
     }
     
-    if(newFrame.size.width <= self.cropFrame.size.width){
+    if(newFrame.size.width < self.cropFrame.size.width){
         newFrame.origin.x = self.cropFrame.origin.x + (self.cropFrame.size.width - newFrame.size.width) / 2.0;
     }
     
@@ -447,7 +465,7 @@
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     //如果图片小于编辑框，使用白色背景替代
-    if(self.showImgView.gkWidth < self.cropFrame.size.width || self.showImgView.gkHeight < self.cropFrame.size.height){
+    if(self.showImageView.gkWidth < self.cropFrame.size.width || self.showImageView.gkHeight < self.cropFrame.size.height){
         [UIColor.whiteColor setFill];
     }
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();

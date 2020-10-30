@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKPhotosGridViewController : GKCollectionViewController
 
 ///资源信息
-@property(nonatomic, strong, nullable) GKPhotosCollection *collection;
+@property(nonatomic, strong) GKPhotosCollection *collection;
 
 ///选项
 @property(nonatomic, strong) GKPhotosOptions *photosOptions;

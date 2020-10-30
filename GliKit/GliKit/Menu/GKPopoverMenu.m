@@ -278,7 +278,7 @@
     cell.button.gkLeftLayoutConstraint.constant = _cellContentInsets.left;
     cell.button.gkRightLayoutConstraint.constant = _cellContentInsets.right;
     
-    GKPopoverMenuItem *item = [_menuItems objectAtIndex:indexPath.row];
+    GKPopoverMenuItem *item = _menuItems[indexPath.row];
     [cell.button setTitle:item.title forState:UIControlStateNormal];
     [cell.button setImage:item.icon forState:UIControlStateNormal];
     

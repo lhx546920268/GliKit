@@ -83,7 +83,7 @@
         for(NSInteger i = 0;i < itemInfos.count;i ++){
             
             //创建选项卡按钮
-            GKTabBarItemInfo *info = [itemInfos objectAtIndex:i];
+            GKTabBarItemInfo *info = itemInfos[i];
 
             GKTabBarItem *item = [GKTabBarItem new];
             item.textLabel.textColor = self.normalColor;
@@ -119,7 +119,7 @@
 - (UIViewController*)showedViewConroller
 {
     if(_selectedItemIndex < _itemInfos.count){
-        GKTabBarItemInfo *info = [_itemInfos objectAtIndex:_selectedItemIndex];
+        GKTabBarItemInfo *info = _itemInfos[_selectedItemIndex];
         return info.viewController;
     }
     
@@ -312,7 +312,7 @@
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index
 {
     if(index < _itemInfos.count){
-        GKTabBarItemInfo *info = [_itemInfos objectAtIndex:index];
+        GKTabBarItemInfo *info = _itemInfos[index];
         return info.viewController;
     }
     

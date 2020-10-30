@@ -290,7 +290,7 @@
         }
         
         for(NSInteger i = 0;i < index;i ++){
-            item = [self.items objectAtIndex:i];
+            item = self.items[i];
             x += item.itemWidth + itemInterval;
         }
     }

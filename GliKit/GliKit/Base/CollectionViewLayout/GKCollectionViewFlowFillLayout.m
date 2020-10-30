@@ -126,7 +126,7 @@
             if(index >= self.outmostItemInfos.count){
                 point.x = -1;
             }else{
-                CGRect frame = [[self.outmostItemInfos objectAtIndex:index] CGRectValue];
+                CGRect frame = [self.outmostItemInfos[index] CGRectValue];
                 point.x = frame.origin.x;
                
                 point.y = frame.size.height + frame.origin.y + self.layoutAttributes.minimumLineSpacing;
@@ -192,7 +192,7 @@
 
     NSInteger index = 0;
     for(NSInteger i = 1;i < self.outmostItemInfos.count;i ++){
-        value = [self.outmostItemInfos objectAtIndex:i];
+        value = self.outmostItemInfos[i];
         CGRect rect = [value CGRectValue];
         ///最低，并且可以放下item
         if(rect.origin.y + rect.size.height <= frame.origin.y + frame.size.height && rect.size.width >= size.width){
@@ -221,12 +221,12 @@
  */
 - (void)combineTheSameHeightItemForIndex:(NSInteger) index
 {
-    CGRect frame = [[self.outmostItemInfos objectAtIndex:index] CGRectValue];
+    CGRect frame = [self.outmostItemInfos[index] CGRectValue];
     CGFloat bottom = frame.size.height + frame.origin.y;
     
     if(index > 0){
         ///前一个
-        CGRect pframe = [[self.outmostItemInfos objectAtIndex:index - 1] CGRectValue];
+        CGRect pframe = [self.outmostItemInfos[index - 1] CGRectValue];
         CGFloat pBottom = pframe.origin.y + pframe.size.height;
         if(fabs(bottom - pBottom) < 1.0){
             pframe.origin.x = MIN(frame.origin.x, pframe.origin.x);
@@ -250,7 +250,7 @@
 
     if(index + 1 < self.outmostItemInfos.count){
         ///后一个
-        CGRect pframe = [[self.outmostItemInfos objectAtIndex:index + 1] CGRectValue];
+        CGRect pframe = [self.outmostItemInfos[index + 1] CGRectValue];
         CGFloat pBottom = pframe.origin.y + pframe.size.height;
         if(fabs(bottom - pBottom) < 1.0){
             pframe.origin.x = MIN(frame.origin.x, pframe.origin.x);
@@ -741,15 +741,15 @@
 
 - (UICollectionViewLayoutAttributes*)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKCollectionViewFlowFillLayoutAttributes *attributes = [self.attributes objectAtIndex:indexPath.section];
+    GKCollectionViewFlowFillLayoutAttributes *attributes = self.attributes[indexPath.section];
 
-    return [attributes.itemInfos objectAtIndex:indexPath.item];
+    return attributes.itemInfos[indexPath.item];
 }
 
 
 - (UICollectionViewLayoutAttributes*)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
-    GKCollectionViewFlowFillLayoutAttributes *attributes = [self.attributes objectAtIndex:indexPath.section];
+    GKCollectionViewFlowFillLayoutAttributes *attributes = self.attributes[indexPath.section];
     if([elementKind isEqualToString:UICollectionElementKindSectionFooter]){
         return attributes.footerLayoutAttributes;
     }else if ([elementKind isEqualToString:UICollectionElementKindSectionHeader]){

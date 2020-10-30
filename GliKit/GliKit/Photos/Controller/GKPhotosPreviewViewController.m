@@ -25,15 +25,6 @@
 
 @interface GKPhotosPreviewViewController ()<GKPhotosPreviewCellDelegate>
 
-///上一个预缓存的中心下标
-@property(nonatomic, assign) NSInteger previousPrecachingIndex;
-
-///停止缓存的
-@property(nonatomic, strong) NSMutableArray<PHAsset*> *stopCachingAssets;
-
-///开始缓存的
-@property(nonatomic, strong) NSMutableArray<PHAsset*> *startCachingAssets;
-
 ///底部工具条
 @property(nonatomic, strong) GKPhotosToolBar *photosToolBar;
 
@@ -76,8 +67,6 @@
     PHImageRequestOptions *options = [PHImageRequestOptions new];
     options.resizeMode = PHImageRequestOptionsResizeModeFast;
     self.imageRequestOptions = options;
-    
-    self.previousPrecachingIndex = NSNotFound;
     
     [self initViews];
 }
@@ -212,7 +201,7 @@
 }
 
 ///图片加载完成
-- (void)onImageDataLoad:(NSArray*) datas
+- (void)onImageDataLoad:(NSArray<NSData*>*) datas
 {
     NSMutableArray *results = [NSMutableArray arrayWithCapacity:datas.count];
     
@@ -330,7 +319,7 @@
     cell.loading = YES;
     cell.delegate = self;
     
-    PHAsset *asset = [self.assets objectAtIndex:indexPath.item];
+    PHAsset *asset = self.assets[indexPath.item];
     cell.asset = asset;
     
     CGSize size = [UIImage gkFitImageSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) size:CGSizeMake(collectionView.frame.size.width * self.photosOptions.scale, 0) type:GKImageFitTypeWidth];

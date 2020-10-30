@@ -368,14 +368,14 @@
         if(stopCachingRect.size.height > 0){
             NSArray *attrs = [self.flowLayout layoutAttributesForElementsInRect:stopCachingRect];
             for(UICollectionViewLayoutAttributes *attr in attrs){
-                [self.stopCachingAssets addObject:[self.collection.assets objectAtIndex:attr.indexPath.item]];
+                [self.stopCachingAssets addObject:self.collection.assets[attr.indexPath.item]];
             }
         }
         
         if(startCachingRect.size.height > 0){
             NSArray *attrs = [self.flowLayout layoutAttributesForElementsInRect:startCachingRect];
             for(UICollectionViewLayoutAttributes *attr in attrs){
-                [self.startCachingAssets addObject:[self.collection.assets objectAtIndex:attr.indexPath.item]];
+                [self.startCachingAssets addObject:self.collection.assets[attr.indexPath.item]];
             }
         }
         
@@ -409,7 +409,7 @@
 {
     GKPhotosGridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKPhotosGridCell.gkNameOfClass forIndexPath:indexPath];
     
-    PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
+    PHAsset *asset = self.collection.assets[indexPath.item];
     if(self.photosOptions.intention == GKPhotosIntentionMultiSelection){
         cell.checkBox.hidden = NO;
         cell.checked = [self containAsset:asset];
@@ -460,13 +460,13 @@
             break;
         case GKPhotosIntentionCrop : {
             
-            PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
+            PHAsset *asset = self.collection.assets[indexPath.item];
             [self cropImageWithAsset:asset];
         }
             break;
         case GKPhotosIntentionSingleSelection : {
             
-            [self useAssets:@[[self.collection.assets objectAtIndex:indexPath.item]]];
+            [self useAssets:@[self.collection.assets[indexPath.item]]];
         }
             break;
         default:
@@ -486,7 +486,7 @@
         NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
         for(NSIndexPath *indexPath in indexPaths){
             GKPhotosGridCell *cell = (GKPhotosGridCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
-            PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
+            PHAsset *asset = self.collection.assets[indexPath.item];
             cell.checked = [self containAsset:asset];
             if(cell.checked){
                 cell.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self indexOfAsset:asset] + 1];

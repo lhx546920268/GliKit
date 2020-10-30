@@ -22,16 +22,6 @@
     return helper;
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if(self){
-        
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

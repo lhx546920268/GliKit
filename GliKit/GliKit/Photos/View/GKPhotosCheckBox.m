@@ -85,7 +85,7 @@
         [self.checkedText drawAtPoint:CGPointMake(center.x - self.checkedTextSize.width / 2.0, center.y - self.checkedTextSize.height / 2.0) withAttributes:@{NSFontAttributeName : self.font, NSForegroundColorAttributeName : UIColor.gkThemeTintColor}];
     }else{
         CGContextAddArc(context, center.x, center.y, radius - lineWidth / 2.0, 0, M_PI * 2, NO);
-        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor.CGColor);
+        CGContextSetStrokeColorWithColor(context, UIColor.gkThemeTintColor.CGColor);
         CGContextStrokePath(context);
     }
     

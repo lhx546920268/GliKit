@@ -103,13 +103,13 @@
     if(_selectedIndex != selectedIndex){
         
         if(_selectedIndex < _items.count){
-            GKTabBarItem *item = [_items objectAtIndex:_selectedIndex];
+            GKTabBarItem *item = _items[_selectedIndex];
             item.backgroundColor = [UIColor clearColor];
             item.selected = NO;
         }
         
         _selectedIndex = selectedIndex;
-        GKTabBarItem *item = [_items objectAtIndex:_selectedIndex];
+        GKTabBarItem *item = _items[_selectedIndex];
         item.selected = YES;
         if(self.selectedButtonBackgroundColor){
             item.backgroundColor = self.selectedButtonBackgroundColor;
@@ -144,7 +144,7 @@
             selectedButtonBackgroundColor = [UIColor clearColor];
         
         _selectedButtonBackgroundColor = selectedButtonBackgroundColor;
-        GKTabBarItem *item = [_items objectAtIndex:_selectedIndex];
+        GKTabBarItem *item = _items[_selectedIndex];
         item.backgroundColor = _selectedButtonBackgroundColor;
     }
 }
@@ -158,7 +158,7 @@
 #if CADebug
     NSAssert(index < _items.count, @"CATabBar setBadgeValue forIndex, index %d 越界", (int)index);
 #endif
-    GKTabBarItem *item = [_items objectAtIndex:index];
+    GKTabBarItem *item = _items[index];
     item.badgeValue = badgeValue;
 }
 

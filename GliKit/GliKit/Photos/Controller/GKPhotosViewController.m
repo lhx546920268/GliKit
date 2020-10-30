@@ -253,7 +253,7 @@
         cell.thumbnailImageView.backgroundColor = UIColor.clearColor;
         cell.thumbnailImageView.image = nil;
         
-        PHAsset *asset = [collection.assets objectAtIndex:0];
+        PHAsset *asset = collection.assets[0];
         cell.assetLocalIdentifier = asset.localIdentifier;
         
         [self.imageManager requestImageForAsset:asset targetSize:CGSizeMake(60, 60) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
@@ -281,7 +281,7 @@
     
     GKPhotosGridViewController *vc = [GKPhotosGridViewController new];
     vc.photosOptions = self.photosOptions;
-    vc.collection = self.datas[indexPath.item];
+    vc.collection = self.datas[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

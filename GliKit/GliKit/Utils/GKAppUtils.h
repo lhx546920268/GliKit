@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///app版本号
 @property(class, nonatomic, readonly) NSString *appVersion;
 
-///是否是测试包 用版本号识别是否是测试包 如2.6.3.01 长度大于7的是测试包
+///是否是测试包 用版本号识别是否是测试包 如2.6.3.01 3个点以上的是测试包
 @property(class, nonatomic, readonly) BOOL isTestApp;
 
 ///app名称
@@ -37,8 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否有相册权限
 @property(class, nonatomic, readonly) BOOL hasPhotosAuthorization;
 
-///拨打电话 是否显示提示框
-+ (void)makePhoneCall:(nullable NSString*) mobile shouldAlert:(BOOL) alert;
+///拨打电话
++ (void)makePhoneCall:(nullable NSString*) mobile;
 
 ///打开一个URL 兼容所有版本 校验是否可以打开
 + (void)openCompatURL:(NSURL*) URL;

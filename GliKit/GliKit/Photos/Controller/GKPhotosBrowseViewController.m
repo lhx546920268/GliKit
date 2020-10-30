@@ -17,7 +17,6 @@
 #import <UIView+WebCache.h>
 #import "SDWebImagePrefetcher.h"
 #import <SDImageCache.h>
-#import "GKProgressView.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
 
 @implementation GKPhotosBrowseModel
@@ -64,9 +63,6 @@
 
 ///图片
 @property(nonatomic, readonly) UIImageView *imageView;
-
-///加载进度条
-@property(nonatomic, readonly) GKProgressView *progressView;
 
 ///代理
 @property(nonatomic, weak) id<GKPhotosBrowseCellDelegate> delegate;
@@ -187,7 +183,7 @@
 
 - (CGRect)rectFromImage:(UIImage*) image
 {
-    CGSize size = [image gkFitWithSize:_scrollView.bounds.size type:GKImageFitTypeWidth];
+    CGSize size = [image gkFitWithSize:_scrollView.frame.size type:GKImageFitTypeWidth];
     return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
 }
 
@@ -277,7 +273,7 @@
     [self registerClass:GKPhotosBrowseCell.class];
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
-    self.collectionView.alwaysBounceHorizontal = YES;
+    self.collectionView.alwaysBounceHorizontal = NO;
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.collectionView.pagingEnabled = YES;
     self.collectionView.alwaysBounceVertical = NO;
@@ -534,6 +530,8 @@
                 [cell1 layoutImageAfterLoadWithAnimated:NO];
                 [self showCompletion];
             }];
+        }else{
+            [self showCompletion];
         }
     }
     

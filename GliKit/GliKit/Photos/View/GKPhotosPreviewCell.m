@@ -65,7 +65,7 @@
     if(!_indicatorView){
         _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         _indicatorView.hidesWhenStopped = YES;
-        [self addSubview:_indicatorView];
+        [self.contentView addSubview:_indicatorView];
         
         [_indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(0);
@@ -147,7 +147,7 @@
 
 - (CGRect)rectFromImage:(UIImage*) image
 {
-    CGSize size = [UIImage gkFitImageSize:CGSizeMake(self.asset.pixelWidth, self.asset.pixelHeight) size:_scrollView.bounds.size type:GKImageFitTypeWidth];
+    CGSize size = [UIImage gkFitImageSize:CGSizeMake(self.asset.pixelWidth, self.asset.pixelHeight) size:_scrollView.frame.size type:GKImageFitTypeWidth];
     return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
 }
 

@@ -33,7 +33,7 @@
     
     
     for(NSInteger i = 0; i < images.count; i ++){
-        UIImage *image = [images objectAtIndex:i];
+        UIImage *image = images[i];
         NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate gkRandom], @"jpg"]];
         
         NSData *imageData = UIImageJPEGRepresentation(image, scale);
@@ -63,7 +63,7 @@
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:images.count];
     for(NSInteger i = 0; i < images.count; i ++){
-        UIImage *image = [images objectAtIndex:i];
+        UIImage *image = images[i];
         NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate gkRandom], @"jpg"]];
         
         NSData *imageData = UIImageJPEGRepresentation(image, scale);
@@ -161,8 +161,8 @@
         NSFileManager *fileManager = [[NSFileManager alloc] init];
         
         for(NSInteger i = 0;i < files.count && i < URLs.count;i ++){
-            NSString *file = [files objectAtIndex:i];
-            NSString *url = [URLs objectAtIndex:i];
+            NSString *file = files[i];
+            NSString *url = URLs[i];
             
             NSString *toPath = [path stringByAppendingPathComponent:[GKFileManager fileNameForURL:url suffix:suffix]];
             [fileManager moveItemAtPath:file toPath:toPath error:nil];

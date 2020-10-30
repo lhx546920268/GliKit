@@ -166,12 +166,11 @@ static WKProcessPool *sharedProcessPool;
 - (NSURL*)fixURLIfNeeded:(NSURL*) URL
 {
     if(URL){
-        NSString *URLString = URL.absoluteString;
-        if([NSString isEmpty:URL.scheme]){
-            URLString = [NSString stringWithFormat:@"http://%@", URLString];
+        NSURLComponents *components = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:false];
+        if([NSString isEmpty:components.scheme]) {
+            components.scheme = @"http://";
         }
         
-        NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
         NSString *host = components.host;
         if(![NSString isEmpty:host] && [host componentsSeparatedByString:@"."].count < 3){
             components.host = [NSString stringWithFormat:@"www.%@", host];
@@ -257,7 +256,7 @@ static WKProcessPool *sharedProcessPool;
 
 - (void)setHtmlString:(NSString *)htmlString
 {
-    if(_htmlString != htmlString && ![_htmlString isEqualToString:htmlString]){
+    if(![_htmlString isEqualToString:htmlString]){
         if(_adjustScreenWhenLoadHtmlString && ![NSString isEmpty:htmlString]){
             _htmlString = [[NSString stringWithFormat:@"%@%@", [NSString gkAdjustScreenHtmlString], htmlString] copy];
         }else{
@@ -306,8 +305,14 @@ static WKProcessPool *sharedProcessPool;
     NSURL *URL = self.currentURL;
     if(!URL){
         URL = self.URL;
+        if(URL){
+            [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
+        }else if(self.htmlString){
+            [self.webView loadHTMLString:self.htmlString baseURL:nil];
+        }
+    }else{
+        [self.webView reload];
     }
-    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
 }
 
 - (void)loadWebContent

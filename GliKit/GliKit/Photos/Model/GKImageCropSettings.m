@@ -13,8 +13,7 @@
 - (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
+    if(self){
         self.useFullScreenCropFrame = YES;
         self.limitRatio = 2.5;
     }

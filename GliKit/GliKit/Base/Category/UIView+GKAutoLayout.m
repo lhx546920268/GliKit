@@ -192,7 +192,7 @@
     NSLayoutConstraint *layoutConstraint = [matchs firstObject];
     //符合的约束太多，拿优先级最高的
     for(int i = 1;i < matchs.count;i ++){
-        NSLayoutConstraint *constraint = [matchs objectAtIndex:i];
+        NSLayoutConstraint *constraint = matchs[i];
         if(secondItem){
             if(constraint.secondItem != secondItem && constraint.firstItem != secondItem){
                 continue;

@@ -76,7 +76,7 @@
 {
     GKTabMenuBarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[GKTabMenuBarCell gkNameOfClass] forIndexPath:indexPath];
     
-    GKTabMenuBarItem *item = [self.items objectAtIndex:indexPath.item];
+    GKTabMenuBarItem *item = self.items[indexPath.item];
     [cell.button setTitleColor:self.selectedTextColor forState:UIControlStateSelected];
     [cell.button setTitleColor:self.normalTextColor forState:UIControlStateNormal];
     [cell.button.titleLabel setFont:self.selectedIndex == indexPath.item ? self.selectedFont : self.normalFont];
@@ -174,7 +174,7 @@
 {
     NSAssert(index < self.items.count, @"GKMenuBar setBadgeValue: forIndex:，index %ld 已越界", (long)index);
     
-    GKTabMenuBarItem *item = [self.items objectAtIndex:index];
+    GKTabMenuBarItem *item = self.items[index];
     item.badgeNumber = badgeValue;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
@@ -184,7 +184,7 @@
 {
     NSAssert(index < self.items.count, @"GKMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
     
-    GKTabMenuBarItem *item = [self.items objectAtIndex:index];
+    GKTabMenuBarItem *item = self.items[index];
     item.title = title;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
@@ -194,7 +194,7 @@
 {
     NSAssert(index < self.items.count, @"GKMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
     
-    GKTabMenuBarItem *item = [self.items objectAtIndex:index];
+    GKTabMenuBarItem *item = self.items[index];
     item.icon = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
@@ -204,7 +204,7 @@
 {
     NSAssert(index < self.items.count, @"GKMenuBar setSelectedIcon: forIndex:，index %ld 已越界", (long)index);
     
-    GKTabMenuBarItem *item = [self.items objectAtIndex:index];
+    GKTabMenuBarItem *item = self.items[index];
     item.selectedIcon = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];

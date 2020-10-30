@@ -31,7 +31,7 @@ static NSString *sharedUUID = nil;
 
 + (BOOL)isTestApp
 {
-    return GKAppUtils.appVersion.length > 7;
+    return [GKAppUtils.appVersion componentsSeparatedByString:@"."].count > 3;
 }
 
 + (NSString*)appName
@@ -66,21 +66,12 @@ static NSString *sharedUUID = nil;
         NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"%@%@", service, key]];
         if([NSString isEmpty:uuid]){
             uuid = [GKKeyChainStore stringForKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
-            if([NSString isEmpty:uuid]){
-                
-                //兼容以前的 现在改成 ZegoBird 和 ZegoDealer 共享keychain
-                uuid = [GKKeyChainStore stringForKey:key service:service];
-            }
             
             if([NSString isEmpty:uuid]){
-                CFUUIDRef uuidRef = CFUUIDCreate(NULL);
-                CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
-                CFRelease(uuidRef);
-                uuid = [NSString stringWithString:(__bridge NSString*)uuidStringRef];
-                CFRelease(uuidStringRef);
+                uuid = NSUUID.new.UUIDString;
+                [GKKeyChainStore setString:uuid forKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
             }
             
-            [GKKeyChainStore setString:uuid forKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
             [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:[NSString stringWithFormat:@"%@%@", service, key]];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
@@ -119,15 +110,16 @@ static NSString *sharedUUID = nil;
     return ip;
 }
 
-+ (void)makePhoneCall:(NSString*) mobile shouldAlert:(BOOL) alert
++ (void)makePhoneCall:(NSString*) mobile
 {
     if(![NSString isEmpty:mobile]){
-        if(alert){
-            [GKAlertUtils showAlertWithMessage:[NSString stringWithFormat:@"Call %@", mobile] handler:^{
+        if(@available(iOS 10, *)){
+            //iOS 10 后拨打电话 会有系统弹窗
+            [GKAppUtils openCompatURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
+        }else{
+            [GKAlertUtils showAlertWithMessage:[NSString stringWithFormat:@"是否拨打 %@", mobile] handler:^{
                 [GKAppUtils openCompatURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
             }];
-        }else{
-            [GKAppUtils openCompatURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
         }
     }
 }
@@ -166,10 +158,7 @@ static NSString *sharedUUID = nil;
 {
     if(@available(iOS 14, *)){
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
-        if(status == PHAuthorizationStatusAuthorized){
-            return YES;
-        }
-        if(status == PHAuthorizationStatusLimited){
+        if(status == PHAuthorizationStatusAuthorized || status == PHAuthorizationStatusLimited){
             return YES;
         }
     }else{
@@ -178,9 +167,19 @@ static NSString *sharedUUID = nil;
     return NO;
 }
 
+///当前相册权限
++ (PHAuthorizationStatus)photosAuthorizationStatus
+{
+    if(@available(iOS 14, *)){
+        return [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+    }else{
+        return PHPhotoLibrary.authorizationStatus;
+    }
+}
+
 + (void)requestPhotosAuthorizationWithCompletion:(void (^)(BOOL))completion
 {
-    if(PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusNotDetermined){
+    if(self.photosAuthorizationStatus == PHAuthorizationStatusNotDetermined){
         //没有权限 先申请授权
         if(@available(iOS 14, *)){
             [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
