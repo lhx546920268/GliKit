@@ -113,11 +113,6 @@
 
 - (UIViewController*)selectedViewController
 {
-    return [self showedViewConroller];
-}
-
-- (UIViewController*)showedViewConroller
-{
     if(_selectedItemIndex < _itemInfos.count){
         GKTabBarItemInfo *info = _itemInfos[_selectedItemIndex];
         return info.viewController;
@@ -133,6 +128,9 @@
     if(!_tabBar){
         _tabBar = [[GKTabBar alloc] initWithItems:self.tabBarItems];
         _tabBar.delegate = self;
+        [_tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.gkTabBarHeight);
+        }];
     }
     return _tabBar;
 }
@@ -261,11 +259,11 @@
 {
     if(_selectedItemIndex != selectedItemIndex){
         ///以前的viewController
-        UIViewController *oldViewController = [self showedViewConroller];
+        UIViewController *oldViewController = [self selectedViewController];
         [self setSelected:NO forIndex:_selectedItemIndex];
         
         _selectedItemIndex = selectedItemIndex;
-        UIViewController *viewController = [self showedViewConroller];
+        UIViewController *viewController = [self selectedViewController];
         [self setSelected:YES forIndex:_selectedItemIndex];
         
         if(viewController){
@@ -288,7 +286,6 @@
                 [viewController.view addSubview:self.tabBar];
                 [self.tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.leading.trailing.bottom.equalTo(0);
-                    make.height.equalTo(self.gkTabBarHeight);
                 }];
             }
         }

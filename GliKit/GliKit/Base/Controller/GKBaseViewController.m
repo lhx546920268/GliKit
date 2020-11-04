@@ -322,12 +322,12 @@
     return _currentTasks;
 }
 
-- (void)addCanceledTask:(GKHttpTask*) task
+- (void)addCancelableTask:(GKHttpTask*) task
 {
-    [self addCanceledTask:task cancelTheSame:NO];
+    [self addCancelableTask:task cancelTheSame:NO];
 }
 
-- (void)addCanceledTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
+- (void)addCancelableTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
 {
     if(cancel){
         [self cancelTaskforName:task.name];
@@ -337,7 +337,7 @@
     }
 }
 
-- (void)addCanceledTasks:(GKHttpMultiTasks*) tasks
+- (void)addCancelableTasks:(GKHttpMultiTasks*) tasks
 {
     if(tasks){
         [self.currentTasks addObject:tasks];

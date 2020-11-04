@@ -489,7 +489,7 @@ static char GKHasTabBarKey;
     if([self.parentViewController isKindOfClass:UINavigationController.class]){
         UINavigationController *nav = (UINavigationController*)self.parentViewController;
         if(nav.viewControllers.firstObject == self){
-            return self.parentViewController.gkHasTabBar;
+            return nav.gkHasTabBar;
         }
     }
     return [objc_getAssociatedObject(self, &GKHasTabBarKey) boolValue];

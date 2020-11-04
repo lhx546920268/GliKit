@@ -19,6 +19,9 @@
 ///文字大小
 @property(nonatomic, assign) CGSize textSize;
 
+///是否是0
+@property(nonatomic, assign) BOOL isZero;
+
 @end
 
 @implementation GKBadgeValueView
@@ -95,6 +98,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
     CGContextRef cx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(cx);
     CGFloat width = rect.size.width;
@@ -196,13 +200,12 @@
 - (void)setValue:(NSString *)value
 {
     if(_value != value){
-        if([NSString isEmpty:value])
-            value = @"0";
-        
+        self.isZero = NO;
         if([value isInteger]){
             int number = [value intValue];
             if(number < 0)
                 number = 0;
+            self.isZero = number == 0;
             if(number <= self.max){
                 _value = [NSString stringWithFormat:@"%d", number];
             }else{
@@ -224,16 +227,7 @@
         return;
     }
     
-    BOOL zero = NO;
-    if([self.value isInteger]){
-        zero = [self.value intValue] == 0;
-    }
-    
-    if([NSString isEmpty:self.value]){
-        zero = YES;
-    }
-    
-    self.hidden = zero && !self.point;
+    self.hidden = self.hideWhenZero && self.isZero && !self.point;
     
     CGSize contentSize = CGSizeZero;
     if(self.point){

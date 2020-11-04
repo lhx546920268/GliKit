@@ -55,7 +55,7 @@
         CGFloat bottom = UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom;
         for(NSUInteger i = 0;i < _items.count;i ++){
             GKTabBarItem *item = _items[i];
-            [item addTarget:self action:@selector(handleTouchupInside:) forControlEvents:UIControlEventTouchUpInside];
+            [item addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
             [self insertSubview:item belowSubview:self.separator];
             
             [item mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -80,7 +80,7 @@
 // MARK: - private method
 
 //选中某个按钮
-- (void)handleTouchupInside:(GKTabBarItem*) item
+- (void)handleTap:(GKTabBarItem*) item
 {
     if(item.selected == YES)
         return;

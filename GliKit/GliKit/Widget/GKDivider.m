@@ -59,6 +59,7 @@
 ///初始化
 - (void)initParams
 {
+    self.userInteractionEnabled = NO;
     self.backgroundColor = UIColor.gkSeparatorColor;
     if(self.isVertical){
         

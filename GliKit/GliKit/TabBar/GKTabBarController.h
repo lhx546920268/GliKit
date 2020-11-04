@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/**选项卡按钮信息
+/**
+ 选项卡按钮信息
  */
 @interface GKTabBarItemInfo : NSObject
 
@@ -101,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, null_resettable) UIColor *normalColor;
 
 /**
- 选中颜色 default is 'CAAppMainColor'
+ 选中颜色 default is 'gkThemeColor'
  */
 @property(nonatomic, strong, null_resettable) UIColor *selectedColor;
 
@@ -111,7 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, null_resettable) UIFont *font;
 
 /**
- 选中的视图 default is '0'
+ 选中的视图
  */
 @property(nonatomic, assign) NSUInteger selectedIndex;
 
