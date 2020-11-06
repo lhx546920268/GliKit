@@ -191,12 +191,9 @@ static NSRegularExpression *URLRegularExpression = nil;
     if(self.canPerformActionHandler){
         return self.canPerformActionHandler(action, sender);
     }
+    
     //只显示自己的
-    if(action == @selector(copy:)){
-        return YES;
-    }
-
-    return NO;
+    return action == @selector(copy:);
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -275,7 +272,7 @@ static NSRegularExpression *URLRegularExpression = nil;
         
         NSArray *results = nil;
         if(![NSString isEmpty:str]){
-            results = [self.URLRegularExpression matchesInString:text options:0 range:NSMakeRange(0, str.length)];
+            results = [self.URLRegularExpression matchesInString:str options:0 range:NSMakeRange(0, str.length)];
         }
         
         if(results.count > 0){

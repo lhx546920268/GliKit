@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  iOS 11.0后 导航栏的标题栏， 在ios11后 导航栏的图层结构已发生变化，使用这个可以调整标题栏大小
  titleView内部有子视图使用约束时才需要
@@ -20,14 +22,14 @@
 @property(nonatomic, readonly) UIView *contentView;
 
 /**
- 内容大小 default is 'UILayoutFittingExpandedSize'
+ 内容大小 default is 'zero'
  */
 @property(nonatomic, assign) CGSize contentSize;
 
 /**
  关联的item
  */
-@property(nonatomic, weak, readonly) UINavigationItem *navigationItem;
+@property(nonatomic, weak, readonly, nullable) UINavigationItem *navigationItem;
 
 /**
  和导航栏按钮的间距
@@ -50,4 +52,6 @@
 - (instancetype)initWithNavigationItem:(UINavigationItem*) item NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

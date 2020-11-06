@@ -43,9 +43,9 @@ typedef NS_ENUM(NSInteger, GKScanCornerPosition){
 {
     [super drawRect:rect];
     
-    CGFloat lineWidth = self.cornerLineWidth;
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(ctx, lineWidth);
+    CGContextSaveGState(ctx);
+    CGContextSetLineWidth(ctx, self.cornerLineWidth);
     CGContextSetStrokeColorWithColor(ctx, UIColor.gkThemeColor.CGColor);
     
     [self drawCornerInContext:ctx position:GKScanCornerPositionTopLeft];
@@ -54,6 +54,7 @@ typedef NS_ENUM(NSInteger, GKScanCornerPosition){
     [self drawCornerInContext:ctx position:GKScanCornerPositionBottomRight];
     
     CGContextStrokePath(ctx);
+    CGContextRestoreGState(ctx);
 }
 
 ///绘制扫描区域边角

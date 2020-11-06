@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKScanViewController : GKBaseViewController
 
 ///支持的扫码类型
-@property(nonatomic, readonly) NSArray<AVMetadataObjectType> *supportedTypes;
+@property(nonatomic, strong) NSArray<AVMetadataObjectType> *supportedTypes;
 
 ///扫描结果回调
 @property(nonatomic, copy, nullable) void(^scanCallback)(NSString *result);

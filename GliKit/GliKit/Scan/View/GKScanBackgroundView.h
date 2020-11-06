@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) CGFloat cornerLineWidth;
 
 ///扫描区域改变
-@property(nonatomic, copy) void(^scanBoxRectDidChange)(CGRect scanBoxRect);
+@property(nonatomic, copy, nullable) void(^scanBoxRectDidChange)(CGRect scanBoxRect);
 
 ///开始动画
 - (void)startAnimating;

@@ -58,10 +58,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)initParams NS_REQUIRES_SUPER;
 
-///倒计时开始
+/**
+ 倒计时开始
+ */
 - (void)onStart NS_REQUIRES_SUPER;
 
-///倒计时完成
+/**
+ 倒计时完成
+ */
 - (void)onFinish NS_REQUIRES_SUPER;
 
 @end

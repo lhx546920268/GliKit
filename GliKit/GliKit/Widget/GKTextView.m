@@ -18,6 +18,8 @@
 
 @implementation GKTextView
 
+@synthesize placeholderFont = _placeholderFont;
+
 // MARK: - init
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -67,10 +69,7 @@
 - (void)setFont:(UIFont *)font
 {
     [super setFont:font];
-    if(!_placeholderFont){
-        _placeholderFont = font;
-        [self updatePlaceholder];
-    }
+    [self updatePlaceholder];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
@@ -92,6 +91,14 @@
         }
         [self updatePlaceholder];
     }
+}
+
+- (UIFont *)placeholderFont {
+    UIFont *font = _placeholderFont ? _placeholderFont : self.font;
+    if(!font){
+        font = [UIFont systemFontOfSize:14];
+    }
+    return font;
 }
 
 - (void)setPlaceholderTextColor:(UIColor *) textColor
@@ -154,10 +161,12 @@
     //绘制placeholder
     if(![NSString isEmpty:self.placeholder] && self.text.length == 0){
         
-        NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-                               self.placeholderFont, NSFontAttributeName, self.placeholderTextColor, NSForegroundColorAttributeName, nil];
-        [_placeholder drawInRect:CGRectMake(_placeholderOffset.x, _placeholderOffset.y, width - _placeholderOffset.x * 2, height - _placeholderOffset.y * 2)
-                  withAttributes:attrs];
+        NSDictionary *attrs = @{
+            NSFontAttributeName: self.placeholderFont,
+            NSForegroundColorAttributeName: self.placeholderTextColor
+        };
+        CGRect rect = CGRectMake(_placeholderOffset.x, _placeholderOffset.y, width - _placeholderOffset.x * 2, height - _placeholderOffset.y * 2);
+        [_placeholder drawInRect:rect withAttributes:attrs];
     }
     
     //绘制输入的文字数量和限制
@@ -205,24 +214,21 @@
     NSString *text = self.text;
     
     //有输入法情况下忽略
-    if(!self.markedTextRange && text.length != 0 && self.maxLength != NSUIntegerMax){
-        
+    if(!self.markedTextRange && self.maxLength != NSUIntegerMax && text.length > self.maxLength){
         NSUInteger maxLength = self.maxLength;
         
         //删除超过长度的字符串
-        if(text.length > maxLength){
-            NSUInteger length = text.length - maxLength;
-            NSRange range = self.selectedRange;
-            
-            //NSUInteger 没有负值
-            NSUInteger location = range.location >= length ? range.location - length : 0;
-            
-            range.location = location;
-            text = [text stringByReplacingCharactersInRange:NSMakeRange(location, length) withString:@""];
-            self.text = text;
-            if(range.location < text.length){
-                self.selectedRange = range;
-            }
+        NSUInteger length = text.length - maxLength;
+        NSRange range = self.selectedRange;
+        
+        //NSUInteger 没有负值
+        NSUInteger location = range.location >= length ? range.location - length : 0;
+        
+        range.location = location;
+        text = [text stringByReplacingCharactersInRange:NSMakeRange(location, length) withString:@""];
+        self.text = text;
+        if(range.location < text.length){
+            self.selectedRange = range;
         }
     }
 }

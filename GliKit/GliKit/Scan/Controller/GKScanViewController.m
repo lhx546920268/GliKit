@@ -40,9 +40,14 @@
 ///解码队列
 @property (nonatomic, strong) dispatch_queue_t decodeQueue;
 
+///后置摄像头
+@property(nonatomic, readonly) AVCaptureDevice *backFacingCamera;
+
 @end
 
 @implementation GKScanViewController
+
+@synthesize backFacingCamera = _backFacingCamera;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,6 +55,7 @@
     if(self){
         self.navigationItem.title = @"扫码";
         self.shouldRectOfInterest = YES;
+        self.supportedTypes = @[AVMetadataObjectTypeQRCode];
     }
     
     return self;
@@ -87,7 +93,7 @@
     _scanBackgroundView = GKScanBackgroundView.new;
     
     WeakObj(self)
-    if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+    if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] || !self.backFacingCamera){
         //检测摄像头是否可用
         [self onCaptureDeviceUnavailable];
     }else{
@@ -125,11 +131,6 @@
 }
 
 // MARK: - Public
-
-- (NSArray<AVMetadataObjectType> *)supportedTypes
-{
-    return @[AVMetadataObjectTypeQRCode];
-}
 
 - (void)onAuthorizationDenied
 {
@@ -181,9 +182,11 @@
     //点击添加图片
     GKPhotosViewController *vc = [GKPhotosViewController new];
     vc.photosOptions.intention = GKPhotosIntentionSingleSelection;
+    vc.photosOptions.needOriginalImage = YES;
+    vc.photosOptions.compressedImageSize = CGSizeZero;
     WeakObj(self)
     vc.photosOptions.completion = ^(NSArray<GKPhotosPickResult *> * _Nonnull results) {
-        [selfWeak detectBarCodeFromImage:results.firstObject.compressedImage];
+        [selfWeak detectBarCodeFromImage:results.firstObject.originalImage];
     };
     [self presentViewController:vc.gkCreateWithNavigationController animated:YES completion:nil];
 }
@@ -191,9 +194,9 @@
 ///识别图片中的二维码
 - (void)detectBarCodeFromImage:(UIImage*) image
 {
-    CIContext * context = [CIContext contextWithOptions:nil];
-    NSDictionary * param = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
-    CIDetector * detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:context options:param];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    NSDictionary *options = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
+    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:context options:options];
     NSArray *features = [detector featuresInImage:[CIImage imageWithCGImage:image.CGImage]];
     
     if (features.count == 0) {
@@ -215,17 +218,13 @@
 {
     AVCaptureDevice *device = [self backFacingCamera];
     
-    if([device hasTorch] && [device hasFlash]){
+    if(device.hasTorch){
         
         [device lockForConfiguration:nil];
         if(open){
-            
-            [device setTorchMode:AVCaptureTorchModeOn];
-            [device setFlashMode:AVCaptureFlashModeOn];
+            device.torchMode = AVCaptureTorchModeOn;
         }else{
-            
-            [device setTorchMode:AVCaptureTorchModeOff];
-            [device setFlashMode:AVCaptureFlashModeOff];
+            device.torchMode = AVCaptureTorchModeOff;
         }
         [device unlockForConfiguration];
     }
@@ -234,7 +233,13 @@
 //通过摄像头位置，获取可用的摄像头
 - (AVCaptureDevice*)cameraWithPosition:(AVCaptureDevicePosition) position
 {
-    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    NSArray *devices;
+    if(@available(iOS 10, *)) {
+        AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+        devices = discoverySession.devices;
+    } else {
+        devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    }
     for (AVCaptureDevice *device in devices) {
         if ([device position] == position) {
             return device;
@@ -246,7 +251,10 @@
 //获取后置摄像头
 - (AVCaptureDevice*)backFacingCamera
 {
-    return [self cameraWithPosition:AVCaptureDevicePositionBack];
+    if(_backFacingCamera == nil){
+        _backFacingCamera = [self cameraWithPosition:AVCaptureDevicePositionBack];
+    }
+    return _backFacingCamera;
 }
 
 //二维码扫描摄像头设置
