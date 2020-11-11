@@ -34,7 +34,7 @@
     
     for(NSInteger i = 0; i < images.count; i ++){
         UIImage *image = images[i];
-        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate gkRandom], @"jpg"]];
+        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", NSString.gkUUID, @"jpg"]];
         
         NSData *imageData = UIImageJPEGRepresentation(image, scale);
         
@@ -64,7 +64,7 @@
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:images.count];
     for(NSInteger i = 0; i < images.count; i ++){
         UIImage *image = images[i];
-        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate gkRandom], @"jpg"]];
+        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", NSString.gkUUID, @"jpg"]];
         
         NSData *imageData = UIImageJPEGRepresentation(image, scale);
         
@@ -89,7 +89,7 @@
     NSString *filePath = NSTemporaryDirectory();
     
     
-    NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate gkRandom], @"jpg"]];
+    NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", NSString.gkUUID, @"jpg"]];
     
     NSData *imageData = UIImageJPEGRepresentation(image, scale);
     
@@ -137,8 +137,7 @@
 + (NSString*)getTemporaryFileWithSuffix:(NSString*) suffix
 {
     NSString *temp = NSTemporaryDirectory();
-    NSString *time = [NSDate gkRandom];
-    NSString *file = [NSString stringWithFormat:@"%@.%@", time, suffix];
+    NSString *file = [NSString stringWithFormat:@"%@.%@", NSString.gkUUID, suffix];
     
     return [temp stringByAppendingPathComponent:file];
 }

@@ -13,15 +13,32 @@
 
 // MARK: - 单例
 
-+ (NSDateFormatter*)sharedDateFormatter
++ (NSMutableDictionary<NSString*, NSDateFormatter*>*)sharedDateFormatters
 {
     static dispatch_once_t once = 0;
-    static NSDateFormatter *dateFormatter = nil;
+    static NSMutableDictionary<NSString*, NSDateFormatter*> *dateFormatters = nil;
     dispatch_once(&once, ^(void){
         
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.locale = NSLocale.currentLocale;
+        dateFormatters = [NSMutableDictionary dictionary];
     });
+    
+    return  dateFormatters;
+}
+
++ (NSDateFormatter*)sharedDateFormatterForFormat:(NSString *)format
+{
+    NSMutableDictionary *formatters = [self sharedDateFormatters];
+    NSDateFormatter *dateFormatter = formatters[format];
+    if(!dateFormatter){
+        @synchronized (self) {
+            dateFormatter = formatters[format];
+            if(!dateFormatter){
+                dateFormatter = NSDateFormatter.new;
+                dateFormatter.locale = NSLocale.currentLocale;
+                formatters[format] = dateFormatter;
+            }
+        }
+    }
     
     return dateFormatter;
 }
@@ -72,12 +89,8 @@
 
 + (NSString*)gkCurrentTimeWithFormat:(NSString*) format
 {
-    NSDateFormatter *dateFormatter = [NSDate sharedDateFormatter];
-    [dateFormatter setDateFormat:format];
-    
-    NSString *time = [dateFormatter stringFromDate:[NSDate date]];
-    
-    return time;
+    NSDateFormatter *dateFormatter = [self sharedDateFormatterForFormat:format];
+    return [dateFormatter stringFromDate:[NSDate date]];
 }
 
 + (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval
@@ -92,11 +105,8 @@
 
 + (NSString*)gkTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime
 {
-    NSDateFormatter *dateFormatter = [NSDate sharedDateFormatter];
-    [dateFormatter setDateFormat:format];
-    
+    NSDateFormatter *dateFormatter = [self sharedDateFormatterForFormat:format];
     NSDate *oldDate = fromTime == nil ? [NSDate date] : [dateFormatter dateFromString:fromTime];
-    
     NSDate *date = [NSDate dateWithTimeInterval:timeInterval sinceDate:oldDate];
     
     return [dateFormatter stringFromDate:date];
@@ -111,21 +121,17 @@
 
 + (NSString*)gkFormatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:fromFormat];
-    
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:fromFormat];
     NSDate *date = [formatter dateFromString:time];
     
-    [formatter setDateFormat:toFormat];
-    NSString *timeStr = [formatter stringFromDate:date];
+    formatter = [self sharedDateFormatterForFormat:toFormat];
     
-    return timeStr;
+    return [formatter stringFromDate:date];
 }
 
 + (NSString*)gkFormatTimeInterval:(NSTimeInterval) timeInterval format:(NSString*) format
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:format];
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:format];
     
     if(timeInterval > 100000000000){
         timeInterval /= 1000;
@@ -137,8 +143,7 @@
 
 + (NSTimeInterval)gkTimeIntervalFromTime:(NSString*) time format:(NSString*) format
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:format];
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:format];
     
     NSDate *date = [formatter dateFromString:time];
     return [date timeIntervalSince1970];
@@ -146,17 +151,13 @@
 
 + (NSDate*)gkDateFromTime:(NSString*) time format:(NSString*) format
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:format];
-    NSDate *date = [formatter dateFromString:time];
-    return date;
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:format];
+    return [formatter dateFromString:time];
 }
 
 + (NSString*)gkTimeFromDate:(NSDate*) date format:(NSString*) format
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:format];
-    
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:format];
     return [formatter stringFromDate:date];
 }
 
@@ -188,8 +189,7 @@
     }
     
     
-    NSDateFormatter *dateFormatter = [NSDate sharedDateFormatter];
-    [dateFormatter setDateFormat:GKDateFormatYMdHms];
+    NSDateFormatter *dateFormatter = [self sharedDateFormatterForFormat:GKDateFormatYMdHms];
     
     NSDate *date1 = [dateFormatter dateFromString:time1];
     NSDate *date2 = [dateFormatter dateFromString:time2];
@@ -199,8 +199,7 @@
 
 + (BOOL)gkTime:(NSString*) time1 equalToTime:(NSString*) time2
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:GKDateFormatYMdHms];
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:GKDateFormatYMdHms];
     
     NSDate *date1 = [formatter dateFromString:time1];
     NSDate *date2 = [formatter dateFromString:time2];
@@ -210,23 +209,9 @@
 
 // MARK: - other
 
-+ (NSString*)gkRandom
-{
-    int iRandom = arc4random() % 1000000;
-    if (iRandom < 0) {
-        iRandom = -iRandom;
-    }
-    
-    NSDateFormatter *tFormat = [NSDate sharedDateFormatter];
-    [tFormat setDateFormat:@"yyyyMMddHHmmss"];
-    NSString *tResult = [NSString stringWithFormat:@"%@%d",[tFormat stringFromDate:[NSDate date]],iRandom];
-    return tResult;
-}
-
 + (NSTimeInterval)gkTimeIntervalFromNow:(NSString*) time
 {
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:GKDateFormatYMdHms];
+    NSDateFormatter *formatter = [self sharedDateFormatterForFormat:GKDateFormatYMdHms];
     
     NSDate *date = [formatter dateFromString:time];
     return [date timeIntervalSinceNow];

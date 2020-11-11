@@ -11,6 +11,11 @@
 
 @implementation NSString (GKUtils)
 
++ (NSString *)gkUUID
+{
+    return [NSUUID.UUID.UUIDString.lowercaseString stringByReplacingOccurrencesOfString:@"-" withString:@""];
+}
+
 + (BOOL)isEmpty:(NSString *)str
 {
     if([str isEqual:[NSNull null]] || str == nil || str == NULL || ![str isKindOfClass:[NSString class]]){

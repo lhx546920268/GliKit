@@ -24,9 +24,9 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
 @interface NSDate (Utils)
 
 /**
- NSDateFormatter 的单例 因为频繁地创建 NSDateFormatter 是非常耗资源的、耗时的
+ DateFormatter 的单例 因为频繁地创建 DateFormatter 是非常耗资源的、耗时的，不要修改 dateFormat，这样有多个线程同时访问时，会格式不对
  */
-+ (NSDateFormatter*)sharedDateFormatter;
++ (NSDateFormatter*)sharedDateFormatterForFormat:(NSString*) format;
 
 // MARK: - 单个时间
 
@@ -169,11 +169,6 @@ static NSString *const GKDateFormatYMd = @"yyyy-MM-dd";
 + (BOOL)gkTime:(NSString*) time1 equalToTime:(NSString*) time2;
 
 // MARK: - other
-
-/**当前时间和随机数生成的字符串
- *@return 如 1989072407080998
- */
-+ (NSString*)gkRandom;
 
 /**
  计算时间距离现在有多少秒

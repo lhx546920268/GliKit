@@ -105,7 +105,7 @@ GKNavigationItemHelper;
  
  @param task 请求
  */
-- (void)addCanceledTask:(GKHttpTask*) task;
+- (void)addCancelableTask:(GKHttpTask*) task;
 
 /**
  添加需要取消的请求 在dealloc
@@ -113,14 +113,14 @@ GKNavigationItemHelper;
  @param task 请求
  @param cancel 是否取消相同的任务 通过 task.name 来判断
  */
-- (void)addCanceledTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel;
+- (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel;
 
 /**
  添加需要取消的请求队列 在 dealloc
  
  @param tasks 请求
  */
-- (void)addCanceledTasks:(GKHttpMultiTasks*) tasks;
+- (void)addCancelableTasks:(GKHttpMultiTasks*) tasks;
 
 
 /**

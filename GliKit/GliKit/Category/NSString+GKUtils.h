@@ -30,6 +30,11 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 
 @interface NSString (GKUtils)
 
+/**
+ 获取唯一字符串
+ */
+@property(nonatomic, class, readonly) NSString *gkUUID;
+
 // MARK: - 空判断
 
 /**

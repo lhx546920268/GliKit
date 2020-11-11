@@ -53,19 +53,19 @@
     
 }
 
-- (void)addCanceledTask:(GKHttpTask*) task
+- (void)addCancelableTask:(GKHttpTask*) task
 {
-    [self.viewController addCanceledTask:task];
+    [self.viewController addCancelableTask:task];
 }
 
-- (void)addCanceledTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel
+- (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel
 {
-    [self.viewController addCanceledTask:task cancelTheSame:cancel];
+    [self.viewController addCancelableTask:task cancelTheSame:cancel];
 }
 
-- (void)addCanceledTasks:(GKHttpMultiTasks*) tasks
+- (void)addCancelableTasks:(GKHttpMultiTasks*) tasks
 {
-    [self.viewController addCanceledTasks:tasks];
+    [self.viewController addCancelableTasks:tasks];
 }
 
 - (void)reloadData
