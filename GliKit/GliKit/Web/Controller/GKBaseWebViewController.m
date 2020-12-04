@@ -168,7 +168,7 @@ static WKProcessPool *sharedProcessPool;
     if(URL){
         NSURLComponents *components = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:false];
         if([NSString isEmpty:components.scheme]) {
-            components.scheme = @"http://";
+            components.scheme = @"http";
         }
         
         NSString *host = components.host;

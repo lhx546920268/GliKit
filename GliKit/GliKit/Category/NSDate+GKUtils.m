@@ -35,6 +35,7 @@
             if(!dateFormatter){
                 dateFormatter = NSDateFormatter.new;
                 dateFormatter.locale = NSLocale.currentLocale;
+                dateFormatter.dateFormat = format;
                 formatters[format] = dateFormatter;
             }
         }

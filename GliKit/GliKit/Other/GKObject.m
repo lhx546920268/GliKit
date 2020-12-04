@@ -34,12 +34,10 @@
 + (NSMutableArray*)modelsFromArray:(NSArray<NSDictionary*>*) array maxCount:(int) maxCount
 {
     if(array.count > 0){
-        int count = 0;
         NSMutableArray *models = [NSMutableArray arrayWithCapacity:MIN(maxCount, array.count)];
         for(NSDictionary *dic in array){
             [models addObject:[[self class] modelFromDictionary:dic]];
-            count ++;
-            if(count >= maxCount){
+            if(models.count >= maxCount){
                 break;
             }
         }

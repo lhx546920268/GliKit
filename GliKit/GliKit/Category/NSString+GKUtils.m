@@ -124,7 +124,7 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]].length == 0;
 }
 
-// MARK: - 加密
+// MARK: - Hash
 
 - (NSString*)gkMD5String
 {
@@ -138,6 +138,20 @@
     }
     
     return [md5 copy];
+}
+
+- (NSString *)gkSha256String
+{
+    const char *cStr = [self UTF8String];
+    unsigned char result[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(cStr, (CC_LONG)strlen(cStr), result);
+    
+    NSMutableString *sha256 = NSMutableString.new;
+    for(int i = 0;i < CC_SHA256_DIGEST_LENGTH;i ++){
+        [sha256 appendFormat:@"%02X", result[i]];
+    }
+    
+    return [sha256 copy];
 }
 
 // MARK: - 过滤

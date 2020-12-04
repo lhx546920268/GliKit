@@ -124,6 +124,8 @@
 ///设置rect
 - (CGRect)setupRect:(CGRect) rect contentRect:(CGRect) contentRect anotherSize:(CGSize) anotherSize insets:(UIEdgeInsets) insets padding:(CGFloat) padding position:(GKButtonImagePosition) position
 {
+    contentRect.size.width += self.contentEdgeInsets.left + self.contentEdgeInsets.right;
+    contentRect.size.height += self.contentEdgeInsets.top + self.contentEdgeInsets.bottom;
     UIControlContentHorizontalAlignment horizontal = self.currentContentHorizontalAlignment;
     UIControlContentVerticalAlignment vertical = self.contentVerticalAlignment;
     

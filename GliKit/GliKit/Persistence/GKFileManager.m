@@ -144,7 +144,7 @@
 
 + (NSString*)fileNameForURL:(NSString*) url suffix:(NSString *)suffix
 {
-    NSString *fileName = [url gkMD5String];
+    NSString *fileName = [url gkSha256String];
     
     if(![NSString isEmpty:suffix]){
         fileName = [fileName stringByAppendingFormat:@".%@",suffix];

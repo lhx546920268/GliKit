@@ -816,7 +816,6 @@
 					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
-					"-fsanitize-coverage=func,trace-pc-guard",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.luohaixiong.GliKitDemo;
 				PRODUCT_NAME = GliKitDemo;
@@ -863,7 +862,6 @@
 					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
-					"-fsanitize-coverage=func,trace-pc-guard",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.luohaixiong.GliKitDemo;
 				PRODUCT_NAME = GliKitDemo;

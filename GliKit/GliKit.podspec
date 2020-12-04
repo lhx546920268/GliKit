@@ -29,5 +29,4 @@ Pod::Spec.new do |spec|
   spec.dependency 'Masonry', '~> 1.1.0'
   spec.dependency 'AFNetworking', '~> 4.0.0'
   spec.dependency 'FMDB', '~> 2.7.5'
-  spec.dependency 'KeychainAccess', '~> 4.2.1'
 end

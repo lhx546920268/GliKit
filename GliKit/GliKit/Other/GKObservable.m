@@ -55,7 +55,7 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     [_observerCallbacks removeObjectForKey:@(observer.hash)];
 }
 
-- (void)removeObserver:(NSObject*)observer forKeyPath:(NSString *)keyPath
+- (void)removeObserver:(NSObject*)observer forOneKeyPath:(nonnull NSString *)keyPath
 {
     NSParameterAssert(observer != nil);
     NSParameterAssert(keyPath != nil);
@@ -121,13 +121,13 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
         BOOL enable = YES;
         if(!self.shouldObserveReadonly){
             //类型地址 https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
-                           NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
-                           NSArray *attrs = [attr componentsSeparatedByString:@","];
-                           
-                           //判断是否是只读属性
-                           if(attrs.count > 0 && [attrs containsObject:@"R"]){
-                               enable = false;
-                           }
+            NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
+            NSArray *attrs = [attr componentsSeparatedByString:@","];
+            
+            //判断是否是只读属性
+            if(attrs.count > 0 && [attrs containsObject:@"R"]){
+                enable = false;
+            }
         }
         if(enable){
             [self _addObserver:observer callback:callback forKeyPath:name];
@@ -166,6 +166,8 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
             GKObserverCallback callback = _observerCallbacks[key][keyPath];
             callback(keyPath, change[NSKeyValueChangeNewKey], change[NSKeyValueChangeOldKey]);
         }
+    }else{
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

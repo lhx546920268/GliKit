@@ -90,12 +90,17 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
  */
 @property(nonatomic, readonly) BOOL isInteger;
 
-// MARK: - 加密
+// MARK: - Hash
 
 /**
  获取md5字符串
  */
 @property(nonatomic, readonly) NSString *gkMD5String;
+
+/**
+ 获取sha256字符串
+ */
+@property(nonatomic, readonly) NSString *gkSha256String;
 
 // MARK: - 过滤
 

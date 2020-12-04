@@ -148,6 +148,7 @@
 		CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A800230D44EE00C304B3 /* GKLoadMoreControl.m */; };
 		CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A7FE230D44EE00C304B3 /* GKRefreshControl.m */; };
 		CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */; };
+		CED9E9182577473D00BC9F5E /* GKTableViewSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED9E9172577473D00BC9F5E /* GKTableViewSwipeCell.m */; };
 		CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */; };
 		CEF13B0124EFD4200048B155 /* GKPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF13B0024EFD4200048B155 /* GKPageView.m */; };
 		CEFCCBD1246CE35000488388 /* GKPhotosBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFCCBD0246CE35000488388 /* GKPhotosBrowseViewController.m */; };
@@ -454,6 +455,8 @@
 		CED3A807230D44EE00C304B3 /* GKDefaultRefreshControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDefaultRefreshControl.m; sourceTree = "<group>"; };
 		CED3A808230D44EE00C304B3 /* GKDefaultLoadMoreControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDefaultLoadMoreControl.m; sourceTree = "<group>"; };
 		CED3A809230D44EE00C304B3 /* GKRefreshStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRefreshStyle.h; sourceTree = "<group>"; };
+		CED9E9162577473D00BC9F5E /* GKTableViewSwipeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTableViewSwipeCell.h; sourceTree = "<group>"; };
+		CED9E9172577473D00BC9F5E /* GKTableViewSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKTableViewSwipeCell.m; sourceTree = "<group>"; };
 		CEE8C8832319066700E7CA75 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
 		CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
 		CEE8C8B323191A6400E7CA75 /* GliKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliKit.h; sourceTree = "<group>"; };
@@ -562,8 +565,6 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
-				CE549B3F2480E4B400534D91 /* TabBar */,
-				CE01C510243EC7C7000D0268 /* Scan */,
 				CED0D229230BC6250057D405 /* Alert */,
 				CED0D285230BC6250057D405 /* Api */,
 				CED0D2A7230BC6250057D405 /* Base */,
@@ -577,7 +578,9 @@
 				CED0D280230BC6250057D405 /* Persistence */,
 				CED0D28D230BC6250057D405 /* Photos */,
 				CED3A7F9230D44EE00C304B3 /* Refresh */,
+				CE01C510243EC7C7000D0268 /* Scan */,
 				CED0D242230BC6250057D405 /* Skeleton */,
+				CE549B3F2480E4B400534D91 /* TabBar */,
 				CED0D447230BF2040057D405 /* Theme */,
 				CED0D1DB230BC6250057D405 /* Transition */,
 				CED0D25B230BC6250057D405 /* Utils */,
@@ -663,6 +666,8 @@
 				CED0D203230BC6250057D405 /* GKTextView.m */,
 				CE525DA523C704EA00EB082E /* GKLabel.h */,
 				CE525DA623C704EA00EB082E /* GKLabel.m */,
+				CED9E9162577473D00BC9F5E /* GKTableViewSwipeCell.h */,
+				CED9E9172577473D00BC9F5E /* GKTableViewSwipeCell.m */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -1292,6 +1297,7 @@
 			files = (
 				CEBAB9EA243F1ECF005C0E7D /* GKImagePicker.m in Sources */,
 				CE1194282368122800987274 /* UICollectionView+GKCellSize.m in Sources */,
+				CED9E9182577473D00BC9F5E /* GKTableViewSwipeCell.m in Sources */,
 				CED3A80A230D45A000C304B3 /* UIScrollView+GKRefresh.m in Sources */,
 				CED3A80B230D45A000C304B3 /* GKDataControl.m in Sources */,
 				CED3A80C230D45A000C304B3 /* GKDefaultLoadMoreControl.m in Sources */,

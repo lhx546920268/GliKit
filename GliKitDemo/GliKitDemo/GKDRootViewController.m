@@ -8,18 +8,18 @@
 
 #import "GKDRootViewController.h"
 #import "GKDRowModel.h"
-#import <objc/runtime.h>
 #import <GKAppUtils.h>
-#import <AFNetworking.h>
-#import <objc/runtime.h>
-#import <dlfcn.h>
-#import <libkern/OSAtomic.h>
-#import <UIImageView+WebCache.h>
+#import <GKTableViewSwipeCell.h>
 
+@interface GKDRootListCell : GKTableViewSwipeCell
 
-typedef void(^GKDCommonBlock)(void);
+@end
 
-@interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate>
+@implementation GKDRootListCell
+
+@end
+
+@interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate, GKTableViewSwipeCellDelegate>
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
 
@@ -29,6 +29,8 @@ typedef void(^GKDCommonBlock)(void);
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
 
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[
@@ -49,86 +51,10 @@ typedef void(^GKDCommonBlock)(void);
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
 }
 
-- (void)handleTap:(UITapGestureRecognizer*) tap
-{
-     NSMutableArray<NSString *> * symbolNames = [NSMutableArray array];
-        while (true) {
-            //offsetof 就是针对某个结构体找到某个属性相对这个结构体的偏移量
-            SymbolNode * node = OSAtomicDequeue(&symboList, offsetof(SymbolNode, next));
-            if (node == NULL) break;
-            Dl_info info;
-            dladdr(node->pc, &info);
-            
-            NSString * name = @(info.dli_sname);
-            
-            // 添加 _
-            BOOL isObjc = [name hasPrefix:@"+["] || [name hasPrefix:@"-["];
-            NSString * symbolName = isObjc ? name : [@"_" stringByAppendingString:name];
-            
-            //去重
-            if (![symbolNames containsObject:symbolName]) {
-                [symbolNames addObject:symbolName];
-            }
-        }
-
-        //取反
-        NSArray * symbolAry = [[symbolNames reverseObjectEnumerator] allObjects];
-    //将结果写入到文件
-        NSString * funcString = [symbolAry componentsJoinedByString:@"\n"];
-        NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"lb.order"];
-        NSData * fileContents = [funcString dataUsingEncoding:NSUTF8StringEncoding];
-        BOOL result = [[NSFileManager defaultManager] createFileAtPath:filePath contents:fileContents attributes:nil];
-        if (result) {
-            NSLog(@"%@",filePath);
-        }else{
-            NSLog(@"文件写入出错");
-        }
-}
-
-void __sanitizer_cov_trace_pc_guard_init(uint32_t *start,
-                                                    uint32_t *stop) {
-  static uint64_t N;  // Counter for the guards.
-  if (start == stop || *start) return;  // Initialize only once.
-  printf("INIT: %p %p\n", start, stop);
-  for (uint32_t *x = start; x < stop; x++)
-    *x = ++N;  // Guards should start from 1.
-}
-
-//原子队列
-static OSQueueHead symboList = OS_ATOMIC_QUEUE_INIT;
-
-//定义符号结构体
-typedef struct{
-    void * pc;
-    void * next;
-}SymbolNode;
-
-void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
-//    if (!*guard) return;  // Duplicate the guard check.
-    void *PC = __builtin_return_address(0);
-    SymbolNode * node = malloc(sizeof(SymbolNode));
-    *node = (SymbolNode){PC,NULL};
-    
-    //入队
-    // offsetof 用在这里是为了入队添加下一个节点找到 前一个节点next指针的位置
-    OSAtomicEnqueue(&symboList, node, offsetof(SymbolNode, next));
-}
-
-- (void)setAmount:(int)amount
-{
-    NSLog(@"%@, %@", [NSString stringWithUTF8String:__func__], NSStringFromSelector(_cmd));
-}
-
-- (int)amount
-{
-    NSLog(@"%@, %@", [NSString stringWithUTF8String:__func__], NSStringFromSelector(_cmd));
-    return 0;
-}
-
 - (void)initViews
 {
     self.style = UITableViewStyleGrouped;
-    [self registerClass:UITableViewCell.class];
+    [self registerClass:GKDRootListCell.class];
     [super initViews];
 }
 
@@ -137,16 +63,18 @@ void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.datas.count;
+    return self.datas.count * 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UITableViewCell.gkNameOfClass forIndexPath:indexPath];
+    GKDRootListCell *cell = [tableView dequeueReusableCellWithIdentifier:GKDRootListCell.gkNameOfClass forIndexPath:indexPath];
     
-    cell.textLabel.text = self.datas[indexPath.row].title;
+    cell.delegate = self;
+    cell.textLabel.text = self.datas[indexPath.row % self.datas.count].title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.tintColor = UIColor.redColor;
+    cell.swipeDirection = GKSwipeDirectionLeft;
     
     return cell;
 }
@@ -155,8 +83,28 @@ void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-    GKDRowModel *model = self.datas[indexPath.row];
+    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
     [GKRouter.sharedRouter pushApp:model.className];
+}
+
+- (NSArray<UIView *> *)tableViewSwipeCell:(GKTableViewSwipeCell *)cell swipeButtonsForDirection:(GKSwipeDirection)direction
+{
+    UIButton *deleteBtn = [UIButton new];
+    deleteBtn.backgroundColor = UIColor.redColor;
+    [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteBtn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    
+    deleteBtn.bounds = CGRectMake(0, 0, 100, 44);
+    
+    UIButton *btn = [UIButton new];
+    btn.backgroundColor = UIColor.blueColor;
+    [btn setTitle:@"收藏" forState:UIControlStateNormal];
+    [btn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    
+    btn.bounds = CGRectMake(0, 0, 100, 44);
+    
+    
+    return @[deleteBtn, btn];
 }
 
 @end

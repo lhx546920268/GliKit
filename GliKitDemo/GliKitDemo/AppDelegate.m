@@ -61,6 +61,12 @@ static void uncaughtExceptionHandler(NSException *exception){
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    NSString *name = nil;
+    @try {
+        NSDictionary *dic = @{@"你好": name};
+    } @catch (NSException *exception) {
+        
+    }
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     if([NSURLProtocol registerClass:GKDURLProtocol.class]){
         NSLog(@"NSURLProtocol registerClass %@ success", NSStringFromClass(GKDURLProtocol.class));

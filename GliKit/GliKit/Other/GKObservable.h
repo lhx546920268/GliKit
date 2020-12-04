@@ -25,7 +25,7 @@ typedef void(^GKObserverCallback)(NSString *keyPath, id _Nullable newValue, id _
 /// 添加一个观察者，必须通过 .语法 设置新值才会触发回调
 /// @param observer 观察者，将使用hash作为 key来保持
 /// @param callback 回调
-/// @param keyPath 要监听的属性
+/// @param keyPath 要监听的属性，如果为空，则监听所有属性
 - (void)addObserver:(NSObject*) observer callback:(GKObserverCallback) callback forKeyPath:(NSString*) keyPath;
 - (void)addObserver:(NSObject*) observer callback:(GKObserverCallback) callback forKeyPaths:(NSArray<NSString*>*) keyPaths;
 - (void)addObserver:(NSObject*) observer callback:(GKObserverCallback) callback;
@@ -34,7 +34,7 @@ typedef void(^GKObserverCallback)(NSString *keyPath, id _Nullable newValue, id _
 /// 移除观察者
 /// @param observer 观察者，将使用hash作为 key来保持
 /// @param keyPath 监听的属性，如果为空，则移除observer对应的所有 keyPath
-- (void)removeObserver:(NSObject*) observer forKeyPath:(NSString*) keyPath;
+- (void)removeObserver:(NSObject*) observer forOneKeyPath:(NSString*) keyPath;
 - (void)removeObserver:(NSObject*) observer forKeyPaths:(NSArray<NSString*>*) keyPaths;
 - (void)removeObserver:(NSObject*) observer;
 
