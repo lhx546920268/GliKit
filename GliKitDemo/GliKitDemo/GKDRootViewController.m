@@ -74,7 +74,7 @@
     cell.textLabel.text = self.datas[indexPath.row % self.datas.count].title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.tintColor = UIColor.redColor;
-    cell.swipeDirection = GKSwipeDirectionLeft;
+    cell.swipeDirection = GKSwipeDirectionLeft | GKSwipeDirectionRight;
     
     return cell;
 }

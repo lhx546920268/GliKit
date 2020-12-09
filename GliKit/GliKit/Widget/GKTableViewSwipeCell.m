@@ -17,7 +17,10 @@
 @property(nonatomic, strong) UIView *view;
 
 ///初始位置
-@property(nonatomic, assign) CGRect frame;
+@property(nonatomic, assign) CGRect startFrame;
+
+///终点位置
+@property(nonatomic, assign) CGRect endFrame;
 
 + (instancetype)itemWithView:(UIView*) view;
 
@@ -133,10 +136,17 @@
     }
 }
 
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    if(!newSuperview){
+        [self setSwipeShow:NO direction:self.currentDirection animated:NO];
+    }
+}
+
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     if(!newWindow){
-        [self setSwipeShow:NO direction:GKSwipeDirectionLeft animated:NO];
+        [self setSwipeShow:NO direction:self.currentDirection animated:NO];
     }
 }
 
@@ -151,6 +161,10 @@
 ///平移
 - (void)handlePan:(UIPanGestureRecognizer*) pan
 {
+    if(pan.state == UIGestureRecognizerStateBegan && self.showing){
+        CGPoint translation = [pan translationInView:self];
+        [pan setTranslation:CGPointMake(self.maxTranslationX + translation.x, translation.y) inView:self];
+    }
     CGPoint translation = [pan translationInView:self];
     self.translationX = translation.x;
     GKSwipeDirection direction = translation.x < 0 ? GKSwipeDirectionLeft : GKSwipeDirectionRight;
@@ -165,7 +179,21 @@
             break;
         case UIGestureRecognizerStateEnded :
         case UIGestureRecognizerStateCancelled : {
-            if(fabs(self.snapshotView.gkCenterX - self.gkWidth) > fabs(self.maxTranslationX / 2)){
+            //通过速度获取可能移到的位置
+            CGFloat translationX = translation.x + [pan velocityInView:self].x;
+            BOOL show = YES;
+            switch (self.currentDirection) {
+                case GKSwipeDirectionLeft :
+                    show = translationX < self.maxTranslationX / 2;
+                    break;
+                case  GKSwipeDirectionRight :
+                    show = translationX > self.maxTranslationX / 2;
+                    break;
+                default:
+                    break;
+            }
+            
+            if(show){
                 [self showSWipeButtonsAnimated:YES];
             }else{
                 [self hideSwipeButtonsAnimated:YES];
@@ -185,7 +213,8 @@
     if(self.showing)
         return;
     
-    self.editing = NO;
+    self.highlighted = NO;
+    self.selected = NO;
     self.showing = YES;
     if(!self.snapshotView){
         self.snapshotView = [UIImageView new];
@@ -242,27 +271,50 @@
             }
             self.currentSwipeItems = items;
 
-            UIView *preView = self;
-            for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+            NSEnumerator *enumrator = self.currentSwipeItems;
+            if(self.currentDirection == GKSwipeDirectionRight){
+                enumrator = self.currentSwipeItems.reverseObjectEnumerator;
+            }
+            for(GKTableViewSwipeItem *item in enumrator){
                 UIView *view = item.view;
                 [self addSubview:view];
                 buttonTotalWidth += view.gkWidth;
                 CGRect frame = view.frame;
                 frame.origin.y = 0;
                 frame.size.height = self.gkHeight;
+                
                 switch (self.currentDirection) {
                     case GKSwipeDirectionLeft :
-                        frame.origin.x = preView.gkRight;
+                        frame.origin.x = self.gkRight;
                         break;
                     case GKSwipeDirectionRight :
-                        frame.origin.x = preView.gkLeft - view.gkWidth;
+                        frame.origin.x = self.gkLeft - view.gkWidth;
                         break;
                     default:
                         break;
                 }
                 view.frame = frame;
-                item.frame = frame;
+                item.startFrame = frame;
             }
+            
+            CGFloat x = 0;
+            switch (self.currentDirection) {
+                case GKSwipeDirectionLeft :
+                    x = self.gkRight - buttonTotalWidth;
+                    break;
+                case GKSwipeDirectionRight :
+                    x = self.gkLeft;
+                default:
+                    break;
+            }
+            for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+                CGRect frame = item.startFrame;
+                frame.origin.x = x;
+                item.endFrame = frame;
+                
+                x += frame.size.width;
+            }
+            
         }else{
             self.currentSwipeItems = nil;
         }
@@ -296,7 +348,6 @@
         }
         self.currentSwipeItems = nil;
         
-        self.currentSwipeItems = nil;
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         
@@ -307,11 +358,15 @@
         }
     };
     
-    if(animated){
-        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    if(self.window && self.superview && animated){
+        [UIView animateWithDuration:0.5
+                              delay:0
+             usingSpringWithDamping:1.0
+              initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
             self.snapshotView.frame = self.bounds;
             for(GKTableViewSwipeItem *item in self.currentSwipeItems){
-                item.view.frame = item.frame;
+                item.view.frame = item.startFrame;
             }
         } completion:completion];
     }else{
@@ -323,16 +378,18 @@
 {
     void(^animations)(void) = ^{
         self.snapshotView.gkCenterX = self.gkWidth / 2.0 + self.maxTranslationX;
-        CGFloat width = 0;
         for(GKTableViewSwipeItem *item in self.currentSwipeItems){
-            CGRect frame = item.frame;
-            frame.origin.x = item.frame.origin.x + (1.0 - width / fabs(self.maxTranslationX)) * self.maxTranslationX;
-            item.view.frame = frame;
-            width += item.view.gkWidth;
+            item.view.frame = item.endFrame;
         }
     };
-    if(animated){
-        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:animations completion:nil];
+    if(self.window && self.superview && animated){
+        [UIView animateWithDuration:0.5
+                              delay:0
+             usingSpringWithDamping:1.0
+              initialSpringVelocity:1.0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:animations
+                         completion:nil];
     }else{
         animations();
     }
@@ -342,21 +399,41 @@
 {
     CGFloat translationX = self.translationX;
     CGFloat extraWith = 0;
+    
     //当滑动超出范围时 添加阻尼系数
-    if(translationX < self.maxTranslationX){
-        extraWith = (fabs(translationX) - fabs(self.maxTranslationX)) * 0.8;
-        translationX = self.maxTranslationX - extraWith;
+    CGFloat extra = fabs(translationX) - fabs(self.maxTranslationX);
+    if(extra > 0){
+        extraWith = extra * 0.3;
+        if(translationX < 0){
+            extraWith = -extraWith;
+        }
+        NSLog(@"%f, %f, %f", translationX, extraWith, self.maxTranslationX);
+        translationX = self.maxTranslationX + extraWith;
     }
     self.snapshotView.gkCenterX = self.gkWidth / 2 + translationX;
-    
     CGFloat width = 0;
-    for(GKTableViewSwipeItem *item in self.currentSwipeItems){
-        CGRect frame = item.frame;
-        CGFloat ratio = 1.0 - width / fabs(self.maxTranslationX);
-        frame.origin.x += ratio * translationX;
-        frame.size.width += item.frame.size.width / fabs(self.maxTranslationX) * extraWith;
+    NSEnumerator *enumrator = self.currentSwipeItems;
+    if(self.currentDirection == GKSwipeDirectionRight){
+        enumrator = self.currentSwipeItems.reverseObjectEnumerator;
+    }
+    
+    for(GKTableViewSwipeItem *item in enumrator){
+        CGRect frame = item.startFrame;
+        CGFloat ratio = 1.0 - width / MAX(fabs(self.maxTranslationX), fabs(translationX));
+        CGFloat extras = item.startFrame.size.width / self.maxTranslationX * extraWith;
+        switch (self.currentDirection) {
+            case GKSwipeDirectionLeft :
+                frame.origin.x += ratio * translationX;
+                break;
+            case GKSwipeDirectionRight :
+                frame.origin.x += ratio * translationX - extras;
+                break;
+            default:
+                break;
+        }
+        frame.size.width += extras;
         item.view.frame = frame;
-        width += item.frame.size.width;
+        width += frame.size.width;
     }
 }
 

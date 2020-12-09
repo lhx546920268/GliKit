@@ -112,7 +112,7 @@
 - (void)layoutPages
 {
     if(!CGSizeEqualToSize(self.scrollViewSize, CGSizeZero)){
-        self.scrollView.contentSize = CGSizeMake(self.scrollViewSize.width * self.numberOfPage, self.scrollViewSize.height);
+        self.scrollView.contentSize = CGSizeMake(self.scrollViewSize.width * self.numberOfPage, 0);
         [self layoutVisiablePages];
     }
 }

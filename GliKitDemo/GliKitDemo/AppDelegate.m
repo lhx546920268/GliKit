@@ -13,7 +13,7 @@
 #import <SDImageWebPCoder.h>
 #import <SDImageCodersManager.h>
 #import <SDWebImageSVGCoder.h>
-
+#import "GKDRootViewController.h"
 
 static void uncaughtExceptionHandler(NSException *exception){
     NSLog(@"%@", exception);
@@ -61,12 +61,7 @@ static void uncaughtExceptionHandler(NSException *exception){
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSString *name = nil;
-    @try {
-        NSDictionary *dic = @{@"你好": name};
-    } @catch (NSException *exception) {
-        
-    }
+    
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     if([NSURLProtocol registerClass:GKDURLProtocol.class]){
         NSLog(@"NSURLProtocol registerClass %@ success", NSStringFromClass(GKDURLProtocol.class));
@@ -74,7 +69,7 @@ static void uncaughtExceptionHandler(NSException *exception){
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-    self.window.rootViewController = [GKDTabBarController new];
+    self.window.rootViewController = GKDRootViewController.new.gkCreateWithNavigationController;
     [self.window makeKeyAndVisible];
     
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
