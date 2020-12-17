@@ -12,7 +12,7 @@
 
 - (instancetype)gkObjectAtIndex:(NSUInteger) index
 {
-    if(index < self.count){
+    if(index >= 0 && index < self.count){
         return [self objectAtIndex:index];
     }
     return nil;

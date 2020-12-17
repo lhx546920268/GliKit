@@ -11,6 +11,24 @@
 #import "GKPageLoadingContainer.h"
 #import "GKBaseWebViewController.h"
 #import "UIView+GKUtils.h"
+#import <objc/runtime.h>
+
+static char GKVisiblePageKey;
+
+@implementation UIViewController (GKPage)
+
+- (BOOL)visibleInPage
+{
+    NSNumber *number = objc_getAssociatedObject(self, &GKVisiblePageKey);
+    return number != nil ? number.boolValue : NO;
+}
+
+- (void)setVisibleInPage:(BOOL)visibleInPage
+{
+    objc_setAssociatedObject(self, &GKVisiblePageKey, @(visibleInPage), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end
 
 @interface GKPageViewController ()<UIScrollViewDelegate>
 
@@ -98,12 +116,17 @@
         
         if((self.willScrollToPage > 0 && self.willScrollToPage < self.numberOfPage) || self.menuBar.selectedIndex != 0){
             
+            NSInteger oldPage = _currentPage;
             if(self.menuBar.selectedIndex != 0){
                 _currentPage = self.menuBar.selectedIndex;
             }
             [self.scrollView setContentOffset:CGPointMake(_currentPage * self.scrollViewSize.width, 0) animated:NO];
-            [self onScrollTopPage:_currentPage];
+            [self _onScrollTopPage:_currentPage oldPage:oldPage];
             self.willScrollToPage = NSNotFound;
+        }else{
+            if(_currentPage < self.numberOfPage){
+                [self viewControllerForIndex:_currentPage].visibleInPage = YES;
+            }
         }
     }
 }
@@ -154,6 +177,10 @@
 {
     [self layoutPages];
     self.scrollView.contentOffset = CGPointZero;
+    _currentPage = 0;
+    if(_currentPage < self.numberOfPage){
+        [self viewControllerForIndex:_currentPage].visibleInPage = YES;
+    }
 }
 
 - (void)setPage:(NSUInteger) page animate:(BOOL) animate
@@ -181,8 +208,19 @@
     if(self.shouldUseMenuBar){
         return self.menuBar.titles.count;
     }else{
-        return 0;
+        return _pageViewControllers.count;
     }
+}
+
+- (void)_onScrollTopPage:(NSInteger)page oldPage:(NSInteger) oldPage
+{
+    if(oldPage < self.numberOfPage){
+        [self viewControllerForIndex:oldPage].visibleInPage = NO;
+    }
+    
+    [self viewControllerForIndex:page].visibleInPage = YES;
+    
+    [self onScrollTopPage:page];
 }
 
 - (void)onScrollTopPage:(NSInteger)page
@@ -195,8 +233,9 @@
 - (void)menuBar:(GKTabMenuBar *)menu didSelectItemAtIndex:(NSUInteger)index
 {
     [self.scrollView setContentOffset:CGPointMake(index * self.scrollViewSize.width, 0)];
+    NSInteger oldPage = _currentPage;
     _currentPage = index;
-    [self onScrollTopPage:index];
+    [self _onScrollTopPage:index oldPage:oldPage];
 }
 
 // MARK: - UIScrollViewDelegate
@@ -260,13 +299,14 @@
     NSInteger index = floor(self.scrollView.bounds.origin.x / self.scrollView.gkWidth);
     
     if(index != _currentPage){
+        NSInteger oldPage = _currentPage;
         _currentPage = index;
         if(self.shouldUseMenuBar){
             if(index != self.menuBar.selectedIndex){
                 [self.menuBar setSelectedIndex:index animated:YES];
             }
         }
-        [self onScrollTopPage:_currentPage];
+        [self _onScrollTopPage:index oldPage:oldPage];
     }
 }
 

@@ -64,6 +64,7 @@
     //界面被关闭了，移除背景
     if(completed){
         [self.backgroundView removeFromSuperview];
+        !self.transitionDelegate.props.dismissCallback ?: self.transitionDelegate.props.dismissCallback();
     }else{
         self.backgroundView.alpha = 1.0;
     }
@@ -99,7 +100,7 @@
         self.transitionDelegate.props.cancelCallback();
     }else{
         if(self.transitionDelegate.props.cancelable){
-            [self.presentedViewController dismissViewControllerAnimated:YES completion:self.transitionDelegate.props.cancelCallback];
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }

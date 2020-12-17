@@ -10,6 +10,25 @@
 #import "GKDRowModel.h"
 #import <GKAppUtils.h>
 #import <GKTableViewSwipeCell.h>
+#import <GKObservable.h>
+
+@interface DemoObservable : GKObservable
+
+///x
+@property(nonatomic, assign) NSInteger intValue;
+
+///x
+@property(nonatomic, assign) NSInteger integerValue;
+
+///x
+@property(nonatomic, copy) NSString *stringValue;
+
+@end
+
+@implementation DemoObservable
+
+
+@end
 
 @interface GKDRootListCell : GKTableViewSwipeCell
 
@@ -19,13 +38,21 @@
 
 @end
 
-@interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate, GKTableViewSwipeCellDelegate>
+@interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate, GKSwipeCellDelegate>
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
+
+///x
+@property(nonatomic, strong) DemoObservable *demo;
 
 @end
 
 @implementation GKDRootViewController
+
+- (void)dealloc
+{
+    NSLog(@"GKDRootViewController dealloc");
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,6 +76,25 @@
     [self initViews];
 
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
+    
+    __block UIBackgroundTaskIdentifier identifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:^{
+        [UIApplication.sharedApplication endBackgroundTask:identifier];
+    }];
+    
+    NSLog(@"这个一个后台任务");
+    
+    [UIApplication.sharedApplication endBackgroundTask:identifier];
+    
+    self.demo = [DemoObservable new];
+    [self.demo addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
+        NSLog(@"%@, %d, %@", keyPath, [newValue intValue], oldValue);
+    } forKeyPath:@"intValue"];
+    
+    [self.demo addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
+        NSLog(@"manualCallback %@, %d, %@", keyPath, [newValue intValue], oldValue);
+    } forKeyPath:@"integerValue"];
+    
+    NSLog(@"%f", UIScreen.mainScreen.bounds.size.width);
 }
 
 - (void)initViews
@@ -83,11 +129,16 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
+    self.demo.intValue = indexPath.row;
+    self.demo.integerValue = indexPath.row;
+    if(indexPath.row == 5){
+        [self.demo flushManualCallbackForObserver:self];
+    }
     GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
     [GKRouter.sharedRouter pushApp:model.className];
 }
 
-- (NSArray<UIView *> *)tableViewSwipeCell:(GKTableViewSwipeCell *)cell swipeButtonsForDirection:(GKSwipeDirection)direction
+- (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction
 {
     UIButton *deleteBtn = [UIButton new];
     deleteBtn.backgroundColor = UIColor.redColor;

@@ -1,1 +1,1 @@
-../../../../../GliKit/GliKit/Widget/GKTableViewSwipeCell.h
+../../../../../GliKit/GliKit/Swipe/GKTableViewSwipeCell.h

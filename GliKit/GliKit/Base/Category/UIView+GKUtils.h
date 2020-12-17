@@ -86,5 +86,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+///视图扩展
+@interface UIScrollView (GKUtils)
+
+/**
+ get and set contentInset
+ */
+@property(nonatomic, assign) CGFloat gkInsetTop;
+@property(nonatomic, assign) CGFloat gkInsetLeft;
+@property(nonatomic, assign) CGFloat gkInsetBottom;
+@property(nonatomic, assign) CGFloat gkInsetRight;
+
+@end
+
 NS_ASSUME_NONNULL_END
 

@@ -22,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        self.transitionDuration = 0.25;
+        self.transitionDuration = 0.5;
         self.cancelable = YES;
         self.transitionStyle = GKPresentTransitionStyleFromBottom;
         self.frameUseSafeArea = YES;
@@ -239,7 +239,7 @@
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     self.dismissDirectly = NO;
     self.activedPanGestureRecognizer = pan;
-    [self.viewController dismissViewControllerAnimated:YES completion:self.props.dismissCallback];
+    [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
@@ -267,7 +267,6 @@
         BOOL isPresenting = toViewController.presentingViewController == fromViewController;
         
         UIView *view = nil;
-        CGPoint fromCenter;
         CGPoint toCenter;
         CGRect frame = self.props.frame;
         
@@ -295,36 +294,29 @@
         if(isPresenting){
             view = [transitionContext viewForKey:UITransitionContextToViewKey];
             view.frame = frame;
-            fromCenter = center;
             toCenter = view.center;
+            
+            view.bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
+            view.center = center;
+            
             [containerView addSubview:view];
         }else{
             
             view = [transitionContext viewForKey:UITransitionContextFromViewKey];
-            fromCenter = view.center;
             toCenter = center;
         }
         
-        NSString *keyPath = @"position";
-        [CATransaction begin];
-        CATransaction.completionBlock =^ {
+        [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                              delay:0 usingSpringWithDamping:1.0
+              initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
             
-            [view.layer removeAnimationForKey:keyPath];
+            view.center = toCenter;
+        }
+                         completion:^(BOOL finished) {
             BOOL wasCancelled = [transitionContext transitionWasCancelled];
             [transitionContext completeTransition:!wasCancelled];
-        };
-        
-        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:keyPath];
-        animation.duration = [self transitionDuration:transitionContext];
-        animation.removedOnCompletion = NO;
-        animation.fillMode = kCAFillModeBoth;
-        animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0 :0 :0.2 :1];
-        
-        animation.fromValue = @(fromCenter);
-        animation.toValue = @(toCenter);
-        [view.layer addAnimation:animation forKey:keyPath];
-        
-        [CATransaction commit];
+        }];
     }
 }
 
@@ -464,43 +456,34 @@
 {
     UIView *containerView = self.transitionContext.containerView;
     
-    BOOL finished = [self percentForGesture:pan] >= 0.5;
-    if(!finished){
+    BOOL complete = [self percentForGesture:pan] >= 0.5;
+    if(!complete){
         //快速滑动也算完成
         CGPoint velocity = [pan velocityInView:containerView];
         switch (self.delegate.props.transitionStyle) {
             case GKPresentTransitionStyleFromTop :
-                finished = velocity.y < -1000;
+                complete = velocity.y < -1000;
                 break;
             case GKPresentTransitionStyleFromBottom :
-                finished = velocity.y > 1000;
+                complete = velocity.y > 1000;
                 break;
             case GKPresentTransitionStyleFromRight :
-                finished = velocity.x > 1000;
+                complete = velocity.x > 1000;
                 break;
             case GKPresentTransitionStyleFromLeft :
-                finished = velocity.x < -1000;
+                complete = velocity.x < -1000;
                 break;
         }
     }
     
-    if(finished){
+    if(complete){
         [self finishInteractiveTransition];
     }else{
         [self cancelInteractiveTransition];
     }
-    
-    [CATransaction begin];
-    
-    NSString *keyPath = @"position";
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:keyPath];
-    animation.duration = self.duration;
-    animation.removedOnCompletion = NO;
-    animation.fillMode = kCAFillModeBoth;
-    animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0 :0 :0.2 :1];
 
     CGPoint center;
-    if(finished){
+    if(complete){
         switch (self.delegate.props.transitionStyle) {
             case GKPresentTransitionStyleFromTop : {
                 center = CGPointMake(self.view.gkCenterX, -self.view.gkHeight / 2);
@@ -524,16 +507,16 @@
         center = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     }
     
-    animation.fromValue = @(self.view.center);
-    animation.toValue = @(center);
-    
-    CATransaction.completionBlock =^ {
-        self.view.center = [animation.toValue CGPointValue];
-        [self.transitionContext completeTransition:finished];
-        [self.view.layer removeAnimationForKey:keyPath];
-    };
-    [self.view.layer addAnimation:animation forKey:keyPath];
-    [CATransaction commit];
+    [UIView animateWithDuration:self.duration
+                          delay:0 usingSpringWithDamping:1.0
+          initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+        
+        self.view.center = center;
+    }
+                     completion:^(BOOL finished) {
+        [self.transitionContext completeTransition:complete];
+    }];
 }
 
 @end

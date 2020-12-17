@@ -1,17 +1,17 @@
 //
-//  GKTableViewSwipeCell.m
+//  GKSwipeCell.m
 //  GliKit
 //
-//  Created by 罗海雄 on 2020/12/2.
+//  Created by 罗海雄 on 2020/12/10.
 //  Copyright © 2020 luohaixiong. All rights reserved.
 //
 
-#import "GKTableViewSwipeCell.h"
+#import "GKSwipeCell.h"
 #import "UIImage+GKUtils.h"
 #import "UIView+GKUtils.h"
 
 ///滑动显示的item
-@interface GKTableViewSwipeItem : NSObject
+@interface GKSwipeItem : NSObject
 
 ///按钮
 @property(nonatomic, strong) UIView *view;
@@ -26,46 +26,18 @@
 
 @end
 
-@interface GKTableViewSwipeOverlay : UIView
+@interface GKSwipeOverlay : UIView
 
 ///关联的cell
-@property(nonatomic, weak) GKTableViewSwipeCell *cell;
+@property(nonatomic, weak) UIView<GKSwipeCell> *cell;
 
 @end
 
-@interface GKTableViewSwipeCell()<UIGestureRecognizerDelegate>
-
-///平移手势
-@property(nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
-
-///内容快照
-@property(nonatomic, strong) UIImageView *snapshotView;
-
-///当前按钮
-@property(nonatomic, strong) NSArray<GKTableViewSwipeItem*> *currentSwipeItems;
-
-///滑动的最大位置
-@property(nonatomic, assign) CGFloat maxTranslationX;
-
-///当前方向
-@property(nonatomic, assign) GKSwipeDirection currentDirection;
-
-///平移量
-@property(nonatomic, assign) CGFloat translationX;
-
-///覆盖物
-@property(nonatomic, strong) GKTableViewSwipeOverlay *overlay;
-
-///是否正在显示
-@property(nonatomic, assign) BOOL showing;
-
-@end
-
-@implementation GKTableViewSwipeItem
+@implementation GKSwipeItem
 
 + (instancetype)itemWithView:(UIView *)view
 {
-    GKTableViewSwipeItem *item = [GKTableViewSwipeItem new];
+    GKSwipeItem *item = [GKSwipeItem new];
     item.view = view;
     
     return item;
@@ -73,7 +45,7 @@
 
 @end
 
-@implementation GKTableViewSwipeOverlay
+@implementation GKSwipeOverlay
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
@@ -85,43 +57,90 @@
     [self.cell setSwipeShow:NO direction:self.cell.currentDirection animated:YES];
     
     //不阻塞cell的事件
-    UITableView *tableView = (UITableView*)self.superview;
-    NSArray *cells = [tableView visibleCells];
-    for(UITableViewCell *cell in cells){
-        CGRect rect = [cell.superview convertRect:cell.frame toView:self];
-        if(CGRectContainsPoint(rect, point)){
-            return cell;
+    if([self.superview isKindOfClass:UITableView.class]){
+        UITableView *tableView = (UITableView*)self.superview;
+        NSArray *cells = [tableView visibleCells];
+        for(UITableViewCell *cell in cells){
+            CGRect rect = [cell.superview convertRect:cell.frame toView:self];
+            if(CGRectContainsPoint(rect, point)){
+                return cell;
+            }
+        }
+    }else if([self.superview isKindOfClass:UICollectionView.class]){
+        UICollectionView *collectionView = (UICollectionView*)self.superview;
+        NSArray *cells = [collectionView visibleCells];
+        for(UICollectionViewCell *cell in cells){
+            CGRect rect = [cell.superview convertRect:cell.frame toView:self];
+            if(CGRectContainsPoint(rect, point)){
+                return cell;
+            }
         }
     }
     
-    return [super hitTest:point withEvent:event];;
+    return [super hitTest:point withEvent:event];
 }
 
 @end
 
-@implementation GKTableViewSwipeCell
+@interface GKSwipeCellHelper ()<UIGestureRecognizerDelegate>
+
+///平移手势
+@property(nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
+
+///内容快照
+@property(nonatomic, strong) UIImageView *snapshotView;
+
+///当前按钮
+@property(nonatomic, strong) NSArray<GKSwipeItem*> *currentSwipeItems;
+
+///滑动的最大位置
+@property(nonatomic, assign) CGFloat maxTranslationX;
+
+///当前方向
+@property(nonatomic, assign) GKSwipeDirection currentDirection;
+
+///平移量
+@property(nonatomic, assign) CGFloat translationX;
+
+///覆盖物
+@property(nonatomic, strong) GKSwipeOverlay *overlay;
+
+///是否正在显示
+@property(nonatomic, assign) BOOL showing;
+
+///关联的cell
+@property(nonatomic, weak) UIView<GKSwipeCell> *cell;
+
+@end
+
+@implementation GKSwipeCellHelper
+
++ (instancetype)helperWithCell:(UIView<GKSwipeCell> *)cell
+{
+    GKSwipeCellHelper *helper = [GKSwipeCellHelper new];
+    helper.cell = cell;
+    
+    return helper;
+}
 
 - (void)setSwipeDirection:(GKSwipeDirection)swipeDirection
 {
-    if(_swipeDirection != swipeDirection){
-        _swipeDirection = swipeDirection;
-        if(_swipeDirection != GKSwipeDirectionNone){
-            if(!self.panGestureRecognizer){
-                UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-                pan.delegate = self;
-                [self addGestureRecognizer:pan];
-                self.panGestureRecognizer = pan;
-            }
-            self.panGestureRecognizer.enabled = YES;
-        }else{
-            self.panGestureRecognizer.enabled = NO;
+    if(swipeDirection != GKSwipeDirectionNone){
+        if(!self.panGestureRecognizer){
+            UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+            pan.delegate = self;
+            [self.cell addGestureRecognizer:pan];
+            self.panGestureRecognizer = pan;
         }
+        self.panGestureRecognizer.enabled = YES;
+    }else{
+        self.panGestureRecognizer.enabled = NO;
     }
 }
 
 - (void)setSwipeShow:(BOOL)show direction:(GKSwipeDirection)direction animated:(BOOL)animated
 {
-    if(self.showing == show || !(self.swipeDirection & direction)){
+    if(self.showing == show || !(self.cell.swipeDirection & direction)){
         return;
     }
     
@@ -162,12 +181,12 @@
 - (void)handlePan:(UIPanGestureRecognizer*) pan
 {
     if(pan.state == UIGestureRecognizerStateBegan && self.showing){
-        CGPoint translation = [pan translationInView:self];
-        [pan setTranslation:CGPointMake(self.maxTranslationX + translation.x, translation.y) inView:self];
+        CGPoint translation = [pan translationInView:self.cell];
+        [pan setTranslation:CGPointMake(self.maxTranslationX + translation.x, translation.y) inView:self.cell];
     }
-    CGPoint translation = [pan translationInView:self];
-    self.translationX = translation.x;
-    GKSwipeDirection direction = translation.x < 0 ? GKSwipeDirectionLeft : GKSwipeDirectionRight;
+    
+    self.translationX = [pan translationInView:self.cell].x;
+    GKSwipeDirection direction = self.translationX < 0 ? GKSwipeDirectionLeft : GKSwipeDirectionRight;
     
     switch (pan.state) {
         case UIGestureRecognizerStateBegan :
@@ -180,7 +199,7 @@
         case UIGestureRecognizerStateEnded :
         case UIGestureRecognizerStateCancelled : {
             //通过速度获取可能移到的位置
-            CGFloat translationX = translation.x + [pan velocityInView:self].x;
+            CGFloat translationX = self.translationX + [pan velocityInView:self.cell].x;
             BOOL show = YES;
             switch (self.currentDirection) {
                 case GKSwipeDirectionLeft :
@@ -213,42 +232,61 @@
     if(self.showing)
         return;
     
-    self.highlighted = NO;
-    self.selected = NO;
+    if([self.cell isKindOfClass:UITableViewCell.class]){
+        UITableViewCell *cell = (UITableViewCell*)self.cell;
+        cell.highlighted = NO;
+        cell.selected = NO;
+    }else if([self.cell isKindOfClass:UICollectionViewCell.class]){
+        UICollectionViewCell *cell = (UICollectionViewCell*)self.cell;
+        cell.highlighted = NO;
+    }
+    
     self.showing = YES;
     if(!self.snapshotView){
         self.snapshotView = [UIImageView new];
         self.snapshotView.userInteractionEnabled = YES;
         [self.snapshotView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapSnapshot)]];
-        [self addSubview:self.snapshotView];
+        [self.cell addSubview:self.snapshotView];
     }
     
-    self.snapshotView.hidden = NO;
-    self.snapshotView.frame = self.bounds;
-    self.snapshotView.image = [UIImage gkImageFromView:self];
+    [self.cell bringSubviewToFront:self.snapshotView];
+    self.snapshotView.frame = self.cell.bounds;
+    self.snapshotView.image = [UIImage gkImageFromView:self.cell];
     
-    for(UIView *view in self.subviews){
+    for(UIView *view in self.cell.subviews){
         if(view != self.snapshotView){
             view.hidden = YES;
         }
     }
     
     //添加覆盖物，防止多个滑动事件
-    UITableView *tableView = nil;
-    UIView *view = self.superview;
+    UIView *container = nil;
+    Class cls = [self containerClass];
+    UIView *view = self.cell.superview;
     while (view != nil) {
-        if([view isKindOfClass:UITableView.class]){
-            tableView = (UITableView*)view;
+        if([view isKindOfClass:cls]){
+            container = view;
             break;
         }
         view = view.superview;
     }
     
     if(!self.overlay){
-        self.overlay = [[GKTableViewSwipeOverlay alloc] initWithFrame:tableView.bounds];
-        [tableView addSubview:self.overlay];
+        self.overlay = [[GKSwipeOverlay alloc] initWithFrame:container.bounds];
+        [container addSubview:self.overlay];
     }
-    self.overlay.cell = self;
+    self.overlay.cell = self.cell;
+}
+
+- (Class)containerClass
+{
+    if([self.cell isKindOfClass:UITableViewCell.class]){
+        return UITableView.class;
+    }else if([self.cell isKindOfClass:UICollectionViewCell.class]){
+        return UICollectionView.class;
+    }
+    
+    return UIView.class;
 }
 
 ///显示按钮
@@ -257,38 +295,38 @@
     if(direction != self.currentDirection){
         
         self.currentDirection = direction;
-        NSAssert(self.delegate != nil, @"%@ delegate must not be nil", NSStringFromClass(self));
-        for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+        NSAssert(self.cell.delegate != nil, @"%@ delegate must not be nil", NSStringFromClass(self.cell.class));
+        for(GKSwipeItem *item in self.currentSwipeItems){
             [item.view removeFromSuperview];
         }
         
         CGFloat buttonTotalWidth = 0;
-        if(self.swipeDirection & direction){
-            NSArray *buttons = [self.delegate tableViewSwipeCell:self swipeButtonsForDirection:direction];
+        if(self.cell.swipeDirection & direction){
+            NSArray *buttons = [self.cell.delegate swipeCell:self.cell swipeButtonsForDirection:direction];
             NSMutableArray *items = [NSMutableArray arrayWithCapacity:buttons.count];
             for(UIView *view in buttons){
-                [items addObject:[GKTableViewSwipeItem itemWithView:view]];
+                [items addObject:[GKSwipeItem itemWithView:view]];
             }
             self.currentSwipeItems = items;
 
-            NSEnumerator *enumrator = self.currentSwipeItems;
+            NSEnumerator *enumrator = [self.currentSwipeItems objectEnumerator];
             if(self.currentDirection == GKSwipeDirectionRight){
                 enumrator = self.currentSwipeItems.reverseObjectEnumerator;
             }
-            for(GKTableViewSwipeItem *item in enumrator){
+            for(GKSwipeItem *item in enumrator){
                 UIView *view = item.view;
-                [self addSubview:view];
+                [self.cell addSubview:view];
                 buttonTotalWidth += view.gkWidth;
                 CGRect frame = view.frame;
                 frame.origin.y = 0;
-                frame.size.height = self.gkHeight;
+                frame.size.height = self.cell.gkHeight;
                 
                 switch (self.currentDirection) {
                     case GKSwipeDirectionLeft :
-                        frame.origin.x = self.gkRight;
+                        frame.origin.x = self.cell.gkRight;
                         break;
                     case GKSwipeDirectionRight :
-                        frame.origin.x = self.gkLeft - view.gkWidth;
+                        frame.origin.x = self.cell.gkLeft - view.gkWidth;
                         break;
                     default:
                         break;
@@ -300,14 +338,14 @@
             CGFloat x = 0;
             switch (self.currentDirection) {
                 case GKSwipeDirectionLeft :
-                    x = self.gkRight - buttonTotalWidth;
+                    x = self.cell.gkRight - buttonTotalWidth;
                     break;
                 case GKSwipeDirectionRight :
-                    x = self.gkLeft;
+                    x = self.cell.gkLeft;
                 default:
                     break;
             }
-            for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+            for(GKSwipeItem *item in self.currentSwipeItems){
                 CGRect frame = item.startFrame;
                 frame.origin.x = x;
                 item.endFrame = frame;
@@ -343,7 +381,7 @@
         [self.overlay removeFromSuperview];
         self.overlay = nil;
         
-        for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+        for(GKSwipeItem *item in self.currentSwipeItems){
             [item.view removeFromSuperview];
         }
         self.currentSwipeItems = nil;
@@ -351,21 +389,19 @@
         [self.snapshotView removeFromSuperview];
         self.snapshotView = nil;
         
-        for(UIView *view in self.subviews){
-            if(view != self.snapshotView){
-                view.hidden = NO;
-            }
+        for(UIView *view in self.cell.subviews){
+            view.hidden = NO;
         }
     };
     
-    if(self.window && self.superview && animated){
+    if(self.cell.window && self.cell.superview && animated){
         [UIView animateWithDuration:0.5
                               delay:0
              usingSpringWithDamping:1.0
               initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^{
-            self.snapshotView.frame = self.bounds;
-            for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+            self.snapshotView.frame = self.cell.bounds;
+            for(GKSwipeItem *item in self.currentSwipeItems){
                 item.view.frame = item.startFrame;
             }
         } completion:completion];
@@ -377,16 +413,16 @@
 - (void)showSWipeButtonsAnimated:(BOOL) animated
 {
     void(^animations)(void) = ^{
-        self.snapshotView.gkCenterX = self.gkWidth / 2.0 + self.maxTranslationX;
-        for(GKTableViewSwipeItem *item in self.currentSwipeItems){
+        self.snapshotView.gkCenterX = self.cell.gkWidth / 2.0 + self.maxTranslationX;
+        for(GKSwipeItem *item in self.currentSwipeItems){
             item.view.frame = item.endFrame;
         }
     };
-    if(self.window && self.superview && animated){
+    if(self.cell.window && self.cell.superview && animated){
         [UIView animateWithDuration:0.5
                               delay:0
              usingSpringWithDamping:1.0
-              initialSpringVelocity:1.0
+              initialSpringVelocity:0
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:animations
                          completion:nil];
@@ -407,17 +443,16 @@
         if(translationX < 0){
             extraWith = -extraWith;
         }
-        NSLog(@"%f, %f, %f", translationX, extraWith, self.maxTranslationX);
         translationX = self.maxTranslationX + extraWith;
     }
-    self.snapshotView.gkCenterX = self.gkWidth / 2 + translationX;
+    self.snapshotView.gkCenterX = self.cell.gkWidth / 2 + translationX;
     CGFloat width = 0;
-    NSEnumerator *enumrator = self.currentSwipeItems;
+    NSEnumerator *enumrator = [self.currentSwipeItems objectEnumerator];
     if(self.currentDirection == GKSwipeDirectionRight){
         enumrator = self.currentSwipeItems.reverseObjectEnumerator;
     }
     
-    for(GKTableViewSwipeItem *item in enumrator){
+    for(GKSwipeItem *item in enumrator){
         CGRect frame = item.startFrame;
         CGFloat ratio = 1.0 - width / MAX(fabs(self.maxTranslationX), fabs(translationX));
         CGFloat extras = item.startFrame.size.width / self.maxTranslationX * extraWith;
@@ -442,15 +477,19 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if(gestureRecognizer == self.panGestureRecognizer){
-        if(self.isEditing){
-            return NO;
+        if([self.cell isKindOfClass:UITableViewCell.class]){
+            UITableViewCell *cell = (UITableViewCell*)self.cell;
+            if(cell.isEditing){
+                return NO;
+            }
         }
-        CGPoint translation = [self.panGestureRecognizer translationInView:self];
+        CGPoint translation = [self.panGestureRecognizer translationInView:self.cell];
         //垂直滑动
         if(fabs(translation.y) > fabs(translation.x)){
             return NO;
         }
-        return (translation.x < 0 && (self.swipeDirection & GKSwipeDirectionLeft)) || (translation.x > 0 && (self.swipeDirection & GKSwipeDirectionRight));
+        return (translation.x < 0 && (self.cell.swipeDirection & GKSwipeDirectionLeft))
+        || (translation.x > 0 && (self.cell.swipeDirection & GKSwipeDirectionRight));
     }
     return YES;
 }

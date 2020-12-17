@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否可以滑动关闭 default is 'YES'
 @property(nonatomic, assign) BOOL interactiveDismissible;
 
-///动画时间 default is '0.25'
+///动画时间 default is '0.5'
 @property(nonatomic, assign) NSTimeInterval transitionDuration;
 
 ///点击半透明背景回调 设置这个时，弹窗不会关闭

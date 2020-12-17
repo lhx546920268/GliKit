@@ -49,6 +49,16 @@ static void uncaughtExceptionHandler(NSException *exception){
 
 @end
 
+@protocol XXProtocol <NSObject>
+
+@property(nonatomic, copy) NSString *name;
+
+@end
+
+@interface UITableViewCell ()<XXProtocol>
+
+@end
+
 @interface AppDelegate ()
 
 

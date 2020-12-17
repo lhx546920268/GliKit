@@ -178,3 +178,55 @@
 
 
 @end
+
+@implementation UIScrollView (GKUtils)
+
+- (void)setGkInsetTop:(CGFloat) top
+{
+    UIEdgeInsets inset = self.contentInset;
+    inset.top = top;
+    self.contentInset = inset;
+}
+
+- (CGFloat)gkInsetTop
+{
+    return self.contentInset.top;
+}
+
+- (void)setGkInsetLeft:(CGFloat) left
+{
+    UIEdgeInsets inset = self.contentInset;
+    inset.left = left;
+    self.contentInset = inset;
+}
+
+- (CGFloat)gkInsetLeft
+{
+    return self.contentInset.left;
+}
+
+- (void)setGkInsetBottom:(CGFloat) bottom
+{
+    UIEdgeInsets inset = self.contentInset;
+    inset.bottom = bottom;
+    self.contentInset = inset;
+}
+
+- (CGFloat)gkInsetBottom
+{
+    return self.contentInset.bottom;
+}
+
+- (void)setGkInsetRight:(CGFloat) right
+{
+    UIEdgeInsets inset = self.contentInset;
+    inset.right = right;
+    self.contentInset = inset;
+}
+
+- (CGFloat)gkInsetRight
+{
+    return self.contentInset.right;
+}
+
+@end

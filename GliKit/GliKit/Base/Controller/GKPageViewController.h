@@ -11,6 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///翻页容器相关扩展
+@interface UIViewController (GKPage)
+
+///在翻页容器中是否可见
+@property(nonatomic, assign) BOOL visibleInPage;
+
+@end
+
 ///翻页容器
 @interface GKPageViewController : GKScrollViewController<GKTabMenuBarDelegate>
 

@@ -42,9 +42,12 @@
     vc.view.backgroundColor = UIColor.whiteColor;
     vc.gkShowBackItem = YES;
     UINavigationController *nav = vc.gkCreateWithNavigationController;
-
+    
     nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
     nav.partialPresentProps.cornerRadius = 10;
+    nav.partialPresentProps.dismissCallback = ^{
+        NSLog(@"dialogDismissCompletionHandler");
+    };
     [nav partialPresentFromBottom];
 }
 

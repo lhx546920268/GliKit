@@ -18,6 +18,7 @@
 #import <Photos/Photos.h>
 #import <SDWebImageDefine.h>
 #import "UIApplication+GKTheme.h"
+#import "NSDictionary+GKUtils.h"
 
 ///当前设备唯一标识符
 static NSString *sharedUUID = nil;
@@ -26,7 +27,7 @@ static NSString *sharedUUID = nil;
 
 + (NSString*)appVersion
 {
-    return [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    return [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleShortVersionString"];
 }
 
 + (BOOL)isTestApp
@@ -36,9 +37,9 @@ static NSString *sharedUUID = nil;
 
 + (NSString*)appName
 {
-    NSString *name = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleDisplayName"];
+    NSString *name = [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleDisplayName"];
     if([NSString isEmpty:name]){
-        name = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleName"];
+        name = [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleName"];
     }
     
     return name;
@@ -47,14 +48,16 @@ static NSString *sharedUUID = nil;
 + (UIImage*)appIcon
 {
     NSDictionary *dic = NSBundle.mainBundle.infoDictionary;
-    NSString *iconName = [[dic objectForKey:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
-    
-    return [UIImage imageNamed:iconName];
+    NSString *iconName = [[dic gkArrayForKey:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
+    if(![NSString isEmpty:iconName]){
+        return [UIImage imageNamed:iconName];
+    }
+    return nil;
 }
 
 + (NSString *)bundleId
 {
-    return [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleIdentifier"];
+    return [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleIdentifier"];
 }
 
 + (NSString*)uuid

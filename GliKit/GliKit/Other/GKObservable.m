@@ -11,13 +11,62 @@
 
 static void* const GKObservableContext = "com.glikit.GKObservableContext";
 
+///回调信息
+@interface GKObserverCallbackModel : NSObject
+
+///回调
+@property(nonatomic, copy) GKObserverCallback callback;
+
+///旧值
+@property(nonatomic, strong) id aOldValue;
+
+///是否有旧值了
+@property(nonatomic, readonly) BOOL hasOldValue;
+
+///新值
+@property(nonatomic, strong) id aNewValue;
+
++ (instancetype)modelWithCallback:(GKObserverCallback) callback;
+
+///重置
+- (void)reset;
+
+@end
+
+@implementation GKObserverCallbackModel
+
++ (instancetype)modelWithCallback:(GKObserverCallback)callback
+{
+    GKObserverCallbackModel *model = [GKObserverCallbackModel new];
+    model.callback = callback;
+    
+    return model;
+}
+
+- (void)setAOldValue:(id)aOldValue
+{
+    if(!_hasOldValue){
+        _hasOldValue = YES;
+        _aOldValue = aOldValue;
+    }
+}
+
+- (void)reset
+{
+    _hasOldValue = NO;
+    self.aOldValue = nil;
+    self.aNewValue = nil;
+}
+
+@end
+
 @interface GKObservable()
 
 ///当前监听的属性
 @property(nonatomic, strong) NSMutableSet<NSString*> *observingKeyPaths;
 
 ///回调
-@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSMutableDictionary<NSString*, GKObserverCallback>*> *observerCallbacks;
+@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSMutableDictionary<NSString*, id>*> *observerCallbacks;
 
 
 @end
@@ -31,6 +80,10 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 
 - (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
 {
+    NSParameterAssert(observer != nil);
+    NSParameterAssert(callback != nil);
+    NSParameterAssert(keyPath != nil);
+    
     [self _addObserver:observer callback:callback forKeyPath:keyPath];
 }
 
@@ -48,6 +101,15 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     }
 }
 
+- (void)addObserver:(NSObject *)observer manualCallback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
+{
+    NSParameterAssert(observer != nil);
+    NSParameterAssert(callback != nil);
+    NSParameterAssert(keyPath != nil);
+    
+    [self _addObserver:observer callback:[GKObserverCallbackModel modelWithCallback:callback] forKeyPath:keyPath];
+}
+
 - (void)removeObserver:(NSObject*)observer
 {
     NSParameterAssert(observer != nil);
@@ -55,7 +117,7 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     [_observerCallbacks removeObjectForKey:@(observer.hash)];
 }
 
-- (void)removeObserver:(NSObject*)observer forOneKeyPath:(nonnull NSString *)keyPath
+- (void)removeObserver:(NSObject*)observer forOneKeyPath:(NSString *)keyPath
 {
     NSParameterAssert(observer != nil);
     NSParameterAssert(keyPath != nil);
@@ -82,6 +144,18 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     
     if(dic.count == 0){
         [_observerCallbacks removeObjectForKey:key];
+    }
+}
+
+- (void)flushManualCallbackForObserver:(NSObject *)observer
+{
+    NSMutableDictionary *dic = _observerCallbacks[@(observer.hash)];
+    for(id key in dic){
+        GKObserverCallbackModel *model = dic[key];
+        if([model isKindOfClass:GKObserverCallbackModel.class] && model.hasOldValue){
+            model.callback(key, model.aNewValue, model.aOldValue);
+            [model reset];
+        }
     }
 }
 
@@ -139,10 +213,10 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     }
     
     //递归获取父类的属性
-    [self addObserver: observer callback: callback forClaass:[cls superclass]];
+    [self addObserver:observer callback:callback forClaass:[cls superclass]];
 }
 
-- (void)_addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
+- (void)_addObserver:(NSObject*)observer callback:(id)callback forKeyPath:(NSString *)keyPath
 {
     if(![self.observingKeyPaths containsObject:keyPath]){
         [self addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:GKObservableContext];
@@ -163,8 +237,15 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 {
     if(context == GKObservableContext){
         for(id key in _observerCallbacks){
-            GKObserverCallback callback = _observerCallbacks[key][keyPath];
-            callback(keyPath, change[NSKeyValueChangeNewKey], change[NSKeyValueChangeOldKey]);
+            id value = _observerCallbacks[key][keyPath];
+            if([value isKindOfClass:GKObserverCallbackModel.class]){
+                GKObserverCallbackModel *model = value;
+                model.aOldValue = change[NSKeyValueChangeOldKey];
+                model.aNewValue = change[NSKeyValueChangeNewKey];
+            }else{
+                GKObserverCallback callback = value;
+                !callback ?: callback(keyPath, change[NSKeyValueChangeNewKey], change[NSKeyValueChangeOldKey]);
+            }
         }
     }else{
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
