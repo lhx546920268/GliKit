@@ -135,8 +135,13 @@
 
 - (void)setTextLengthAttributes:(NSDictionary *)textLengthAttributes
 {
-    if(textLengthAttributes.count == 0)
-        textLengthAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13] , NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
+    if(textLengthAttributes.count == 0){
+        textLengthAttributes = @{
+            NSFontAttributeName: [UIFont systemFontOfSize:13],
+            NSForegroundColorAttributeName: UIColor.lightGrayColor
+        };
+    }
+    
     _textLengthAttributes = textLengthAttributes;
     [self updatePlaceholder];
 }

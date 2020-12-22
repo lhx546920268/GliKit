@@ -70,7 +70,7 @@
         
         NSError *error = nil;
         if([imageData writeToFile:fileName options:NSDataWritingAtomic error:&error]){
-            [dic setObject:fileName forKey:[NSNumber numberWithInteger:i]];
+            [dic setObject:fileName forKey:@(i)];
         }else{
 #ifdef DEBUG
             NSLog(@"error = %@",error);

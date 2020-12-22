@@ -94,7 +94,10 @@
         NSLog(@"manualCallback %@, %d, %@", keyPath, [newValue intValue], oldValue);
     } forKeyPath:@"integerValue"];
     
-    NSLog(@"%f", UIScreen.mainScreen.bounds.size.width);
+    NSLog(@"%ld, %ld, %ld, %ld", GKTestOptionsOne, GKTestOptionsTwo, GKTestOptionsThree, GKTestOptionsFour);
+    
+    myStaticTest = @"xx";
+    NSLog(@"%x", &myStaticTest);
 }
 
 - (void)initViews

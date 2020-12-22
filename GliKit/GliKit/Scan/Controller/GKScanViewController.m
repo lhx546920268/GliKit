@@ -195,7 +195,7 @@
 - (void)detectBarCodeFromImage:(UIImage*) image
 {
     CIContext *context = [CIContext contextWithOptions:nil];
-    NSDictionary *options = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
+    NSDictionary *options = @{CIDetectorAccuracy: CIDetectorAccuracyHigh};
     CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:context options:options];
     NSArray *features = [detector featuresInImage:[CIImage imageWithCGImage:image.CGImage]];
     

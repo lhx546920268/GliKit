@@ -10,7 +10,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString *const constStr = @"a";
+typedef NS_OPTIONS(NSInteger, GKTestOptions) {
+    
+    GKTestOptionsOne = 1,
+    
+    GKTestOptionsTwo = 1 << 1,
+    
+    GKTestOptionsThree = 1 << 2,
+    
+    GKTestOptionsFour = 1 << 3,
+};
+
+static NSString *myStaticTest = @"my test";
 
 @protocol GKDRowModelProtocol <NSObject>
 

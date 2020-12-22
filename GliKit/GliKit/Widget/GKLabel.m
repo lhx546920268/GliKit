@@ -467,7 +467,7 @@ static NSRegularExpression *URLRegularExpression = nil;
                 //转成UIKit坐标
                 rect.origin.y = self.textDrawRect.size.height - rect.origin.y - rect.size.height;
                 
-                [rects addObject:[NSValue valueWithCGRect:rect]];
+                [rects addObject:@(rect)];
             }else if(lineRange.location > range.location + range.length){
                 break;
             }

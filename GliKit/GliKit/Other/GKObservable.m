@@ -110,6 +110,18 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     [self _addObserver:observer callback:[GKObserverCallbackModel modelWithCallback:callback] forKeyPath:keyPath];
 }
 
+- (void)flushManualCallbackForObserver:(NSObject *)observer
+{
+    NSMutableDictionary *dic = _observerCallbacks[@(observer.hash)];
+    for(id key in dic){
+        GKObserverCallbackModel *model = dic[key];
+        if([model isKindOfClass:GKObserverCallbackModel.class] && model.hasOldValue){
+            model.callback(key, model.aNewValue, model.aOldValue);
+            [model reset];
+        }
+    }
+}
+
 - (void)removeObserver:(NSObject*)observer
 {
     NSParameterAssert(observer != nil);
@@ -144,18 +156,6 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     
     if(dic.count == 0){
         [_observerCallbacks removeObjectForKey:key];
-    }
-}
-
-- (void)flushManualCallbackForObserver:(NSObject *)observer
-{
-    NSMutableDictionary *dic = _observerCallbacks[@(observer.hash)];
-    for(id key in dic){
-        GKObserverCallbackModel *model = dic[key];
-        if([model isKindOfClass:GKObserverCallbackModel.class] && model.hasOldValue){
-            model.callback(key, model.aNewValue, model.aOldValue);
-            [model reset];
-        }
     }
 }
 

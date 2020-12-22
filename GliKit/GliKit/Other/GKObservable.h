@@ -33,15 +33,15 @@ typedef void(^GKObserverCallback)(NSString *keyPath, id _Nullable newValue, id _
 /// 需要手动调用回调 主要用于值可能发生多次改变，但只需要回调一次
 - (void)addObserver:(NSObject*) observer manualCallback:(GKObserverCallback) callback forKeyPath:(NSString*) keyPath;
 
+/// 调用未回调的
+- (void)flushManualCallbackForObserver:(NSObject*) observer;
+
 /// 移除观察者
 /// @param observer 观察者，将使用hash作为 key来保存
 /// @param keyPath 监听的属性，如果为空，则移除observer对应的所有 keyPath
 - (void)removeObserver:(NSObject*) observer forOneKeyPath:(NSString*) keyPath;
 - (void)removeObserver:(NSObject*) observer forKeyPaths:(NSArray<NSString*>*) keyPaths;
 - (void)removeObserver:(NSObject*) observer;
-
-/// 调用未回调的
-- (void)flushManualCallbackForObserver:(NSObject*) observer;
 
 @end
 

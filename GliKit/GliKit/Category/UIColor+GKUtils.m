@@ -101,7 +101,7 @@
         }
             break;
         case 4 : {
-            alpha = (hexValue & 0xf000) >> 16;
+            alpha = (hexValue & 0xf000) >> 12;
             red = (hexValue & 0x0f00) >> 8;
             green = (hexValue & 0x00f0) >> 4;
             blue = (hexValue & 0x000f);
@@ -114,7 +114,7 @@
         }
             break;
         case 8 : {
-            alpha = (hexValue & 0xff000000) >> 32;
+            alpha = (hexValue & 0xff000000) >> 24;
             red = (hexValue & 0x00ff0000) >> 16;
             green = (hexValue & 0x0000ff00) >> 8;
             blue = (hexValue & 0x000000ff);

@@ -120,7 +120,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     //只有平移手势才允许手势冲突
-    if(self.gkNestedParent && gestureRecognizer == self.panGestureRecognizer){
+    if(gestureRecognizer == self.panGestureRecognizer && self.gkNestedParent){
         return otherGestureRecognizer == self.gkNestedChildScrollView.panGestureRecognizer;
     }
     return NO;

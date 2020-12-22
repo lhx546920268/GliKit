@@ -8,6 +8,7 @@
 
 #import "GKDTransitionViewController.h"
 #import "GKDRootViewController.h"
+#import "GKDRowModel.h"
 
 @interface GKDTransitionViewController ()
 
@@ -18,7 +19,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+
     // Do any additional setup after loading the view from its nib.
+//    myStaticTest = @"xxx";
+    NSLog(@"%x", &myStaticTest);
 }
 
 - (IBAction)handleFromBottom:(UIButton*)sender

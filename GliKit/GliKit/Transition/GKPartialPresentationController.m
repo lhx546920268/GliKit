@@ -43,6 +43,17 @@
     } completion:nil];
 }
 
+- (void)updateInteractiveTransition:(CGFloat)percent animated:(BOOL)animated
+{
+    if(animated){
+        [UIView animateWithDuration:self.transitionDelegate.props.transitionDuration delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                    self.backgroundView.alpha = 1.0 - percent;
+        } completion:nil];
+    }else{
+        self.backgroundView.alpha = 1.0 - percent;
+    }
+}
+
 - (void)presentationTransitionDidEnd:(BOOL)completed
 {
     //如果展示过程被中断了，移除背景
@@ -53,10 +64,12 @@
 
 - (void)dismissalTransitionWillBegin
 {
-    //背景渐变
-    [self.presentedViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        self.backgroundView.alpha = 0;
-    } completion:nil];
+    //背景渐变 iOS 12以下 交互动画时会瞬间变成完全透明
+    if(!self.presentedViewController.transitionCoordinator.interactive){
+        [self.presentedViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+            self.backgroundView.alpha = 0;
+        } completion:nil];
+    }
 }
 
 - (void)dismissalTransitionDidEnd:(BOOL)completed

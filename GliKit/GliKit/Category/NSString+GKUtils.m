@@ -100,10 +100,10 @@
     CGSize size;
     CGSize contraintSize = CGSizeMake(width, CGFLOAT_MAX);
     
+    NSDictionary *attributes = font ? @{NSFontAttributeName: font} : nil;
+    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
     
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil];
-    
-    size = [self boundingRectWithSize:contraintSize  options:NSStringDrawingUsesLineFragmentOrigin |NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
+    size = [self boundingRectWithSize:contraintSize options:options attributes:attributes context:nil].size;
     size.width = ceil(size.width);
     size.height = ceil(size.height);
     

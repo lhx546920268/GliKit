@@ -73,7 +73,7 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
         visibleSections = [NSMutableArray array];
         for(UICollectionViewLayoutAttributes *attr in attributes){
             if(![attr.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]){
-                NSNumber *number = [NSNumber numberWithInteger:attr.indexPath.section];
+                NSNumber *number = @(attr.indexPath.section);
                 if(![visibleSections containsObject:number]){
                     [visibleSections addObject:number];
                 }

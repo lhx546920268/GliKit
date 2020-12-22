@@ -467,8 +467,8 @@
                 self.dialogBackgroundView.alpha = 1.0;
                 self.container.alpha = 1.0;
                 CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                animation.fromValue = [NSNumber numberWithFloat:1.3];
-                animation.toValue = [NSNumber numberWithFloat:1.0];
+                animation.fromValue = @(1.3);
+                animation.toValue = @(1.0);
                 animation.duration = 0.25;
                 [self.container.layer addAnimation:animation forKey:@"scale"];
             }completion:completion];

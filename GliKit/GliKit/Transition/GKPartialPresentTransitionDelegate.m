@@ -101,6 +101,9 @@
 ///动画
 @property(nonatomic, strong) GKPartialPresentTransitionAnimator *animator;
 
+///
+@property(nonatomic, strong) GKPartialPresentationController *partialPresentationController;
+
 ///显示的viewController
 @property(nonatomic, weak) UIViewController *viewController;
 
@@ -142,6 +145,7 @@
 {
     GKPartialPresentationController *controller = [[GKPartialPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
     controller.transitionDelegate = self;
+    self.partialPresentationController = controller;
     return controller;
 }
 
@@ -363,27 +367,24 @@
     [super startInteractiveTransition:transitionContext];
 }
 
-- (CGFloat)percentForGesture:(UIPanGestureRecognizer *)gesture
+- (CGFloat)percentForTranslation:(CGPoint) translation
 {
-    UIView *containerView = self.transitionContext.containerView;
-    
-    CGPoint point = [gesture translationInView:containerView];
     CGFloat percent;
     switch (self.delegate.props.transitionStyle) {
         case GKPresentTransitionStyleFromTop : {
-            percent = point.y / self.view.gkHeight;
+            percent = translation.y / self.view.gkHeight;
         }
             break;
         case GKPresentTransitionStyleFromBottom : {
-            percent = point.y / self.view.gkHeight;
+            percent = translation.y / self.view.gkHeight;
         }
             break;
         case GKPresentTransitionStyleFromRight : {
-            percent = point.x / self.view.gkWidth;
+            percent = translation.x / self.view.gkWidth;
         }
             break;
         case GKPresentTransitionStyleFromLeft : {
-            percent = point.x / self.view.gkWidth;
+            percent = translation.x / self.view.gkWidth;
         }
             break;
     }
@@ -398,7 +399,8 @@
         case UIGestureRecognizerStateBegan :
         case UIGestureRecognizerStateChanged: {
             
-            CGFloat percent = [self percentForGesture:pan];
+            UIView *containerView = self.transitionContext.containerView;
+            CGFloat percent = [self percentForTranslation:[pan translationInView:containerView]];
             CGRect frame = self.view.frame;
             
             switch (self.delegate.props.transitionStyle) {
@@ -442,6 +444,8 @@
                 }
                     break;
             }
+        
+            [self.delegate.partialPresentationController updateInteractiveTransition:percent animated:NO];
             [self updateInteractiveTransition:percent];
         }
             break;
@@ -455,33 +459,23 @@
 - (void)interactiveComplete:(UIPanGestureRecognizer*) pan
 {
     UIView *containerView = self.transitionContext.containerView;
+    CGPoint translation = [pan translationInView:containerView];
     
-    BOOL complete = [self percentForGesture:pan] >= 0.5;
-    if(!complete){
-        //快速滑动也算完成
-        CGPoint velocity = [pan velocityInView:containerView];
-        switch (self.delegate.props.transitionStyle) {
-            case GKPresentTransitionStyleFromTop :
-                complete = velocity.y < -1000;
-                break;
-            case GKPresentTransitionStyleFromBottom :
-                complete = velocity.y > 1000;
-                break;
-            case GKPresentTransitionStyleFromRight :
-                complete = velocity.x > 1000;
-                break;
-            case GKPresentTransitionStyleFromLeft :
-                complete = velocity.x < -1000;
-                break;
-        }
-    }
+    //快速滑动也算完成
+    CGPoint velocity = [pan velocityInView:containerView];
+    translation.x += velocity.x;
+    translation.y += velocity.y;
     
+    BOOL complete = [self percentForTranslation:translation] >= 0.4;
     if(complete){
+        [self.delegate.partialPresentationController updateInteractiveTransition:1.0 animated:YES];
         [self finishInteractiveTransition];
     }else{
+        [self.delegate.partialPresentationController updateInteractiveTransition:0 animated:YES];
         [self cancelInteractiveTransition];
     }
 
+    NSTimeInterval duration = self.duration;
     CGPoint center;
     if(complete){
         switch (self.delegate.props.transitionStyle) {
@@ -502,12 +496,22 @@
             }
                 break;
         }
-        
+        switch (self.delegate.props.transitionStyle) {
+            case GKPresentTransitionStyleFromTop :
+            case GKPresentTransitionStyleFromBottom :
+                duration *= fabs(self.view.gkCenterY - center.y) / self.view.gkHeight;
+                break;
+                
+            case GKPresentTransitionStyleFromLeft :
+            case GKPresentTransitionStyleFromRight :
+                duration *= fabs(self.view.gkCenterX - center.x) / self.view.gkHeight;
+                break;
+        }
     }else{
         center = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     }
-    
-    [UIView animateWithDuration:self.duration
+    UIApplicationUserDidTakeScreenshotNotification
+    [UIView animateWithDuration:duration
                           delay:0 usingSpringWithDamping:1.0
           initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{

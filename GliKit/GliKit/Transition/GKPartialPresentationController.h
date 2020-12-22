@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///关联的
 @property(nonatomic, weak, nullable) GKPartialPresentTransitionDelegate *transitionDelegate;
 
+///更新交互比例
+- (void)updateInteractiveTransition:(CGFloat) percent animated:(BOOL) animated;
+
 @end
 
 NS_ASSUME_NONNULL_END
