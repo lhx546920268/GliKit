@@ -66,13 +66,16 @@ static char GKInteractivePopEnableKey;
 
 - (CGFloat)gkStatusBarHeight
 {
-    CGFloat height = 0;
-    if(@available(iOS 13.0, *)){
-        height = UIApplication.sharedApplication.delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
-    }
-    
+    CGFloat height = UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.top;
+    //iOS 14 iPhone 12 mini的导航栏和状态栏有间距
     if(height == 0){
-        height = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        if(@available(iOS 13.0, *)){
+            height = UIApplication.sharedApplication.delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
+        }
+        
+        if(height == 0){
+            height = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        }
     }
     
     if(height == 0){

@@ -382,7 +382,7 @@
                 if(self.topView && !(self.overlayArea & GKOverlayAreaPageLoadingTop)){
                     make.top.equalTo(self.topView.mas_bottom).offset(insets.top);
                 }else{
-                    if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
+                    if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController && !self.viewController.navigationController.navigationBarHidden){
                         make.top.equalTo(self.viewController.gkSafeAreaLayoutGuideTop).offset(insets.top);
                     }else{
                         make.top.equalTo(self).offset(insets.top);
@@ -392,11 +392,7 @@
                 if(self.bottomView && !(self.overlayArea & GKOverlayAreaPageLoadingBottom)){
                     make.bottom.equalTo(self.bottomView.mas_top).offset(-insets.bottom);
                 }else{
-                    if(self.safeLayoutGuide & GKSafeLayoutGuideBottom && self.viewController){
-                        make.bottom.equalTo(self.viewController.gkSafeAreaLayoutGuideBottom).offset(-insets.bottom + self.bottomLayoutConstraintOffset);
-                    }else{
-                        make.bottom.equalTo(self).offset(-insets.bottom + self.bottomLayoutConstraintOffset);
-                    }
+                    make.bottom.equalTo(self).offset(-insets.bottom + self.bottomLayoutConstraintOffset);
                 }
             }];
         }

@@ -510,7 +510,7 @@
     }else{
         center = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     }
-    UIApplicationUserDidTakeScreenshotNotification
+    
     [UIView animateWithDuration:duration
                           delay:0 usingSpringWithDamping:1.0
           initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState

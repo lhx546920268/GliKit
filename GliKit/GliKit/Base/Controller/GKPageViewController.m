@@ -189,10 +189,12 @@ static char GKVisiblePageKey;
         return;
     }
     
+    NSInteger oldPage = _currentPage;
     _currentPage = page;
     [self.menuBar setSelectedIndex:page animated:animate];
     if(!CGSizeEqualToSize(self.scrollViewSize, CGSizeZero)){
         [self.scrollView setContentOffset:CGPointMake(page * self.scrollViewSize.width, 0) animated:animate];
+        [self _onScrollTopPage:_currentPage oldPage:oldPage];
     }else{
         self.willScrollToPage = _currentPage;
     }
