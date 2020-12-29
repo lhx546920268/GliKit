@@ -12,6 +12,7 @@
 #import "NSDictionary+GKUtils.h"
 #import "UIView+GKLoading.h"
 #import <SDWebImageCompat.h>
+#import "GKLock.h"
 
 ///保存请求队列的单例
 static NSMutableSet* GKSharedTasks()
@@ -30,6 +31,12 @@ static NSMutableSet* GKSharedTasks()
 ///当前任务
 @property(nonatomic, readonly) NSURLSessionTask *URLSessionTask;
 
+///是否已完成
+@property(nonatomic, assign) BOOL isCompleted;
+
+///锁
+@property(nonatomic, strong) GKLock *lock;
+
 @end
 
 @implementation GKHttpTask
@@ -42,6 +49,7 @@ static NSMutableSet* GKSharedTasks()
     if(self){
         self.loadingHUDDelay = 0.5;
         self.timeoutInterval = 15;
+        self.lock = [GKLock new];
     }
     
     return self;
@@ -182,6 +190,7 @@ static NSMutableSet* GKSharedTasks()
 
 - (void)onComplete
 {
+    self.isCompleted = YES;
     [self.view gkDismissProgress];
     if(!self.isCanceled && [self.delegate respondsToSelector:@selector(taskDidComplete:)]){
         [self.delegate taskDidComplete:self];
@@ -194,26 +203,26 @@ static NSMutableSet* GKSharedTasks()
 
 - (void)start
 {
-    @synchronized (self) {
-        if(self.isExecuting)
-            return;
+    [self.lock lock];
+    if(!self.isExecuting && !self.isCanceled && !self.isCompleted) {
         
         [self onStart];
         [self.URLSessionTask resume];
     }
+    [self.lock unlock];
 }
 
 - (void)cancel
 {
-    @synchronized (self) {
-        if(!_isCanceled){
-            _isCanceled = YES;
-            if(self.isSuspended || self.isExecuting){
-                [_URLSessionTask cancel];
-            }
-            [self onComplete];
+    [self.lock lock];
+    if(!self.isCanceled && !self.isCompleted){
+        _isCanceled = YES;
+        if(self.isSuspended || self.isExecuting){
+            [_URLSessionTask cancel];
         }
+        [self onComplete];
     }
+    [self.lock unlock];
 }
 
 // MARK: - 内部回调
@@ -225,23 +234,22 @@ static NSMutableSet* GKSharedTasks()
     if([self.delegate respondsToSelector:@selector(taskDidSuccess:)]){
         [self.delegate taskDidSuccess:self];
     }
-    WeakObj(self)
     dispatch_main_async_safe(^{
-        StrongObj(self)
-        if(self && !self.isCanceled){
+        [self.lock lock];
+        if(!self.isCanceled){
             !self.successHandler ?: self.successHandler(self);
             [self onComplete];
         }
+        [self.lock unlock];
     })
 }
 
 ///请求失败
 - (void)requestDidFail
 {
-    WeakObj(self)
     dispatch_main_async_safe(^{
-        StrongObj(self)
-        if(self && !self.isCanceled){
+        [self.lock lock];
+        if(!self.isCanceled){
             !self.willFailHandler ?: self.willFailHandler(self);
             [self onFail];
             !self.failHandler ?: self.failHandler(self);
@@ -250,6 +258,7 @@ static NSMutableSet* GKSharedTasks()
             }
             [self onComplete];
         }
+        [self.lock unlock];
     })
 }
 

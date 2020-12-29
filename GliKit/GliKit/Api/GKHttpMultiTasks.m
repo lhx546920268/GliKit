@@ -12,6 +12,7 @@
 #import "GKHttpSessionManager.h"
 #import "NSObject+GKUtils.h"
 #import <SDWebImageCompat.h>
+#import "GKLock.h"
 
 ///保存请求队列的单例
 static NSMutableSet* GKSharedContainers()
@@ -39,6 +40,9 @@ static NSMutableSet* GKSharedContainers()
 ///对应任务
 @property(nonatomic, strong) NSMutableDictionary<NSString*, __kindof GKHttpTask*> *taskDictionary;
 
+///锁
+@property(nonatomic, strong) GKLock *lock;
+
 @end
 
 @implementation GKHttpMultiTasks
@@ -51,6 +55,7 @@ static NSMutableSet* GKSharedContainers()
         self.tasks = [NSMutableArray array];
         self.taskDictionary = [NSMutableDictionary dictionary];
         self.shouldCancelAllTaskWhileOneFail = YES;
+        self.lock = [GKLock new];
     }
     
     return self;
@@ -82,15 +87,15 @@ static NSMutableSet* GKSharedContainers()
 
 - (void)cancelAllTasks
 {
-    @synchronized (self) {
-        for(GKHttpTask *task in self.tasks){
-            [task cancel];
-        }
-        [self.tasks removeAllObjects];
-        [self.taskDictionary removeAllObjects];
-        
-        [GKSharedContainers() removeObject:self];
+    [self.lock lock];
+    for(GKHttpTask *task in self.tasks){
+        [task cancel];
     }
+    [self.tasks removeAllObjects];
+    [self.taskDictionary removeAllObjects];
+    
+    [GKSharedContainers() removeObject:self];
+    [self.lock unlock];
 }
 
 - (__kindof GKHttpTask*)taskForKey:(NSString*) key
@@ -101,18 +106,18 @@ static NSMutableSet* GKSharedContainers()
 ///开始任务
 - (void)startTask
 {
-    @synchronized (self) {
-        [GKSharedContainers() addObject:self];
-        self.hasFail = NO;
-        
-        if(self.concurrent){
-            for(GKHttpTask *task in self.tasks){
-                [task start];
-            }
-        }else{
-            [self startNextTask];
+    [self.lock lock];
+    [GKSharedContainers() addObject:self];
+    self.hasFail = NO;
+    
+    if(self.concurrent){
+        for(GKHttpTask *task in self.tasks){
+            [task start];
         }
+    }else{
+        [self startNextTask];
     }
+    [self.lock unlock];
 }
 
 ///开始执行下一个任务 串行时用到
@@ -125,19 +130,19 @@ static NSMutableSet* GKSharedContainers()
 ///删除任务
 - (void)task:(GKHttpTask*) task didComplete:(BOOL) success
 {
-    @synchronized (self) {
-        [self.tasks removeObject:task];
-    }
+    [self.lock lock];
+    [self.tasks removeObject:task];
+    [self.lock unlock];
     
     if(!success){
         self.hasFail = YES;
         if(self.shouldCancelAllTaskWhileOneFail){
-            @synchronized (self) {
-                for(GKHttpTask *task in self.tasks){
-                    [task cancel];
-                }
-                [self.tasks removeAllObjects];
+            [self.lock lock];
+            for(GKHttpTask *task in self.tasks){
+                [task cancel];
             }
+            [self.tasks removeAllObjects];
+            [self.lock unlock];
         }
     }
     

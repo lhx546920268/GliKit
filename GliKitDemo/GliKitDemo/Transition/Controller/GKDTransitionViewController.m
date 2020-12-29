@@ -22,7 +22,7 @@
 
     // Do any additional setup after loading the view from its nib.
 //    myStaticTest = @"xxx";
-    NSLog(@"%x", &myStaticTest);
+
 }
 
 - (IBAction)handleFromBottom:(UIButton*)sender

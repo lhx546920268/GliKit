@@ -9,37 +9,40 @@
 #import "GKCountDownTimer.h"
 #import <UIKit/UIKit.h>
 #import "GKWeakProxy.h"
+#import "GKLock.h"
 
 @interface GKCountDownTimer()
 
-/**
- 倒计时停止时间
- */
+///倒计时停止时间
 @property(nonatomic, assign) NSTimeInterval timeToStop;
 
-/**
- 倒计时是否已取消
- */
+///倒计时是否已取消
 @property(nonatomic, assign) BOOL isCancel;
 
-/**
- 倒计时
- */
+///倒计时
 @property(nonatomic, strong) NSTimer *timer;
 
-/**
- app 停止时间
- */
+///app 停止时间
 @property(nonatomic, strong) NSDate *date;
 
-/**
- 代理
- */
+///代理
 @property(nonatomic, strong) GKWeakProxy *weakProxy;
+
+///锁
+@property(nonatomic, strong) GKLock *lock;
 
 @end
 
 @implementation GKCountDownTimer
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.lock = [GKLock new];
+    }
+    return self;
+}
 
 + (instancetype)timerWithTime:(NSTimeInterval) timeToCountDown interval:(NSTimeInterval) timeInterval
 {
@@ -78,29 +81,25 @@
 
 - (void)start
 {
-    @synchronized(self){
-        
-        if(_isExcuting){
-            return;
-        }
-        
+    [self.lock lock];
+    if(!_isExcuting){
         _isCancel = NO;
         _ongoingTimeInterval = 0;
         if(self.timeToCountDown <= 0 || self.timeInterval <= 0){
             [self finish];
-            return;
-        }
-        
-        self.timeToStop = self.timeToCountDown;
-        _isExcuting = YES;
-        if(self.shouldStartImmediately){
-            [self timerFired];
-        }
-        
-        if(_isExcuting){
-            [self startTimer];
+        }else{
+            self.timeToStop = self.timeToCountDown;
+            _isExcuting = YES;
+            if(self.shouldStartImmediately){
+                [self timerFired];
+            }
+            
+            if(_isExcuting){
+                [self startTimer];
+            }
         }
     }
+    [self.lock unlock];
 }
 
 ///开始计时器
@@ -118,12 +117,12 @@
 
 - (void)stop
 {
-    @synchronized(self){
-        if(!_isExcuting || _isCancel)
-            return;
+    [self.lock lock];
+    if(_isExcuting && !_isCancel){
         _isCancel = YES;
         [self stopTimer];
     }
+    [self.lock unlock];
 }
 
 ///停止计时器

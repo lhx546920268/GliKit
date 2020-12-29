@@ -93,11 +93,6 @@
     [self.demo addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
         NSLog(@"manualCallback %@, %d, %@", keyPath, [newValue intValue], oldValue);
     } forKeyPath:@"integerValue"];
-    
-    NSLog(@"%ld, %ld, %ld, %ld", GKTestOptionsOne, GKTestOptionsTwo, GKTestOptionsThree, GKTestOptionsFour);
-    
-    myStaticTest = @"xx";
-    NSLog(@"%x", &myStaticTest);
 }
 
 - (void)initViews

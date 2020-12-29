@@ -14,50 +14,8 @@
 #import <SDImageCodersManager.h>
 #import <SDWebImageSVGCoder.h>
 #import "GKDRootViewController.h"
+#import <NSDate+GKUtils.h>
 
-static void uncaughtExceptionHandler(NSException *exception){
-    NSLog(@"%@", exception);
-}
-
-@interface GKDURLProtocol : NSURLProtocol
-
-@end
-
-@implementation GKDURLProtocol
-
-+ (BOOL)canInitWithRequest:(NSURLRequest *)request
-{
-    NSLog(@"canInitWithRequest %@", request);
-    return YES;
-}
-
-+ (BOOL)canInitWithTask:(NSURLSessionTask *)task
-{
-    NSLog(@"canInitWithTask %@", task);
-    return  YES;
-}
-
-- (void)startLoading
-{
-    NSLog(@"startLoading");
-}
-
-- (void)stopLoading
-{
-    NSLog(@"stopLoading");
-}
-
-@end
-
-@protocol XXProtocol <NSObject>
-
-@property(nonatomic, copy) NSString *name;
-
-@end
-
-@interface UITableViewCell ()<XXProtocol>
-
-@end
 
 @interface AppDelegate ()
 
@@ -71,11 +29,6 @@ static void uncaughtExceptionHandler(NSException *exception){
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    
-    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    if([NSURLProtocol registerClass:GKDURLProtocol.class]){
-        NSLog(@"NSURLProtocol registerClass %@ success", NSStringFromClass(GKDURLProtocol.class));
-    }
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
@@ -85,6 +38,25 @@ static void uncaughtExceptionHandler(NSException *exception){
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
     [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
     
+    dispatch_queue_t queue = dispatch_queue_create("xx", DISPATCH_QUEUE_CONCURRENT);
+
+    dispatch_async(queue, ^{
+        for(int i = 0;i < 1000;i ++){
+            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMd];
+            if(time.length != 10){
+                NSLog(@"10 diff %@", time);
+            }
+        }
+    });
+    
+    dispatch_async(queue, ^{
+        for(int i = 0;i < 1000;i ++){
+            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMdHm];
+            if(time.length != 16){
+                NSLog(@"16 diff %@", time);
+            }
+        }
+    });
 
     return YES;
 }
