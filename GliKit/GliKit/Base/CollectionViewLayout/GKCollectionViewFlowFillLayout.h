@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///获取每个sectionHeader的高度，宽度使用section的宽度
 - (CGFloat)collectionViewFlowFillLayout:(GKCollectionViewFlowFillLayout *)layout headerHeightAtSection:(NSInteger) section;
 
-///头部是否需要悬浮 default is 'NO'
+///头部是否需要悬浮 default `NO`
 - (BOOL)collectionViewFlowFillLayout:(GKCollectionViewFlowFillLayout *)layout shouldStickHeaderAtSection:(NSInteger) section;
 
 ///获取每个sectionFooter的高度，宽度使用section的宽度
@@ -49,25 +49,25 @@ NS_ASSUME_NONNULL_BEGIN
 ///改进系统的流布局，每一行尽量填充满
 @interface GKCollectionViewFlowFillLayout : UICollectionViewLayout
 
-///item上下间距，default is '5.0'，如果实现相应的代理，则忽略此值
+///item上下间距，default `5.0`，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) CGFloat minimumLineSpacing;
 
-///item左右间距，default is '5.0'，如果实现相应的代理，则忽略此值
+///item左右间距，default `5.0`，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) CGFloat minimumInteritemSpacing;
 
-///区域头部视图，default is '0'，如果实现相应的代理，则忽略此值
+///区域头部视图，default `0`，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) CGFloat sectionHeaderHeight;
 
-///区域底部视图，default is '0'，如果实现相应的代理，则忽略此值
+///区域底部视图，default `0`，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) CGFloat sectionFooterHeight;
 
-///区域头部视图和item之间的间距 default is '5.0'，只有当item时，此值才有效，如果实现相应的代理，则忽略此值
+///区域头部视图和item之间的间距 default `5.0`，只有当item时，此值才有效，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) CGFloat sectionHeaderItemSpace;
 
-///区域底部视图和item之间的间距 default is '5.0'，只有当item时，此值才有效，如果实现相应的代理，则忽略此值
+///区域底部视图和item之间的间距 default `5.0`，只有当item时，此值才有效，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) CGFloat sectionFooterItemSpace;
 
-///section 偏移量，default is 'UIEdgeInsetZero'，如果实现相应的代理，则忽略此值
+///section 偏移量，default `UIEdgeInsetZero`，如果实现相应的代理，则忽略此值
 @property (nonatomic, assign) UIEdgeInsets sectionInset;
 
 @end

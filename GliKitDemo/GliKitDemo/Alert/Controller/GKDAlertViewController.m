@@ -13,7 +13,8 @@
 #import "GKDialogViewController.h"
 #import <UIImageView+WebCache.h>
 #import <UIImage+GKUtils.h>
-#import <GKObservable.h>
+#import <GKKVOHelper.h>
+#import <GKObject.h>
 
 @interface AppearanceView : UIView
 
@@ -51,7 +52,7 @@
 
 @end
 
-@interface KVOTest : GKObservable
+@interface KVOTest : GKObject
 {
     int _value;
 }
@@ -99,7 +100,7 @@
     
     
     self.test = [KVOTest new];
-    [self.test addObserver:self callback:^(NSString * _Nonnull keyPath, id  _Nullable newValue, id  _Nullable oldValue) {
+    [self.test.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, id  _Nullable newValue, id  _Nullable oldValue) {
         NSLog(@"%@, %@, %@", keyPath, newValue, oldValue);
     } forKeyPath:@"name"];
 
@@ -143,6 +144,14 @@
     
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+- (IBAction)handleSystemActionSheet:(id)sender
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"标题" message:@"信息" preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    
+    [self presentViewController:alert animated:YES completion:nil];}
 
 - (void)handleTapImageView
 {

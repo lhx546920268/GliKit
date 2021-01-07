@@ -10,24 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 弹窗头部
- */
+///弹窗头部
 @interface GKAlertHeader : UIScrollView
 
-/**
- 图标
- */
+///图标
 @property(nonatomic, readonly) UIImageView *imageView;
 
-/**
- 标题
- */
+///标题
 @property(nonatomic, readonly) UILabel *titleLabel;
 
-/**
- 信息
- */
+///信息
 @property(nonatomic, readonly) UILabel *messageLabel;
 
 @end

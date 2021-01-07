@@ -15,7 +15,7 @@
 #import <SDWebImageSVGCoder.h>
 #import "GKDRootViewController.h"
 #import <NSDate+GKUtils.h>
-
+#import <mach-o/loader.h>
 
 @interface AppDelegate ()
 
@@ -25,10 +25,18 @@
 
 @implementation AppDelegate
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSLog(@"AppDelegate init");
+    }
+    return self;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    NSLog(@"did finish");
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
@@ -38,26 +46,10 @@
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
     [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
     
-    dispatch_queue_t queue = dispatch_queue_create("xx", DISPATCH_QUEUE_CONCURRENT);
-
-    dispatch_async(queue, ^{
-        for(int i = 0;i < 1000;i ++){
-            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMd];
-            if(time.length != 10){
-                NSLog(@"10 diff %@", time);
-            }
-        }
+    int a = ({
+             NSString *c = @"1";
+        c.intValue;
     });
-    
-    dispatch_async(queue, ^{
-        for(int i = 0;i < 1000;i ++){
-            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMdHm];
-            if(time.length != 16){
-                NSLog(@"16 diff %@", time);
-            }
-        }
-    });
-
     return YES;
 }
 

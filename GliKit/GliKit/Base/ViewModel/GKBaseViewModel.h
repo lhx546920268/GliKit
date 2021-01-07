@@ -20,12 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///加载数据是否需要显示 pageLoading default is 'YES'
 @property(nonatomic, assign) BOOL shouldShowPageLoading;
 
-/**
- 构造方法
 
- @param viewController 绑定的视图控制器
- @return 一个 GKBaseViewModel或其子类 实例
- */
+/// 初始化
+/// @param viewController 绑定的视图控制器
+/// @return 一个 GKBaseViewModel或其子类 实例
 - (instancetype)initWithController:(GKBaseViewController*) viewController;
 + (instancetype)viewModelWithController:(GKBaseViewController*) viewController;
 
@@ -36,36 +34,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillDisappear:(BOOL)animated;
 - (void)viewDidDisappear:(BOOL)animated;
 
-/**
- 添加需要取消的请求 在dealloc
- 
- @param task 请求
- */
+/// 添加需要取消的请求 在关联的viewController dealloc中会取消还没结束的task
+/// @param task 请求任务
+/// @param cancel 是否取消相同的任务 通过 task.name 来判断
+- (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel;
 - (void)addCancelableTask:(GKHttpTask*) task;
 
-/**
- 添加需要取消的请求 在dealloc
- 
- @param task 请求
- @param cancel 是否取消相同的任务 通过 task.name 来判断
- */
-- (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel;
-
-/**
- 添加需要取消的请求队列 在 dealloc
- 
- @param tasks 请求
- */
+///添加需要取消的请求队列 在 dealloc中会取消还没结束的task
 - (void)addCancelableTasks:(GKHttpMultiTasks*) tasks;
 
-/**
- 重新加载页面数据
- */
+///重新加载页面数据
 - (void)reloadData NS_REQUIRES_SUPER;
 
-/**
- 数据加载完成回调
- */
+///数据加载完成回调
 - (void)onLoadData NS_REQUIRES_SUPER;
 
 @end

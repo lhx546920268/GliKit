@@ -1,21 +1,21 @@
 //
-//  GKObservable.m
+//  GKKVOHelper.m
 //  GliKit
 //
 //  Created by 罗海雄 on 2020/9/8.
 //  Copyright © 2020 luohaixiong. All rights reserved.
 //
 
-#import "GKObservable.h"
+#import "GKKVOHelper.h"
 #import <objc/runtime.h>
 
-static void* const GKObservableContext = "com.glikit.GKObservableContext";
+static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
 
 ///回调信息
-@interface GKObserverCallbackModel : NSObject
+@interface GKKVOCallbackModel : NSObject
 
 ///回调
-@property(nonatomic, copy) GKObserverCallback callback;
+@property(nonatomic, copy) GKKVOCallback callback;
 
 ///旧值
 @property(nonatomic, strong) id aOldValue;
@@ -26,18 +26,18 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 ///新值
 @property(nonatomic, strong) id aNewValue;
 
-+ (instancetype)modelWithCallback:(GKObserverCallback) callback;
++ (instancetype)modelWithCallback:(GKKVOCallback) callback;
 
 ///重置
 - (void)reset;
 
 @end
 
-@implementation GKObserverCallbackModel
+@implementation GKKVOCallbackModel
 
-+ (instancetype)modelWithCallback:(GKObserverCallback)callback
++ (instancetype)modelWithCallback:(GKKVOCallback)callback
 {
-    GKObserverCallbackModel *model = [GKObserverCallbackModel new];
+    GKKVOCallbackModel *model = [GKKVOCallbackModel new];
     model.callback = callback;
     
     return model;
@@ -60,25 +60,34 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 
 @end
 
-@interface GKObservable()
+@interface GKKVOHelper()
 
 ///当前监听的属性
 @property(nonatomic, strong) NSMutableSet<NSString*> *observingKeyPaths;
 
 ///回调
-@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSMutableDictionary<NSString*, id>*> *observerCallbacks;
+@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSMutableDictionary<NSString*, id>*> *callbacks;
 
+///被观察者
+@property(nonatomic, weak) NSObject *owner;
 
 @end
 
-@implementation GKObservable
+@implementation GKKVOHelper
 
-- (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback
++ (instancetype)helperWithOwner:(NSObject *)owner
+{
+    GKKVOHelper *helper = [GKKVOHelper new];
+    helper.owner = owner;
+    return helper;
+}
+
+- (void)addObserver:(NSObject*)observer callback:(GKKVOCallback)callback
 {
     [self addObserver:observer callback:callback forKeyPaths:@[]];
 }
 
-- (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
+- (void)addObserver:(NSObject*)observer callback:(GKKVOCallback)callback forKeyPath:(NSString *)keyPath
 {
     NSParameterAssert(observer != nil);
     NSParameterAssert(callback != nil);
@@ -87,7 +96,7 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     [self _addObserver:observer callback:callback forKeyPath:keyPath];
 }
 
-- (void)addObserver:(NSObject*)observer callback:(GKObserverCallback)callback forKeyPaths:(NSArray<NSString *> *)keyPaths
+- (void)addObserver:(NSObject*)observer callback:(GKKVOCallback)callback forKeyPaths:(NSArray<NSString *> *)keyPaths
 {
     NSParameterAssert(observer != nil);
     NSParameterAssert(callback != nil);
@@ -97,25 +106,25 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
             [self _addObserver:observer callback:callback forKeyPath:keyPath];
         }
     }else{
-        [self addObserver:observer callback:callback forClaass:self.class];
+        [self addObserver:observer callback:callback forClaass:self.owner.class];
     }
 }
 
-- (void)addObserver:(NSObject *)observer manualCallback:(GKObserverCallback)callback forKeyPath:(NSString *)keyPath
+- (void)addObserver:(NSObject *)observer manualCallback:(GKKVOCallback)callback forKeyPath:(NSString *)keyPath
 {
     NSParameterAssert(observer != nil);
     NSParameterAssert(callback != nil);
     NSParameterAssert(keyPath != nil);
     
-    [self _addObserver:observer callback:[GKObserverCallbackModel modelWithCallback:callback] forKeyPath:keyPath];
+    [self _addObserver:observer callback:[GKKVOCallbackModel modelWithCallback:callback] forKeyPath:keyPath];
 }
 
 - (void)flushManualCallbackForObserver:(NSObject *)observer
 {
-    NSMutableDictionary *dic = _observerCallbacks[@(observer.hash)];
+    NSMutableDictionary *dic = _callbacks[@(observer.hash)];
     for(id key in dic){
-        GKObserverCallbackModel *model = dic[key];
-        if([model isKindOfClass:GKObserverCallbackModel.class] && model.hasOldValue){
+        GKKVOCallbackModel *model = dic[key];
+        if([model isKindOfClass:GKKVOCallbackModel.class] && model.hasOldValue){
             model.callback(key, model.aNewValue, model.aOldValue);
             [model reset];
         }
@@ -126,7 +135,7 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 {
     NSParameterAssert(observer != nil);
     
-    [_observerCallbacks removeObjectForKey:@(observer.hash)];
+    [_callbacks removeObjectForKey:@(observer.hash)];
 }
 
 - (void)removeObserver:(NSObject*)observer forOneKeyPath:(NSString *)keyPath
@@ -135,11 +144,11 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     NSParameterAssert(keyPath != nil);
     
     id key = @(observer.hash);
-    NSMutableDictionary *dic = _observerCallbacks[key];
+    NSMutableDictionary *dic = _callbacks[key];
     [dic removeObjectForKey:keyPath];
     
     if(dic.count == 0){
-        [_observerCallbacks removeObjectForKey:key];
+        [_callbacks removeObjectForKey:key];
     }
 }
 
@@ -149,13 +158,13 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     NSParameterAssert(keyPaths != nil);
     
     id key = @(observer.hash);
-    NSMutableDictionary *dic = _observerCallbacks[key];
+    NSMutableDictionary *dic = _callbacks[key];
     for(NSString *keyPath in keyPaths){
         [dic removeObjectForKey:keyPath];
     }
     
     if(dic.count == 0){
-        [_observerCallbacks removeObjectForKey:key];
+        [_callbacks removeObjectForKey:key];
     }
 }
 
@@ -170,18 +179,18 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
     return _observingKeyPaths;
 }
 
-- (NSMutableDictionary<NSNumber *,NSMutableDictionary<NSString *,GKObserverCallback> *> *)observerCallbacks
+- (NSMutableDictionary<NSNumber *,NSMutableDictionary<NSString *,id> *> *)callbacks
 {
-    if(!_observerCallbacks){
-        _observerCallbacks = [NSMutableDictionary new];
+    if(!_callbacks){
+        _callbacks = [NSMutableDictionary new];
     }
     
-    return _observerCallbacks;
+    return _callbacks;
 }
 
-- (void)addObserver:(NSObject*) observer callback:(GKObserverCallback) callback forClaass:(Class) cls
+- (void)addObserver:(NSObject*) observer callback:(GKKVOCallback) callback forClaass:(Class) cls
 {
-    if(cls == [GKObservable class]){
+    if(cls == nil || cls == [NSObject class]){
         return;
     }
     
@@ -219,15 +228,15 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 - (void)_addObserver:(NSObject*)observer callback:(id)callback forKeyPath:(NSString *)keyPath
 {
     if(![self.observingKeyPaths containsObject:keyPath]){
-        [self addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:GKObservableContext];
+        [self.owner addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:GKOKVOContext];
         [self.observingKeyPaths addObject:keyPath];
     }
     
     id key = @(observer.hash);
-    NSMutableDictionary *dic = self.observerCallbacks[key];
+    NSMutableDictionary *dic = self.callbacks[key];
     if(!dic){
         dic = [NSMutableDictionary dictionary];
-        self.observerCallbacks[key] = dic;
+        self.callbacks[key] = dic;
     }
     
     dic[keyPath] = callback;
@@ -235,15 +244,15 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-    if(context == GKObservableContext){
-        for(id key in _observerCallbacks){
-            id value = _observerCallbacks[key][keyPath];
-            if([value isKindOfClass:GKObserverCallbackModel.class]){
-                GKObserverCallbackModel *model = value;
+    if(context == GKOKVOContext){
+        for(id key in _callbacks){
+            id value = _callbacks[key][keyPath];
+            if([value isKindOfClass:GKKVOCallbackModel.class]){
+                GKKVOCallbackModel *model = value;
                 model.aOldValue = change[NSKeyValueChangeOldKey];
                 model.aNewValue = change[NSKeyValueChangeNewKey];
             }else{
-                GKObserverCallback callback = value;
+                GKKVOCallback callback = value;
                 !callback ?: callback(keyPath, change[NSKeyValueChangeNewKey], change[NSKeyValueChangeOldKey]);
             }
         }
@@ -255,7 +264,7 @@ static void* const GKObservableContext = "com.glikit.GKObservableContext";
 - (void)dealloc
 {
     for(NSString *keyPath in _observingKeyPaths){
-        [self removeObserver:self forKeyPath:keyPath context:GKObservableContext];
+        [self.owner removeObserver:self forKeyPath:keyPath context:GKOKVOContext];
     }
 }
 

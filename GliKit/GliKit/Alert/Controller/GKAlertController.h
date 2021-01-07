@@ -28,34 +28,22 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
  */
 @interface GKAlertController : GKBaseViewController
 
-/**
- 样式
- */
+///样式
 @property(nonatomic, readonly) GKAlertControllerStyle style;
 
-/**
- 弹窗属性 默认使用单例
- */
+///弹窗属性 默认使用单例
 @property(nonatomic, strong) GKAlertProps *props;
 
-/**
- 具有警示意义的按钮 下标，default is ’NSNotFound‘，表示没有这个按钮
- */
+///具有警示意义的按钮 下标，default `NSNotFound`，表示没有这个按钮
 @property(nonatomic, assign) NSUInteger destructiveButtonIndex;
 
-/**
- 是否关闭弹窗当点击某一个按钮的时候 default is 'YES'
- */
-@property(nonatomic, assign) BOOL dismissWhenSelectButton;
+///是否关闭弹窗当点击某一个按钮的时候 default `YES`
+@property(nonatomic, assign) BOOL dismissAfterClickButton;
 
-/**
- 按钮 不包含actionSheet 的取消按钮
- */
+///按钮 不包含`actionSheet` 的取消按钮
 @property(nonatomic, readonly, copy) NSArray<GKAlertAction*> *alertActions;
 
-/**
- 点击回调 index 按钮下标 包含取消按钮 actionSheet 从上到下， alert 从左到右
- */
+///点击回调 `index` 按钮下标 包含取消按钮 `actionSheet` 从上到下， `alert` 从左到右
 @property(nonatomic, copy, nullable) void(^selectionHandler)(NSUInteger index);
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -72,16 +60,13 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
                              message:(nullable id) message
                    otherButtonTitles:(nullable NSArray<NSString*>*) otherButtonTitles;
 
-/**
- 实例化一个弹窗
- @param title 标题 NSString 或者 NSAttributedString
- @param message 信息 NSString 或者 NSAttributedString
- @param icon 图标
- @param style 样式
- @param cancelButtonTitle 取消按钮 default is ‘取消’
- @param otherButtonTitles 按钮
- @return 一个实例
- */
+/// 实例化一个弹窗
+/// @param title 标题 NSString 或者 NSAttributedString
+/// @param message 信息 NSString 或者 NSAttributedString
+/// @param icon 图标
+/// @param style 样式
+/// @param cancelButtonTitle 取消按钮 default `取消`
+/// @param otherButtonTitles 按钮
 - (instancetype)initWithTitle:(nullable id) title
                       message:(nullable id) message
                          icon:(nullable UIImage*) icon
@@ -89,16 +74,13 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
             cancelButtonTitle:(nullable NSString *) cancelButtonTitle
             otherButtonTitles:(nullable NSArray<NSString*>*) otherButtonTitles;
 
-/**
- 实例化一个弹窗
- @param title 标题 NSString 或者 NSAttributedString
- @param message 信息 NSString 或者 NSAttributedString
- @param icon 图标
- @param style 样式
- @param cancelButtonTitle 取消按钮 default is ‘取消’
- @param actions 按钮
- @return 一个实例
- */
+/// 实例化一个弹窗
+/// @param title 标题 NSString 或者 NSAttributedString
+/// @param message 信息 NSString 或者 NSAttributedString
+/// @param icon 图标
+/// @param style 样式
+/// @param cancelButtonTitle 取消按钮 default `取消`
+/// @param actions 按钮
 - (instancetype)initWithTitle:(nullable id) title
                       message:(nullable id) message
                          icon:(nullable UIImage*) icon
@@ -106,24 +88,16 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
             cancelButtonTitle:(nullable NSString *) cancelButtonTitle
            otherButtonActions:(nullable NSArray<GKAlertAction*>*) actions NS_DESIGNATED_INITIALIZER;
 
-/**
- 更新某个按钮 不包含actionSheet 的取消按钮
- */
+///更新某个按钮 不包含`actionSheet` 的取消按钮
 - (void)reloadButtonForIndex:(NSUInteger) index;
 
-/**
- 通过下标回去按钮标题
- */
+///通过下标回去按钮标题
 - (nullable NSString*)buttonTitleForIndex:(NSUInteger) index;
 
-/**
- 显示弹窗
- */
+///显示弹窗
 - (void)show;
 
-/**
- 隐藏弹窗
- */
+///隐藏弹窗
 - (void)dismiss;
 
 @end

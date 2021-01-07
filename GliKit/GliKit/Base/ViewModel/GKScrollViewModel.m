@@ -91,9 +91,9 @@
     
 }
 
-- (void)stopLoadMoreWithMore:(BOOL)flag
+- (void)stopLoadMoreWithMore:(BOOL)hasMore
 {
-    [self.viewController stopLoadMoreWithMore:flag];
+    [self.viewController stopLoadMoreWithMore:hasMore];
 }
 
 - (void)stopLoadMoreWithFail

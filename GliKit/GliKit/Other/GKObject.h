@@ -10,7 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class GKKVOHelper;
+
 @interface GKObject: NSObject
+
+///kvo帮助类 懒加载
+@property(nonatomic, readonly) GKKVOHelper *kvoHelper;
 
 /**
  通过字典创建
@@ -27,7 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return 如果array 大于0 返回包含对应子类的数组，否则返回nil
  */
 + (nullable NSMutableArray*)modelsFromArray:(nullable NSArray<NSDictionary*>*) array;
-
 
 /**
  通过数组字典创建一个数组

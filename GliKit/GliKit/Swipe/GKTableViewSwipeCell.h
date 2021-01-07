@@ -17,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setSwipeShow:(BOOL) show direction:(GKSwipeDirection) direction animated:(BOOL) animated;
 
 ///为了调用父类方法
-- (void)willMoveToSuperview:(UIView *)newSuperview NS_REQUIRES_SUPER;
-- (void)willMoveToWindow:(UIWindow *)newWindow NS_REQUIRES_SUPER;
+- (void)willMoveToSuperview:(nullable UIView *)newSuperview NS_REQUIRES_SUPER;
+- (void)willMoveToWindow:(nullable UIWindow *)newWindow NS_REQUIRES_SUPER;
 
 @end
 

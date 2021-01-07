@@ -50,6 +50,9 @@ static NSString *myStaticTest = @"my test";
 ///xx
 @property(nonatomic, assign) CGRect rectValue;
 
+///x
+@property(nonatomic, readonly) NSString *stringValue;
+
 + (instancetype)modelWithTitle:(NSString*) title clazz:(NSString*) clazz;
 
 @end

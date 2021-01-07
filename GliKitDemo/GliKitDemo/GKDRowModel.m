@@ -13,6 +13,8 @@
 
 @property(nonatomic, strong) NSString *name;
 
+
+
 - (void)test;
 
 @end
@@ -26,7 +28,17 @@
 
 @end
 
+@interface GKDRowModel ()
+
+
+@end
+
 @implementation GKDRowModel
+
++ (void)initialize
+{
+    NSLog(@"GKDRowModel initialize %@", UIApplication.sharedApplication.delegate);
+}
 
 @synthesize className;
 
@@ -62,6 +74,11 @@ GKConvenientCopying
 - (BOOL)boolValue
 {
     return YES;
+}
+
+- (NSString *)stringValue
+{
+    return @"xx";
 }
 
 @end

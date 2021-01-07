@@ -117,6 +117,7 @@
             case AVAuthorizationStatusRestricted : {
                 [self onAuthorizationDenied];
             }
+                break;
             case AVAuthorizationStatusAuthorized : {
                 [self setupSession];
             }

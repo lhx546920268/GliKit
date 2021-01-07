@@ -7,8 +7,11 @@
 //
 
 #import "GKObject.h"
+#import "GKKVOHelper.h"
 
 @implementation GKObject
+
+@synthesize kvoHelper = _kvoHelper;
 
 + (instancetype)modelFromDictionary:(NSDictionary*) dic
 {
@@ -50,6 +53,14 @@
 - (void)setDictionary:(NSDictionary*) dic
 {
     
+}
+
+- (GKKVOHelper *)kvoHelper
+{
+    if(!_kvoHelper){
+        _kvoHelper = [GKKVOHelper helperWithOwner:self];
+    }
+    return _kvoHelper;
 }
 
 @end

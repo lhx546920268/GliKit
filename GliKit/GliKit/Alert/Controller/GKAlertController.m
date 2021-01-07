@@ -21,44 +21,28 @@
 
 @interface GKAlertController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate>
 
-/**
- 按钮列表
- */
+///按钮列表
 @property(nonatomic, strong) UICollectionView *collectionView;
 
-/**
- 头部
- */
+///头部
 @property(nonatomic, strong) GKAlertHeader *header;
 
-/**
- 取消按钮 用于 actionSheet
- */
+///取消按钮 用于 `actionSheet`
 @property(nonatomic, strong) UIButton *cancelButton;
 
-/**
- 取消按钮标题
- */
+///取消按钮标题
 @property(nonatomic, copy) NSString *cancelTitle;
 
-/**
- 标题 NSString 或者 NSAttributedString
- */
+///标题 NSString 或者 NSAttributedString
 @property(nonatomic, copy) id alertTitle;
 
-/**
- 信息 NSString 或者 NSAttributedString
- */
+///信息 NSString 或者 NSAttributedString
 @property(nonatomic, copy) id message;
 
-/**
- 图标
- */
+///图标
 @property(nonatomic, strong) UIImage *icon;
 
-/**
- 按钮
- */
+///按钮
 @property(nonatomic, strong) NSMutableArray<GKAlertAction*> *actions;
 
 @end
@@ -101,8 +85,8 @@
             cancelButtonTitle:(NSString *)cancelButtonTitle
            otherButtonActions:(NSArray<GKAlertAction *> *)actions
 {
-    NSAssert(!title || [title isKindOfClass:[NSString class]] || [title isKindOfClass:[NSAttributedString class]], @"GKAlertController title 必须为 nil 或者 NSString 或者 NSAttributedString");
-    NSAssert(!message || [message isKindOfClass:[NSString class]] || [message isKindOfClass:[NSAttributedString class]], @"GKAlertController message 必须为 nil 或者 NSString 或者 NSAttributedString");
+    NSAssert(!title || [title isKindOfClass:NSString.class] || [title isKindOfClass:NSAttributedString.class], @"GKAlertController title 必须为 nil 或者 NSString 或者 NSAttributedString");
+    NSAssert(!message || [message isKindOfClass:NSString.class] || [message isKindOfClass:NSAttributedString.class], @"GKAlertController message 必须为 nil 或者 NSString 或者 NSAttributedString");
     
     self = [super initWithNibName:nil bundle:nil];
     
@@ -113,7 +97,6 @@
         self.icon = icon;
         
         self.cancelTitle = cancelButtonTitle;
-        
         _style = style;
         
         self.actions = [NSMutableArray arrayWithArray:actions];
@@ -133,19 +116,18 @@
                 }
             }
                 break;
-            case GKAlertControllerStyleActionSheet :{
-                
-            }
+            case GKAlertControllerStyleActionSheet :
                 break;
         }
         
-        [self initilization];
+        [self initProps];
     }
     
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.dialogShowAnimate = GKDialogAnimateCustom;
@@ -155,11 +137,11 @@
 }
 
 ///属性初始化
-- (void)initilization
+- (void)initProps
 {
     self.dialogShouldUseNewWindow = YES;
     _destructiveButtonIndex = NSNotFound;
-    _dismissWhenSelectButton = YES;
+    _dismissAfterClickButton = YES;
 }
 
 // MARK: - layout
@@ -321,15 +303,12 @@
 - (CGFloat)alertViewWidth
 {
     switch (_style){
-        case GKAlertControllerStyleAlert : {
+        case GKAlertControllerStyleAlert :
             return 260 + UIApplication.gkSeparatorHeight;
-        }
-            break;
         case GKAlertControllerStyleActionSheet : {
             GKAlertProps *props = self.props;
             return self.view.gkWidth - props.contentInsets.left - props.contentInsets.right;
         }
-            break;
     }
 }
 
@@ -361,13 +340,13 @@
 {
     GKAlertProps *props = self.props;
     
-    ///头部高度
+    //头部高度
     CGFloat headerHeight = 0;
     if(self.header){
         headerHeight = self.header.gkHeight;
     }
     
-    ///按钮高度
+    //按钮高度
     CGFloat buttonHeight = 0;
     
     if(self.actions.count > 0){
@@ -391,9 +370,8 @@
     }
     
     
-    ///取消按钮高度
+    //取消按钮高度
     CGFloat cancelHeight = self.cancelButton ? (self.cancelButton.gkHeight + props.contentInsets.bottom) : 0;
-    
     CGFloat maxContentHeight = self.view.gkHeight - props.contentInsets.top - props.contentInsets.bottom - cancelHeight;
     
     CGRect frame = self.collectionView.frame;
@@ -462,8 +440,7 @@
     switch (_style){
         case GKAlertControllerStyleAlert : {
             self.container.alpha = 0;
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
+            [UIView animateWithDuration:0.25 animations:^{
                 self.dialogBackgroundView.alpha = 1.0;
                 self.container.alpha = 1.0;
                 CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
@@ -471,12 +448,17 @@
                 animation.toValue = @(1.0);
                 animation.duration = 0.25;
                 [self.container.layer addAnimation:animation forKey:@"scale"];
-            }completion:completion];
+            } completion:completion];
         }
             break;
         case GKAlertControllerStyleActionSheet : {
             GKAlertProps *props = self.props;
-            [UIView animateWithDuration:0.25 animations:^(void){
+            [UIView animateWithDuration:0.5
+                                  delay:0
+                 usingSpringWithDamping:1.0
+                  initialSpringVelocity:0
+                                options:UIViewAnimationOptionBeginFromCurrentState
+                             animations:^(void){
                 
                 CGFloat spacing = self.cancelButton ? props.cancelButtonVerticalSpacing : 0;
                 self.dialogBackgroundView.alpha = 1.0;
@@ -491,22 +473,27 @@
 - (void)didExecuteDialogDismissCustomAnimate:(void (^)(BOOL))completion
 {
     switch (_style){
-        case GKAlertControllerStyleActionSheet : {
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                self.dialogBackgroundView.alpha = 0;
-                self.container.gkTop = self.view.gkHeight;
-                GKAlertProps *props = self.props;
-                self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
-                
-            }completion:completion];
-        }
-            break;
         case GKAlertControllerStyleAlert : {
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.dialogBackgroundView.alpha = 0;
                 self.container.alpha = 0;
+                
+            }completion:completion];
+        }
+            break;
+        case GKAlertControllerStyleActionSheet : {
+            [UIView animateWithDuration:0.5
+                                  delay:0
+                 usingSpringWithDamping:1.0
+                  initialSpringVelocity:0
+                                options:UIViewAnimationOptionBeginFromCurrentState
+                             animations:^(void){
+                
+                self.dialogBackgroundView.alpha = 0;
+                self.container.gkTop = self.view.gkHeight;
+                GKAlertProps *props = self.props;
+                self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
                 
             }completion:completion];
         }
@@ -635,13 +622,12 @@
     
     GKAlertAction *action = self.actions[indexPath.item];
     if(action.enable){
-        if(self.dismissWhenSelectButton){
+        if(self.dismissAfterClickButton){
             
             void(^handler)(NSUInteger index) = self.selectionHandler;
-            self.dialogDismissCompletionHandler = ^{
+            [self dismissDialogAnimated:YES completion:^{
                 !handler ?: handler(indexPath.item);
-            };
-            [self dismiss];
+            }];
         }else{
             !self.selectionHandler ?: self.selectionHandler(indexPath.item);
         }

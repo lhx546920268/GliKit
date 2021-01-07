@@ -65,7 +65,7 @@ static NSMutableSet* GKSharedTasks()
 - (NSString*)name
 {
     if(_name == nil){
-        return NSStringFromClass([self class]);
+        return NSStringFromClass(self.class);
     }
     
     return _name;
@@ -92,7 +92,6 @@ static NSMutableSet* GKSharedTasks()
                 
                 [selfWeak processError:error];
             }];
-            
         }else{
             _URLSessionTask = [manager dataTaskWithHTTPMethod:self.httpMethod URLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval success:^(NSURLSessionTask *task, NSDictionary * responseObject) {
                 
@@ -110,7 +109,7 @@ static NSMutableSet* GKSharedTasks()
 ///处理http请求请求成功的结果
 - (void)processSuccessResult:(NSDictionary*) result
 {
-    if([result isKindOfClass:[NSDictionary class]]){
+    if([result isKindOfClass:NSDictionary.class]){
         _data = result;
         _isApiSuccess = [self onLoadData:_data];
         if(_isApiSuccess){

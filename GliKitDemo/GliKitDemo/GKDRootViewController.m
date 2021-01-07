@@ -10,9 +10,10 @@
 #import "GKDRowModel.h"
 #import <GKAppUtils.h>
 #import <GKTableViewSwipeCell.h>
-#import <GKObservable.h>
+#import <GKObject.h>
+#import <GKKVOHelper.h>
 
-@interface DemoObservable : GKObservable
+@interface DemoObservable : GKObject
 
 ///x
 @property(nonatomic, assign) NSInteger intValue;
@@ -35,6 +36,12 @@
 @end
 
 @implementation GKDRootListCell
+
+@end
+
+@interface GKDRowModel(Readonly)
+
+@property(nonatomic, copy) NSString *stringValue;
 
 @end
 
@@ -86,13 +93,18 @@
     [UIApplication.sharedApplication endBackgroundTask:identifier];
     
     self.demo = [DemoObservable new];
-    [self.demo addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
+    [self.demo.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
         NSLog(@"%@, %d, %@", keyPath, [newValue intValue], oldValue);
     } forKeyPath:@"intValue"];
     
-    [self.demo addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
+    [self.demo.kvoHelper addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
         NSLog(@"manualCallback %@, %d, %@", keyPath, [newValue intValue], oldValue);
     } forKeyPath:@"integerValue"];
+    
+    GKDRowModel *model = GKDRowModel.new;
+    [model setValue:@"string value" forKey:@"stringValue"];
+    
+    NSLog(@"row %@", model.stringValue);
 }
 
 - (void)initViews
@@ -130,7 +142,7 @@
     self.demo.intValue = indexPath.row;
     self.demo.integerValue = indexPath.row;
     if(indexPath.row == 5){
-        [self.demo flushManualCallbackForObserver:self];
+        [self.demo.kvoHelper flushManualCallbackForObserver:self];
     }
     GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
     [GKRouter.sharedRouter pushApp:model.className];
