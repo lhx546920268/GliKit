@@ -24,6 +24,9 @@
 ///x
 @property(nonatomic, copy) NSString *stringValue;
 
+///
+@property(nonatomic, assign) CGSize sizeValue;
+
 @end
 
 @implementation DemoObservable
@@ -82,6 +85,8 @@
 
     [self initViews];
 
+    CGRect rect = {1, 2, 3, 5};
+    NSLog(@"rect = %@", NSStringFromCGRect(rect));
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
     
     __block UIBackgroundTaskIdentifier identifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:^{
@@ -103,8 +108,6 @@
     
     GKDRowModel *model = GKDRowModel.new;
     [model setValue:@"string value" forKey:@"stringValue"];
-    
-    NSLog(@"row %@", model.stringValue);
 }
 
 - (void)initViews

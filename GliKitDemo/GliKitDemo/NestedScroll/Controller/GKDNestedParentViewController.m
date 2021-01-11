@@ -44,7 +44,7 @@
     [self registerClass:[GKDNestedPageCell class]];
     
     self.tableView.gkNestedParent = YES;
-    self.tableView.gkNestedScrollEnable = YES;
+    self.tableView.gkNestedScrollEnabled = YES;
     [super initViews];
 }
 

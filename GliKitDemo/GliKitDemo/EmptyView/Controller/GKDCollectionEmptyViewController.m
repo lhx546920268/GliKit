@@ -88,7 +88,7 @@
     [self registerClass:GKDCollectionEmptyCell.class];
     [self initViews];
     self.collectionView.gkShouldShowEmptyView = YES;
-    self.refreshEnable = YES;
+    self.refreshEnabled = YES;
 }
 
 - (void)onRefesh

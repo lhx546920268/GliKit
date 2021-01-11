@@ -19,8 +19,8 @@
     [super viewDidLoad];
     
     self.selectedColor = [UIColor gkColorFromHex:@"0FD7C8"];
-    self.itemInfos = @[[GKTabBarItemInfo infoWithTitle:@"首页" normalImage:[UIImage imageNamed:@"tab_home_n"] selectedImage:[UIImage imageNamed:@"tab_home_s"] viewController:[GKDRootViewController new].gkCreateWithNavigationController],
-                       [GKTabBarItemInfo infoWithTitle:@"我的" normalImage:[UIImage imageNamed:@"tab_me_n"] selectedImage:[UIImage imageNamed:@"tab_me_s"] viewController:[UIViewController new].gkCreateWithNavigationController]];
+    self.items = @[[GKTabBarItem itemWithTitle:@"首页" normalImage:[UIImage imageNamed:@"tab_home_n"] selectedImage:[UIImage imageNamed:@"tab_home_s"] viewController:[GKDRootViewController new].gkCreateWithNavigationController],
+                       [GKTabBarItem itemWithTitle:@"我的" normalImage:[UIImage imageNamed:@"tab_me_n"] selectedImage:[UIImage imageNamed:@"tab_me_s"] viewController:[UIViewController new].gkCreateWithNavigationController]];
 }
 
 

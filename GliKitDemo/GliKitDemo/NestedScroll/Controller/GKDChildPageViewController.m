@@ -25,10 +25,10 @@
 - (void)initViews
 {
     [self registerClass:[UITableViewCell class]];
-    self.tableView.gkNestedScrollEnable = YES;
+    self.tableView.gkNestedScrollEnabled = YES;
     [super initViews];
   //  self.refreshEnable = YES;
-    self.loadMoreEnable = YES;
+    self.loadMoreEnabled = YES;
     [self stopLoadMoreWithMore:YES];
 }
 
