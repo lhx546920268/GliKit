@@ -63,12 +63,15 @@ static NSMutableSet* GKSharedContainers()
 
 - (void)addTask:(GKHttpTask *)task
 {
-    [self addTask:task forKey:[task gkNameOfClass]];
+    [self addTask:task forKey:task.gkNameOfClass];
 }
 
 - (void)addTask:(GKHttpTask*) task forKey:(NSString *)key
 {
-    [self.taskDictionary setObject:task forKey:key];
+    NSParameterAssert(task != nil);
+    NSParameterAssert(key != nil);
+    
+    self.taskDictionary[key] = task;
     [self.tasks addObject:task];
     task.delegate = self;
 }
@@ -88,43 +91,61 @@ static NSMutableSet* GKSharedContainers()
 - (void)cancelAllTasks
 {
     [self.lock lock];
-    for(GKHttpTask *task in self.tasks){
-        [task cancel];
+    if(_isExecuting){
+        _isExecuting = NO;
+        for(GKHttpTask *task in self.tasks){
+            [task cancel];
+        }
+        [self.tasks removeAllObjects];
+        [self.taskDictionary removeAllObjects];
+        
+        [GKSharedContainers() removeObject:self];
     }
-    [self.tasks removeAllObjects];
-    [self.taskDictionary removeAllObjects];
-    
-    [GKSharedContainers() removeObject:self];
     [self.lock unlock];
 }
 
 - (__kindof GKHttpTask*)taskForKey:(NSString*) key
 {
-    return [self.taskDictionary objectForKey:key];
+    return self.taskDictionary[key];
 }
 
 ///开始任务
 - (void)startTask
 {
+    NSAssert(self.tasks.count > 0, @"%@ 至少有一个任务", self.gkNameOfClass);
     [self.lock lock];
-    [GKSharedContainers() addObject:self];
-    self.hasFail = NO;
-    
-    if(self.concurrent){
-        for(GKHttpTask *task in self.tasks){
-            [task start];
+    if(!_isExecuting){
+        _isExecuting = YES;
+        [GKSharedContainers() addObject:self];
+        self.hasFail = NO;
+        
+        if(self.concurrent){
+            for(GKHttpTask *task in self.tasks){
+                [task start];
+            }
+        }else{
+            [self startNextTaskIfNeeded:nil];
         }
-    }else{
-        [self startNextTask];
     }
+    
     [self.lock unlock];
 }
 
 ///开始执行下一个任务 串行时用到
-- (void)startNextTask
+- (void)startNextTaskIfNeeded:(GKHttpTask*) currentTask
 {
-    GKHttpTask *task = [self.tasks firstObject];
-    [task start];
+    GKHttpTask *task = nil;
+    if(self.tasks.count > 0){
+        task = [self.tasks firstObject];
+    }else if(self.nextTaskHandler != nil){
+        task = self.nextTaskHandler(currentTask);
+    }
+    
+    if(task){
+        [task start];
+    }else{
+        [self onComplete];
+    }
 }
 
 ///删除任务
@@ -132,28 +153,31 @@ static NSMutableSet* GKSharedContainers()
 {
     [self.lock lock];
     [self.tasks removeObject:task];
-    [self.lock unlock];
     
     if(!success){
         self.hasFail = YES;
         if(self.shouldCancelAllTaskWhileOneFail){
-            [self.lock lock];
             for(GKHttpTask *task in self.tasks){
                 [task cancel];
             }
             [self.tasks removeAllObjects];
-            [self.lock unlock];
         }
     }
     
-    if(self.tasks.count == 0){
-        !self.completionHandler ?: self.completionHandler(self, self.hasFail);
-        [self.taskDictionary removeAllObjects];
-        [GKSharedContainers() removeObject:self];
-        
-    }else if (!self.concurrent){
-        [self startNextTask];
+    if (!self.concurrent){
+        [self startNextTaskIfNeeded:task];
+    } else if(self.tasks.count == 0){
+        [self onComplete];
     }
+    [self.lock unlock];
+}
+
+- (void)onComplete
+{
+    _isExecuting = NO;
+    !self.completionHandler ?: self.completionHandler(self, self.hasFail);
+    [self.taskDictionary removeAllObjects];
+    [GKSharedContainers() removeObject:self];
 }
 
 // MARK: - GKHttpTaskDelegate

@@ -23,6 +23,7 @@ static char GKLoadMoreControlKey;
 
 - (__kindof GKRefreshControl*)gkAddRefreshWithHandler:(GKDataControlHandler)handler
 {
+    NSParameterAssert(handler != nil);
     GKRefreshControl *refreshControl = self.gkRefreshControl;
     if(!refreshControl){
         refreshControl = [[[GKRefreshStyle sharedInstance].refreshClass alloc] initWithScrollView:self];
@@ -79,6 +80,7 @@ static char GKLoadMoreControlKey;
 
 - (__kindof GKLoadMoreControl*)gkAddLoadMoreWithHandler:(GKDataControlHandler)handler
 {
+    NSParameterAssert(handler != nil);
     GKLoadMoreControl *loadMoreControl = self.gkLoadMoreControl;
     if(!loadMoreControl){
         loadMoreControl = [[[GKRefreshStyle sharedInstance].loadMoreClass alloc] initWithScrollView:self];

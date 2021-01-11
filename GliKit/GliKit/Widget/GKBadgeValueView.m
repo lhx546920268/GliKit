@@ -26,11 +26,16 @@
 
 @implementation GKBadgeValueView
 
+@synthesize textColor = _textColor;
+@synthesize fillColor = _fillColor;
+@synthesize strokeColor = _strokeColor;
+@synthesize font = _font;
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self){
-        [self initParams];
+        [self initProps];
     }
     return self;
 }
@@ -39,23 +44,19 @@
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        [self initParams];
+        [self initProps];
     }
     
     return self;
 }
 
-- (void)initParams
+- (void)initProps
 {
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = UIColor.clearColor;
     self.userInteractionEnabled = NO;
     self.shouldAutoAdjustSize = YES;
     _contentInsets = UIEdgeInsetsMake(3, 5, 3, 5);
     
-    _fillColor = [UIColor redColor];
-    _strokeColor = [UIColor clearColor];
-    _textColor = [UIColor whiteColor];
-    _font = [UIFont boldSystemFontOfSize:9];
     _pointRadius = 4;
     _hideWhenZero = YES;
     _max = 99;
@@ -119,8 +120,8 @@
         
         //绘制文字
         CGPoint point = CGPointMake((width - _textSize.width) / 2, (height - _textSize.height) / 2);
-        NSDictionary *attrs = @{NSFontAttributeName : _font,
-                                NSForegroundColorAttributeName : _textColor
+        NSDictionary *attrs = @{NSFontAttributeName : self.font,
+                                NSForegroundColorAttributeName : self.textColor
                                 };
         [self.value drawAtPoint:point withAttributes:attrs];
     }
@@ -156,45 +157,53 @@
 - (void)setTextColor:(UIColor *)textColor
 {
     if(![_textColor isEqualToColor:textColor]){
-        if(!textColor){
-            textColor = [UIColor whiteColor];
-        }
         _textColor = textColor;
         [self setNeedsDisplay];
     }
 }
 
+- (UIColor *)textColor
+{
+    return _textColor ? _textColor : UIColor.whiteColor;
+}
+
 - (void)setFont:(UIFont *)font
 {
     if(![_font isEqualToFont:font]){
-        if(!font){
-            font = [UIFont appFontWithSize:13];
-        }
         _font = font;
         [self refresh];
     }
 }
 
+- (UIFont *)font
+{
+    return _font ? _font : [UIFont appFontWithSize:13];
+}
+
 - (void)setFillColor:(UIColor *)fillColor
 {
     if(![_fillColor isEqualToColor:fillColor]){
-        if(!fillColor){
-            fillColor = [UIColor redColor];
-        }
         _fillColor = fillColor;
         [self setNeedsDisplay];
     }
 }
 
+- (UIColor *)fillColor
+{
+    return _fillColor ? _fillColor : UIColor.redColor;
+}
+
 - (void)setStrokeColor:(UIColor *)strokeColor
 {
     if(![_strokeColor isEqualToColor:strokeColor]){
-        if(!strokeColor){
-            strokeColor = [UIColor clearColor];
-        }
         _strokeColor = strokeColor;
         [self setNeedsDisplay];
     }
+}
+
+- (UIColor *)strokeColor
+{
+    return _strokeColor ? _strokeColor : UIColor.clearColor;
 }
 
 - (void)setValue:(NSString *)value

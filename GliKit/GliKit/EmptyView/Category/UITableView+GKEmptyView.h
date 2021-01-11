@@ -11,16 +11,16 @@
 ///用于UITableView的空视图扩展
 @interface UITableView (GKEmptyView)
 
-///存在 tableHeaderView 时，是否显示空视图 default is 'YES'
+///存在 tableHeaderView 时，是否显示空视图 default `YES`
 @property(nonatomic, assign) BOOL gkShouldIgnoreTableHeader;
 
-///存在 tableFooterView 时，是否显示空视图 default is 'YES'
+///存在 tableFooterView 时，是否显示空视图 default `YES`
 @property(nonatomic, assign) BOOL gkShouldIgnoreTableFooter;
 
-///存在 sectionHeader 时，是否显示空视图 default is 'NO'
+///存在 sectionHeader 时，是否显示空视图 default `NO`
 @property(nonatomic, assign) BOOL gkShouldIgnoreSectionHeader;
 
-///存在 sectionFooter 时，是否显示空视图 default is 'NO'
+///存在 sectionFooter 时，是否显示空视图 default `NO`
 @property(nonatomic, assign) BOOL gkShouldIgnoreSectionFooter;
 
 @end

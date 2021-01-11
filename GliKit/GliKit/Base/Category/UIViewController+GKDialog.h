@@ -36,9 +36,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
  */
 @interface UIViewController (GKDialog)
 
-/**
- 是否以弹窗的样式显示 default is 'NO'
- */
+///是否以弹窗的样式显示 default `NO`
 @property(nonatomic, readonly) BOOL isShowAsDialog;
 
 /**
@@ -47,105 +45,63 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
  */
 @property(nonatomic, strong, nullable) UIView *dialog;
 
-/**
- 是否使用新窗口显示 使用新窗口显示可以保证 弹窗始终显示在最前面 必须在 showAsDialog 前设置
- */
+///是否使用新窗口显示 使用新窗口显示可以保证 弹窗始终显示在最前面 必须在 showAsDialog 前设置
 @property(nonatomic, assign) BOOL dialogShouldUseNewWindow;
 
-/**
- 关联的窗口
- */
+///关联的窗口
 @property(nonatomic, readonly, nullable) UIWindow *dialogWindow;
 
-/**
- 是否要点击透明背景dismiss default is 'YES'
- */
+///是否要点击透明背景dismiss default `YES`
 @property(nonatomic, assign) BOOL shouldDismissDialogOnTapTranslucent;
 
-/**
- 背景视图
- */
+///背景视图
 @property(nonatomic, readonly, nullable) UIView *dialogBackgroundView;
 
-/**
- 点击背景手势
- */
+///点击背景手势
 @property(nonatomic, readonly) UITapGestureRecognizer *tapDialogBackgroundGestureRecognizer;
 
-/**
- 出现动画 default is 'GKDialogAnimateNone'
- */
+///出现动画 default `GKDialogAnimateNone`
 @property(nonatomic, assign) GKDialogAnimate dialogShowAnimate;
  
-/**
- 消失动画 default is 'GKDialogAnimateNone'
- */
+///消失动画 default `GKDialogAnimateNone`
 @property(nonatomic, assign) GKDialogAnimate dialogDismissAnimate;
 
-/**
- 弹窗是否已显示
- */
+///弹窗是否已显示
 @property(nonatomic, readonly) BOOL isDialogShowing;
 
-/**
- 显示动画完成回调
- */
+///显示动画完成回调
 @property(nonatomic, copy, nullable) void(^dialogShowCompletionHandler)(void);
 
-/**
- 弹窗将要消失回调
- */
+///弹窗将要消失回调
 @property(nonatomic,copy) void(^dialogWillDismissHandler)(BOOL animate);
 
-/**
- 消失动画完成回调
- */
+///消失动画完成回调
 @property(nonatomic, copy, nullable) void(^dialogDismissCompletionHandler)(void);
 
-/**
- 显示 如果 dialogShouldUseNewWindow，则在新的窗口上显示，否则在 window.rootViewController.topest 通过present方式显示
- */
+///显示 如果 dialogShouldUseNewWindow，则在新的窗口上显示，否则在 window.rootViewController.topest 通过present方式显示
 - (void)showAsDialog;
 
-/**
- 在指定viewController 上显示
- */
+///在指定viewController 上显示
 - (void)showAsDialogInViewController:(UIViewController *)viewController;
 
-/**
- 显示在制定viewControlelr
- *@param layoutHandler 布局回调 如果为空，则在viewController 上铺满
- */
+
+/// 显示在指定viewControlelr
+/// @param viewController parent
+/// @param layoutHandler 布局回调 如果为空，则在viewController 上铺满
 - (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
 
-/**
- 隐藏
- */
+///隐藏
 - (void)dismissDialog;
-
-/**
- 隐藏
- */
 - (void)dismissDialogAnimated:(BOOL) animated;
-
-/**
- 隐藏
- */
 - (void)dismissDialogAnimated:(BOOL) animated completion:(void(^ _Nullable)(void)) completion;
 
-/**
- 执行自定义显示动画 子类重写
- */
+///执行自定义显示动画 子类重写
 - (void)didExecuteDialogShowCustomAnimate:(void(^ _Nullable)(BOOL finish)) completion;
 
-/**
- 执行自定义消失动画 子类重写
- */
+///执行自定义消失动画 子类重写
 - (void)didExecuteDialogDismissCustomAnimate:(void(^ _Nullable)(BOOL finish)) completion;
 
-/**
- 键盘弹出来，调整弹窗位置，子类可重写
- */
+///键盘弹出来，调整弹窗位置，子类可重写
 - (void)adjustDialogPosition;
 
 @end

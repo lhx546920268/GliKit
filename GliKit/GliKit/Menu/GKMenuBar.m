@@ -19,15 +19,11 @@
 
 @interface GKMenuBar ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-/**
- 是否是点击按钮
- */
+///是否是点击按钮
 @property(nonatomic, assign) BOOL isClickItem;
 
-/**
- 是否已经可以计算item
- */
-@property(nonatomic, assign) BOOL measureEnable;
+///是否已经可以计算item
+@property(nonatomic, assign) BOOL measureEnabled;
 
 @end
 
@@ -116,7 +112,7 @@
     if(self.gkWidth > 0 && self.gkHeight > 0 && !CGSizeEqualToSize(self.bounds.size, _collectionView.frame.size)){
         _collectionView.frame = self.bounds;
         
-        self.measureEnable = YES;
+        self.measureEnabled = YES;
         
         [self reloadData];
         [self layoutIndicatorWithAnimate:NO];
@@ -126,7 +122,7 @@
 ///刷新数据
 - (void)reloadData
 {
-    if(self.measureEnable){
+    if(self.measureEnabled){
         [self measureItems];
         [self.collectionView reloadData];
     }
@@ -135,7 +131,7 @@
 ///测量item
 - (void)measureItems
 {
-    if(!self.measureEnable)
+    if(!self.measureEnabled)
         return;
     
     CGFloat totalWidth = [self onMeasureItems];
@@ -167,7 +163,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if(!self.measureEnable){
+    if(!self.measureEnabled){
         return 0;
     }
     return _items.count;
@@ -198,13 +194,13 @@
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
     
-    BOOL enable = YES;
+    BOOL enabled = YES;
     
     if([self.delegate respondsToSelector:@selector(menuBar:shouldSelectItemAtIndex:)]){
-        enable = [self.delegate menuBar:self shouldSelectItemAtIndex:indexPath.item];
+        enabled = [self.delegate menuBar:self shouldSelectItemAtIndex:indexPath.item];
     }
     
-    if(enable){
+    if(enabled){
         self.isClickItem = YES;
         [self setSelectedIndex:indexPath.item animated:YES];
         self.isClickItem = NO;
@@ -300,7 +296,7 @@
 ///设置下划线的位置
 - (void)layoutIndicatorWithAnimate:(BOOL) flag
 {
-    if(!self.measureEnable)
+    if(!self.measureEnabled)
         return;
     if(self.indicator){
         CGRect frame = self.indicator.frame;
@@ -376,7 +372,7 @@
 
 - (void)setPercent:(float) percent forIndex:(NSUInteger) index
 {
-    if(!self.measureEnable)
+    if(!self.measureEnabled)
         return;
     
     if(self.indicator){
@@ -405,7 +401,7 @@
 ///滚动到可见位置
 - (void)scrollToVisibleRectWithAnimate:(BOOL) flag
 {
-    if(_selectedIndex >= self.items.count || self.currentStyle != GKMenuBarStyleFit || !self.measureEnable)
+    if(_selectedIndex >= self.items.count || self.currentStyle != GKMenuBarStyleFit || !self.measureEnabled)
         return;
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:flag];
 }
@@ -413,7 +409,7 @@
 ///通过下标获取按钮
 - (__kindof UICollectionViewCell*)cellForIndex:(NSUInteger) index
 {
-    if(index >= _items.count || !self.measureEnable)
+    if(index >= _items.count || !self.measureEnabled)
         return nil;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];

@@ -10,14 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 下拉刷新控制视图
- */
+///下拉刷新控制视图
 @interface GKRefreshControl : GKDataControl
 
-/**
- 加载完成的提示信息 default is '刷新成功'
- */
+///加载完成的提示信息 default `刷新成功`
 @property(nonatomic, copy, nullable) NSString *finishText;
 
 @end

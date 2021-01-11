@@ -57,18 +57,19 @@
         if(self.state != GKDataControlStateLoading){
             
             if(!self.animating){
+                CGFloat criticalPoint = -self.realCriticalPoint;
                 if(self.scrollView.dragging){
                     if (y == 0.0f){
                         
                         [self setState:GKDataControlStateNormal];
-                    }else if (y > - self.criticalPoint){
+                    }else if (y > criticalPoint){
                         
                         [self setState:GKDataControlStatePulling];
                     }else{
                         
                         [self setState:GKDataControlStateReachCirticalPoint];
                     }
-                }else if(y <= - self.criticalPoint || self.state == GKDataControlStateReachCirticalPoint){
+                }else if(y <= criticalPoint || self.state == GKDataControlStateReachCirticalPoint){
                     
                     [self startLoading];
                 }
@@ -79,6 +80,15 @@
             [self setNeedsLayout];
         }
     }
+}
+
+- (CGFloat)realCriticalPoint
+{
+    CGFloat point = self.criticalPoint;
+    if(@available(iOS 11, *)){
+        point += self.scrollView.adjustedContentInset.top;
+    }
+    return point;
 }
 
 // MARK: - super method

@@ -60,8 +60,8 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
 {
     self = [super init];
     if (self) {
-        self.parentScrollEnable = YES;
-        self.childScrollEnable = YES;
+        self.parentScrollEnabled = YES;
+        self.childScrollEnabled = YES;
     }
     return self;
 }
@@ -108,13 +108,13 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
         //已经滑出顶部范围了，让子容器滑动
         if(offset >= 0){
             scrollView.contentOffset = CGPointMake(0, maxOffsetY);
-            if(self.parentScrollEnable){
-                self.parentScrollEnable = NO;
-                self.childScrollEnable = YES;
+            if(self.parentScrollEnabled){
+                self.parentScrollEnabled = NO;
+                self.childScrollEnabled = YES;
             }
         }else{
             //不能让父容器继续滑动了
-            if(!self.parentScrollEnable){
+            if(!self.parentScrollEnabled){
                 scrollView.contentOffset = CGPointMake(0, maxOffsetY);
             }
         }
@@ -123,16 +123,16 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
         if(scrollView.contentOffset.y <= 0){
     
             if(childRefreshEnable){
-                self.childScrollEnable = YES;
+                self.childScrollEnabled = YES;
                 scrollView.contentOffset = CGPointZero;
             }
         }
         
     }else{
         
-        BOOL enable = scrollView.gkRefreshControl != nil ? self.parentScrollView.contentOffset.y > 0 : YES;
+        BOOL enabled = scrollView.gkRefreshControl != nil ? self.parentScrollView.contentOffset.y > 0 : YES;
         //滚动容器还在滑动中
-        if(!self.childScrollEnable || (enable && self.parentScrollView.contentOffset.y < maxOffsetY)){
+        if(!self.childScrollEnabled || (enabled && self.parentScrollView.contentOffset.y < maxOffsetY)){
             scrollView.contentOffset = CGPointZero;
             return;
         }
@@ -140,8 +140,8 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
         //滑到滚动容器了滚动容器
         if(contentOffset.y <= 0 && self.parentScrollView.contentOffset.y > 0){
             scrollView.contentOffset = CGPointZero;
-            self.childScrollEnable = NO;
-            self.parentScrollEnable = YES;
+            self.childScrollEnabled = NO;
+            self.parentScrollEnabled = YES;
             if(self.parentScrollView.gkChildDidScrollToParent){
                 self.parentScrollView.gkChildDidScrollToParent();
             }

@@ -179,7 +179,7 @@
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animate
 {
-    self.interactivePodEnabled = viewController.gkInteractivePopEnable;
+    self.interactivePodEnabled = viewController.gkInteractivePopEnabled;
     if([self.otherDelegate respondsToSelector:@selector(navigationController:didShowViewController:animated:)]){
         [self.otherDelegate navigationController:self didShowViewController:viewController animated:animate];
     }

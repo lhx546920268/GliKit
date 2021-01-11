@@ -7,7 +7,7 @@
 //
 
 #import "GKTabBar.h"
-#import "GKTabBarItem.h"
+#import "GKTabBarButton.h"
 #import "GKBaseDefines.h"
 #import "UIColor+GKTheme.h"
 #import "UIColor+GKUtils.h"
@@ -16,12 +16,12 @@
 
 @implementation GKTabBar
 
-- (instancetype)initWithItems:(NSArray<GKTabBarItem*>*) items
+- (instancetype)initWithButtons:(NSArray<GKTabBarButton *> *)buttons
 {
     self = [super init];
     if(self){
         self.backgroundColor = [UIColor whiteColor];
-        self.items = items;
+        self.buttons = buttons;
         _selectedIndex = NSNotFound;
         
         _separator = [UIView new];
@@ -38,12 +38,12 @@
     return self;
 }
 
-- (void)setItems:(NSArray<GKTabBarItem *> *)items
+- (void)setButtons:(NSArray<GKTabBarButton *> *)buttons
 {
-    if(_items != items){
-        _items = items;
+    if(_buttons != buttons){
+        _buttons = buttons;
         
-        //移除以前的item
+        //移除以前的按钮
         NSArray *subviews = self.subviews;
         for(UIView *view in subviews){
             if(view != self.separator){
@@ -51,28 +51,28 @@
             }
         }
         
-        GKTabBarItem *beforeItem = nil;
+        GKTabBarButton *beforeBtn = nil;
         CGFloat bottom = UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom;
-        for(NSUInteger i = 0;i < _items.count;i ++){
-            GKTabBarItem *item = _items[i];
-            [item addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-            [self insertSubview:item belowSubview:self.separator];
+        for(NSUInteger i = 0;i < _buttons.count;i ++){
+            GKTabBarButton *btn = _buttons[i];
+            [btn addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
+            [self insertSubview:btn belowSubview:self.separator];
             
-            [item mas_makeConstraints:^(MASConstraintMaker *make) {
+            [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(0);
                 make.bottom.equalTo(-bottom);
-                if(beforeItem){
-                    make.leading.equalTo(beforeItem.mas_trailing);
-                    make.width.equalTo(beforeItem);
+                if(beforeBtn){
+                    make.leading.equalTo(beforeBtn.mas_trailing);
+                    make.width.equalTo(beforeBtn);
                 }else{
                     make.leading.equalTo(0);
                 }
-                if(i == _items.count - 1){
+                if(i == _buttons.count - 1){
                     make.trailing.equalTo(0);
                 }
             }];
 
-            beforeItem = item;
+            beforeBtn = btn;
         }
     }
 }
@@ -80,17 +80,17 @@
 // MARK: - private method
 
 //选中某个按钮
-- (void)handleTap:(GKTabBarItem*) item
+- (void)handleTap:(GKTabBarButton*) btn
 {
-    if(item.selected == YES)
+    if(btn.selected)
         return;
     
-    NSInteger index = [self.items indexOfObject:item];
-    BOOL shouldSelect = YES;
-    if([self.delegate respondsToSelector:@selector(tabBar:shouldSelectItemAtIndex:)]){
-        shouldSelect = [self.delegate tabBar:self shouldSelectItemAtIndex:index];
+    NSInteger index = [self.buttons indexOfObject:btn];
+    BOOL enabled = YES;
+    if([self.delegate respondsToSelector:@selector(tabBar:clickEnabledAtIndex:)]){
+        enabled = [self.delegate tabBar:self clickEnabledAtIndex:index];
     }
-    if(shouldSelect){
+    if(enabled){
         self.selectedIndex = index;
     }
 }
@@ -102,21 +102,21 @@
 {
     if(_selectedIndex != selectedIndex){
         
-        if(_selectedIndex < _items.count){
-            GKTabBarItem *item = _items[_selectedIndex];
-            item.backgroundColor = [UIColor clearColor];
-            item.selected = NO;
+        if(_selectedIndex < _buttons.count){
+            GKTabBarButton *btn = _buttons[_selectedIndex];
+            btn.backgroundColor = [UIColor clearColor];
+            btn.selected = NO;
         }
         
         _selectedIndex = selectedIndex;
-        GKTabBarItem *item = _items[_selectedIndex];
-        item.selected = YES;
+        GKTabBarButton *btn = _buttons[_selectedIndex];
+        btn.selected = YES;
         if(self.selectedButtonBackgroundColor){
-            item.backgroundColor = self.selectedButtonBackgroundColor;
+            btn.backgroundColor = self.selectedButtonBackgroundColor;
         }
         
-        if([self.delegate respondsToSelector:@selector(tabBar:didSelectItemAtIndex:)]){
-            [self.delegate tabBar:self didSelectItemAtIndex:_selectedIndex];
+        if([self.delegate respondsToSelector:@selector(tabBar:didClickAtIndex:)]){
+            [self.delegate tabBar:self didClickAtIndex:_selectedIndex];
         }
     }
 }
@@ -144,8 +144,8 @@
             selectedButtonBackgroundColor = [UIColor clearColor];
         
         _selectedButtonBackgroundColor = selectedButtonBackgroundColor;
-        GKTabBarItem *item = _items[_selectedIndex];
-        item.backgroundColor = _selectedButtonBackgroundColor;
+        GKTabBarButton *btn = _buttons[_selectedIndex];
+        btn.backgroundColor = _selectedButtonBackgroundColor;
     }
 }
 
@@ -156,10 +156,10 @@
 - (void)setBadgeValue:(NSString*) badgeValue forIndex:(NSInteger) index;
 {
 #if CADebug
-    NSAssert(index < _items.count, @"CATabBar setBadgeValue forIndex, index %d 越界", (int)index);
+    NSAssert(index < _buttons.count, @"CATabBar setBadgeValue forIndex, index %d 越界", (int)index);
 #endif
-    GKTabBarItem *item = _items[index];
-    item.badgeValue = badgeValue;
+    GKTabBarButton *btn = _buttons[index];
+    btn.badgeValue = badgeValue;
 }
 
 @end

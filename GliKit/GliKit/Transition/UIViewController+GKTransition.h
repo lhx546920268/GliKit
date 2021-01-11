@@ -35,16 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - push
 
-/**
- [self.navigationController pushViewController:viewController animated:YES]
- */
+///[self.navigationController pushViewController:viewController animated:YES]
 - (void)gkPushViewController:(UIViewController*) viewController;
 
-/**
- 使用自定义过渡方式
- */
+///使用自定义过渡方式
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController;
-
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use;
 
 @end

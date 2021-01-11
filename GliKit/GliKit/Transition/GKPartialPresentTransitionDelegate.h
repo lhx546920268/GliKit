@@ -17,10 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///部分显示大小
 @property(nonatomic, assign) CGSize contentSize;
 
-///部分显示区域 默认通过 contentSize 和动画样式计算
+///部分显示区域 默认通过 `contentSize` 和动画样式计算
 @property(nonatomic, assign) CGRect frame;
 
-///是否需要自动加上安全区域 default YES
+///是否需要自动加上安全区域 default `YES`
 @property(nonatomic, assign) BOOL frameUseSafeArea;
 
 ///圆角
@@ -35,13 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
 ///背景颜色 黑色 0.5透明度
 @property(nonatomic, strong, null_resettable) UIColor *backgroundColor;
 
-///点击背景是否会关闭当前显示的viewController，default is 'YES'
+///点击背景是否会关闭当前显示的viewController，default `YES`
 @property(nonatomic, assign) BOOL cancelable;
 
-///是否可以滑动关闭 default is 'YES'
+///是否可以滑动关闭 default `YES`
 @property(nonatomic, assign) BOOL interactiveDismissible;
 
-///动画时间 default is '0.5'
+///动画时间 default `0.5`
 @property(nonatomic, assign) NSTimeInterval transitionDuration;
 
 ///点击半透明背景回调 设置这个时，弹窗不会关闭

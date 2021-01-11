@@ -101,8 +101,8 @@
 ///动画
 @property(nonatomic, strong) GKPartialPresentTransitionAnimator *animator;
 
-///
-@property(nonatomic, strong) GKPartialPresentationController *partialPresentationController;
+///不要 strong，因为该类会strong viewController，而viewController会strong当前类
+@property(nonatomic, weak) GKPartialPresentationController *partialPresentationController;
 
 ///显示的viewController
 @property(nonatomic, weak) UIViewController *viewController;
@@ -119,7 +119,6 @@
 @end
 
 @implementation GKPartialPresentTransitionDelegate
-
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
@@ -175,7 +174,7 @@
         [viewController.view addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)]];
         
         if(self.props.transitionStyle == GKPresentTransitionStyleFromBottom){
-            UIViewController *vc = self.viewController;
+            UIViewController *vc = viewController;
             if([vc isKindOfClass:UINavigationController.class]){
                 UINavigationController *nav = (UINavigationController*)vc;
                 vc = nav.viewControllers.firstObject;
@@ -238,7 +237,9 @@
 ///开始交互动画
 - (void)startInteractiveTransition:(UIPanGestureRecognizer*) pan
 {
-    ///回收键盘
+    if(!self.props.cancelable)
+        return;
+    //回收键盘
     self.interacting = YES;
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     self.dismissDirectly = NO;

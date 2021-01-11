@@ -14,7 +14,7 @@
 {
     self = [super init];
     if(self){
-        self.enable = YES;
+        self.enabled = YES;
         self.spacing = 5;
     }
     

@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIScrollView (GKNestedScroll)
 
 ///是否可以嵌套滑动 需要手动设置 child和parent都要设置这个
-@property(nonatomic, assign) BOOL gkNestedScrollEnable;
+@property(nonatomic, assign) BOOL gkNestedScrollEnabled;
 
 ///是否是嵌套滑动容器 需要手动设置
 @property(nonatomic, assign) BOOL gkNestedParent;

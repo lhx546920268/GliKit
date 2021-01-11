@@ -21,8 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否只标记网络错误 default `NO`
 @property(nonatomic, assign) BOOL onlyFlagNetworkError;
 
+///是否正在请求
+@property(nonatomic, readonly) BOOL isExecuting;
+
 ///所有任务完成回调 hasFail 是否有任务失败了
 @property(nonatomic, copy, nullable) void(^completionHandler)(GKHttpMultiTasks *tasks, BOOL hasFail);
+
+///获取下一个任务 如果返回nil，则表示没下一个任务，会执行完成回调
+@property(nonatomic, copy, nullable) GKHttpTask* _Nullable (^nextTaskHandler)(GKHttpTask *currentTask);
 
 ///添加任务 key 为className
 - (void)addTask:(GKHttpTask*) task;

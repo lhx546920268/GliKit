@@ -10,9 +10,7 @@
 #import "UIView+GKUtils.h"
 #import "NSString+GKUtils.h"
 
-/**
- UIScrollView 的内容大小
- */
+///UIScrollView 的内容大小
 static NSString *const GKDataControlContentSize = @"contentSize";
 
 @interface GKLoadMoreControl()
@@ -131,27 +129,25 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     if(contentSize == 0 || offset < contentSize - size || contentSize < size)
         return;
     
+    CGFloat criticalPoint = self.realCriticalPoint;
     if(self.autoLoadMore){
-        
-        if(offset >= contentSize - size - self.criticalPoint){
+        if(offset >= contentSize - size - criticalPoint){
             
             [self beginLoadMore:NO];
         }
     }else{
-        
         if(offset >= contentSize - size){
-            
             if(self.scrollView.dragging){
                 if (offset == contentSize - size){
                     
                     [self setState:GKDataControlStateNormal];
-                }else if (offset < contentSize - size + self.criticalPoint){
+                }else if (offset < contentSize - size + criticalPoint){
                     
                     [self setState:GKDataControlStatePulling];
                 }else{
                     [self setState:GKDataControlStateReachCirticalPoint];
                 }
-            }else if(offset >= contentSize - size + self.criticalPoint){
+            }else if(offset >= contentSize - size + criticalPoint){
                 
                 [self beginLoadMore:YES];
             }
@@ -161,6 +157,15 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     if(!self.animating){
         [self setNeedsLayout];
     }
+}
+
+- (CGFloat)realCriticalPoint
+{
+    CGFloat point = self.criticalPoint;
+    if(@available(iOS 11, *)){
+        point += self.scrollView.adjustedContentInset.bottom;
+    }
+    return point;
 }
 
 // MARK: - Super Method
@@ -187,9 +192,7 @@ static NSString *const GKDataControlContentSize = @"contentSize";
     self.scrollView.userInteractionEnabled = YES;
 }
 
-/**
- 开始加载更多
- */
+///开始加载更多
 - (void)beginLoadMore:(BOOL) animate
 {
     if(self.animating)

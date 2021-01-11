@@ -57,20 +57,14 @@ GKNavigationItemHelper;
 ///视图容器 self.view xib 不要用，如果 showAsDialog = YES，self.view将不再是 container 且 要自己设置container的约束
 @property(nonatomic, readonly, nullable) GKContainer *container;
 
-/**
- 设置顶部视图
- 
- @param topView 顶部视图
- @param height 视图高度，GKWrapContent 为自适应
- */
+/// 设置顶部视图
+/// @param topView 顶部视图
+/// @param height 视图高度，GKWrapContent 为自适应
 - (void)setTopView:(nullable UIView *)topView height:(CGFloat) height;
 
-/**
- 设置底部视图
- 
- @param bottomView 底部视图
- @param height 视图高度，GKWrapContent 为自适应
- */
+/// 设置底部视图
+/// @param bottomView 底部视图
+/// @param height 视图高度，GKWrapContent 为自适应
 - (void)setBottomView:(nullable UIView *)bottomView height:(CGFloat) height;
 
 // MARK: - 导航栏
@@ -93,51 +87,30 @@ GKNavigationItemHelper;
 ///设置导航栏隐藏
 - (void)setNavigatonBarHidden:(BOOL) hidden animate:(BOOL) animate;
 
-/**
- 主要是用于要子类调用 super
- */
+///主要是用于要子类调用 super
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
 // MARK: - Task
 
-/**
- 添加需要取消的请求 在dealloc
- 
- @param task 请求
- */
+/// 添加需要取消的请求 在dealloc
+/// @param task 请求
 - (void)addCancelableTask:(GKHttpTask*) task;
 
-/**
- 添加需要取消的请求 在dealloc
- 
- @param task 请求
- @param cancel 是否取消相同的任务 通过 task.name 来判断
- */
+/// @param cancel 是否取消相同的任务 通过 task.name 来判断
 - (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel;
 
-/**
- 添加需要取消的请求队列 在 dealloc
- 
- @param tasks 请求
- */
+///添加需要取消的请求队列 在 dealloc
 - (void)addCancelableTasks:(GKHttpMultiTasks*) tasks;
 
-
-/**
- 加载页面数据 第一次加载 或者 网络错误重新加载
- */
+///加载页面数据 第一次加载 或者 网络错误重新加载
 - (void)gkReloadData NS_REQUIRES_SUPER;
 
-/**
- 数据加载完成回调 子类重写
- */
+///数据加载完成回调 子类重写
 - (void)onLoadData;
 
 // MARK: - 路由
 
-/**
- 设置路由参数，如果参数名和属性名一致，则不需要处理这个
- */
+///设置路由参数，如果参数名和属性名一致，则不需要处理这个
 - (void)setRouterParams:(nullable NSDictionary*) params;
 
 @end

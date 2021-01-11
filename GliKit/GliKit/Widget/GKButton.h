@@ -9,9 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- GKButton 图标位置
- */
+///GKButton 图标位置
 typedef NS_ENUM(NSInteger, GKButtonImagePosition){
     
     ///左边 系统默认

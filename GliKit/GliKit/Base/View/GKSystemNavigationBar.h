@@ -12,7 +12,7 @@
 @interface GKSystemNavigationBar : UINavigationBar
 
 ///是否可以点击 默认 YES 直接设置 userInteractionEnabled 是无效的
-@property(nonatomic, assign) BOOL enable;
+@property(nonatomic, assign) BOOL enabled;
 
 @end
 

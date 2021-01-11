@@ -201,7 +201,7 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
         
         objc_property_t property = properties[i];
         NSString *name = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
-        BOOL enable = YES;
+        BOOL enabled = YES;
         if(!self.shouldObserveReadonly){
             //类型地址 https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
             NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
@@ -209,10 +209,10 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
             
             //判断是否是只读属性
             if(attrs.count > 0 && [attrs containsObject:@"R"]){
-                enable = false;
+                enabled = false;
             }
         }
-        if(enable){
+        if(enabled){
             [self _addObserver:observer callback:callback forKeyPath:name];
         }
     }
@@ -266,6 +266,21 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
     for(NSString *keyPath in _observingKeyPaths){
         [self.owner removeObserver:self forKeyPath:keyPath context:GKOKVOContext];
     }
+}
+
+@end
+
+
+@implementation NSObject(GKKVOUtils)
+
+- (GKKVOHelper *)kvoHelper
+{
+    GKKVOHelper *helper = objc_getAssociatedObject(self, _cmd);
+    if(!helper){
+        helper = [GKKVOHelper helperWithOwner:self];
+        objc_setAssociatedObject(self, _cmd, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return helper;
 }
 
 @end

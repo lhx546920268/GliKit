@@ -13,45 +13,29 @@ NS_ASSUME_NONNULL_BEGIN
 ///键盘相关扩展
 @interface UIViewController (GKKeyboard)
 
-/**
- 键盘是否隐藏
- */
+///键盘是否隐藏
 @property(nonatomic, readonly) BOOL keyboardHidden;
 
-/**
- 键盘大小
- */
+///键盘大小
 @property(nonatomic, readonly) CGRect keyboardFrame;
 
-/**
- 键盘动画时长
- */
+///键盘动画时长
 @property(nonatomic, readonly) NSTimeInterval keyboardAnimationDuration;
 
-/**
- 添加键盘监听
- */
+///添加键盘监听
 - (void)addKeyboardNotification;
 
-/**
- 移除键盘监听
- */
+///移除键盘监听
 - (void)removeKeyboardNotification;
 
-/**
- 键盘高度改变
- */
+///键盘高度改变
 - (void)keyboardWillChangeFrame:(NSNotification*) notification NS_REQUIRES_SUPER;
 - (void)keyboardDidChangeFrame:(NSNotification*) notification;
 
-/**
- 键盘隐藏
- */
+///键盘隐藏
 - (void)keyboardWillHide:(NSNotification*) notification NS_REQUIRES_SUPER;
 
-/**
- 键盘显示
- */
+///键盘显示
 - (void)keyboardWillShow:(NSNotification*) notification NS_REQUIRES_SUPER;
 
 @end

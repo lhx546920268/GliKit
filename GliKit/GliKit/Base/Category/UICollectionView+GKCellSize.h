@@ -29,39 +29,27 @@ NS_ASSUME_NONNULL_BEGIN
 ///cell大小
 @interface UICollectionView (GKCellSize)
 
-/**
- *获取cell大小
- *@param identifier cell唯一标识
- *@param model 保存cell大小的
- *@return cell大小
- */
+/// 获取cell大小
+/// @param identifier cell唯一标识
+/// @param model 保存cell大小的
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier model:(id<GKItemSizeModel>) model;
 
-/**
- *获取cell大小
- *@param identifier cell唯一标识
- *@param constraintSize 最大，只能设置 宽度或高度
- *@param model 保存cell大小的
- *@return cell大小
- */
+/// 获取cell大小
+/// @param identifier cell唯一标识
+/// @param constraintSize 最大，只能设置 宽度或高度
+/// @param model 保存cell大小的
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier constraintSize:(CGSize) constraintSize model:(id<GKItemSizeModel>) model;
 
-/**
- *获取cell大小
- *@param identifier cell唯一标识
- *@param width cell宽度
- *@param model 保存cell大小的
- *@return cell大小
- */
+/// 获取cell大小
+/// @param identifier cell唯一标识
+/// @param width cell宽度
+/// @param model 保存cell大小的
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier width:(CGFloat) width model:(id<GKItemSizeModel>) model;
 
-/**
- *获取cell大小
- *@param identifier cell唯一标识
- *@param height cell高度
- *@param model 保存cell大小的
- *@return cell大小
- */
+/// 获取cell大小
+/// @param identifier cell唯一标识
+/// @param height cell高度
+/// @param model 保存cell大小的
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier height:(CGFloat) height model:(id<GKItemSizeModel>) model;
 
 @end

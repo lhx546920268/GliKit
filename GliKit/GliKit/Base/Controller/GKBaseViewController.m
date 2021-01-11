@@ -122,7 +122,7 @@
     if(self.viewModel){
         [self.viewModel viewWillAppear:animated];
     }
-    self.systemNavigationBar.enable = YES;
+    self.systemNavigationBar.enabled = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -238,7 +238,7 @@
             self.navigatonBar.hidden = hidden;
             GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
             if(navigationBar){
-                navigationBar.enable = !hidden;
+                navigationBar.enabled = !hidden;
                 self.navigationItemHelper.hiddenItem = hidden;
             }
         }
@@ -262,7 +262,7 @@
         [self.navigatonBar.layer removeAnimationForKey:@"position"];
         GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
         if(navigationBar){
-            navigationBar.enable = !hidden;
+            navigationBar.enabled = !hidden;
             self.navigationItemHelper.hiddenItem = hidden;
         }else{
             [self.navigationController setNavigationBarHidden:hidden animated:animate];

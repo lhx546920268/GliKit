@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, GKCollectionViewItemAlignment)
 
 @optional
 
-///是否需要悬浮 default is 'NO'
+///是否需要悬浮 default `NO`
 - (BOOL)collectionViewFlowLayout:(GKCollectionViewFlowLayout*) layout shouldStickHeaderAtSection:(NSInteger) section;
 
 ///每个区域的背景颜色
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, GKCollectionViewItemAlignment)
 ///自定义流布局
 @interface GKCollectionViewFlowLayout : UICollectionViewFlowLayout
 
-///对其方式 default is 'GKCollectionViewItemAlignmentDefault'
+///对其方式 default `GKCollectionViewItemAlignmentDefault`
 @property(nonatomic, assign) GKCollectionViewItemAlignment itemAlignment;
 
 @end

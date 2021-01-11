@@ -21,7 +21,6 @@
 		CE525DA723C704EA00EB082E /* GKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE525DA623C704EA00EB082E /* GKLabel.m */; };
 		CE53A3CA259B1C2D00F3EBE8 /* GKLock.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53A3C9259B1C2D00F3EBE8 /* GKLock.m */; };
 		CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B432480E4B400534D91 /* GKTabBarController.m */; };
-		CE549B472480E4B400534D91 /* GKTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B442480E4B400534D91 /* GKTabBarItem.m */; };
 		CE549B482480E4B400534D91 /* GKTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B452480E4B400534D91 /* GKTabBar.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
@@ -153,6 +152,7 @@
 		CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CED3A802230D44EE00C304B3 /* GKRefreshStyle.m */; };
 		CED9E9182577473D00BC9F5E /* GKTableViewSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED9E9172577473D00BC9F5E /* GKTableViewSwipeCell.m */; };
 		CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */; };
+		CEEF365825AC50B600791139 /* GKTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF365725AC50B600791139 /* GKTabBarButton.m */; };
 		CEF13B0124EFD4200048B155 /* GKPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF13B0024EFD4200048B155 /* GKPageView.m */; };
 		CEFCCBD1246CE35000488388 /* GKPhotosBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFCCBD0246CE35000488388 /* GKPhotosBrowseViewController.m */; };
 		CEFE9084230F9D47006A0EBD /* GKImageCropSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFE9082230F9D46006A0EBD /* GKImageCropSettings.m */; };
@@ -199,9 +199,8 @@
 		CE53A3C9259B1C2D00F3EBE8 /* GKLock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLock.m; sourceTree = "<group>"; };
 		CE549B402480E4B400534D91 /* GKTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarController.h; sourceTree = "<group>"; };
 		CE549B412480E4B400534D91 /* GKTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBar.h; sourceTree = "<group>"; };
-		CE549B422480E4B400534D91 /* GKTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarItem.h; sourceTree = "<group>"; };
+		CE549B422480E4B400534D91 /* GKTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarButton.h; sourceTree = "<group>"; };
 		CE549B432480E4B400534D91 /* GKTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBarController.m; sourceTree = "<group>"; };
-		CE549B442480E4B400534D91 /* GKTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBarItem.m; sourceTree = "<group>"; };
 		CE549B452480E4B400534D91 /* GKTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBar.m; sourceTree = "<group>"; };
 		CE61DD48235D5A9B00701675 /* GKMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBar.h; sourceTree = "<group>"; };
 		CE61DD49235D5A9B00701675 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
@@ -469,6 +468,7 @@
 		CEE8C8832319066700E7CA75 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
 		CEE8C8842319066700E7CA75 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
 		CEE8C8B323191A6400E7CA75 /* GliKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliKit.h; sourceTree = "<group>"; };
+		CEEF365725AC50B600791139 /* GKTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBarButton.m; sourceTree = "<group>"; };
 		CEF13AFF24EFD4200048B155 /* GKPageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPageView.h; sourceTree = "<group>"; };
 		CEF13B0024EFD4200048B155 /* GKPageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPageView.m; sourceTree = "<group>"; };
 		CEFCCBCF246CE35000488388 /* GKPhotosBrowseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosBrowseViewController.h; sourceTree = "<group>"; };
@@ -540,8 +540,8 @@
 				CE549B432480E4B400534D91 /* GKTabBarController.m */,
 				CE549B412480E4B400534D91 /* GKTabBar.h */,
 				CE549B452480E4B400534D91 /* GKTabBar.m */,
-				CE549B422480E4B400534D91 /* GKTabBarItem.h */,
-				CE549B442480E4B400534D91 /* GKTabBarItem.m */,
+				CE549B422480E4B400534D91 /* GKTabBarButton.h */,
+				CEEF365725AC50B600791139 /* GKTabBarButton.m */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -1360,7 +1360,6 @@
 				CED0D428230BECF20057D405 /* UITableView+GKUtils.m in Sources */,
 				CED0D44F230BF9E80057D405 /* GKKeyboardHelper.m in Sources */,
 				CED0D32C230BC8780057D405 /* GKBaseNavigationController.m in Sources */,
-				CE549B472480E4B400534D91 /* GKTabBarItem.m in Sources */,
 				CED0D43E230BED690057D405 /* UICollectionView+GKSkeleton.m in Sources */,
 				CED0D32D230BC8780057D405 /* GKBaseViewController.m in Sources */,
 				CED0D429230BECF20057D405 /* UIView+GKOptimize.m in Sources */,
@@ -1398,6 +1397,7 @@
 				CED0D37F230BC8790057D405 /* GKWeakObjectContainer.m in Sources */,
 				CED0D380230BC8790057D405 /* GKObject.m in Sources */,
 				CEFE9084230F9D47006A0EBD /* GKImageCropSettings.m in Sources */,
+				CEEF365825AC50B600791139 /* GKTabBarButton.m in Sources */,
 				CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */,
 				CED0D383230BC8790057D405 /* GKFileManager.m in Sources */,
 				CED0D405230BECD00057D405 /* UIColor+GKUtils.m in Sources */,

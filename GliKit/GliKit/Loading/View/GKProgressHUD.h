@@ -32,24 +32,16 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 ///加载指示器代理
 @protocol GKProgressHUD <NSObject>
 
-/**
- 提示信息
- */
+///提示信息
 @property(nonatomic, copy, nullable) NSString *text;
 
-/**
- 内容视图是否延迟显示 0 不延迟
- */
+///内容视图是否延迟显示 0 不延迟
 @property(nonatomic, assign) NSTimeInterval delay;
 
-/**
- 状态
- */
+///状态
 @property(nonatomic, assign) GKProgressHUDStatus status;
 
-/**
- 消失回调
- */
+///消失回调
 @property(nonatomic, copy, nullable) void(^dismissCompletion)(void);
 
 ///显示
@@ -66,24 +58,16 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 ///加载指示器 和 提示信息
 @interface GKProgressHUD : UIView<GKProgressHUD>
 
-/**
- 黑色半透明背景视图
- */
+///黑色半透明背景视图
 @property(nonatomic, readonly) UIView *translucentView;
 
-/**
- 提示信息
- */
+///提示信息
 @property(nonatomic, readonly) UILabel *textLabel;
 
-/**
- 加载指示器
- */
+///加载指示器
 @property(nonatomic, readonly, nullable) UIActivityIndicatorView *activityIndicatorView;
 
-/**
- 提示图标
- */
+///提示图标
 @property(nonatomic, readonly, nullable) UIImageView *imageView;
 
 @end

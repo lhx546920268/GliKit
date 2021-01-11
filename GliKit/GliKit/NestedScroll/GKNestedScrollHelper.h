@@ -14,10 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKNestedScrollHelper : NSObject<UIScrollViewDelegate>
 
 ///父scrollView 是否可以滑动
-@property(nonatomic, assign) BOOL parentScrollEnable;
+@property(nonatomic, assign) BOOL parentScrollEnabled;
 
 ///子scrollView 是否可以滑动
-@property(nonatomic, assign) BOOL childScrollEnable;
+@property(nonatomic, assign) BOOL childScrollEnabled;
 
 ///父容器
 @property(nonatomic, weak, nullable) UIScrollView *parentScrollView;

@@ -50,161 +50,95 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 ///菜单条基类 不要直接使用这个 继承，或者使用 GKTabMenuBar
 @interface GKMenuBar : UIView
 
-/**
- 按钮容器
- */
+///按钮容器
 @property(nonatomic, readonly) UICollectionView *collectionView;
 
-/**
- 内容间距 default is 'UIEdgeInsetZero' 
- */
+///内容间距 default `zero`
 @property(nonatomic, assign) UIEdgeInsets contentInset;
 
-/**
- 是否显示菜单顶部分割线
- */
+///是否显示菜单顶部分割线
 @property(nonatomic, assign) BOOL displayTopDivider;
 
-/**
- 菜单底部分割线
- */
+///菜单底部分割线
 @property(nonatomic, assign) BOOL displayBottomDivider;
 
 // MARK: - 下划线
 
-/**
- 按钮选中下划线颜色 只有 indicatorHeight > 0 才创建
- */
+///按钮选中下划线颜色 只有 indicatorHeight > 0 才创建
 @property(nonatomic, readonly) UIView *indicator;
 
-/**
- 按钮选中下划线高度 default is '2.0'
- */
+///按钮选中下划线高度 default `2.0`
 @property(nonatomic, assign) CGFloat indicatorHeight;
 
-/**
- 按钮选中下划线颜色 nil的使用使用 selectedTextColor default is 'nil'
- */
+///按钮选中下划线颜色 default `themeColor`
 @property(nonatomic, strong, null_resettable) UIColor *indicatorColor;
 
-/**
- 下划线是否填满 default is 'NO' GKTabMenuBarStyleFill 有效
- */
+///下划线是否填满 default `NO` GKTabMenuBarStyleFill 有效
 @property(nonatomic, assign) BOOL indicatorShouldFill;
 
 //MARK: - 按钮样式
 
-/**
- 样式 默认自动检测 要计算完成才能确定 layoutSubviews
- */
+///样式 默认自动检测 要计算完成才能确定 layoutSubviews
 @property(nonatomic, assign) GKMenuBarStyle style;
 
-/**
- 当前样式
- */
+///当前样式
 @property(nonatomic, readonly) GKMenuBarStyle currentStyle;
 
-/**
- 按钮间 只有 GKTabMenuBarStyleFit 生效 default is '5.0'
- */
+///按钮间 只有 GKTabMenuBarStyleFit 生效 default `5.0`
 @property(nonatomic, assign) CGFloat itemInterval;
 
-/**
- 按钮宽度延伸 left + right defautl is '10.0'
- */
+///按钮宽度延伸 left + right defautl `10.0`
 @property(nonatomic, assign) CGFloat itemPadding;
 
-/**
- 内容宽度
- */
+///内容宽度
 @property(nonatomic, readonly) CGFloat contentWidth;
 
 //MARK: - 其他
 
-/**
- 当前选中的菜单按钮下标 default is '0'
- */
+///当前选中的菜单按钮下标 default `0`
 @property(nonatomic, assign) NSUInteger selectedIndex;
 
-/**
- 设置 selectedIndex 是否调用代理 default is 'NO'
- */
+///设置 selectedIndex 是否调用代理 default `NO`
 @property(nonatomic, assign) BOOL callDelegateWhenSetSelectedIndex;
 
-/**
- 计算完成回调 layoutSubviews 后
- */
+///计算完成回调 layoutSubviews 后
 @property(nonatomic, copy, nullable) void(^measureCompletionHandler)(void);
 
-/**
- 代理回调
- */
+///代理回调
 @property(nonatomic, weak, nullable) id<GKMenuBarDelegate> delegate;
 
-/**
- 按钮信息 设置此值会导致菜单重新加载数据
- */
+///按钮信息 设置此值会导致菜单重新加载数据
 @property(nonatomic, copy, nullable) NSArray<GKMenuBarItem*> *items;
 
 // MARK: - Init
 
-/**
- 构造方法
- *@param items 按钮信息
- *@return 一个实例
- */
+///初始化
 - (instancetype)initWithItems:(nullable NSArray<GKMenuBarItem*> *) items;
-
-/**
- 构造方法
- *@param frame 位置大小
- *@param items 按钮信息
- *@return 一个实例
- */
 - (instancetype)initWithFrame:(CGRect)frame items:(nullable NSArray<GKMenuBarItem*> *) items;
 
 // MARK: - 子类重写
 
-/**
- 已经创建collectionView，将要addSubview
- */
+///已经创建collectionView，将要addSubview
 - (void)didInitCollectionView:(UICollectionView*) collectionView;
 
-/**
- 子类计算 item大小
- @return 返回总宽度
- */
+///子类计算 item大小，返回item总宽度
 - (CGFloat)onMeasureItems;
 
-/**
- 选中某个item
- */
+///选中某个item
 - (void)onSelectItemAtIndex:(NSUInteger) index oldIndex:(NSUInteger) oldIndex;
 
 // MARK: - 设置
 
-/**
- *设置选中的菜单按钮
- *@param selectedIndex 菜单按钮下标
- *@param flag 是否动画
- */
+///设置选中的菜单按钮 可动画
 - (void)setSelectedIndex:(NSUInteger) selectedIndex animated:(BOOL) flag;
 
-/**
- 设置将要到某个item的偏移量比例
-
- @param percent 比例 0 ~ 1.0
- @param index 将要到的下标
- */
+/// 设置将要到某个item的偏移量比例
+/// @param percent 比例 0 ~ 1.0
+/// @param index 将要到的下标
 - (void)setPercent:(float) percent forIndex:(NSUInteger) index;
 
-/**
- 通过下标获取按钮
- 
- @param index 按钮下标
- @return 如果没有或者UI开没开始布局则返回nil
- */
-- (__kindof UICollectionViewCell*)cellForIndex:(NSUInteger) index;
+///通过下标获取按钮
+- (nullable __kindof UICollectionViewCell*)cellForIndex:(NSUInteger) index;
 
 @end
 

@@ -36,29 +36,19 @@
 
 @interface GKBannerView()<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
 
-/**
- 计时器
- */
+///计时器
 @property(nonatomic,strong) GKCountDownTimer *timer;
 
-/**
- 起始位置
- */
+///起始位置
 @property(nonatomic,assign) CGPoint contentOffset;
 
-/**
- 是否需要循环滚动
- */
+///是否需要循环滚动
 @property(nonatomic,assign) BOOL shouldScrollCircularly;
 
-/**
- 是否已经计算了
- */
+///是否已经计算了
 @property(nonatomic,assign) BOOL isLayoutSubviews;
 
-/**
- layout
- */
+///layout
 @property(nonatomic,strong) UICollectionViewFlowLayout *layout;
 
 @end
@@ -70,7 +60,7 @@
     self = [super initWithFrame:CGRectZero];
     if(self){
         _scrollDirection = scrollDirection;
-        [self initialization];
+        [self initProps];
     }
     
     return self;
@@ -81,7 +71,7 @@
     self = [super initWithFrame:frame];
     if(self){
         _scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        [self initialization];
+        [self initProps];
     }
     return self;
 }
@@ -91,13 +81,13 @@
     self = [super initWithCoder:aDecoder];
     if(self){
         _scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        [self initialization];
+        [self initProps];
     }
     
     return self;
 }
 
-- (void)initialization
+- (void)initProps
 {
     if(!_collectionView){
         
@@ -128,9 +118,9 @@
 {
     if(self.isLayoutSubviews){
         if(newWindow){
-            [self startAnimate];
+            [self startAnimating];
         }else{
-            [self stopAnimate];
+            [self stopAnimating];
         }
     }
 }
@@ -193,7 +183,7 @@
     if(_numberOfCells > 0){
         [self scrollToIndex:0 animated:NO];
     }
-    [self startAnimate];
+    [self startAnimating];
 }
 
 - (void)scrollToIndex:(NSInteger) index animated:(BOOL) flag
@@ -241,13 +231,11 @@
 
 // MARK: -  timer
 
-/**
- 开始动画
- */
-- (void)startAnimate
+///开始动画
+- (void)startAnimating
 {
     if(!self.shouldScrollCircularly || !self.enableAutoScroll){
-        [self stopAnimate];
+        [self stopAnimating];
         return;
     }
     
@@ -264,10 +252,8 @@
     }
 }
 
-/**
- 结束动画
- */
-- (void)stopAnimate
+///结束动画
+- (void)stopAnimating
 {
     if(self.timer && self.timer.isExcuting)
     {
@@ -323,9 +309,9 @@
     if(_enableAutoScroll != enableAutoScroll){
         _enableAutoScroll = enableAutoScroll;
         if(_enableAutoScroll && !self.decelerating && !self.dragging){
-            [self startAnimate];
+            [self startAnimating];
         }else{
-            [self stopAnimate];
+            [self stopAnimating];
         }
     }
 }
@@ -370,11 +356,11 @@
 {
     if(self.numberOfCells == 0)
         return;
-    [self pageChangedWithAnimated:YES];
+    [self pageChangedAnimated:YES];
 }
 
 //滚动动画
-- (void)pageChangedWithAnimated:(BOOL) flag
+- (void)pageChangedAnimated:(BOOL) flag
 {
     NSInteger page = self.visibleIndex; // 获取当前的page
     if(page < self.numberOfCells){
@@ -420,14 +406,14 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    [self stopAnimate];
+    [self stopAnimating];
     self.contentOffset = scrollView.contentOffset;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if(!decelerate){
-        [self startAnimate];
+        [self startAnimating];
         self.contentOffset = CGPointZero;
     }
 }
@@ -435,7 +421,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if(!scrollView.dragging){
-        [self startAnimate];
+        [self startAnimating];
         self.contentOffset = CGPointZero;
     }
 }

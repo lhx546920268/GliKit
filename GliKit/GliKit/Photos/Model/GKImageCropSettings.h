@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///裁剪框圆角
 @property(nonatomic, assign) CGFloat cropCornerRadius;
 
-///是否使用满屏裁剪框 default is 'YES'
+///是否使用满屏裁剪框 default `YES`
 @property(nonatomic, assign) BOOL useFullScreenCropFrame;
 
-///图片可以被放大的最大比例，default is '2.5'
+///图片可以被放大的最大比例，default `2.5`
 @property (nonatomic, assign) CGFloat limitRatio;
 
 @end

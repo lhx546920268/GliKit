@@ -57,34 +57,34 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 ///裁剪选项
 @property(nonatomic, strong, nullable) GKImageCropSettings *cropSettings;
 
-///缩略图大小 default zero
+///缩略图大小 default `zero`
 @property(nonatomic, assign) CGSize thumbnailSize;
 
-///压缩图片的大小 default 512
+///压缩图片的大小 default `512`
 @property(nonatomic, assign) CGSize compressedImageSize;
 
-///是否需要原图 default NO
+///是否需要原图 default `NO`
 @property(nonatomic, assign) BOOL needOriginalImage;
 
-///多选数量 default 1
+///多选数量 default `1`
 @property(nonatomic, assign) NSInteger maxCount;
 
-///网格图片间距 default is '3.0'
+///网格图片间距 default `3.0`
 @property(nonatomic, assign) CGFloat gridInterval;
 
-///每行图片数量 default is '4'
+///每行图片数量 default `4`
 @property(nonatomic, assign) NSInteger numberOfItemsPerRow;
 
-///是否显示所有图片 default YES
+///是否显示所有图片 default `YES`
 @property(nonatomic, assign) BOOL shouldDisplayAllPhotos;
 
-///是否显示空的相册 default NO
+///是否显示空的相册 default `NO`
 @property(nonatomic, assign) BOOL shouldDisplayEmptyCollection;
 
-///是否直接显示第一个相册的内容 default YES
+///是否直接显示第一个相册的内容 default `YES`
 @property(nonatomic, assign) BOOL displayFistCollection;
 
-///图片scale default GKImageScale
+///图片scale default `GKImageScale`
 @property(nonatomic, assign) CGFloat scale;
 
 @end

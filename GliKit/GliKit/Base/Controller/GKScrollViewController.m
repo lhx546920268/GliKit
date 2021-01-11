@@ -40,7 +40,11 @@
     if(_scrollView != scrollView){
         _scrollView = scrollView;
         if (@available(iOS 11.0, *)) {
-            [_scrollView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+            if([_scrollView isKindOfClass:UITableView.class] || [_scrollView isKindOfClass:UICollectionView.class]){
+                _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentScrollableAxes;
+            } else {
+                _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+            }
         }
         !self.scrollViewDidChange ?: self.scrollViewDidChange(_scrollView);
     }
@@ -89,14 +93,14 @@
 
 // MARK: - Refresh
 
-- (void)setRefreshEnable:(BOOL) refreshEnable
+- (void)setRefreshEnabled:(BOOL) enabled
 {
-    if(_refreshEnable != refreshEnable){
+    if(_refreshEnabled != enabled){
 
         NSAssert(_scrollView != nil, @"%@ 设置下拉刷新 scrollView 不能为nil", NSStringFromClass([self class]));
 
-        _refreshEnable = refreshEnable;
-        if(_refreshEnable){
+        _refreshEnabled = enabled;
+        if(_refreshEnabled){
             WeakObj(self);
             [self.scrollView gkAddRefreshWithHandler:^(void){
                 
@@ -159,14 +163,14 @@
 
 // MARK: - Load More
 
-- (void)setLoadMoreEnable:(BOOL)loadMoreEnable
+- (void)setLoadMoreEnabled:(BOOL)enabled
 {
-    if(_loadMoreEnable != loadMoreEnable){
+    if(_loadMoreEnabled != enabled){
         
         NSAssert(_scrollView != nil, @"%@ 设置加载更多 scrollView 不能为nil", NSStringFromClass([self class]));
-        _loadMoreEnable = loadMoreEnable;
+        _loadMoreEnabled = enabled;
         
-        if(_loadMoreEnable){
+        if(_loadMoreEnabled){
             WeakObj(self);
             [self.scrollView gkAddLoadMoreWithHandler:^(void){
                 
@@ -268,7 +272,7 @@
         [[UIApplication sharedApplication].keyWindow endEditing:YES];
     }
     if(scrollView == self.scrollView){
-        ///防止左右滑动时触发上下滑动
+        //防止左右滑动时触发上下滑动
         if([self.parentViewController isKindOfClass:[GKPageViewController class]]){
             GKPageViewController *page = (GKPageViewController*)self.parentViewController;
             page.scrollView.scrollEnabled = NO;

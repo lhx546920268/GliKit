@@ -10,24 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 默认的加载更多控件
- */
+///默认的加载更多控件
 @interface GKDefaultLoadMoreControl : GKLoadMoreControl
 
-/**
- 是否要显示菊花 默认显示
- */
+///是否要显示菊花 默认显示
 @property(nonatomic, assign) BOOL showIndicatorView;
 
-/**
- 加载菊花
- */
+///加载菊花
 @property(nonatomic, readonly) UIActivityIndicatorView *indicatorView;
 
-/**
- 加载显示的提示信息
- */
+///加载显示的提示信息
 @property(nonatomic, readonly) UILabel *textLabel;
 
 @end

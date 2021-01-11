@@ -8,7 +8,7 @@
 
 #import "GKTabBarController.h"
 #import "GKTabBar.h"
-#import "GKTabBarItem.h"
+#import "GKTabBarButton.h"
 #import "GKContainer.h"
 #import "UIColor+GKUtils.h"
 #import "UIColor+GKTheme.h"
@@ -16,37 +16,35 @@
 #import "GKBaseDefines.h"
 #import "UIViewController+GKUtils.h"
 
-@implementation GKTabBarItemInfo
+@implementation GKTabBarItem
 
-+ (instancetype)infoWithTitle:(NSString*) title normalImage:(UIImage*) normalImage viewController:(UIViewController *)viewControllr
++ (instancetype)itemWithTitle:(NSString*) title normalImage:(UIImage*) normalImage viewController:(UIViewController *)viewControllr
 {
-    return [self infoWithTitle:title normalImage:normalImage selectedImage:nil viewController:viewControllr];
+    return [self itemWithTitle:title normalImage:normalImage selectedImage:nil viewController:viewControllr];
 }
 
-+ (instancetype)infoWithTitle:(NSString*) title normalImage:(UIImage*) normalImage selectedImage:(UIImage*) selectedImage viewController:(UIViewController*) viewControllr
++ (instancetype)itemWithTitle:(NSString*) title normalImage:(UIImage*) normalImage selectedImage:(UIImage*) selectedImage viewController:(UIViewController*) viewControllr
 {
-    GKTabBarItemInfo *info = [[GKTabBarItemInfo alloc] init];
-    info.title = title;
+    GKTabBarItem *item = [GKTabBarItem new];
+    item.title = title;
     if(!selectedImage){
         ///ios7 的 imageAssets 不支持 Template
         if(normalImage.renderingMode != UIImageRenderingModeAlwaysTemplate){
             normalImage = [normalImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
     }
-    info.normalImage = normalImage;
-    info.selectedImage = selectedImage;
-    info.viewController = viewControllr;
+    item.normalImage = normalImage;
+    item.selectedImage = selectedImage;
+    item.viewController = viewControllr;
     
-    return info;
+    return item;
 }
 
 @end
 
 @interface GKTabBarController ()<GKTabBarDelegate>
 
-/**
- 选中的视图
- */
+///选中的视图
 @property(nonatomic,assign) NSUInteger selectedItemIndex;
 
 ///标签栏隐藏状态
@@ -72,30 +70,30 @@
     return self;
 }
 
-- (void)setItemInfos:(NSArray<GKTabBarItemInfo *> *)itemInfos
+- (void)setItems:(NSArray<GKTabBarItem *> *)items
 {
-    if(_itemInfos != itemInfos){
-        _itemInfos = [itemInfos copy];
+    if(_items != items){
+        _items = [items copy];
         
         //创建选项卡按钮
-        NSMutableArray *tabbarItems = [NSMutableArray arrayWithCapacity:itemInfos.count];
+        NSMutableArray *btns = [NSMutableArray arrayWithCapacity:_items.count];
         
-        for(NSInteger i = 0;i < itemInfos.count;i ++){
+        for(NSInteger i = 0;i < _items.count;i ++){
             
             //创建选项卡按钮
-            GKTabBarItemInfo *info = itemInfos[i];
+            GKTabBarItem *item = _items[i];
 
-            GKTabBarItem *item = [GKTabBarItem new];
-            item.textLabel.textColor = self.normalColor;
-            item.textLabel.font = self.font;
-            item.textLabel.text = info.title;
-            item.imageView.image = info.normalImage;
-            [tabbarItems addObject:item];
+            GKTabBarButton *btn = [GKTabBarButton new];
+            btn.textLabel.textColor = self.normalColor;
+            btn.textLabel.font = self.font;
+            btn.textLabel.text = item.title;
+            btn.imageView.image = item.normalImage;
+            [btns addObject:btn];
             
-            info.viewController.gkHasTabBar = YES;
+            item.viewController.gkHasTabBar = YES;
         }
-        _tabBarItems = [tabbarItems copy];
-        _tabBar.items = _tabBarItems;
+        _buttons = [btns copy];
+        _tabBar.buttons = _buttons;
         
         
         if(self.isViewLoaded){
@@ -113,9 +111,9 @@
 
 - (UIViewController*)selectedViewController
 {
-    if(_selectedItemIndex < _itemInfos.count){
-        GKTabBarItemInfo *info = _itemInfos[_selectedItemIndex];
-        return info.viewController;
+    if(_selectedItemIndex < _items.count){
+        GKTabBarItem *item = _items[_selectedItemIndex];
+        return item.viewController;
     }
     
     return nil;
@@ -126,7 +124,7 @@
 - (GKTabBar*)tabBar
 {
     if(!_tabBar){
-        _tabBar = [[GKTabBar alloc] initWithItems:self.tabBarItems];
+        _tabBar = [[GKTabBar alloc] initWithButtons:self.buttons];
         _tabBar.delegate = self;
         [_tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(self.gkTabBarHeight);
@@ -142,22 +140,22 @@
     self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
     
     self.view.backgroundColor = [UIColor whiteColor];
-    if(self.itemInfos.count > 0){
+    if(self.items.count > 0){
         self.selectedIndex = 0;
     }
 }
 
 // MARK: - CATabBar delegate
 
-- (void)tabBar:(GKTabBar *)tabBar didSelectItemAtIndex:(NSInteger)index
+- (void)tabBar:(GKTabBar *)tabBar didClickAtIndex:(NSInteger)index
 {
     self.selectedItemIndex = index;
 }
 
-- (BOOL)tabBar:(GKTabBar *)tabBar shouldSelectItemAtIndex:(NSInteger)index
+- (BOOL)tabBar:(GKTabBar *)tabBar clickEnabledAtIndex:(NSInteger)index
 {
-    GKTabBarItemInfo *info = _itemInfos[index];
-    BOOL should = info.viewController != nil;
+    GKTabBarItem *item = _items[index];
+    BOOL should = item.viewController != nil;
     if([self.delegate respondsToSelector:@selector(gkTabBarController:shouldSelectAtIndex:)]){
         should = [self.delegate gkTabBarController:self shouldSelectAtIndex:index];
     }
@@ -172,11 +170,11 @@
     if(![_normalColor isEqualToColor:normalColor]){
         _normalColor = normalColor;
         
-        for(NSUInteger i = 0;i < self.tabBarItems.count;i ++){
+        for(NSUInteger i = 0;i < self.buttons.count;i ++){
             if(i != self.tabBar.selectedIndex){
-                GKTabBarItem *item = self.tabBarItems[i];
-                item.imageView.tintColor = self.normalColor;
-                item.textLabel.textColor = self.normalColor;
+                GKTabBarButton *btn = self.buttons[i];
+                btn.imageView.tintColor = self.normalColor;
+                btn.textLabel.textColor = self.normalColor;
             }
         }
     }
@@ -195,10 +193,10 @@
     if(![_selectedColor isEqualToColor:selectedColor]){
         _selectedColor = selectedColor;
         
-        if(self.tabBar.selectedIndex < self.tabBarItems.count){
-            GKTabBarItem *item = self.tabBarItems[self.tabBar.selectedIndex];
-            item.imageView.tintColor = self.selectedColor;
-            item.textLabel.textColor = self.selectedColor;
+        if(self.tabBar.selectedIndex < self.buttons.count){
+            GKTabBarButton *btn = self.buttons[self.tabBar.selectedIndex];
+            btn.imageView.tintColor = self.selectedColor;
+            btn.textLabel.textColor = self.selectedColor;
         }
     }
 }
@@ -216,9 +214,9 @@
     if(![_font isEqual:font]){
         _font = font;
         
-        for(NSUInteger i = 0;i < self.tabBarItems.count;i ++){
-            GKTabBarItem *item = self.tabBarItems[i];
-            item.textLabel.font = self.font;
+        for(NSUInteger i = 0;i < self.buttons.count;i ++){
+            GKTabBarButton *btn = self.buttons[i];
+            btn.textLabel.font = self.font;
         }
     }
 }
@@ -231,25 +229,25 @@
     return _font;
 }
 
-//设置item 选中
+//设置按钮 选中
 - (void)setSelected:(BOOL) selected forIndex:(NSUInteger) index
 {
-    if(index < self.tabBarItems.count){
-        GKTabBarItem *item = self.tabBarItems[index];
-        GKTabBarItemInfo *info = self.itemInfos[index];
+    if(index < self.buttons.count){
+        GKTabBarButton *btn = self.buttons[index];
+        GKTabBarItem *item = self.items[index];
         
         if(selected){
-            item.imageView.tintColor = self.selectedColor;
-            item.textLabel.textColor = self.selectedColor;
+            btn.imageView.tintColor = self.selectedColor;
+            btn.textLabel.textColor = self.selectedColor;
             
-            if(info.selectedImage){
-                item.imageView.image = info.selectedImage;
+            if(item.selectedImage){
+                btn.imageView.image = item.selectedImage;
             }
         }else{
-            item.imageView.tintColor = self.normalColor;
-            item.textLabel.textColor = self.normalColor;
+            btn.imageView.tintColor = self.normalColor;
+            btn.textLabel.textColor = self.normalColor;
             
-            item.imageView.image = info.normalImage;
+            btn.imageView.image = item.normalImage;
         }
     }
 }
@@ -308,17 +306,17 @@
 
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index
 {
-    if(index < _itemInfos.count){
-        GKTabBarItemInfo *info = _itemInfos[index];
-        return info.viewController;
+    if(index < _items.count){
+        GKTabBarItem *item = _items[index];
+        return item.viewController;
     }
     
     return nil;
 }
 
-- (GKTabBarItem*)itemForIndex:(NSUInteger) index
+- (GKTabBarButton*)buttonForIndex:(NSUInteger) index
 {
-    return self.tabBar.items[index];
+    return self.tabBar.buttons[index];
 }
 
 - (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated

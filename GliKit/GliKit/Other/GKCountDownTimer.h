@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 倒计时没有限制
- */
+///倒计时没有限制
 static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
 
 /**
@@ -28,9 +26,7 @@ static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
  */
 @property(nonatomic, assign) NSTimeInterval timeToCountDown;
 
-/**
- 倒计时是否马上开始 默认 是 timeInterval 后只需第一次回调
- */
+///倒计时是否马上开始 默认 是 timeInterval 后只需第一次回调
 @property(nonatomic, assign) BOOL shouldStartImmediately;
 
 /**
@@ -39,43 +35,27 @@ static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
  */
 @property(nonatomic, assign) NSTimeInterval timeInterval;
 
-/**
- 当前已进行的倒计时秒数
- */
+///当前已进行的倒计时秒数
 @property(nonatomic, readonly) NSTimeInterval ongoingTimeInterval;
 
-/**
- 倒计时是否正在执行
- */
+///倒计时是否正在执行
 @property(nonatomic, readonly) BOOL isExcuting;
 
-/**
- 触发倒计时回调，timeLeft 剩余倒计时时间
- */
+///触发倒计时回调，timeLeft 剩余倒计时时间
 @property(nonatomic, copy, nullable) void(^tickHandler)(NSTimeInterval timeLeft);
 
-/**
- 倒计时完成回调
- */
+///倒计时完成回调
 @property(nonatomic, copy, nullable) void(^completionHandler)(void);
 
-/**
- 创建一个倒计时
- 
- @param timeToCountDown 倒计时总时间长度
- @param timeInterval 倒计时间隔
- @return 一个实例
- */
+/// 创建一个倒计时
+/// @param timeToCountDown 倒计时总时间长度
+/// @param timeInterval 倒计时间隔
 + (instancetype)timerWithTime:(NSTimeInterval) timeToCountDown interval:(NSTimeInterval) timeInterval;
 
-/**
- 开始倒计时
- */
+///开始倒计时
 - (void)start;
 
-/**
- 结束倒计时
- */
+///结束倒计时
 - (void)stop;
 
 @end

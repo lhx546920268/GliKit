@@ -12,14 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GKPhotosOptions;
 
-/**
- 图片裁剪
- */
+///图片裁剪
 @interface GKImageCropViewController : GKBaseViewController
 
-/**
- 裁剪框的位置 大小
- */
+///裁剪框的位置 大小
 @property (nonatomic, readonly) CGRect cropFrame;
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -27,11 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
-/**
- 构造方法
- *@param options 裁剪设置
- *@return 一个实例
- */
+///初始化
 - (instancetype)initWithOptions:(GKPhotosOptions*) options NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -9,6 +9,7 @@
 #import "GKTextView.h"
 #import "UIColor+GKTheme.h"
 #import "NSString+GKUtils.h"
+#import "UIColor+GKUtils.h"
 
 @protocol UITextPasteConfigurationSupporting;
 
@@ -19,6 +20,8 @@
 @implementation GKTextView
 
 @synthesize placeholderFont = _placeholderFont;
+@synthesize placeholderTextColor = _placeholderTextColor;
+@synthesize textLengthAttributes = _textLengthAttributes;
 
 // MARK: - init
 
@@ -26,7 +29,7 @@
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        [self initParams];
+        [self initProps];
     }
     return self;
 }
@@ -35,13 +38,13 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        [self initParams];
+        [self initProps];
     }
     return self;
 }
 
 ///初始化
-- (void)initParams
+- (void)initProps
 {
     CGFloat inset = 5;
     self.textContainerInset = UIEdgeInsetsMake(8, inset, 8, inset);
@@ -49,7 +52,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gkTextDidChange:) name:UITextViewTextDidChangeNotification object:self];
     
     self.font = [UIFont systemFontOfSize:14];
-    self.placeholderTextColor = UIColor.gkPlaceholderColor;
     self.placeholderOffset = CGPointMake(8.0f, 8.0f);
     self.textLengthAttributes = nil;
     
@@ -74,21 +76,16 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    if ([placeholder isEqual:_placeholder]){
-        return;
+    if (![placeholder isEqualToString:_placeholder]){
+        _placeholder = [placeholder copy];
+        [self updatePlaceholder];
     }
-    
-    _placeholder = [placeholder copy];
-    [self updatePlaceholder];
 }
 
 - (void)setPlaceholderFont:(UIFont *) font
 {
     if(_placeholderFont != font){
         _placeholderFont = font;
-        if(!_placeholderFont){
-            _placeholderFont = self.font;
-        }
         [self updatePlaceholder];
     }
 }
@@ -103,10 +100,15 @@
 
 - (void)setPlaceholderTextColor:(UIColor *) textColor
 {
-    if(!textColor)
-        textColor = UIColor.gkPlaceholderColor;
-    _placeholderTextColor = textColor;
-    [self updatePlaceholder];
+    if(![_placeholderTextColor isEqualToColor:textColor]){
+        _placeholderTextColor = textColor;
+        [self updatePlaceholder];
+    }
+}
+
+- (UIColor *)placeholderTextColor
+{
+    return _placeholderTextColor ? _placeholderTextColor : UIColor.gkPlaceholderColor;
 }
 
 - (void)setPlaceholderOffset:(CGPoint) offset
@@ -133,17 +135,23 @@
     }
 }
 
-- (void)setTextLengthAttributes:(NSDictionary *)textLengthAttributes
+- (void)setTextLengthAttributes:(NSDictionary *)attrs
 {
-    if(textLengthAttributes.count == 0){
-        textLengthAttributes = @{
+    if(_textLengthAttributes != attrs){
+        _textLengthAttributes = attrs;
+        [self updatePlaceholder];
+    }
+}
+
+- (NSDictionary *)textLengthAttributes
+{
+    if(_textLengthAttributes.count == 0){
+        _textLengthAttributes = @{
             NSFontAttributeName: [UIFont systemFontOfSize:13],
             NSForegroundColorAttributeName: UIColor.lightGrayColor
         };
     }
-    
-    _textLengthAttributes = textLengthAttributes;
-    [self updatePlaceholder];
+    return _textLengthAttributes;
 }
 
 // MARK: - dealloc

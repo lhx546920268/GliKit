@@ -10,11 +10,8 @@
 
 @interface NSAttributedString (GKUtils)
 
-/**
- 获取富文本框大小
- *@param width 每行最大宽度
- *@return 富文本框大小
- */
+/// 获取富文本框大小
+/// @param width 每行最大宽度
 - (CGSize)gkBoundsWithConstraintWidth:(CGFloat) width;
 
 @end

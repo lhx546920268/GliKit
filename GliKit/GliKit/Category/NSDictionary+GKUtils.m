@@ -15,7 +15,8 @@
     id value = [self objectForKey:key];
     
     if([value isKindOfClass:[NSNumber class]]){
-        return [NSString stringWithFormat:@"%@", value];
+        NSNumber *number = value;
+        return number.stringValue;
     }
     
     if([value isKindOfClass:[NSString class]]){

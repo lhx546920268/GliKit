@@ -13,9 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///扩展
 @interface UITableView (GKUtils)
 
-/**
- 隐藏多余的分割线
- */
+///隐藏多余的分割线
 - (void)setExtraCellLineHidden;
 
 ///注册cell

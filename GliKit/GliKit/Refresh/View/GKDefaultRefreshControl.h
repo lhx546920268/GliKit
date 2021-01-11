@@ -10,29 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 默认的下拉刷新控件
- */
+///默认的下拉刷新控件
 @interface GKDefaultRefreshControl : GKRefreshControl
 
-/**
- 刷新控制的状态信息视图
- */
+///刷新控制的状态信息视图
 @property(nonatomic, readonly) UILabel *statusLabel;
 
-/**
- 刷新指示器
- */
+///刷新指示器
 @property(nonatomic, readonly) UIActivityIndicatorView *indicatorView;
 
-/**
- 是否要显示菊花 默认显示
- */
+///是否要显示菊花 默认显示
 @property(nonatomic, assign) BOOL showIndicatorView;
 
-/**
- 更新位置
- */
+///更新位置
 - (void)updatePosition;
 
 @end

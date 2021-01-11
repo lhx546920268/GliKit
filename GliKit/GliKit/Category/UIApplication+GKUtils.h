@@ -12,19 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIApplication (GKUtils)
 
-/**
- 弹窗 窗口
- */
+///弹窗 窗口
 @property(nonatomic, strong, nullable) UIWindow *dialogWindow;
 
-/**
- 创建弹窗 如果为空的时候
- */
+///创建弹窗 如果为空的时候
 - (void)loadDialogWindowIfNeeded;
 
-/**
- 当没有弹窗的时候 移除窗口
- */
+///当没有弹窗的时候 移除窗口
 - (void)removeDialogWindowIfNeeded;
 
 @end

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///扫描框大小
 @property(nonatomic, assign) CGSize scanBoxSize;
 
-///四角线条宽度 default is '5'
+///四角线条宽度 default `5`
 @property(nonatomic, assign) CGFloat cornerLineWidth;
 
 ///扫描区域改变

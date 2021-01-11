@@ -20,7 +20,7 @@
 #import "GKTabBarController.h"
 
 ///是否可以活动返回
-static char GKInteractivePopEnableKey;
+static char GKInteractivePopEnabledKey;
 
 @implementation UIViewController (Utils)
 
@@ -52,16 +52,16 @@ static char GKInteractivePopEnableKey;
     return nil;
 }
 
-- (BOOL)gkInteractivePopEnable
+- (BOOL)gkInteractivePopEnabled
 {
-    NSNumber *number = objc_getAssociatedObject(self, &GKInteractivePopEnableKey);
+    NSNumber *number = objc_getAssociatedObject(self, &GKInteractivePopEnabledKey);
     return number ? number.boolValue : YES;
 }
 
-- (void)setGkInteractivePopEnable:(BOOL)gkInteractivePopEnable
+- (void)setGkInteractivePopEnabled:(BOOL) enabled
 {
-    self.navigationController.interactivePopGestureRecognizer.enabled = gkInteractivePopEnable;
-    objc_setAssociatedObject(self, &GKInteractivePopEnableKey, @(gkInteractivePopEnable), OBJC_ASSOCIATION_RETAIN);
+    self.navigationController.interactivePopGestureRecognizer.enabled = enabled;
+    objc_setAssociatedObject(self, &GKInteractivePopEnabledKey, @(enabled), OBJC_ASSOCIATION_RETAIN);
 }
 
 - (CGFloat)gkStatusBarHeight

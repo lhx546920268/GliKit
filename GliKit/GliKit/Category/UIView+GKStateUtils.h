@@ -27,20 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 ///当前状态
 @property(nonatomic, readonly) UIControlState gkState;
 
-/**
- 设置对应状态的背景颜色
-
- @param backgroundColor 背景颜色，为nil时移除
- @param state 状态，支持  UIControlStateNormal， UIControlStateHighlighted，UIControlStateDisabled，UIControlStateSelected
- */
+/// 设置对应状态的背景颜色
+/// @param backgroundColor 背景颜色，为nil时移除
+/// @param state 状态，支持  UIControlStateNormal， UIControlStateHighlighted，UIControlStateDisabled，UIControlStateSelected
 - (void)gkSetBackgroundColor:(UIColor*) backgroundColor forState:(UIControlState) state;
 
-/**
- 设置对应状态的tintColor
-
- @param tintColor 颜色，为nil时移除
- @param state 状态，支持  UIControlStateNormal， UIControlStateHighlighted，UIControlStateDisabled，UIControlStateSelected
- */
+/// 设置对应状态的tintColor
+/// @param tintColor 颜色，为nil时移除
+/// @param state 状态，支持  UIControlStateNormal， UIControlStateHighlighted，UIControlStateDisabled，UIControlStateSelected
 - (void)gkSetTintColor:(UIColor*) tintColor forState:(UIControlState) state;
 
 

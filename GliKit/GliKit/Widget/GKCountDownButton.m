@@ -26,7 +26,7 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        [self initParams];
+        [self initProps];
     }
     
     return self;
@@ -38,7 +38,7 @@
     
     if (self) {
         
-        [self initParams];
+        [self initProps];
     }
     return self;
 }
@@ -48,10 +48,7 @@
     [self.timer stop];
 }
 
-/**
- 初始化
- */
-- (void)initParams
+- (void)initProps
 {
     self.countdownTimeInterval = 60;
     self.normalBackgroundColor = [UIColor clearColor];
@@ -117,9 +114,6 @@
     [self onStart];
 }
 
-/**
- 停止计时
- */
 - (void)stopTimer
 {
     if(self.timing){
@@ -134,7 +128,6 @@
     !self.countDownHandler ?: self.countDownHandler(timeLeft);
 }
 
-///倒计时开始
 - (void)onStart
 {
     self.enabled = NO;
@@ -142,7 +135,6 @@
     self.layer.borderColor = self.currentTitleColor.CGColor;
 }
 
-///倒计时完成
 - (void)onFinish
 {
     [self setTitle:@"重新获取" forState:UIControlStateNormal];

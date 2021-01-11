@@ -123,7 +123,7 @@ static char GKPageIndexKey;
     self = [super initWithFrame:frame];
     if(self){
         _scrollDirection = GKPageViewScrollDirectionHorizontal;
-        [self initParams];
+        [self initProps];
     }
     return self;
 }
@@ -133,7 +133,7 @@ static char GKPageIndexKey;
     self = [super initWithCoder:aDecoder];
     if(self){
         _scrollDirection = GKPageViewScrollDirectionHorizontal;
-        [self initParams];
+        [self initProps];
     }
     return self;
 }
@@ -143,13 +143,13 @@ static char GKPageIndexKey;
     self = [super initWithFrame:CGRectZero];
     if(self){
         _scrollDirection = scrollDirection;
-        [self initParams];
+        [self initProps];
     }
     
     return self;
 }
 
-- (void)initParams
+- (void)initProps
 {
     _ratio = 1.0;
     _spacing = 0;
@@ -298,9 +298,9 @@ static char GKPageIndexKey;
     if(_autoPlay != autoPlay){
         _autoPlay = autoPlay;
         if(_autoPlay && !self.scrollView.decelerating && !self.scrollView.dragging){
-            [self startAnimate];
+            [self startAnimating];
         }else{
-            [self stopAnimate];
+            [self stopAnimating];
         }
     }
 }
@@ -351,7 +351,7 @@ static char GKPageIndexKey;
             [self scrollToIndex:0 animated:NO];
         }
         [self layoutItems];
-        [self startAnimate];
+        [self startAnimating];
     }
 }
 
@@ -651,7 +651,7 @@ static char GKPageIndexKey;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    [self stopAnimate];
+    [self stopAnimating];
     self.contentOffset = scrollView.contentOffset;
 }
 
@@ -659,7 +659,7 @@ static char GKPageIndexKey;
 {
     if(!decelerate){
         self.contentOffset = CGPointZero;
-        [self startAnimate];
+        [self startAnimating];
     }
 }
 
@@ -667,7 +667,7 @@ static char GKPageIndexKey;
 {
     if(!scrollView.dragging){
         self.contentOffset = CGPointZero;
-        [self startAnimate];
+        [self startAnimating];
     }
 }
 
@@ -708,18 +708,18 @@ static char GKPageIndexKey;
 {
     if(!CGSizeEqualToSize(self.bounds.size, CGSizeZero)){
         if(newWindow){
-            [self startAnimate];
+            [self startAnimating];
         }else{
-            [self stopAnimate];
+            [self stopAnimating];
         }
     }
 }
 
 ///开始动画
-- (void)startAnimate
+- (void)startAnimating
 {
     if(!self.shouldScrollInfinitely || !self.autoPlay){
-        [self stopAnimate];
+        [self stopAnimating];
         return;
     }
     
@@ -737,7 +737,7 @@ static char GKPageIndexKey;
 }
 
 ///结束动画
-- (void)stopAnimate
+- (void)stopAnimating
 {
     if(self.timer && self.timer.isExcuting){
         [self.timer stop];
@@ -749,11 +749,11 @@ static char GKPageIndexKey;
 {
     if(self.numberOfItems == 0)
         return;
-    [self pageChangedWithAnimated:YES];
+    [self pageChangedAnimated:YES];
 }
 
 ///滚动动画
-- (void)pageChangedWithAnimated:(BOOL) flag
+- (void)pageChangedAnimated:(BOOL) flag
 {
     NSInteger page = self.currentPage; // 获取当前的page
     if(page < self.numberOfItems){

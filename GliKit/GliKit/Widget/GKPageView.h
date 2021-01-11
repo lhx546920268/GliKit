@@ -47,16 +47,16 @@ typedef NS_ENUM(NSInteger, GKPageViewScrollDirection){
 ///内部的ScrollView
 @property(nonatomic, readonly) UIScrollView *scrollView;
 
-///item占比，detault is `1.0`，值必须在 `0.1 ~ 1.0`
+///item占比，detault `1.0`，值必须在 `0.1 ~ 1.0`
 @property(nonatomic, assign) CGFloat ratio;
 
-///item间隔，default is `0`
+///item间隔，default `0`
 @property(nonatomic, assign) CGFloat spacing;
 
-///次要的item 缩放比例 default is `1.0`，值必须在 `0.1 ~ 1.0`
+///次要的item 缩放比例 default `1.0`，值必须在 `0.1 ~ 1.0`
 @property(nonatomic, assign) CGFloat scale;
 
-///是否可以循环滚动 default is 'YES' 1个cell时不循环
+///是否可以循环滚动 default 'YES' 1个cell时不循环
 @property(nonatomic, assign) BOOL scrollInfinitely;
 
 ///当前位置
@@ -64,13 +64,13 @@ typedef NS_ENUM(NSInteger, GKPageViewScrollDirection){
 
 ///点击边缘item时是否先居中，如果YES
 ///pageView:(GKPageView*) pageView didSelectItemAtIndex:(NSInteger) index将不会回调
-///default is `YES`
+///default `YES`
 @property(nonatomic, assign) BOOL shouldMiddleItem;
 
-///播放间隔 default is '5.0'
+///播放间隔 default '5.0'
 @property(nonatomic, assign) NSTimeInterval playTimeInterval;
 
-///是否自动播放 default is `YES`
+///是否自动播放 default `YES`
 @property(nonatomic, assign) BOOL autoPlay;
 
 ///代理

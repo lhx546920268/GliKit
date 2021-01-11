@@ -1,22 +1,22 @@
 //
-//  GKTabBarItem.m
+//  GKTabBarButton.m
 //  GliKit
 //
 //  Created by luohaixiong on 2020/2/28.
 //  Copyright © 2020 GliKit. All rights reserved.
 //
 
-#import "GKTabBarItem.h"
+#import "GKTabBarButton.h"
 #import "GKBadgeValueView.h"
 #import "GKBaseDefines.h"
 
-@interface GKTabBarItem ()
+@interface GKTabBarButton ()
 
 @property(nonatomic, strong) UIView *contentView;
 
 @end
 
-@implementation GKTabBarItem
+@implementation GKTabBarButton
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

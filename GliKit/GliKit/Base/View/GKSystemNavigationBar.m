@@ -31,7 +31,7 @@
 
 - (void)initParams
 {
-    self.enable = YES;
+    self.enabled = YES;
     //把导航栏变成透明
     [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.shadowImage = [UIImage new];
@@ -40,7 +40,7 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if(!self.enable)
+    if(!self.enabled)
         return nil;
     return [super hitTest:point withEvent:event];
 }

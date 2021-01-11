@@ -26,14 +26,10 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalcType)
 ///自动布局扩展
 @interface UIView (GKAutoLayout)
 
-/**
- 判断是否存在约束
- */
+///判断是否存在约束
 @property(nonatomic, readonly) BOOL gkExistConstraints;
 
-/**
- 清空约束
- */
+///清空约束
 - (void)gkRemoveAllContraints;
 
 // MARK: - 获取约束 constraint
@@ -43,44 +39,28 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalcType)
  以下约束只根据 item1 和 attribute1 来获取
  */
 
-/**
- 获取高度约束 返回当前优先级最高的
- */
+///获取高度约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkHeightLayoutConstraint;
 
-/**
- 获取宽度约束 返回当前优先级最高的
- */
+///获取宽度约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkWidthLayoutConstraint;
 
-/**
- 获取左边距约束 返回当前优先级最高的
- */
+///获取左边距约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkLeftLayoutConstraint;
 
-/**
- 获取右边距约束 返回当前优先级最高的
- */
+///获取右边距约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkRightLayoutConstraint;
 
-/**
- 获取顶部距约束 返回当前优先级最高的
- */
+///获取顶部距约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkTopLayoutConstraint;
 
-/**
- 获取底部距约束 返回当前优先级最高的
- */
+///获取底部距约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkBottomLayoutConstraint;
 
-/**
- 获取水平居中约束 返回当前优先级最高的
- */
+///获取水平居中约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkCenterXLayoutConstraint;
 
-/**
- 获取垂直居中约束 返回当前优先级最高的
- */
+///获取垂直居中约束 返回当前优先级最高的
 @property (nonatomic, readonly, nullable) NSLayoutConstraint *gkCenterYLayoutConstraint;
 
 
@@ -90,11 +70,9 @@ typedef NS_ENUM(NSInteger, GKAutoLayoutCalcType)
 
 // MARK: - AutoLayout 计算大小
 
-/**根据给定的 size 计算当前view的大小，要使用auto layout
- *@param fitsSize 大小范围 0 则不限制范围
- *@param type 计算方式
- *@return view 大小
- */
+/// 根据给定的 size 计算当前view的大小，要使用auto layout
+/// @param fitsSize 大小范围 0 则不限制范围
+/// @param type 计算方式
 - (CGSize)gkSizeThatFits:(CGSize) fitsSize type:(GKAutoLayoutCalcType) type;
 
 ///设置垂直方向的拥抱和压缩优先级

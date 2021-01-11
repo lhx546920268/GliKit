@@ -25,14 +25,10 @@ static WKProcessPool *sharedProcessPool;
 
 @interface GKBaseWebViewController ()
 
-/**
- 加载进度条
- */
+///加载进度条
 @property(nonatomic, strong) GKProgressView *progressView;
 
-/**
- 获取userAgent的 webView，因为 在iOS 12中，在调用 navigatior.userAgent 后，设置customUserAgent会不生效
- */
+///获取userAgent的 webView，因为 在iOS 12中，在调用 navigatior.userAgent 后，设置customUserAgent会不生效
 @property(nonatomic, strong) WKWebView *userAgentWebView;
 
 @end
@@ -110,9 +106,7 @@ static WKProcessPool *sharedProcessPool;
     _shouldDisplayProgress = YES;
 }
 
-/**
- 初始化webView
- */
+///初始化webView
 - (void)initWebView
 {
     //加载进度条条
@@ -317,7 +311,7 @@ static WKProcessPool *sharedProcessPool;
 
 - (void)loadWebContent
 {
-    BOOL loadEnable = YES;
+    BOOL loadEnabled = YES;
     //判断需不需要设置 自定义ua，没有获取的系统的ua 先获取
     if(!GKSystemUserAgent){
         NSString *userAgent = [self customUserAgent];
@@ -326,7 +320,7 @@ static WKProcessPool *sharedProcessPool;
             if(self.URL || self.htmlString){
                 [self setProgress:0.1];
             }
-            loadEnable = NO;
+            loadEnabled = NO;
             WeakObj(self)
             [self loadUserAgentWithCompletion:^{
                 [selfWeak loadWebContent];
@@ -343,7 +337,7 @@ static WKProcessPool *sharedProcessPool;
         }
     }
  
-    if(loadEnable){
+    if(loadEnabled){
         if(self.URL){
             
             [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
@@ -422,7 +416,7 @@ static WKProcessPool *sharedProcessPool;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    ///防止左右滑动时触发上下滑动
+    //防止左右滑动时触发上下滑动
     if([self.parentViewController isKindOfClass:[GKPageViewController class]]){
         GKPageViewController *page = (GKPageViewController*)self.parentViewController;
         page.scrollView.scrollEnabled = NO;

@@ -13,7 +13,7 @@
 #import "GKWeakObjectContainer.h"
 #import "GKNestedScrollHelper.h"
 
-static char GKNestedScrollEnableKey;
+static char GKNestedScrollEnabledKey;
 static char GKNestedParentKey;
 static char GKChildDidScrollToParentKey;
 static char GKNestedParentScrollViewKey;
@@ -46,7 +46,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 ///交换方法
 - (void)gkNestedScrollSwizzle
 {
-    if(self.delegate && self.gkNestedScrollEnable){
+    if(self.delegate && self.gkNestedScrollEnabled){
         [GKNestedScrollHelper replaceImplementations:@selector(scrollViewDidScroll:) owner:self.delegate implementer:self];
         [GKNestedScrollHelper replaceImplementations:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:) owner:self.delegate implementer:self];
     }
@@ -65,7 +65,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 - (BOOL)gkNestedScroll_touchesShouldBegin:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view
 {
-    if(self.gkNestedScrollEnable && self.gkNestedScrollHelper.autoScrolling){
+    if(self.gkNestedScrollEnabled && self.gkNestedScrollHelper.autoScrolling){
         [self gkOnTouchScrollView];
         return NO;
     }
@@ -75,7 +75,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 ///触摸了
 - (void)gkOnTouchScrollView
 {
-    if(self.gkNestedScrollEnable){
+    if(self.gkNestedScrollEnabled){
         [self.gkNestedScrollHelper onTouchScreen];
     }
 }
@@ -84,14 +84,14 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 - (void)gkNestedScrollAdd_scrollViewDidScroll:(UIScrollView*) scrollView
 {
-    if(scrollView.gkNestedScrollEnable){
+    if(scrollView.gkNestedScrollEnabled){
         [scrollView.gkNestedScrollHelper scrollViewDidScroll:scrollView];
     }
 }
 
 - (void)gkNestedScroll_scrollViewDidScroll:(UIScrollView*) scrollView
 {
-    if(scrollView.gkNestedScrollEnable){
+    if(scrollView.gkNestedScrollEnabled){
         [scrollView.gkNestedScrollHelper scrollViewDidScroll:scrollView];
     }
     
@@ -100,14 +100,14 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 - (void)gkNestedScrollAdd_scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    if(scrollView.gkNestedScrollEnable && scrollView.gkNestedParent){
+    if(scrollView.gkNestedScrollEnabled && scrollView.gkNestedParent){
         [scrollView.gkNestedScrollHelper scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     }
 }
 
 - (void)gkNestedScroll_scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    if(scrollView.gkNestedScrollEnable && scrollView.gkNestedParent){
+    if(scrollView.gkNestedScrollEnabled && scrollView.gkNestedParent){
         [scrollView.gkNestedScrollHelper scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     }
  
@@ -128,15 +128,15 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 // MARK: - Props
 
-- (void)setGkNestedScrollEnable:(BOOL)gkNestedScrollEnable
+- (void)setGkNestedScrollEnabled:(BOOL) enabled
 {
-    objc_setAssociatedObject(self, &GKNestedScrollEnableKey, @(gkNestedScrollEnable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKNestedScrollEnabledKey, @(enabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self gkNestedScrollSwizzle];
 }
 
-- (BOOL)gkNestedScrollEnable
+- (BOOL)gkNestedScrollEnabled
 {
-    return [objc_getAssociatedObject(self, &GKNestedScrollEnableKey) boolValue];
+    return [objc_getAssociatedObject(self, &GKNestedScrollEnabledKey) boolValue];
 }
 
 - (void)setGkNestedParent:(BOOL)gkNestedParent

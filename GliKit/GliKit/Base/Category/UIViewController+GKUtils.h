@@ -10,13 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 导航条按钮位置
- */
+///导航条按钮位置
 typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 {
-    GKNavigationItemPositionLeft = 0, //左边
-    GKNavigationItemPositionRight = 1 //右边
+    ///左边
+    GKNavigationItemPositionLeft = 0,
+    
+    ///右边
+    GKNavigationItemPositionRight = 1
 };
 
 ///UIViewController 扩展
@@ -25,8 +26,8 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 ///隐藏导航栏阴影
 @property(nonatomic, assign) BOOL gkHideNavigationBarShadowImage;
 
-///是否可以滑动返回 default 'YES'
-@property(nonatomic, assign) BOOL gkInteractivePopEnable;
+///是否可以滑动返回 default `YES`
+@property(nonatomic, assign) BOOL gkInteractivePopEnabled;
 
 ///状态栏高度
 @property(nonatomic, readonly) CGFloat gkStatusBarHeight;
@@ -84,96 +85,30 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 
 @interface UIViewController (GKNavigationBarItemUtils)
 
-/**
- 导航栏按钮tintColor，默认是 导航栏上的tintColor
- */
+///导航栏按钮tintColor，默认是 导航栏上的tintColor
 @property(null_resettable, nonatomic, strong) UIColor *gkTintColor;
 
-/**
- 设置item tintColor
- */
+///设置item tintColor
 - (void)gkSetTintColorForItem:(UIBarButtonItem*) item;
 
-/**
- 设置导航栏按钮
-
- @param item 按钮
- @param position 位置
- */
+///设置导航栏按钮
 - (void)gkSetNavigationBarItem:(nullable UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position;
 
-/**
- 设置导航栏左边按钮
- 
- @param title 按钮标题
- @param action 点击方法
- @return 按钮
- */
+///设置导航栏左边按钮
 - (UIBarButtonItem*)gkSetLeftItemWithTitle:(NSString*) title action:(nullable SEL) action;
-
-/**
- 设置导航栏左边按钮
- 
- @param image 按钮图标
- @param action 点击方法
- @return 按钮
- */
 - (UIBarButtonItem*)gkSetLeftItemWithImage:(UIImage*) image action:(nullable SEL) action;
-
-/**
- 设置导航栏左边按钮
- 
- @param systemItem 系统按钮图标
- @param action 点击方法
- @return 按钮
- */
 - (UIBarButtonItem*)gkSetLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(nullable SEL) action;
-
-/**
- 设置导航栏左边按钮
- 
- @param customView 自定义视图
- @return 按钮
- */
 - (UIBarButtonItem*)gkSetLeftItemWithCustomView:(UIView*) customView;
 
-/**
- 设置导航栏右边按钮
- 
- @param title 按钮标题
- @param action 点击方法
- @return 按钮
- */
+///设置导航栏右边按钮
 - (UIBarButtonItem*)gkSetRightItemWithTitle:(NSString*) title action:(nullable SEL) action;
-
-/**
- 设置导航栏右边按钮
- 
- @param image 按钮图标
- @param action 点击方法
- @return 按钮
- */
 - (UIBarButtonItem*)gkSetRightItemWithImage:(UIImage*) image action:(nullable SEL) action;
-
-/**
- 设置导航栏右边按钮
- 
- @param systemItem 系统按钮图标
- @param action 点击方法
- @return 按钮
- */
 - (UIBarButtonItem*)gkSetRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(nullable SEL) action;
-
-/**
- 设置导航栏右边按钮
- 
- @param customView 自定义视图
- @return 按钮
- */
 - (UIBarButtonItem*)gkSetRightItemWithCustomView:(UIView*) customView;
 
 // MARK: - Class Method
 
+///创建导航栏按钮
 + (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(nullable id) target action:(nullable SEL) action;
 + (UIBarButtonItem*)gkBarItemWithTitle:(NSString*) title target:(nullable id) target action:(nullable SEL) action;
 + (UIBarButtonItem*)gkBarItemWithCustomView:(UIView*) customView;

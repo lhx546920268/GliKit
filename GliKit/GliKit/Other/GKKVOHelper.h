@@ -19,7 +19,7 @@ typedef void(^GKKVOCallback)(NSString *keyPath, id _Nullable newValue, id _Nulla
 /// kvo帮助类
 @interface GKKVOHelper : NSObject
 
-/// 是否监听只读属性 default is `NO`
+/// 是否监听只读属性 default `NO`
 @property(nonatomic, assign) BOOL shouldObserveReadonly;
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -48,6 +48,14 @@ typedef void(^GKKVOCallback)(NSString *keyPath, id _Nullable newValue, id _Nulla
 - (void)removeObserver:(NSObject*) observer forOneKeyPath:(NSString*) keyPath;
 - (void)removeObserver:(NSObject*) observer forKeyPaths:(NSArray<NSString*>*) keyPaths;
 - (void)removeObserver:(NSObject*) observer;
+
+@end
+
+///kvo扩展
+@interface NSObject (GKKVOUtils)
+
+///kvo帮助类 懒加载
+@property(nonatomic, readonly) GKKVOHelper *kvoHelper;
 
 @end
 

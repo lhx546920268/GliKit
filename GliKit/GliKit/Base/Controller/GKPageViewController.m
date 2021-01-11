@@ -245,7 +245,7 @@ static char GKVisiblePageKey;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.beginOffset = scrollView.contentOffset;
-    [self setScrollEnable:NO];
+    [self setScrollEnabled:NO];
     
     [super scrollViewWillBeginDragging:scrollView];
 }
@@ -285,14 +285,14 @@ static char GKVisiblePageKey;
 {
     if(!decelerate){
         [self scrollToVisibleIndex];
-        [self setScrollEnable:YES];
+        [self setScrollEnabled:YES];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self scrollToVisibleIndex];
-    [self setScrollEnable:YES];
+    [self setScrollEnabled:YES];
 }
 
 ///滑动到可见位置
@@ -313,15 +313,15 @@ static char GKVisiblePageKey;
 }
 
 ///设置是否可以滑动
-- (void)setScrollEnable:(BOOL) enable
+- (void)setScrollEnabled:(BOOL) enabled
 {
     for(UIViewController *viewController in _pageViewControllers){
         if([viewController isKindOfClass:[GKScrollViewController class]]){
             GKScrollViewController *vc = (GKScrollViewController*)viewController;
-            vc.scrollView.scrollEnabled = enable;
+            vc.scrollView.scrollEnabled = enabled;
         }else if ([viewController isKindOfClass:[GKBaseWebViewController class]]){
             GKBaseWebViewController *web = (GKBaseWebViewController*)viewController;
-            web.webView.scrollView.scrollEnabled = enable;
+            web.webView.scrollView.scrollEnabled = enabled;
         }
     }
 }

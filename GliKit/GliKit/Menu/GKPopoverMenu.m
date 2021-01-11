@@ -19,7 +19,7 @@
 
 @implementation GKPopoverMenuItem
 
-+ (id)infoWithTitle:(NSString*) title icon:(UIImage*) icon
++ (id)itemWithTitle:(NSString*) title icon:(UIImage*) icon
 {
     GKPopoverMenuItem *item = [GKPopoverMenuItem new];
     item.title = title;
@@ -68,9 +68,7 @@
 
 @interface GKPopoverMenu()<UITableViewDelegate, UITableViewDataSource>
 
-/**
- 按钮列表
- */
+///按钮列表
 @property(nonatomic, strong) UITableView *tableView;
 
 @end
@@ -234,7 +232,7 @@
     }
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:titles.count];
     for(NSString *title in titles){
-        [items addObject:[GKPopoverMenuItem infoWithTitle:title icon:nil]];
+        [items addObject:[GKPopoverMenuItem itemWithTitle:title icon:nil]];
     }
     self.menuItems = items;
 }

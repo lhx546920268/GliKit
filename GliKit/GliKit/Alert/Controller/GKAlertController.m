@@ -577,7 +577,7 @@
     UIFont *font;
     UIColor *textColor;
     
-    if(action.enable){
+    if(action.enabled){
         BOOL isCancel = NO;
         if(self.style == GKAlertControllerStyleAlert && self.cancelTitle){
             isCancel = (indexPath.item == 0 && self.actions.count < 3) || (indexPath.item == self.actions.count - 1 && self.actions.count >= 3);
@@ -621,7 +621,7 @@
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
     GKAlertAction *action = self.actions[indexPath.item];
-    if(action.enable){
+    if(action.enabled){
         if(self.dismissAfterClickButton){
             
             void(^handler)(NSUInteger index) = self.selectionHandler;
@@ -636,7 +636,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.actions[indexPath.item].enable;
+    return self.actions[indexPath.item].enabled;
 }
 
 // MARK: - property

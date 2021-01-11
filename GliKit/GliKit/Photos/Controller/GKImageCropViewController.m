@@ -20,49 +20,31 @@
 
 @interface GKImageCropViewController ()
 
-/**
- 图片相框
- */
+///图片相框
 @property (nonatomic, strong) UIImageView *showImageView;
 
-/**
- 图片裁剪的部分控制图层，不被裁剪的部分会覆盖黑色半透明
- */
+///图片裁剪的部分控制图层，不被裁剪的部分会覆盖黑色半透明
 @property (nonatomic, strong) UIView *overlayView;
 
-/**
- 裁剪框
- */
+///裁剪框
 @property (nonatomic, strong) UIView *ratioView;
 
-/**
- 图片的起始位置大小
- */
+///图片的起始位置大小
 @property (nonatomic, assign) CGRect oldFrame;
 
-/**
- 图片的可以放大的最大尺寸
- */
+///图片的可以放大的最大尺寸
 @property (nonatomic, assign) CGRect largeFrame;
 
-/**
- 当前图片位置大小
- */
+///当前图片位置大小
 @property (nonatomic, assign) CGRect latestFrame;
 
-/**
- 取消按钮
- */
+///取消按钮
 @property (nonatomic, strong) UIButton *cancelButton;
 
-/**
- 确认按钮
- */
+///确认按钮
 @property (nonatomic, strong) UIButton *confirmButton;
 
-/**
- 选项
- */
+///选项
 @property(nonatomic, strong) GKPhotosOptions *photosOptions;
 
 @end

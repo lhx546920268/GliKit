@@ -30,68 +30,31 @@ static NSString *const GKColorAlpha = @"alpha";
  */
 @interface UIColor (GKUtils)
 
-/**
- 获取颜色的ARGB值 0 ~ 1.0
- */
+///获取颜色的ARGB值 0 ~ 1.0
 @property(nonatomic, readonly, nullable) NSDictionary<NSString*, NSNumber*> *gkColorARGB;
 
-/**
- 获取颜色的16进制 含透明度 FFFFFFFF
- */
+///获取颜色的16进制 含透明度 FFFFFFFF
 @property(nonatomic, readonly) NSString *gkColorHex;
 
-/**
- 颜色是否相同
- *@param color 要比较的颜色
- */
+///颜色是否相同
 - (BOOL)isEqualToColor:(nullable UIColor*) color;
 
-/**
- 为某个颜色设置透明度
- *@param alpha 透明度 0 ~ 1.0
- *@return 设置了透明度的颜色
- */
+///为某个颜色设置透明度
 - (UIColor*)gkColorWithAlpha:(CGFloat) alpha;
 
-/**
- 通过16进制值获取颜色 rgb，如果hex里面没有包含rgb，则透明度为1.0
- @param hex 16进制
- @return 颜色 ARBG
- */
+///通过16进制值获取颜色 rgb，如果hex里面没有包含rgb，则透明度为1.0
 + (nullable NSDictionary<NSString*, NSNumber*>*)gkColorARGBFromHex:(NSString*) hex;
 
-/**
- 通过ARGB值获取颜色的16进制
- *@param red 红色 0~255
- *@param green 绿色 0~255
- *@param blue 蓝色 0~255
- *@param alpha 透明度
- *@return 16进制颜色值，FFFFFFFF
- */
+///通过ARGB值获取颜色的16进制 0~255
 + (NSString*)gkColorHexFromRed:(int) red green:(int) green  blue:(int) blue alpha:(CGFloat) alpha;
 
-/**
- 通过16进制颜色值获取颜色 当hex里面有没有透明度值时，透明度为 1.0
- *@param hex 16进制值
- *@return 一个 UIColor对象
- */
+///通过16进制颜色值获取颜色 当hex里面有没有透明度值时，透明度为 1.0
 + (nullable UIColor*)gkColorFromHex:(NSString*) hex;
 
-/**
- 通过16进制颜色值获取颜色 将忽略16进制值里面的透明度
- *@param hex 16进制值
- *@param alpha 0~1.0 透明度
- *@return 一个 UIColor对象
- */
+///通过16进制和透明度（0~1.0）值获取颜色 将忽略16进制值里面的透明度
 + (nullable UIColor*)gkColorFromHex:(NSString*) hex alpha:(CGFloat) alpha;
 
-/**以整数rpg初始化
- *@param red 红色 0 ~ 255
- *@param green 绿色 0 ~ 255
- *@param blue 蓝色 0 ~ 255
- *@param alpha 透明度 0 ~ 1.0
- *@return 一个初始化的颜色对象
- */
+///以整数rpg初始化 0~255，alpha 0~1.0
 + (nullable UIColor*)gkColorWithRed:(int) red green:(int) green blue:(int) blue alpha:(CGFloat) alpha;
 
 @end

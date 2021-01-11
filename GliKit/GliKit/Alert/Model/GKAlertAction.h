@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKAlertAction : NSObject
 
 ///是否可以点击 default `YES`
-@property(nonatomic, assign) BOOL enable;
+@property(nonatomic, assign) BOOL enabled;
 
 ///字体 如果没有，则使用默认字体 default `nil`
 @property(nonatomic, strong, nullable) UIFont *font;

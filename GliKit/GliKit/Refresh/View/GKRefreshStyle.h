@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- 刷新样式
- */
+///刷新样式
 @interface GKRefreshStyle : NSObject
 
 ///下拉刷新
