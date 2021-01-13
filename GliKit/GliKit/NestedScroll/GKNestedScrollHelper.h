@@ -28,13 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///用户触摸屏幕了
 - (void)onTouchScreen;
 
-/**
- 替换某个方法的实现 新增的方法要加一个前缀gkNestedScroll
- 
- @param selector 要替换的方法
- @param owner 方法的拥有者
- @param implementer 新方法的实现者
- */
+/// 替换某个方法的实现 新增的方法要加一个前缀gkNestedScroll
+/// @param selector 要替换的方法
+/// @param owner 方法的拥有者
+/// @param implementer 新方法的实现者
 + (void)replaceImplementations:(SEL) selector owner:(NSObject*) owner implementer:(NSObject*) implementer;
 
 @end

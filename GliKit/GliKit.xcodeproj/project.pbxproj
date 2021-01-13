@@ -64,7 +64,7 @@
 		CED0D340230BC8780057D405 /* GKSystemNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2ED230BC6250057D405 /* GKSystemNavigationBar.m */; };
 		CED0D367230BC8790057D405 /* GKEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D273230BC6250057D405 /* GKEmptyView.m */; };
 		CED0D36E230BC8790057D405 /* GKPageLoadingContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1EA230BC6250057D405 /* GKPageLoadingContainer.m */; };
-		CED0D36F230BC8790057D405 /* GKProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1EB230BC6250057D405 /* GKProgressHUD.m */; };
+		CED0D36F230BC8790057D405 /* GKToast.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D1EB230BC6250057D405 /* GKToast.m */; };
 		CED0D372230BC8790057D405 /* GKTabMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D277230BC6250057D405 /* GKTabMenuBarItem.m */; };
 		CED0D373230BC8790057D405 /* GKTabMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D278230BC6250057D405 /* GKTabMenuBar.m */; };
 		CED0D379230BC8790057D405 /* GKTabMenuBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D27E230BC6250057D405 /* GKTabMenuBarCell.m */; };
@@ -241,9 +241,9 @@
 		CED0D1DE230BC6250057D405 /* GKPresentTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPresentTransitionDelegate.h; sourceTree = "<group>"; };
 		CED0D1DF230BC6250057D405 /* GKPartialPresentTransitionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPartialPresentTransitionDelegate.m; sourceTree = "<group>"; };
 		CED0D1E1230BC6250057D405 /* GKPresentTransitionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPresentTransitionDelegate.m; sourceTree = "<group>"; };
-		CED0D1E9230BC6250057D405 /* GKProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKProgressHUD.h; sourceTree = "<group>"; };
+		CED0D1E9230BC6250057D405 /* GKToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKToast.h; sourceTree = "<group>"; };
 		CED0D1EA230BC6250057D405 /* GKPageLoadingContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPageLoadingContainer.m; sourceTree = "<group>"; };
-		CED0D1EB230BC6250057D405 /* GKProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKProgressHUD.m; sourceTree = "<group>"; };
+		CED0D1EB230BC6250057D405 /* GKToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKToast.m; sourceTree = "<group>"; };
 		CED0D1EC230BC6250057D405 /* GKPageLoadingContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPageLoadingContainer.h; sourceTree = "<group>"; };
 		CED0D1EE230BC6250057D405 /* GKNavigationBarTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKNavigationBarTitleView.h; sourceTree = "<group>"; };
 		CED0D1EF230BC6250057D405 /* GKDivider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDivider.h; sourceTree = "<group>"; };
@@ -658,8 +658,8 @@
 			children = (
 				CED0D1EC230BC6250057D405 /* GKPageLoadingContainer.h */,
 				CED0D1EA230BC6250057D405 /* GKPageLoadingContainer.m */,
-				CED0D1E9230BC6250057D405 /* GKProgressHUD.h */,
-				CED0D1EB230BC6250057D405 /* GKProgressHUD.m */,
+				CED0D1E9230BC6250057D405 /* GKToast.h */,
+				CED0D1EB230BC6250057D405 /* GKToast.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1383,7 +1383,7 @@
 				CED0D367230BC8790057D405 /* GKEmptyView.m in Sources */,
 				CED0D426230BECF20057D405 /* UIViewController+GKDialog.m in Sources */,
 				CED0D36E230BC8790057D405 /* GKPageLoadingContainer.m in Sources */,
-				CED0D36F230BC8790057D405 /* GKProgressHUD.m in Sources */,
+				CED0D36F230BC8790057D405 /* GKToast.m in Sources */,
 				CE01C518243EC88D000D0268 /* GKScanBoxView.m in Sources */,
 				CED0D372230BC8790057D405 /* GKTabMenuBarItem.m in Sources */,
 				CED0D373230BC8790057D405 /* GKTabMenuBar.m in Sources */,

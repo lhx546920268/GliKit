@@ -100,10 +100,10 @@ static const int GKHttpFirstPage = 1;
 @property(nonatomic, weak, nullable) UIView *view;
 
 ///loading 显示延迟 default `0.5`
-@property(nonatomic, assign) NSTimeInterval loadingHUDDelay;
+@property(nonatomic, assign) NSTimeInterval loadingToastDelay;
 
 ///是否要显示loading default `NO`
-@property(nonatomic, assign) BOOL shouldShowloadingHUD;
+@property(nonatomic, assign) BOOL shouldShowloadingToast;
 
 ///是否提示错误信息，default `NO`
 @property(nonatomic, assign) BOOL shouldAlertErrorMsg;

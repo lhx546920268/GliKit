@@ -12,34 +12,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GKTabMenuBarItem, GKButton, GKDivider;
 
-/**
- 菜单按钮
- */
+///菜单按钮
 @interface GKTabMenuBarCell : UICollectionViewCell
 
-/**
- 按钮
- */
+///按钮
 @property(nonatomic, readonly) GKButton *button;
 
-/**
- 分隔符
- */
+///分隔符
 @property(nonatomic, readonly) GKDivider *divider;
 
-/**
- 是否选中
- */
+///是否选中
 @property(nonatomic, assign) BOOL tick;
 
-/**
- 按钮信息
- */
+///按钮信息
 @property(nonatomic, strong) GKTabMenuBarItem *item;
 
-/**
- 自定义视图
- */
+///自定义视图
 @property(nonatomic, strong, nullable) UIView *customView;
 
 @end

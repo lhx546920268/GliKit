@@ -8,7 +8,7 @@
 
 #import "UIView+GKLoading.h"
 #import <objc/runtime.h>
-#import "GKProgressHUD.h"
+#import "GKToast.h"
 #import "GKKeyboardHelper.h"
 #import "NSString+GKUtils.h"
 #import "GKPageLoadingContainer.h"
@@ -16,7 +16,7 @@
 
 static char GKPageLoadingViewKey;
 static char GKReloadDataHandlerKey;
-static char GKProgressHUDKey;
+static char GKToastKey;
 static char GKPageLoadingViewInsetsKey;
 
 @implementation UIView (CaLoading)
@@ -152,67 +152,67 @@ static char GKPageLoadingViewInsetsKey;
     !handler ?: handler();
 }
 
-// MARK: - hud
+// MARK: - Toast
 
-- (UIView<GKProgressHUD> *)gkProgressHUD
+- (UIView<GKToastProtocol> *)gkToast
 {
-    return objc_getAssociatedObject(self, &GKProgressHUDKey);
+    return objc_getAssociatedObject(self, &GKToastKey);
 }
 
-- (void)setGkProgressHUD:(UIView<GKProgressHUD> *)gkProgressHUD
+- (void)setGkToast:(UIView<GKToastProtocol> *) gkToast
 {
-    UIView<GKProgressHUD> *hud = self.gkProgressHUD;
-    if(hud){
-        [hud removeFromSuperview];
+    UIView<GKToastProtocol> *toast = self.gkToast;
+    if(toast){
+        [toast removeFromSuperview];
     }
     
-    objc_setAssociatedObject(self, &GKProgressHUDKey, gkProgressHUD, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &GKToastKey, gkToast, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (void)gkShowProgressWithText:(NSString*) text
+- (void)gkShowLoadingToastWithText:(NSString*) text
 {
-    [self gkShowProgressWithText:text delay:0];
+    [self gkShowLoadingToastWithText:text delay:0];
 }
 
-- (void)gkShowProgressWithText:(NSString*) text delay:(NSTimeInterval) delay
+- (void)gkShowLoadingToastWithText:(NSString*) text delay:(NSTimeInterval) delay
 {
     if([NSString isEmpty:text]){
         text = @"加载中...";
     }
-    [self gkShowHudWithStatus:GKProgressHUDStatusLoading text:text delay:delay];
+    [self gkShowToastWithStatus:GKToastStatusLoading text:text delay:delay];
 }
 
 - (void)gkShowSuccessWithText:(NSString*) text
 {
-    [self gkShowHudWithStatus:GKProgressHUDStatusSuccess text:text delay:2];
+    [self gkShowToastWithStatus:GKToastStatusSuccess text:text delay:2];
 }
 
 - (void)gkShowErrorWithText:(NSString*) text
 {
-    [self gkShowHudWithStatus:GKProgressHUDStatusError text:text delay:2];
+    [self gkShowToastWithStatus:GKToastStatusError text:text delay:2];
 }
 
 - (void)gkShowWarningWithText:(NSString *)text
 {
-    [self gkShowHudWithStatus:GKProgressHUDStatusWarning text:text delay:2];
+    [self gkShowToastWithStatus:GKToastStatusWarning text:text delay:2];
 }
 
-- (void)gkShowHudWithStatus:(GKProgressHUDStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
+- (void)gkShowToastWithStatus:(GKToastStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
 {
-    [self gkShowHudInView:self withStatus:status text:text delay:delay];
+    [self gkShowToastInView:self withStatus:status text:text delay:delay];
 }
 
-- (void)gkDismissProgress
+- (void)gkDismissLoadingToast
 {
-    [self gk_dismissProgressInView:self];
+    [self gkDismissLoadingToastInView:self];
 }
 
 - (void)gkDismissText
 {
-    [self gk_dismissTextInView:self];
+    [self gkDismissTextInView:self];
 }
 
-- (void)gkShowHudInView:(UIView*) view withStatus:(GKProgressHUDStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
+- (void)gkShowToastInView:(UIView*) view withStatus:(GKToastStatus) status text:(NSString*) text delay:(NSTimeInterval) delay
 {
     UIWindow *keyboardWindow = [UIApplication sharedApplication].windows.lastObject;
     //键盘正在显示，要在键盘所在的window显示，否则可能会被键盘挡住
@@ -227,18 +227,18 @@ static char GKPageLoadingViewInsetsKey;
         [keyboardWindow gkDismissText];
     }
     
-    UIView<GKProgressHUD> *hud = view.gkProgressHUD;
-    if(!hud){
-        hud = [GKProgressHUD new];
-        view.gkProgressHUD = hud;
+    UIView<GKToastProtocol> *toast = view.gkToast;
+    if(!toast){
+        toast = [GKToast new];
+        view.gkToast = toast;
         
         WeakObj(view);
-        hud.dismissCompletion = ^{
-            viewWeak.gkProgressHUD = nil;
+        toast.dismissCompletion = ^{
+            viewWeak.gkToast = nil;
         };
-        [view addSubview:hud];
+        [view addSubview:toast];
         
-        [hud mas_makeConstraints:^(MASConstraintMaker *make) {
+        [toast mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(view);
             
             //scrollView 需要确定滑动范围
@@ -248,20 +248,20 @@ static char GKPageLoadingViewInsetsKey;
         }];
     }
     
-    hud.delay = delay;
-    hud.text = text;
-    hud.status = status;
-    [hud show];
+    toast.delay = delay;
+    toast.text = text;
+    toast.status = status;
+    [toast show];
 }
 
-- (void)gk_dismissProgressInView:(UIView*) view
+- (void)gkDismissLoadingToastInView:(UIView*) view
 {
-    [view.gkProgressHUD dismissProgress];
+    [view.gkToast dismissLoading];
 }
 
-- (void)gk_dismissTextInView:(UIView*) view
+- (void)gkDismissTextInView:(UIView*) view
 {
-    [view.gkProgressHUD dismiss];
+    [view.gkToast dismiss];
 }
 
 @end

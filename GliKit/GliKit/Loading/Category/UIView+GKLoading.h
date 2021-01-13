@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol GKPageLoadingContainer, GKProgressHUD;
-@class GKProgressHUD;
+@protocol GKPageLoadingContainer, GKToastProtocol;
+@class GKToast;
 
 ///loading相关扩展
 @interface UIView (GKLoading)
@@ -28,34 +28,34 @@ NS_ASSUME_NONNULL_BEGIN
 ///点击失败页面回调
 @property(nonatomic, copy, nullable) void(^gkReloadDataHandler)(void);
 
-///页面加载偏移量 default is UIEdgeInsetZero
+///页面加载偏移量 default `zero`
 @property(nonatomic, assign) UIEdgeInsets gkPageLoadingViewInsets;
 
-///当前hud
-@property(nonatomic, strong, nullable) UIView<GKProgressHUD> *gkProgressHUD;
+///当前toast
+@property(nonatomic, strong, nullable) UIView<GKToastProtocol> *gkToast;
 
 ///点击失败视图
 - (void)gkHandlerTapFailPage;
 
-///显示hud
-- (void)gkShowProgressWithText:(nullable NSString*) text;
+///显示
+- (void)gkShowLoadingToastWithText:(nullable NSString*) text;
 
-///隐藏加载中hud
-- (void)gkDismissProgress;
+///隐藏加载中
+- (void)gkDismissLoadingToast;
 
-///延迟显示hud
-- (void)gkShowProgressWithText:(nullable NSString*) text delay:(NSTimeInterval) delay;
+///延迟显示
+- (void)gkShowLoadingToastWithText:(nullable NSString*) text delay:(NSTimeInterval) delay;
 
-///显示成功hud
+///显示成功
 - (void)gkShowSuccessWithText:(nullable NSString*) text;
 
-///显示失败hud
+///显示失败
 - (void)gkShowErrorWithText:(nullable NSString*) text;
 
-///显示警告hud
+///显示警告
 - (void)gkShowWarningWithText:(nullable NSString*) text;
 
-///隐藏提示信息hud
+///隐藏提示信息
 - (void)gkDismissText;
 
 @end

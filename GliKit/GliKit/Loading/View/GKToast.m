@@ -1,26 +1,26 @@
 //
-//  GKProgressHUD.m
+//  GKToast.m
 //  GliKit
 //
 //  Created by 罗海雄 on 2019/3/19.
 //  Copyright © 2019 罗海雄. All rights reserved.
 //
 
-#import "GKProgressHUD.h"
+#import "GKToast.h"
 #import "NSString+GKUtils.h"
 #import "UIColor+GKUtils.h"
 #import "UIView+GKUtils.h"
 
 ///垂直间距
-static const CGFloat GKProgressHUDVerticalSpacing = 12.0f;
+static const CGFloat GKToastVerticalSpacing = 12.0f;
 
 ///水平间距
-static const CGFloat GKProgressHUDHorizontalSpacing = 12.0f;
+static const CGFloat GKToastHorizontalSpacing = 12.0f;
 
 ///文字间距
-static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
+static const CGFloat GKToastLabelSpacing = 8.0f;
 
-@interface GKProgressHUD ()
+@interface GKToast ()
 
 ///文字大小
 @property(nonatomic,assign) CGSize textSize;
@@ -39,7 +39,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 
 @end
 
-@implementation GKProgressHUD
+@implementation GKToast
 
 @synthesize activityIndicatorView = _activityIndicatorView;
 @synthesize imageView = _imageView;
@@ -57,7 +57,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         self.font = [UIFont systemFontOfSize:13];
         self.minimumSize = CGSizeMake(200, 116);
         self.maximumSize = CGSizeMake(200, 300);
-        self.status = GKProgressHUDStatusNone;
+        self.status = GKToastStatusNone;
         self.hidden = YES;
     }
     
@@ -88,15 +88,15 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 - (UIImage*)currentImaage
 {
     switch (self.status) {
-        case GKProgressHUDStatusSuccess : {
+        case GKToastStatusSuccess : {
             return [UIImage imageNamed:@"pop_icon_success_default"];
         }
             break;
-        case GKProgressHUDStatusError : {
+        case GKToastStatusError : {
             return [UIImage imageNamed:@"pop_icon_error_default"];
         }
             break;
-        case GKProgressHUDStatusWarning : {
+        case GKToastStatusWarning : {
             return [UIImage imageNamed:@"pop_icon_warning_default"];
         }
             break;
@@ -160,13 +160,13 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 {
     [self stopTimer];
     switch (self.status) {
-        case GKProgressHUDStatusLoading : {
+        case GKToastStatusLoading : {
             [self delayShow];
         }
             break;
-        case GKProgressHUDStatusSuccess :
-        case GKProgressHUDStatusError :
-        case GKProgressHUDStatusWarning : {
+        case GKToastStatusSuccess :
+        case GKToastStatusError :
+        case GKToastStatusWarning : {
             [self dismiss];
         }
         default:
@@ -180,10 +180,10 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 {
     if(![_text isEqualToString:text]){
         _text = [text copy];
-        _textSize = [_text gkStringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKProgressHUDHorizontalSpacing * 2];
+        _textSize = [_text gkStringSizeWithFont:self.font contraintWith:self.maximumSize.width - GKToastHorizontalSpacing * 2];
         
-        if(_textSize.width < self.minimumSize.width - GKProgressHUDHorizontalSpacing * 2){
-            _textSize.width = self.minimumSize.width - GKProgressHUDHorizontalSpacing * 2;
+        if(_textSize.width < self.minimumSize.width - GKToastHorizontalSpacing * 2){
+            _textSize.width = self.minimumSize.width - GKToastHorizontalSpacing * 2;
         }
         
         if(_textSize.height > self.maximumSize.height){
@@ -195,14 +195,14 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     }
 }
 
-- (void)setStatus:(GKProgressHUDStatus)status
+- (void)setStatus:(GKToastStatus)status
 {
     if(_status != status){
         _status = status;
         switch (_status) {
-            case GKProgressHUDStatusError :
-            case GKProgressHUDStatusSuccess :
-            case GKProgressHUDStatusWarning : {
+            case GKToastStatusError :
+            case GKToastStatusSuccess :
+            case GKToastStatusWarning : {
                 [self initViews];
                 self.userInteractionEnabled = NO;
                 self.hidden = NO;
@@ -213,14 +213,14 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
                 self.imageView.bounds = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
             }
                 break;
-            case GKProgressHUDStatusLoading : {
+            case GKToastStatusLoading : {
                 
                 self.userInteractionEnabled = YES;
                 self.hidden = NO;
                 _imageView.hidden = YES;
             }
                 break;
-            case GKProgressHUDStatusNone : {
+            case GKToastStatusNone : {
                 self.hidden = YES;
             }
                 break;
@@ -239,13 +239,13 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 ///调整视图大小
 - (void)adjustViews
 {
-    if(_translucentView && self.status != GKProgressHUDStatusNone && !CGSizeEqualToSize(CGSizeZero, self.bounds.size)){
+    if(_translucentView && self.status != GKToastStatusNone && !CGSizeEqualToSize(CGSizeZero, self.bounds.size)){
         
-        BOOL imageUse = self.status == GKProgressHUDStatusError || self.status == GKProgressHUDStatusSuccess || self.status == GKProgressHUDStatusWarning;
-        BOOL indicatorUse = self.status == GKProgressHUDStatusLoading;
+        BOOL imageUse = self.status == GKToastStatusError || self.status == GKToastStatusSuccess || self.status == GKToastStatusWarning;
+        BOOL indicatorUse = self.status == GKToastStatusLoading;
         BOOL textUse = ![NSString isEmpty:self.text];
         
-        CGFloat realContentWidth = GKProgressHUDHorizontalSpacing * 2;
+        CGFloat realContentWidth = GKToastHorizontalSpacing * 2;
         CGFloat realConetnHeight = 0;
         if(imageUse){
             realConetnHeight += self.imageView.gkHeight;
@@ -257,11 +257,11 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         }
         
         if(textUse){
-            realConetnHeight += GKProgressHUDLabelSpacing + self.textSize.height;
+            realConetnHeight += GKToastLabelSpacing + self.textSize.height;
         }
         
         CGFloat contentWidth = MAX(realContentWidth, self.minimumSize.width);
-        CGFloat contentHeight = MAX(self.minimumSize.height, realConetnHeight + GKProgressHUDVerticalSpacing * 2);
+        CGFloat contentHeight = MAX(self.minimumSize.height, realConetnHeight + GKToastVerticalSpacing * 2);
         
         CGRect rect = CGRectMake((self.gkWidth - contentWidth) / 2.0, (self.gkHeight - contentHeight) / 2.0, contentWidth, contentHeight);
         self.translucentView.frame = rect;
@@ -276,7 +276,7 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
         }
         
         if(textUse){
-            self.textLabel.frame = CGRectMake((contentWidth - realContentWidth) / 2, y + GKProgressHUDLabelSpacing, self.textSize.width, self.textSize.height);
+            self.textLabel.frame = CGRectMake((contentWidth - realContentWidth) / 2, y + GKToastLabelSpacing, self.textSize.width, self.textSize.height);
         }
     }
 }
@@ -285,15 +285,15 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
 
 - (void)show
 {
-    if(_status != GKProgressHUDStatusNone){
+    if(_status != GKToastStatusNone){
         switch (_status) {
-            case GKProgressHUDStatusError :
-            case GKProgressHUDStatusSuccess :
-            case GKProgressHUDStatusWarning : {
+            case GKToastStatusError :
+            case GKToastStatusSuccess :
+            case GKToastStatusWarning : {
                 [self startTimerWithInterval:self.delay];
             }
                 break;
-            case GKProgressHUDStatusLoading : {
+            case GKToastStatusLoading : {
                 
                 //如果本身已经显示了，就不要延迟了
                 if(self.delay > 0 && (!_translucentView || _translucentView.hidden)){
@@ -311,9 +311,9 @@ static const CGFloat GKProgressHUDLabelSpacing = 8.0f;
     }
 }
 
-- (void)dismissProgress
+- (void)dismissLoading
 {
-    if(self.status == GKProgressHUDStatusLoading){
+    if(self.status == GKToastStatusLoading){
         [self dismiss];
     }
 }

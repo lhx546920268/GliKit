@@ -179,7 +179,7 @@
 ///使用图片
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
-    [self gkShowProgressWithText:nil];
+    [self gkShowLoadingToastWithText:nil];
     self.gkBackBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -218,7 +218,7 @@
         StrongObj(self)
         if(self){
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self gkDismissProgress];
+                [self gkDismissLoadingToast];
                 !self.photosOptions.completion ?: self.photosOptions.completion(results);
                 
                 [self dismissViewControllerAnimated:YES completion:nil];

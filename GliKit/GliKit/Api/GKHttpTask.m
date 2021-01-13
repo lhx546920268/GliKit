@@ -47,7 +47,7 @@ static NSMutableSet* GKSharedTasks()
 {
     self = [super init];
     if(self){
-        self.loadingHUDDelay = 0.5;
+        self.loadingToastDelay = 0.5;
         self.timeoutInterval = 15;
         self.lock = [GKLock new];
     }
@@ -164,10 +164,10 @@ static NSMutableSet* GKSharedTasks()
 - (void)onStart
 {
     [GKSharedTasks() addObject:self];
-    if(self.shouldShowloadingHUD){
+    if(self.shouldShowloadingToast){
         [UIApplication.sharedApplication.keyWindow endEditing:YES];
         if(self.view != nil){
-            [self.view gkShowProgressWithText:nil delay:self.loadingHUDDelay];
+            [self.view gkShowLoadingToastWithText:nil delay:self.loadingToastDelay];
         }
     }
 }
@@ -190,7 +190,7 @@ static NSMutableSet* GKSharedTasks()
 - (void)onComplete
 {
     self.isCompleted = YES;
-    [self.view gkDismissProgress];
+    [self.view gkDismissLoadingToast];
     if(!self.isCanceled && [self.delegate respondsToSelector:@selector(taskDidComplete:)]){
         [self.delegate taskDidComplete:self];
     }

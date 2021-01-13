@@ -264,9 +264,9 @@
 - (void)setShowProgress:(BOOL) show
 {
     if(show){
-        [self gkShowProgressWithText:nil];
+        [self gkShowLoadingToastWithText:nil];
     }else{
-        [self gkDismissProgress];
+        [self gkDismissLoadingToast];
     }
 }
 

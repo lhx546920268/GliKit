@@ -1,5 +1,5 @@
 //
-//  GKProgressHUD.h
+//  GKToast.h
 //  GliKit
 //
 //  Created by 罗海雄 on 2019/3/19.
@@ -11,26 +11,26 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///状态
-typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
+typedef NS_ENUM(NSInteger, GKToastStatus){
     
     ///隐藏 什么都没
-    GKProgressHUDStatusNone,
+    GKToastStatusNone,
     
     ///加载中
-    GKProgressHUDStatusLoading,
+    GKToastStatusLoading,
     
     ///提示错误信息
-    GKProgressHUDStatusError,
+    GKToastStatusError,
     
     ///提示成功信息
-    GKProgressHUDStatusSuccess,
+    GKToastStatusSuccess,
     
     ///警告
-    GKProgressHUDStatusWarning,
+    GKToastStatusWarning,
 };
 
-///加载指示器代理
-@protocol GKProgressHUD <NSObject>
+///加载指示器协议
+@protocol GKToastProtocol <NSObject>
 
 ///提示信息
 @property(nonatomic, copy, nullable) NSString *text;
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 @property(nonatomic, assign) NSTimeInterval delay;
 
 ///状态
-@property(nonatomic, assign) GKProgressHUDStatus status;
+@property(nonatomic, assign) GKToastStatus status;
 
 ///消失回调
 @property(nonatomic, copy, nullable) void(^dismissCompletion)(void);
@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 - (void)show;
 
 ///关闭 loading
-- (void)dismissProgress;
+- (void)dismissLoading;
 
 ///关闭所有
 - (void)dismiss;
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, GKProgressHUDStatus){
 @end
 
 ///加载指示器 和 提示信息
-@interface GKProgressHUD : UIView<GKProgressHUD>
+@interface GKToast : UIView<GKToastProtocol>
 
 ///黑色半透明背景视图
 @property(nonatomic, readonly) UIView *translucentView;

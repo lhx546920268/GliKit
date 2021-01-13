@@ -25,16 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) BOOL gkShowFailPage;
 
 ///显示hud
-- (void)gkShowProgressWithText:(nullable NSString*) text;
+- (void)gkShowLoadingToastWithText:(nullable NSString*) text;
 
 ///隐藏hud
-- (void)gkDismissProgress;
+- (void)gkDismissLoadingToast;
 
 ///隐藏提示信息hud
 - (void)gkDismissText;
 
 ///延迟显示hud
-- (void)gkShowProgressWithText:(nullable NSString*) text delay:(NSTimeInterval) delay;
+- (void)gkShowLoadingToastWithText:(nullable NSString*) text delay:(NSTimeInterval) delay;
 
 ///显示成功hud
 - (void)gkShowSuccessWithText:(nullable NSString*) text;

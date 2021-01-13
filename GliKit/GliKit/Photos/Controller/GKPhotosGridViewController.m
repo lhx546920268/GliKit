@@ -196,7 +196,7 @@
 ///使用图片
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
-    [self gkShowProgressWithText:nil];
+    [self gkShowLoadingToastWithText:nil];
     self.gkBackBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -235,7 +235,7 @@
         StrongObj(self)
         if(self){
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self gkDismissProgress];
+                [self gkDismissLoadingToast];
                 !self.photosOptions.completion ?: self.photosOptions.completion(results);
                 [self handleCancel];
             });
@@ -246,7 +246,7 @@
 ///裁剪图片
 - (void)cropImageWithAsset:(PHAsset*) asset
 {
-    [self gkShowProgressWithText:nil];
+    [self gkShowLoadingToastWithText:nil];
     self.gkBackBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -259,7 +259,7 @@
             self.navigationItem.rightBarButtonItem.enabled = YES;
             
             if(imageData){
-                [self gkDismissProgress];
+                [self gkDismissLoadingToast];
                 self.photosOptions.cropSettings.image = [UIImage imageWithData:imageData scale:self.photosOptions.scale];
                 [self goToCropImage];
             }else{

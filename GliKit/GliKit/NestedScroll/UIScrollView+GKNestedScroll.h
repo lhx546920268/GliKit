@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///当前嵌套滑动容器，如果没设置，会自动寻找
 @property(nonatomic, weak, nullable) UIScrollView *gkNestedParentScrollView;
 
-///当前嵌套滑动的子视图 需要手动设置，有多个时要动态设置 可通过 self.scrollView.gkNestedParentScrollView.gkNestedChildScrollView = self.scrollView 来设置
+///当前嵌套滑动的子视图 需要手动设置，有多个时要动态设置 可通过 `self.scrollView.gkNestedParentScrollView.gkNestedChildScrollView = self.scrollView` 来设置
 @property(nonatomic, weak, nullable) UIScrollView *gkNestedChildScrollView;
 
 ///内部用，嵌套滑动帮助类 只有嵌套滑动容器才有这个

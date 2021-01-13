@@ -64,14 +64,14 @@
 
 // MARK: - hud
 
-- (void)gkShowProgressWithText:(NSString*) text
+- (void)gkShowLoadingToastWithText:(NSString*) text
 {
-    [self.gkContentView gkShowProgressWithText:text];
+    [self.gkContentView gkShowLoadingToastWithText:text];
 }
 
-- (void)gkDismissProgress
+- (void)gkDismissLoadingToast
 {
-    [self.gkContentView gkDismissProgress];
+    [self.gkContentView gkDismissLoadingToast];
 }
 
 - (void)gkDismissText
@@ -79,9 +79,9 @@
     [self.gkContentView gkDismissText];
 }
 
-- (void)gkShowProgressWithText:(NSString*) text delay:(NSTimeInterval) delay
+- (void)gkShowLoadingToastWithText:(NSString*) text delay:(NSTimeInterval) delay
 {
-    [self.gkContentView gkShowProgressWithText:text delay:delay];
+    [self.gkContentView gkShowLoadingToastWithText:text delay:delay];
 }
 
 - (void)gkShowSuccessWithText:(NSString*) text

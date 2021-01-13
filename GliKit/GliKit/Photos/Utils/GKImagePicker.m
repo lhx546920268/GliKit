@@ -124,7 +124,7 @@
     __block UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     if(image){
-        [self.viewController gkShowProgressWithText:nil];
+        [self.viewController gkShowLoadingToastWithText:nil];
         
         WeakObj(self);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
@@ -136,7 +136,7 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        [self.viewController gkDismissProgress];
+                        [self.viewController gkDismissLoadingToast];
                         self.options.cropSettings.image = image;
                         GKImageCropViewController *imageCrop = [[GKImageCropViewController alloc] initWithOptions:self.options];
                         [self.viewController.navigationController pushViewController:imageCrop animated:YES];
@@ -147,7 +147,7 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        [self.viewController gkDismissProgress];
+                        [self.viewController gkDismissLoadingToast];
                         if(result){
                             !self.completionHandler ?: self.completionHandler(@[result]);
                         }
