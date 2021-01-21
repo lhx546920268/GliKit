@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///带有下拉划线的基础视图逻辑处理
-@interface GKScrollViewModel : GKBaseViewModel;
+@interface GKScrollViewModel : GKBaseViewModel
 
 ///绑定的viewController
 @property(nonatomic, weak, nullable) __kindof GKScrollViewController *viewController;

@@ -56,7 +56,7 @@ static const int GKHttpFirstPage = 1;
 @property(nonatomic, readonly) BOOL isSuspended;
 
 ///是否是自己取消
-@property(nonatomic, readonly) BOOL isCanceled;
+@property(nonatomic, readonly) BOOL isCancelled;
 
 // MARK: - 回调
 

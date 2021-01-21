@@ -126,7 +126,7 @@ static NSMutableSet* GKSharedTasks()
 - (void)processError:(NSError*) error
 {
     //是自己取消的  因为服务端取消的也会被标记成 NSURLErrorCancelled
-    if(self.isCanceled){
+    if(self.isCancelled){
         return;
     }
     
@@ -191,7 +191,7 @@ static NSMutableSet* GKSharedTasks()
 {
     self.isCompleted = YES;
     [self.view gkDismissLoadingToast];
-    if(!self.isCanceled && [self.delegate respondsToSelector:@selector(taskDidComplete:)]){
+    if(!self.isCancelled && [self.delegate respondsToSelector:@selector(taskDidComplete:)]){
         [self.delegate taskDidComplete:self];
     }
     _URLSessionTask = nil;
@@ -203,7 +203,7 @@ static NSMutableSet* GKSharedTasks()
 - (void)start
 {
     [self.lock lock];
-    if(!self.isExecuting && !self.isCanceled && !self.isCompleted) {
+    if(!self.isExecuting && !self.isCancelled && !self.isCompleted) {
         
         [self onStart];
         [self.URLSessionTask resume];
@@ -214,8 +214,8 @@ static NSMutableSet* GKSharedTasks()
 - (void)cancel
 {
     [self.lock lock];
-    if(!self.isCanceled && !self.isCompleted){
-        _isCanceled = YES;
+    if(!self.isCancelled && !self.isCompleted){
+        _isCancelled = YES;
         if(self.isSuspended || self.isExecuting){
             [_URLSessionTask cancel];
         }
@@ -235,7 +235,7 @@ static NSMutableSet* GKSharedTasks()
     }
     dispatch_main_async_safe(^{
         [self.lock lock];
-        if(!self.isCanceled){
+        if(!self.isCancelled){
             !self.successHandler ?: self.successHandler(self);
             [self onComplete];
         }
@@ -248,7 +248,7 @@ static NSMutableSet* GKSharedTasks()
 {
     dispatch_main_async_safe(^{
         [self.lock lock];
-        if(!self.isCanceled){
+        if(!self.isCancelled){
             !self.willFailHandler ?: self.willFailHandler(self);
             [self onFail];
             !self.failHandler ?: self.failHandler(self);

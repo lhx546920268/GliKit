@@ -17,7 +17,7 @@
 @property(nonatomic, assign) NSTimeInterval timeToStop;
 
 ///倒计时是否已取消
-@property(nonatomic, assign) BOOL isCancel;
+@property(nonatomic, assign) BOOL isCancelled;
 
 ///倒计时
 @property(nonatomic, strong) NSTimer *timer;
@@ -83,7 +83,7 @@
 {
     [self.lock lock];
     if(!_isExcuting){
-        _isCancel = NO;
+        _isCancelled = NO;
         _ongoingTimeInterval = 0;
         if(self.timeToCountDown <= 0 || self.timeInterval <= 0){
             [self finish];
@@ -118,8 +118,8 @@
 - (void)stop
 {
     [self.lock lock];
-    if(_isExcuting && !_isCancel){
-        _isCancel = YES;
+    if(_isExcuting && !_isCancelled){
+        _isCancelled = YES;
         [self stopTimer];
     }
     [self.lock unlock];

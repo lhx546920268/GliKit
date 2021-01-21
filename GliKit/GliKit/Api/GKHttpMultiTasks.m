@@ -185,7 +185,7 @@ static NSMutableSet* GKSharedContainers()
 - (void)taskDidComplete:(__kindof GKHttpTask *)task
 {
     dispatch_main_async_safe(^{
-        if(!task.isCanceled){
+        if(!task.isCancelled){
             [self task:task didComplete:task.isApiSuccess || (!task.isNetworkError && self.onlyFlagNetworkError)];
         }
     })
