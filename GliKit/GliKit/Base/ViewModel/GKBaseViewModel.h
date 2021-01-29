@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKBaseViewModel : NSObject
 
 ///绑定的viewController
-@property(nonatomic, weak, nullable) __kindof GKBaseViewController *viewController;
+@property(nonatomic, weak, nullable, readonly) __kindof GKBaseViewController *viewController;
 
 ///加载数据是否需要显示 pageLoading default `YES`
 @property(nonatomic, assign) BOOL shouldShowPageLoading;

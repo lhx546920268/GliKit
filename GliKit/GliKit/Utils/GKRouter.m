@@ -16,18 +16,74 @@
 #import "UIViewController+GKUtils.h"
 #import "GKBaseWebViewController.h"
 #import "UIViewController+GKPush.h"
+#import "GKBaseDefines.h"
+#import "GKBaseNavigationController.h"
+#import "UIViewController+GKTransition.h"
+
+@implementation UIViewController (GKRouterUtils)
+
+- (void)setRouterParams:(NSDictionary*) params
+{
+    //子类重写
+}
+
+@end
+
+///路由属性
+@interface GKRouteProps()
+
+///页面原始链接
+@property(nonatomic, strong) NSURLComponents *URLComponents;
+
+///路由参数
+@property(nonatomic, strong) NSDictionary *routeParams;
+
+///完成回调
+@property(nonatomic, copy) GKRouteCompletion completion;
+
+///是否是弹出来
+@property(nonatomic, readonly) BOOL isPresent;
+
+@end
+
+@implementation GKRouteProps
+
+- (BOOL)isPresent
+{
+    return self.style == GKRouteStylePresent || self.style == GKRouteStylePresentWithoutNavigationBar;
+}
+
+@end
+
+///注册的信息
+@interface GKRouteRegistration : NSObject
+
+///类
+@property(nonatomic, strong) Class cls;
+
+///回调
+@property(nonatomic, copy) GKRouteHandler handler;
+
+@end
+
+@implementation GKRouteRegistration
+
+@end
 
 @interface GKRouter ()
 
-//已注册的类
-@property(nonatomic, strong) NSMutableDictionary<NSString*, Class> *registeredClasses;
+//已注册的
+@property(nonatomic, readonly) NSMutableDictionary<NSString*, GKRouteRegistration*> *registrations;
 
-//已注册的回调
-@property(nonatomic, strong) NSMutableDictionary<NSString*, GKRounterHandler> *registeredHandlers;
+///拦截器
+@property(nonatomic, readonly) NSMutableArray *interceptors;
 
 @end
 
 @implementation GKRouter
+
+@synthesize registrations = _registrations;
+@synthesize interceptors = _interceptors;
 
 + (GKRouter *)sharedRouter
 {
@@ -36,7 +92,7 @@
     
     dispatch_once(&onceToken, ^{
         
-        sharedRouter = [GKRouter new];
+        sharedRouter = [self.class new];
     });
     
     return sharedRouter;
@@ -46,9 +102,6 @@
 {
     self = [super init];
     if (self) {
-        self.appScheme = @"app://";
-        self.registeredClasses = [NSMutableDictionary dictionary];
-        self.registeredHandlers = [NSMutableDictionary dictionary];
         self.openURLWhileSchemeNotSupport = YES;
     }
     return self;
@@ -63,197 +116,121 @@
     return _appScheme;
 }
 
-- (void)registerName:(NSString *)name forClass:(Class)cls
+- (NSMutableDictionary<NSString *,GKRouteRegistration *> *)registrations
 {
-    if(name && [cls isKindOfClass:UIViewController.class]){
-        self.registeredClasses[name] = cls;
-    }else{
-        @throw [NSException exceptionWithName:@"GKRouterIllegalArgumentsException" reason:[NSString stringWithFormat:@"the class for %@ must be a UIViewController", name] userInfo:nil];
+    if(!_registrations){
+        _registrations = [NSMutableDictionary new];
     }
+    return _registrations;
 }
 
-- (void)registerName:(NSString *)name forHandler:(GKRounterHandler)handler
+- (NSMutableArray *)interceptors
 {
-    if(name){
-        [self.registeredClasses removeObjectForKey:name];
-        self.registeredHandlers[name] = handler;
+    if(!_interceptors){
+        _interceptors = [NSMutableArray array];
     }
+    return _interceptors;
+}
+
+- (void)addInterceptor:(id<GKRouteInterceptor>)interceptor
+{
+    NSParameterAssert(interceptor != nil);
+    [self.interceptors addObject:interceptor];
+}
+
+- (void)removeInterceptor:(id<GKRouteInterceptor>)interceptor
+{
+    NSParameterAssert(interceptor != nil);
+    [self.interceptors removeObject:interceptor];
+}
+
+- (void)registerName:(NSString *)name forClass:(Class)cls
+{
+    NSParameterAssert(name != nil);
+    NSAssert([cls isKindOfClass:UIViewController.class], @"the class for %@ must be a UIViewController", name);
+    
+    GKRouteRegistration *registration = [GKRouteRegistration new];
+    registration.cls = cls;
+    self.registrations[name] = registration;
+}
+
+- (void)registerName:(NSString *)name forHandler:(GKRouteHandler)handler
+{
+    NSParameterAssert(name != nil);
+    NSParameterAssert(handler != nil);
+    
+    GKRouteRegistration *registration = [GKRouteRegistration new];
+    registration.handler = handler;
+    self.registrations[name] = registration;
 }
 
 - (void)unregisterName:(NSString *)name
 {
-    if(name){
-        [self.registeredClasses removeObjectForKey:name];
-        [self.registeredHandlers removeObjectForKey:name];
+    _registrations[name] = nil;
+}
+
+- (void)open:(void (^)(GKRouteProps * _Nonnull))block
+{
+    NSParameterAssert(block != nil);
+    
+    GKRouteProps *props = [GKRouteProps new];
+    block(props);
+
+    if(props.URLString){
+        props.URLComponents = [NSURLComponents componentsWithString:props.URLString];
+    }else if(props.path){
+        props.URLComponents = [NSURLComponents componentsWithString:[self.appScheme stringByAppendingString:props.path]];
     }
-}
-
-// MARK: - Push
-
-- (BOOL)pushApp:(NSString *)URLString
-{
-    return [self pushApp:URLString params:nil];
-}
-
-- (BOOL)pushApp:(NSString*) URLString params:(NSDictionary*) params
-{
-    return [self push:[self.appScheme stringByAppendingString:URLString] params:params];
-}
-
-- (BOOL)push:(NSString *)URLString
-{
-    return [self push:URLString params:nil];
-}
-
-- (BOOL)push:(NSString *)URLString params:(NSDictionary *)params
-{
-    return [self open:URLString params:params isPresent:NO withNavigationBar:NO completion:nil];
-}
-
-// MARK: - Replace
-
-- (BOOL)replace:(NSString *)URLString
-{
-    return [self replace:URLString params:nil];
-}
-
-- (BOOL)replace:(NSString *)URLString params:(NSDictionary *)params
-{
-    NSArray *viewControllers = nil;
-    UIViewController *viewController = self.gkCurrentViewController;
-    if(viewController){
-        viewControllers = @[viewController];
-    }
-    return [self replace:URLString params:params toReplacedViewControlelrs:viewControllers];
-}
-
-- (BOOL)replace:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
-{
-    return [self open:URLString params:params isPresent:NO withNavigationBar:NO toReplacedViewControlelrs:toReplacedViewControlelrs completion:nil];
-}
-
-- (BOOL)replaceApp:(NSString *)URLString
-{
-    return [self replaceApp:URLString params:nil];
-}
-
-- (BOOL)replaceApp:(NSString *)URLString params:(NSDictionary *)params
-{
-    return [self replace:[self.appScheme stringByAppendingString:URLString] params:params];
-}
-
-- (BOOL)replaceApp:(NSString *)URLString params:(NSDictionary *)params toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
-{
-    return [self replace:[self.appScheme stringByAppendingString:URLString] params:params toReplacedViewControlelrs:toReplacedViewControlelrs];
-}
-
-// MARK: - Present
-
-- (BOOL)presentApp:(NSString *)URLString
-{
-    return [self presentApp:URLString params:nil];
-}
-
-- (BOOL)presentApp:(NSString *)URLString params:(NSDictionary *)params
-{
-    return [self presentApp:URLString params:params completion:nil];
-}
-
-- (BOOL)presentApp:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
-{
-    return [self presentApp:URLString params:params withNavigationBar:YES completion:completion];
-}
-
-- (BOOL)presentApp:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
-{
-    return [self present:[self.appScheme stringByAppendingString:URLString] params:params withNavigationBar:withNavigationBar completion:completion];
-}
-
-- (BOOL)present:(NSString *)URLString
-{
-    return [self present:URLString params:nil];
-}
-
-- (BOOL)present:(NSString *)URLString params:(NSDictionary *)params
-{
-    return [self present:URLString params:params completion:nil];
-}
-
-- (BOOL)present:(NSString *)URLString params:(NSDictionary *)params completion:(GKRounterOpenCompletion)completion
-{
-    return [self present:URLString params:params withNavigationBar:YES completion:completion];
-}
-
-- (BOOL)present:(NSString *)URLString params:(NSDictionary *)params withNavigationBar:(BOOL)withNavigationBar completion:(GKRounterOpenCompletion)completion
-{
-    return [self open:URLString params:params isPresent:YES withNavigationBar:withNavigationBar completion:completion];
+    
+    [self openWithProps:props];
 }
 
 // MARK: - ViewController
 
-- (UIViewController *)get:(NSString *)URLString params:(NSDictionary *)params
-{
-    NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
-    NSMutableDictionary *dic = (NSMutableDictionary*)params;
-    if(![dic isKindOfClass:NSMutableDictionary.class]){
-        dic = [NSMutableDictionary dictionaryWithDictionary:params];
-    }
-    
-    return [self viewControllerForComponents:components params:dic];
-}
 
-- (UIViewController *)viewControllerForComponents:(NSURLComponents *) components params:(NSMutableDictionary *)params
+- (UIViewController *)viewControllerForProps:(GKRouteProps*) props
 {
     UIViewController *viewController = nil;
     
-    BOOL alreadSetParams = NO;
-    if(components){
-        
-        //添加URL上的参数
-        for(NSURLQueryItem *item in components.queryItems){
-            if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
-                params[item.name] = item.value;
-            }
-        }
-        
-        NSString *scheme = [components.scheme stringByAppendingString:@"://"];
-        if([scheme isEqualToString:self.appScheme]){
-            NSString *name = components.host;
-            if(![NSString isEmpty:name]){
+    BOOL processBySelf = NO;
+    
+    NSURLComponents *components = props.URLComponents;
+    NSString *scheme = [components.scheme stringByAppendingString:@"://"];
+    if([scheme isEqualToString:self.appScheme]){
+        NSString *name = components.host;
+        if(![NSString isEmpty:name]){
+            
+            GKRouteRegistration *registration = _registrations[name];
+            if(registration.handler){
+                viewController = registration.handler(props.routeParams);
+                processBySelf = YES;
+            }else if(registration.cls){
+                Class cls = registration.cls;
+                if(!cls){
+                    cls = NSClassFromString(name);
+                }
                 
-                GKRounterHandler handler = self.registeredHandlers[name];
-                if(handler){
-                    viewController = handler(params);
-                    alreadSetParams = NO;
-                }else{
-                    Class cls = self.registeredClasses[name];
-                    if(!cls){
-                        cls = NSClassFromString(name);
-                    }
-                    
-                    viewController = [cls new];
-                }
-                if(![viewController isKindOfClass:UIViewController.class]){
-                    viewController = nil;
-                }
+                viewController = [cls new];
             }
-        }else if([scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"]){
-            GKBaseWebViewController *web = [[GKBaseWebViewController alloc] initWithURLString:components.string];
-            viewController = web;
+            if(![viewController isKindOfClass:UIViewController.class]){
+                viewController = nil;
+            }
         }
+    }else if([scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"]){
+        GKBaseWebViewController *web = [[GKBaseWebViewController alloc] initWithURLString:components.string];
+        viewController = web;
     }
     
     if(!viewController){
-        [self cannotFound:components.string params:params];
-    }else if(!alreadSetParams && params.count > 0){
-        
-        if(params.count > 0){
-            [self setPropertyForViewController:viewController data:params];
+        if(!processBySelf){
+            [self cannotFoundWithProps:props];
         }
+    }else if(props.routeParams.count > 0){
         
+        [self setPropertyForViewController:viewController data:props.routeParams];
         if([viewController isKindOfClass:GKBaseViewController.class]){
             GKBaseViewController *baseViewController = (GKBaseViewController*)viewController;
-            [baseViewController setRouterParams:params];
+            [baseViewController setRouterParams:props.routeParams];
         }
     }
     
@@ -281,59 +258,144 @@
     return NSNotFound;
 }
 
-- (BOOL)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar completion:(void (^)(void))completion
-{
-    return [self open:URLString params:params isPresent:isPresent withNavigationBar:withNavigationBar toReplacedViewControlelrs:nil completion:completion];
-}
-
 ///打开一个页面
-- (BOOL)open:(NSString *)URLString params:(NSDictionary *)params isPresent:(BOOL) isPresent withNavigationBar:(BOOL) withNavigationBar toReplacedViewControlelrs:(NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void (^)(void))completion
+- (void)openWithProps:(GKRouteProps*) props
 {
-    NSURLComponents *components = [NSURLComponents componentsWithString:URLString];
+    NSURLComponents *components = props.URLComponents;
     if(!components){
-        [self cannotFound:URLString params:params];
-        return NO;
+        [self cannotFoundWithProps:props];
+        !props.completion ?: props.completion(GKRouteResultFailed);
+        return;
     }
     
+    NSMutableDictionary *params = nil;
+    NSArray *queryItems = components.queryItems;
+    if(props.extras.count > 0 || queryItems.count > 0){
+        params = [NSMutableDictionary dictionary];
+        //添加URL上的参数
+        for(NSURLQueryItem *item in components.queryItems){
+            if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
+                params[item.name] = item.value;
+            }
+        }
+        [params addEntriesFromDictionary:props.extras];
+    }
+    
+    props.routeParams = params;
+    
+    if(_interceptors.count > 0){
+        [self interceptRoute:props forIndex:0];
+    }else{
+        [self continueRoute:props];
+    }
+}
+
+///拦截器处理
+- (void)interceptRoute:(GKRouteProps*) props forIndex:(NSInteger) index
+{
+    [self.interceptors[index] processRoute:props interceptHandler:^(GKRouteInterceptPolicy policy) {
+        if(policy == GKRouteInterceptPolicyAllow){
+            if(index + 1 < self.interceptors.count){
+                [self interceptRoute:props forIndex:index + 1];
+            }else{
+                [self continueRoute:props];
+            }
+        }else{
+            !props.completion ?: props.completion(GKRouteResultCancelled);
+        }
+    }];
+}
+
+///跳转
+- (void)continueRoute:(GKRouteProps*) props
+{
+    NSURLComponents *components = props.URLComponents;
     NSInteger tabBarIndex = [self tabBarIndexForName:components.host];
     if(tabBarIndex != NSNotFound){
         [self.gkCurrentViewController gkBackAnimated:NO completion:^{
             UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
             controller.selectedIndex = tabBarIndex;
+            !props.completion ?: props.completion(GKRouteResultSuccess);
         }];
-        return YES;
+        return;
     }
     
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:params];
-    UIViewController *viewController = [self viewControllerForComponents:components params:dic];
+    UIViewController *viewController = [self viewControllerForProps:props];
     if(!viewController){
         if(self.openURLWhileSchemeNotSupport && ![self isSupportScheme:components.scheme]){
             [UIApplication.sharedApplication openURL:components.URL];
-            return YES;
+            return;
         }
-        return NO;
+        return;
     }
     
-    if(withNavigationBar){
-        viewController = viewController.gkCreateWithNavigationController;
-    }
-    if(isPresent){
-        [self.gkCurrentViewController.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:completion];
+    UIViewController *parentViewControlelr = self.gkCurrentViewController;
+    if(props.isPresent){
+        if(props.style == GKRouteStylePresent){
+            viewController = viewController.gkCreateWithNavigationController;
+        }
+        [parentViewControlelr.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:^{
+            !props.completion ?: props.completion(GKRouteResultSuccess);
+        }];
     }else{
-        [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs];
+        
+        GKBaseNavigationController *nav = (GKBaseNavigationController*)parentViewControlelr.navigationController;
+        if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
+            nav = (GKBaseNavigationController*)parentViewControlelr;
+        }
+        
+        if(props.completion != nil && [nav isKindOfClass:GKBaseNavigationController.class]){
+            nav.transitionCompletion = ^{
+                props.completion(GKRouteResultSuccess);
+            };
+        }
+        if(nav){
+            NSArray *toReplacedViewControlelrs = nil;
+            switch (props.style) {
+                case GKRouteStyleReplace : {
+                    if(nav.viewControllers.count > 0){
+                        toReplacedViewControlelrs = @[nav.viewControllers.lastObject];
+                    }
+                }
+                    break;
+                case GKRouteStyleOnlyOne : {
+                    NSMutableArray *viewControllers = [NSMutableArray array];
+                    for(UIViewController *vc in nav.viewControllers){
+                        if([vc isKindOfClass:viewController.class]){
+                            [viewControllers addObject:vc];
+                        }
+                    }
+                }
+                    break;
+                case  GKRouteStylePresent :
+                case GKRouteStylePush :
+                case GKRouteStylePresentWithoutNavigationBar :
+                    break;
+            }
+            if(toReplacedViewControlelrs.count > 0){
+                NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
+                [viewControllers removeObjectsInArray:toReplacedViewControlelrs];
+                [viewControllers addObject:viewController];
+                
+                [nav setViewControllers:viewControllers animated:YES];
+            }else{
+                [nav pushViewController:viewController animated:YES];
+            }
+        }else{
+            [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
+        }
     }
     
-    return YES;
 }
-       
 
 ///找不到对应的页面
-- (void)cannotFound:(NSString*) URLString params:(NSDictionary*) params
+- (void)cannotFoundWithProps:(GKRouteProps*) props
 {
+    NSString *URLString = props.URLString ? props.URLString : props.path;
 #ifdef DEBUG
     NSLog(@"Can not found viewControlelr for %@", URLString);
 #endif
-    !self.viewControllerCanNotFoundHandler ?: self.viewControllerCanNotFoundHandler(URLString, params);
+    !self.failureHandler ?: self.failureHandler(URLString, props.extras);
 }
 
 ///判断scheme是否支持

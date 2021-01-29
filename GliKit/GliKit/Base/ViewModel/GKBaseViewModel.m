@@ -17,6 +17,8 @@
 
 @implementation GKBaseViewModel
 
+@synthesize viewController = _viewController;
+
 - (instancetype)initWithController:(GKBaseViewController*) viewController
 {
     self = [super init];
@@ -26,6 +28,11 @@
     }
     
     return self;
+}
+
+- (__kindof GKBaseViewController *)viewController
+{
+    return _viewController;
 }
 
 + (instancetype)viewModelWithController:(GKBaseViewController*) viewController

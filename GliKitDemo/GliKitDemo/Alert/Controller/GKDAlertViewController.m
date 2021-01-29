@@ -132,6 +132,10 @@
     
     UIImage *image = [UIImage gkQRCodeImageWithString:@"xxx" correctionLevel:GKQRCodeImageCorrectionLevelPercent7 size:CGSizeMake(100, 100) contentColor:UIColor.redColor backgroundColor:nil logo:nil logoSize:CGSizeZero];
     self.imageView.image = image;
+    
+    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+    }];
 }
 
 - (IBAction)handleSystemAlert:(id)sender {

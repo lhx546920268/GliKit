@@ -10,17 +10,7 @@
 
 @implementation GKScrollViewModel
 
-@synthesize viewController = _viewController;
-
-- (instancetype)initWithController:(GKBaseViewController *)viewController
-{
-    self = [super initWithController:viewController];
-    if(self){
-        _viewController = (GKScrollViewController*)viewController;
-    }
-    
-    return self;
-}
+@dynamic viewController;
 
 // MARK: - Refresh
 

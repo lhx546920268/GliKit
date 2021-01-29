@@ -185,6 +185,8 @@
 		CE1CAA4025821D8800941773 /* GKSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSwipeCell.m; sourceTree = "<group>"; };
 		CE1CAA4425821E9A00941773 /* GKCollectionViewSwipeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewSwipeCell.h; sourceTree = "<group>"; };
 		CE1CAA4525821E9A00941773 /* GKCollectionViewSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewSwipeCell.m; sourceTree = "<group>"; };
+		CE27D6DB25BFC6EE0082798D /* GKItemSizeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKItemSizeModel.h; sourceTree = "<group>"; };
+		CE27D6DD25BFC7540082798D /* GKRowHeightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRowHeightModel.h; sourceTree = "<group>"; };
 		CE37C671233B410100C4F196 /* UIImage+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C672233B410100C4F196 /* UIFont+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C673233B410100C4F196 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
@@ -1094,6 +1096,8 @@
 				CED0D41B230BECF20057D405 /* UIViewController+GKUtils.m */,
 				CE4A912A243EF84100B8C1AA /* UIViewController+GKPush.h */,
 				CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */,
+				CE27D6DB25BFC6EE0082798D /* GKItemSizeModel.h */,
+				CE27D6DD25BFC7540082798D /* GKRowHeightModel.h */,
 			);
 			path = Category;
 			sourceTree = "<group>";

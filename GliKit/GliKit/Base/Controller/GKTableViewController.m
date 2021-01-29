@@ -73,6 +73,7 @@
             _tableView.backgroundColor = UIColor.gkGrayBackgroundColor;
         }
         _tableView.gkEmptyViewDelegate = self;
+        _tableView.separatorInset = self.separatorEdgeInsets;
         
         self.scrollView = _tableView;
     }
@@ -82,7 +83,6 @@
 {
     [super viewDidLayoutSubviews];
     _tableView.separatorInset = self.separatorEdgeInsets;
-    _tableView.layoutMargins = self.separatorEdgeInsets;
 }
 
 // MARK: - Register Cell
@@ -155,7 +155,6 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.separatorInset = self.separatorEdgeInsets;
-    cell.layoutMargins = self.separatorEdgeInsets;
 }
 
 // MARK: - 屏幕旋转

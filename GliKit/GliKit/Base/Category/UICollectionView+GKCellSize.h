@@ -10,21 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///保存item大小的
-@protocol GKItemSizeModel <NSObject>
-
-///item大小
-@property(nonatomic, assign) CGSize itemSize;
-
-@end
-
-///可配置的item
-@protocol GKCollectionConfigurableItem <NSObject>
-
-///对应的数据
-@property(nonatomic, strong) id<GKItemSizeModel> model;
-
-@end
+@protocol GKItemSizeModel;
 
 ///cell大小
 @interface UICollectionView (GKCellSize)

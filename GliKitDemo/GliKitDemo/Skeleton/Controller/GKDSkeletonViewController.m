@@ -52,7 +52,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [GKRouter.sharedRouter pushApp:self.datas[indexPath.row].className];
+    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
+        props.path = self.datas[indexPath.row].className;
+    }];
 }
 
 @end

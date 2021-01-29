@@ -40,7 +40,7 @@ typedef void(^GKKVOCallback)(NSString *keyPath, id _Nullable newValue, id _Nulla
 - (void)addObserver:(NSObject*) observer manualCallback:(GKKVOCallback) callback forKeyPath:(NSString*) keyPath;
 
 /// 调用未回调的
-- (void)flushManualCallbackForObserver:(NSObject*) observer;
+- (void)flushManualCallback;
 
 /// 移除观察者
 /// @param observer 观察者，将使用hash作为 key来保存

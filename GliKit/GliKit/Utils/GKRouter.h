@@ -10,11 +10,94 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///页面打开回调
-typedef void(^GKRounterOpenCompletion)(void);
+@interface UIViewController (GKRouterUtils)
 
-///页面初始化处理
-typedef UIViewController* _Nonnull (^GKRounterHandler)(NSDictionary * _Nullable rounterParams);
+///设置路由参数，如果参数名和属性名一致，则不需要处理这个
+- (void)setRouterParams:(nullable NSDictionary*) params;
+
+@end
+
+///路由方式
+typedef NS_ENUM(NSInteger, GKRouteStyle){
+    
+    ///直接用系统的push
+    GKRouteStylePush,
+    
+    ///用push替换当前的页面
+    GKRouteStyleReplace,
+    
+    ///present 有导航栏
+    GKRouteStylePresent,
+    
+    ///没导航栏
+    GKRouteStylePresentWithoutNavigationBar,
+    
+    ///这个页面只打开一个，用push
+    GKRouteStyleOnlyOne,
+};
+
+///路由属性
+@interface GKRouteProps : NSObject
+
+///页面原始链接
+@property(nonatomic, readonly) NSURLComponents *URLComponents;
+
+///路由参数
+@property(nonatomic, readonly, nullable) NSDictionary *routeParams;
+
+///打开方式
+@property(nonatomic, assign) GKRouteStyle style;
+
+///app的路由路径 如 goods/detail
+@property(nonatomic, copy) NSString *path;
+
+///一个完整的URL 和 path二选一 优先使用这个
+@property(nonatomic, copy) NSString *URLString;
+
+///额外参数，可传递对象，在拦截器会加入到 routeParams
+@property(nonatomic, copy) NSDictionary *extras;
+
+@end
+
+///页面拦截策略
+typedef NS_ENUM(NSInteger, GKRouteInterceptPolicy){
+    
+    ///允许打开
+    GKRouteInterceptPolicyAllow,
+    
+    ///取消
+    GKRouteInterceptPolicyCancel,
+};
+
+///拦截处理结果
+typedef void(^GKRouteInterceptHandler)(GKRouteInterceptPolicy policy);
+
+///拦截器
+@protocol GKRouteInterceptor <NSObject>
+
+///处理路由
+- (void)processRoute:(GKRouteProps*) props interceptHandler:(void(^)(GKRouteInterceptPolicy)) policy;
+
+@end
+
+///路由结果
+typedef NS_ENUM(NSInteger, GKRouteResult){
+    
+    ///打开了
+    GKRouteResultSuccess,
+    
+    ///取消了
+    GKRouteResultCancelled,
+    
+    ///失败
+    GKRouteResultFailed,
+};
+
+///路由回调
+typedef void(^GKRouteCompletion)(GKRouteResult result);
+
+///页面初始化处理 自己处理则返回nil
+typedef UIViewController* _Nullable (^GKRouteHandler)(NSDictionary * _Nullable routeParams);
 
 ///路由 在URLString中的特殊字符和参数值必须编码
 @interface GKRouter : NSObject
@@ -28,8 +111,14 @@ typedef UIViewController* _Nonnull (^GKRounterHandler)(NSDictionary * _Nullable 
 ///当scheme不支持时，是否用 UIApplication 打开 default YES
 @property(nonatomic, assign) BOOL openURLWhileSchemeNotSupport;
 
-///找不到回调
-@property(nonatomic, copy) void(^viewControllerCanNotFoundHandler)(NSString *URLString, NSDictionary * _Nullable rounterParams);
+///失败回调
+@property(nonatomic, copy, nullable) void(^failureHandler)(NSString *URLString, NSDictionary * _Nullable rounterParams);
+
+///添加拦截器
+- (void)addInterceptor:(id<GKRouteInterceptor>) interceptor;
+
+///移除拦截器
+- (void)removeInterceptor:(id<GKRouteInterceptor>) interceptor;
 
 /**
  注册一个页面
@@ -45,7 +134,7 @@ typedef UIViewController* _Nonnull (^GKRounterHandler)(NSDictionary * _Nullable 
 @param name 页面名称
 @param handler 页面初始化回调
 */
-- (void)registerName:(NSString*) name forHandler:(GKRounterHandler) handler;
+- (void)registerName:(NSString*) name forHandler:(GKRouteHandler) handler;
 
 /**
  取消注册一个页面
@@ -55,58 +144,11 @@ typedef UIViewController* _Nonnull (^GKRounterHandler)(NSDictionary * _Nullable 
 - (void)unregisterName:(NSString*) name;
 
 /**
- 打开一个页面
+ 打开一个链接
  
- @param URLString 页面链接 可带参数，如 app://profile?userId=1
- @param params 页面参数
- @return 是否打开成功
+ @param block 用来配置的
  */
-- (BOOL)push:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (BOOL)push:(NSString*) URLString;
-- (BOOL)pushApp:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (BOOL)pushApp:(NSString*) URLString;
-
-/**
- 替换一个页面，只有带导航栏的视图控制器才能替换
- 
- @param URLString 页面链接 可带参数，如 app://profile?userId=1
- @param params 页面参数
- @param toReplacedViewControlelrs 要替换的视图，不带toReplacedViewControlelrs时， 默认替换当前页
- @return 是否打开成功
- */
-- (BOOL)replace:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
-- (BOOL)replace:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (BOOL)replace:(NSString*) URLString;
-- (BOOL)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
-- (BOOL)replaceApp:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (BOOL)replaceApp:(NSString*) URLString;
-
-/**
- 打开一个页面
- 
- @param URLString 页面链接 可带参数，如 app://profile?userId=1
- @param params 页面参数
- @param withNavigationBar 是否创建导航栏 默认创建
- @param completion 界面打开完成回调
- @return 是否打开成功
- */
-- (BOOL)present:(NSString*) URLString params:(nullable NSDictionary*) params withNavigationBar:(BOOL) withNavigationBar completion:(nullable GKRounterOpenCompletion) completion;
-- (BOOL)present:(NSString*) URLString params:(nullable NSDictionary*) params completion:(nullable GKRounterOpenCompletion) completion;
-- (BOOL)present:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (BOOL)present:(NSString*) URLString;
-- (BOOL)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params withNavigationBar:(BOOL) withNavigationBar completion:(nullable GKRounterOpenCompletion) completion;
-- (BOOL)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params completion:(nullable GKRounterOpenCompletion) completion;
-- (BOOL)presentApp:(NSString*) URLString params:(nullable NSDictionary*) params;
-- (BOOL)presentApp:(NSString*) URLString;
-
-/**
- 获取一个已初始化的页面
-
- @param URLString 页面链接 可带参数，如 app://profile?userId=1
- @param params 页面参数
- @return 找不到 则返回nil
-*/
-- (nullable UIViewController*)get:(NSString*) URLString params:(nullable NSDictionary*) params;
+- (void)open:(void(NS_NOESCAPE ^)(GKRouteProps* props)) block;
 
 @end
 

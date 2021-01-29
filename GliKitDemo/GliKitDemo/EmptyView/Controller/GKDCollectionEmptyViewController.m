@@ -8,6 +8,7 @@
 
 #import "GKDCollectionEmptyViewController.h"
 #import <GKDivider.h>
+#import <GKItemSizeModel.h>
 
 @interface GKDCollectionEmptyModel : NSObject<GKItemSizeModel>
 
@@ -22,7 +23,7 @@
 
 @end
 
-@interface GKDCollectionEmptyCell : UICollectionViewCell<GKCollectionConfigurableItem>
+@interface GKDCollectionEmptyCell : UICollectionViewCell
 
 @property(nonatomic, readonly) UILabel *textLabel;
 

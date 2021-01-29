@@ -423,11 +423,4 @@
     return touch.view == self.view;
 }
 
-// MARK: - 路由
-
-- (void)setRouterParams:(NSDictionary*) params
-{
-    
-}
-
 @end

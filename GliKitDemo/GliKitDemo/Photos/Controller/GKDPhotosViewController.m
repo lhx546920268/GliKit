@@ -11,6 +11,7 @@
 #import "GKDPhotosCollectionViewCell.h"
 #import <GKPhotosBrowseViewController.h>
 #import <UIImageView+WebCache.h>
+#import <UIImageView+HighlightedWebCache.h>
 
 @interface GKDPhotosViewController ()
 
@@ -90,20 +91,28 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+//    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
-    !self.selectHandler ?: self.selectHandler(@"这是一个回调");
+    GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+
+    [cell.imageView sd_setHighlightedImageWithURL:[NSURL URLWithString:@"https://image.zegobird.com:10002/newupload/image/d3/17/d3179789d935ea854476b81a886e3c29.png"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+//        cell.imageView.highlighted = YES;
+    }];
+
     
-    GKPhotosBrowseViewController *controller = [[GKPhotosBrowseViewController alloc] initWithModels:self.models visibleIndex:indexPath.item];
-
-    controller.animatedViewHandler = ^UIView*(NSUInteger index){
-
-        GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
-
-        return cell.imageView;
-    };
-
-    [controller showAnimated:YES];
+    
+//    !self.selectHandler ?: self.selectHandler(@"这是一个回调");
+//
+//    GKPhotosBrowseViewController *controller = [[GKPhotosBrowseViewController alloc] initWithModels:self.models visibleIndex:indexPath.item];
+//
+//    controller.animatedViewHandler = ^UIView*(NSUInteger index){
+//
+//        GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+//
+//        return cell.imageView;
+//    };
+//
+//    [controller showAnimated:YES];
 
     
 //    if(indexPath.item < self.results.count){

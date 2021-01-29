@@ -108,11 +108,6 @@ GKNavigationItemHelper;
 ///数据加载完成回调 子类重写
 - (void)onLoadData;
 
-// MARK: - 路由
-
-///设置路由参数，如果参数名和属性名一致，则不需要处理这个
-- (void)setRouterParams:(nullable NSDictionary*) params;
-
 @end
 
 NS_ASSUME_NONNULL_END

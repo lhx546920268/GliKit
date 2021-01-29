@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///打开一个viewController ，如果有存在navigationController, 则使用系统的push，没有则使用自定义的push
 + (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
 - (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs;
++ (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void(^ _Nullable)(void)) completion;
+- (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void(^ _Nullable)(void)) completion;
 
 @end
 

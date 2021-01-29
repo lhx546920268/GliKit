@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 #import "UIView+GKAutoLayout.h"
 #import "NSObject+GKUtils.h"
+#import "GKItemSizeModel.h"
 
 @implementation UICollectionView (GKCellSize)
 
@@ -78,10 +79,14 @@
 
 - (CGSize)gkCellSizeForIdentifier:(NSString*) identifier constraintSize:(CGSize) constraintSize type:(GKAutoLayoutCalcType) type model:(id<GKItemSizeModel>) model
 {
+    NSAssert(identifier != nil, @"identifier 不能为 nil");
     if(CGSizeEqualToSize(model.itemSize, CGSizeZero)){
+        if(CGRectGetWidth(self.frame) == 0 || CGRectGetHeight(self.frame) == 0){
+            return CGSizeZero;
+        }
         //计算大小
         UICollectionReusableView<GKCollectionConfigurableItem> *cell = [self gkCellForIdentifier:identifier];
-        NSAssert([cell conformsToProtocol:@protocol(GKCollectionConfigurableItem)], @"cell for identifier %@ must confirms protocol %@", identifier, NSStringFromProtocol(@protocol(GKCollectionConfigurableItem)));
+        NSAssert([cell respondsToSelector:@selector(setModel:)], @"cell for identifier %@ must imple setModel: ", identifier);
         cell.model = model;
         
         
@@ -111,8 +116,6 @@
 ///注册的cells header footer 用来计算
 - (__kindof UICollectionReusableView*)gkCellForIdentifier:(NSString *)identifier
 {
-    NSAssert(identifier != nil, @"identifier 不能为 nil");
-    
     /**
      不用 dequeueReusableCellWithReuseIdentifier 是因为会创建N个cell，并且会报下面的警告
      [CollectionView] An attempt to prepare a layout while a prepareLayout call was already in progress
@@ -137,8 +140,6 @@
             [cells setObject:view forKey:identifier];
         }
     }
-    
-    NSAssert(view != nil, @"必须注册 %@ 对应的 cell header footer", identifier);
     
     return view;
 }

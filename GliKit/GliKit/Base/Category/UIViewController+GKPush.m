@@ -10,6 +10,7 @@
 #import "UIViewController+GKTransition.h"
 #import "GKPartialPresentTransitionDelegate.h"
 #import "GKTabBarController.h"
+#import "GKBaseNavigationController.h"
 
 @implementation NSObject (GKUIViewControllerUtils)
 
@@ -166,14 +167,35 @@
 
 + (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
 {
+    [self gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs completion:nil];
+}
+
+- (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
+{
+    [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs completion:nil];
+}
+
+- (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs completion:(void (^)(void))completion
+{
+    [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs completion:completion];
+}
+
+
++ (void)gkPushViewController:(UIViewController*) viewController toReplacedViewControlelrs:(nullable NSArray<UIViewController*> *) toReplacedViewControlelrs completion:(void(^)(void)) completion
+{
     if(!viewController)
         return;
     UIViewController *parentViewControlelr = self.gkCurrentViewController;
     
-    UINavigationController *nav = parentViewControlelr.navigationController;
+    GKBaseNavigationController *nav = (GKBaseNavigationController*)parentViewControlelr.navigationController;
     if([parentViewControlelr isKindOfClass:[UINavigationController class]]){
-        nav = (UINavigationController*)parentViewControlelr;
+        nav = (GKBaseNavigationController*)parentViewControlelr;
     }
+    
+    if(completion != nil && [nav isKindOfClass:GKBaseNavigationController.class]){
+        nav.transitionCompletion = completion;
+    }
+    
     if(nav){
         if(toReplacedViewControlelrs.count > 0){
             NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
@@ -188,11 +210,6 @@
     }else{
         [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
     }
-}
-
-- (void)gkPushViewController:(UIViewController *)viewController toReplacedViewControlelrs:(NSArray<UIViewController *> *)toReplacedViewControlelrs
-{
-    [self.class gkPushViewController:viewController toReplacedViewControlelrs:toReplacedViewControlelrs];
 }
 
 @end

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GKScrollViewModel : GKBaseViewModel
 
 ///绑定的viewController
-@property(nonatomic, weak, nullable) __kindof GKScrollViewController *viewController;
+@property(nonatomic, weak, nullable, readonly) __kindof GKScrollViewController *viewController;
 
 // MARK: - Refresh
 

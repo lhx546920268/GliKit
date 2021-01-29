@@ -54,8 +54,8 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
 - (void)reset
 {
     _hasOldValue = NO;
-    self.aOldValue = nil;
-    self.aNewValue = nil;
+    _aOldValue = nil;
+    _aNewValue = nil;
 }
 
 @end
@@ -119,14 +119,16 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
     [self _addObserver:observer callback:[GKKVOCallbackModel modelWithCallback:callback] forKeyPath:keyPath];
 }
 
-- (void)flushManualCallbackForObserver:(NSObject *)observer
+- (void)flushManualCallback
 {
-    NSMutableDictionary *dic = _callbacks[@(observer.hash)];
-    for(id key in dic){
-        GKKVOCallbackModel *model = dic[key];
-        if([model isKindOfClass:GKKVOCallbackModel.class] && model.hasOldValue){
-            model.callback(key, model.aNewValue, model.aOldValue);
-            [model reset];
+    for(id hash in _callbacks){
+        NSMutableDictionary *dic = _callbacks[hash];
+        for(id key in dic){
+            GKKVOCallbackModel *model = dic[key];
+            if([model isKindOfClass:GKKVOCallbackModel.class] && model.hasOldValue){
+                model.callback(key, model.aNewValue, model.aOldValue);
+                [model reset];
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 #import "GKDTableEmptyViewController.h"
+#import <GKRowHeightModel.h>
 
 @interface GKDTableEmptyModel : NSObject<GKRowHeightModel>
 
@@ -21,7 +22,7 @@
 
 @end
 
-@interface GKDTableEmptyCell : UITableViewCell<GKTableConfigurableItem>
+@interface GKDTableEmptyCell : UITableViewCell
 
 @property(nonatomic, readonly) UILabel *titleLabel;
 

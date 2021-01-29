@@ -31,6 +31,15 @@
 
 @implementation DemoObservable
 
+- (NSInteger)intValue
+{
+    return _intValue == 0 ? 10 : _intValue;
+}
+
+- (NSInteger)integerValue
+{
+    return _integerValue == 0 ? 1 : _integerValue;
+}
 
 @end
 
@@ -55,6 +64,9 @@
 ///x
 @property(nonatomic, strong) DemoObservable *demo;
 
+///
+@property(nonatomic, strong) Class cls;
+
 @end
 
 @implementation GKDRootViewController
@@ -71,7 +83,7 @@
 
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[
-                   [GKDRowModel modelWithTitle:@"相册" clazz:@"GKDPhotosViewController"],
+                   [GKDRowModel modelWithTitle:@"相册" clazz:@"photo"],
                    [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
                    [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
@@ -99,20 +111,24 @@
     
     self.demo = [DemoObservable new];
     [self.demo.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
-        NSLog(@"%@, %d, %@", keyPath, [newValue intValue], oldValue);
+        if(oldValue != newValue){
+            NSLog(@"%@, %@, %@", keyPath, newValue, oldValue);
+        }
     } forKeyPath:@"intValue"];
     
     [self.demo.kvoHelper addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
-        NSLog(@"manualCallback %@, %d, %@", keyPath, [newValue intValue], oldValue);
+        NSLog(@"manualCallback %@, %@, %@", keyPath, newValue, oldValue);
     } forKeyPath:@"integerValue"];
     
     GKDRowModel *model = GKDRowModel.new;
     [model setValue:@"string value" forKey:@"stringValue"];
+    self.cls = self.class;
 }
 
 - (void)initViews
 {
     self.style = UITableViewStyleGrouped;
+    self.separatorEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     [self registerClass:GKDRootListCell.class];
     [super initViews];
 }
@@ -123,6 +139,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.datas.count * 3;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    @throw [NSException exceptionWithName:@"我自己爬出的" reason:@"" userInfo:nil];
+    return 45;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,10 +167,12 @@
     self.demo.intValue = indexPath.row;
     self.demo.integerValue = indexPath.row;
     if(indexPath.row == 5){
-        [self.demo.kvoHelper flushManualCallbackForObserver:self];
+        [self.demo.kvoHelper flushManualCallback];
     }
     GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-    [GKRouter.sharedRouter pushApp:model.className];
+    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
+        props.path = model.className;
+    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction

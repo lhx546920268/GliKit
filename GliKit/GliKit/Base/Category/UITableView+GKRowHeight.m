@@ -10,49 +10,9 @@
 #import <objc/runtime.h>
 #import "UIView+GKAutoLayout.h"
 #import "NSObject+GKUtils.h"
+#import "GKRowHeightModel.h"
 
 @implementation UITableView (GKRowHeight)
-
-+ (void)load {
-    SEL selectors[] = {
-        
-        @selector(registerNib:forCellReuseIdentifier:),
-        @selector(registerClass:forCellReuseIdentifier:),
-        @selector(registerNib:forHeaderFooterViewReuseIdentifier:),
-        @selector(registerClass:forHeaderFooterViewReuseIdentifier:),
-    };
-    
-    for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
-        
-        [self gkExchangeImplementations:selectors[i] prefix:@"gkRowHeight_"];
-    }
-}
-
-// MARK: - register cells
-
-- (void)gkRowHeight_registerNib:(UINib *)nib forCellReuseIdentifier:(NSString *)identifier
-{
-    [self gkRowHeight_registerNib:nib forCellReuseIdentifier:identifier];
-    [[self gkRegisterObjects] setObject:nib forKey:identifier];
-}
-
-- (void)gkRowHeight_registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
-{
-    [self gkRowHeight_registerClass:cellClass forCellReuseIdentifier:identifier];
-    [[self gkRegisterObjects] setObject:NSStringFromClass(cellClass) forKey:identifier];
-}
-
-- (void)gkRowHeight_registerNib:(UINib *)nib forHeaderFooterViewReuseIdentifier:(NSString *)identifier
-{
-    [self gkRowHeight_registerNib:nib forHeaderFooterViewReuseIdentifier:identifier];
-    [[self gkRegisterObjects] setObject:nib forKey:identifier];
-}
-
-- (void)gkRowHeight_registerClass:(Class)aClass forHeaderFooterViewReuseIdentifier:(NSString *)identifier
-{
-    [self gkRowHeight_registerClass:aClass forHeaderFooterViewReuseIdentifier:identifier];
-    [[self gkRegisterObjects] setObject:NSStringFromClass(aClass) forKey:identifier];
-}
 
 // MARK: - 计算
 
@@ -60,11 +20,7 @@
 {
     if(model.rowHeight == 0){
         //计算大小
-        UITableViewCell<GKTableConfigurableItem> *cell = [self gkCellForIdentifier:identifier];
-        if(!cell){
-            //有时候cell没有注册，而是直接创建的
-            cell = [self dequeueReusableCellWithIdentifier:identifier];
-        }
+        UITableViewCell<GKTableConfigurableItem> *cell = [self gkCellForIdentifier:identifier isHeaderFooter:NO];
         return [self gkRowHeightForCell:cell model:model];
     }
     
@@ -73,10 +29,14 @@
 
 - (CGFloat)gkRowHeightForCell:(UITableViewCell<GKTableConfigurableItem>*)cell model:(id<GKRowHeightModel>)model
 {
-    NSAssert([cell conformsToProtocol:@protocol(GKTableConfigurableItem)], @"%@ must confirms protocol %@", NSStringFromClass(cell.class), NSStringFromProtocol(@protocol(GKTableConfigurableItem)));
     if(model.rowHeight == 0){
         CGFloat width = CGRectGetWidth(self.frame);
+        if(width == 0){
+            //设置 UITableView的某些属性会触发 获取高度代理，比如layoutMargins，tableHeaderView, 这时如果还没设置frame，直接返回0
+            return 0;
+        }
         
+        NSAssert([cell respondsToSelector:@selector(setModel:)], @"cell for identifier %@ must imple setModel: ", NSStringFromClass(cell.class));
         //当使用系统的accessoryView时，content宽度会向右偏移
         if(cell.accessoryView){
             width -= 16.0 + CGRectGetWidth(cell.accessoryView.frame);
@@ -120,11 +80,7 @@
 {
     if(model.rowHeight == 0){
         //计算大小
-        UIView<GKTableConfigurableItem>* view = [self gkCellForIdentifier:identifier];
-        if(!view){
-            //有时候cell没有注册，而是直接创建的
-            view = (UIView<GKTableConfigurableItem>*)[self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
-        }
+        UIView<GKTableConfigurableItem>* view = [self gkCellForIdentifier:identifier isHeaderFooter:YES];
         model.rowHeight = [self gkHeightForHeaderFooter:view model:model];
     }
     
@@ -134,8 +90,17 @@
 - (CGFloat)gkHeightForHeaderFooter:(UIView<GKTableConfigurableItem>*)headerFooter model:(id<GKRowHeightModel>)model
 {
     if(model.rowHeight == 0){
-        NSAssert([headerFooter conformsToProtocol:@protocol(GKTableConfigurableItem)], @"%@ must confirms protocol %@", NSStringFromClass(headerFooter.class), NSStringFromProtocol(@protocol(GKTableConfigurableItem)));
+        CGFloat width = CGRectGetWidth(self.frame);
+        if(width == 0){
+            //设置 UITableView的某些属性会触发 获取高度代理，比如layoutMargins，tableHeaderView, 这时如果还没设置frame，直接返回0
+            return 0;
+        }
+        NSAssert([headerFooter respondsToSelector:@selector(setModel:)], @"cell for identifier %@ must imple setModel: ", NSStringFromClass(headerFooter.class));
         headerFooter.model = model;
+        UIView *contentView = headerFooter;
+        if([headerFooter isKindOfClass:UITableViewHeaderFooterView.class]){
+            contentView = [(UITableViewHeaderFooterView*)headerFooter contentView];
+        }
         model.rowHeight = [headerFooter gkSizeThatFits:CGSizeMake(self.frame.size.width, 0) type:GKAutoLayoutCalcTypeHeight].height;
     }
     return model.rowHeight;
@@ -143,42 +108,23 @@
 
 // MARK: - 注册的 cells
 
-///注册的 class nib
-- (NSMutableDictionary*)gkRegisterObjects
-{
-    NSMutableDictionary *objects = objc_getAssociatedObject(self, _cmd);
-    if (objects == nil){
-        objects = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, _cmd, objects, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return objects;
-}
-
 ///注册的cells header footer 用来计算
-- (__kindof UIView*)gkCellForIdentifier:(NSString *)identifier
+- (__kindof UIView*)gkCellForIdentifier:(NSString *)identifier isHeaderFooter:(BOOL) isHeaderFooter
 {
-    /**
-     不用 dequeueReusableCellWithIdentifier 是因为会创建N个cell
-     */
-    
     NSMutableDictionary<NSString*, UIView*> *cells = objc_getAssociatedObject(self, _cmd);
     if (cells == nil){
         cells = [NSMutableDictionary dictionary];
         objc_setAssociatedObject(self, _cmd, cells, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     
-    UIView *view = [cells objectForKey:identifier];
+    UIView *view = cells[identifier];
     if(view == nil){
-        NSObject *obj = [[self gkRegisterObjects] objectForKey:identifier];
-        if([obj isKindOfClass:[UINib class]]){
-            UINib *nib = (UINib*)obj;
-            view = [[nib instantiateWithOwner:nil options:nil] firstObject];
-            [cells setObject:view forKey:identifier];
-        }else if([obj isKindOfClass:[NSString class]]){
-            Class clazz = NSClassFromString((NSString*)obj);
-            view = [clazz new];
-            [cells setObject:view forKey:identifier];
+        if(isHeaderFooter){
+            view = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+        }else{
+            view = [self dequeueReusableCellWithIdentifier:identifier];
         }
+        cells[identifier] = view;
     }
     
     return view;
