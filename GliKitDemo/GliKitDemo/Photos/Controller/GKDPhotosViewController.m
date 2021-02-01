@@ -26,7 +26,7 @@
 
 + (void)load
 {
-    [GKRouter.sharedRouter registerName:@"photo" forHandler:^UIViewController *(NSDictionary * _Nullable rounterParams) {
+    [GKRouter.sharedRouter registerPath:@"photo" forHandler:^UIViewController *(NSDictionary * _Nullable rounterParams) {
         
         GKDPhotosViewController *vc = [GKDPhotosViewController new];
         [vc setRouterParams:rounterParams];
@@ -48,6 +48,16 @@
     self.results = [NSMutableArray array];
     self.navigationItem.title = @"相册";
     [self initViews];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __block UIBackgroundTaskIdentifier identifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:^{
+            [UIApplication.sharedApplication endBackgroundTask:identifier];
+        }];
+        
+        sleep(32);
+        
+        [UIApplication.sharedApplication endBackgroundTask:identifier];
+    });
 }
 
 - (void)setRouterParams:(NSDictionary *)params

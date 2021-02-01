@@ -101,14 +101,6 @@
     NSLog(@"rect = %@", NSStringFromCGRect(rect));
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
     
-    __block UIBackgroundTaskIdentifier identifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:^{
-        [UIApplication.sharedApplication endBackgroundTask:identifier];
-    }];
-    
-    NSLog(@"这个一个后台任务");
-    
-    [UIApplication.sharedApplication endBackgroundTask:identifier];
-    
     self.demo = [DemoObservable new];
     [self.demo.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
         if(oldValue != newValue){

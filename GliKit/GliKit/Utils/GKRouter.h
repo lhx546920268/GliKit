@@ -123,25 +123,25 @@ typedef UIViewController* _Nullable (^GKRouteHandler)(NSDictionary * _Nullable r
 /**
  注册一个页面
  
- @param name 页面名称
+ @param path 页面路径
  @param cls 页面对应的类 会根据对应的cls创建一个页面，必须是UIViewController 
  */
-- (void)registerName:(NSString*) name forClass:(Class) cls;
+- (void)registerPath:(NSString*) path forClass:(Class) cls;
 
 /**
 注册一个页面 与上一个方法互斥 不会调用 setRouterParams
 
-@param name 页面名称
+@param path 页面路径
 @param handler 页面初始化回调
 */
-- (void)registerName:(NSString*) name forHandler:(GKRouteHandler) handler;
+- (void)registerPath:(NSString*) path forHandler:(GKRouteHandler) handler;
 
 /**
  取消注册一个页面
  
- @param name 页面名称
+ @param path 页面路径
  */
-- (void)unregisterName:(NSString*) name;
+- (void)unregisterPath:(NSString*) path;
 
 /**
  打开一个链接

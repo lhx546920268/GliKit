@@ -144,32 +144,32 @@
     [self.interceptors removeObject:interceptor];
 }
 
-- (void)registerName:(NSString *)name forClass:(Class)cls
+- (void)registerPath:(NSString *)path forClass:(Class)cls
 {
-    NSParameterAssert(name != nil);
-    NSAssert([cls isKindOfClass:UIViewController.class], @"the class for %@ must be a UIViewController", name);
+    NSParameterAssert(path != nil);
+    NSAssert([cls isKindOfClass:UIViewController.class], @"the class for %@ must be a UIViewController", path);
     
     GKRouteRegistration *registration = [GKRouteRegistration new];
     registration.cls = cls;
-    self.registrations[name] = registration;
+    self.registrations[path] = registration;
 }
 
-- (void)registerName:(NSString *)name forHandler:(GKRouteHandler)handler
+- (void)registerPath:(NSString *)path forHandler:(GKRouteHandler)handler
 {
-    NSParameterAssert(name != nil);
+    NSParameterAssert(path != nil);
     NSParameterAssert(handler != nil);
     
     GKRouteRegistration *registration = [GKRouteRegistration new];
     registration.handler = handler;
-    self.registrations[name] = registration;
+    self.registrations[path] = registration;
 }
 
-- (void)unregisterName:(NSString *)name
+- (void)unregisterPath:(NSString *)path
 {
-    _registrations[name] = nil;
+    _registrations[path] = nil;
 }
 
-- (void)open:(void (^)(GKRouteProps * _Nonnull))block
+- (void)open:(void (NS_NOESCAPE ^)(GKRouteProps*))block
 {
     NSParameterAssert(block != nil);
     
@@ -197,21 +197,21 @@
     NSURLComponents *components = props.URLComponents;
     NSString *scheme = [components.scheme stringByAppendingString:@"://"];
     if([scheme isEqualToString:self.appScheme]){
-        NSString *name = components.host;
-        if(![NSString isEmpty:name]){
+        NSString *host = components.host;
+        if(![NSString isEmpty:host]){
             
-            GKRouteRegistration *registration = _registrations[name];
+            GKRouteRegistration *registration = _registrations[host];
             if(registration.handler){
                 viewController = registration.handler(props.routeParams);
                 processBySelf = YES;
             }else if(registration.cls){
                 Class cls = registration.cls;
-                if(!cls){
-                    cls = NSClassFromString(name);
-                }
-                
+                viewController = [cls new];
+            }else{
+                Class cls = NSClassFromString(host);
                 viewController = [cls new];
             }
+            
             if(![viewController isKindOfClass:UIViewController.class]){
                 viewController = nil;
             }
