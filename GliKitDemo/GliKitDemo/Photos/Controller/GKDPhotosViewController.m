@@ -52,11 +52,10 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         __block UIBackgroundTaskIdentifier identifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:^{
             [UIApplication.sharedApplication endBackgroundTask:identifier];
+            NSLog(@"endBackgroundTaskWithExpirationHandler");
         }];
         
-        sleep(32);
-        
-        [UIApplication.sharedApplication endBackgroundTask:identifier];
+
     });
 }
 
@@ -102,6 +101,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
 //    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+  
     
     GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 

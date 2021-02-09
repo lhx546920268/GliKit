@@ -19,6 +19,7 @@
 #import "GKBaseDefines.h"
 #import "GKBaseNavigationController.h"
 #import "UIViewController+GKTransition.h"
+#import "GKAppUtils.h"
 
 @implementation UIViewController (GKRouterUtils)
 
@@ -228,10 +229,7 @@
     }else if(props.routeParams.count > 0){
         
         [self setPropertyForViewController:viewController data:props.routeParams];
-        if([viewController isKindOfClass:GKBaseViewController.class]){
-            GKBaseViewController *baseViewController = (GKBaseViewController*)viewController;
-            [baseViewController setRouterParams:props.routeParams];
-        }
+        [viewController setRouterParams:props.routeParams];
     }
     
     return viewController;
@@ -244,13 +242,13 @@
     if([controller isKindOfClass:UITabBarController.class]){
         for(NSInteger i = 0;i < controller.viewControllers.count;i ++){
             UIViewController *vc = controller.viewControllers[i];
+            if ([vc isKindOfClass:UINavigationController.class]){
+                UINavigationController *nav = (UINavigationController*)vc;
+                vc = nav.viewControllers.firstObject;
+            }
+            
             if([vc.gkNameOfClass isEqualToString:name]){
                 return i;
-            }else if ([vc isKindOfClass:UINavigationController.class]){
-                UINavigationController *nav = (UINavigationController*)vc;
-                if([nav.viewControllers.firstObject.gkNameOfClass isEqualToString:name]){
-                    return i;
-                }
             }
         }
     }
@@ -273,7 +271,7 @@
     if(props.extras.count > 0 || queryItems.count > 0){
         params = [NSMutableDictionary dictionary];
         //添加URL上的参数
-        for(NSURLQueryItem *item in components.queryItems){
+        for(NSURLQueryItem *item in queryItems){
             if(![NSString isEmpty:item.name] && ![NSString isEmpty:item.value]){
                 params[item.name] = item.value;
             }
@@ -323,8 +321,7 @@
     UIViewController *viewController = [self viewControllerForProps:props];
     if(!viewController){
         if(self.openURLWhileSchemeNotSupport && ![self isSupportScheme:components.scheme]){
-            [UIApplication.sharedApplication openURL:components.URL];
-            return;
+            [GKAppUtils openCompatURL:components.URL];
         }
         return;
     }

@@ -49,13 +49,13 @@ typedef NS_ENUM(NSInteger, GKRouteStyle){
 @property(nonatomic, assign) GKRouteStyle style;
 
 ///app的路由路径 如 goods/detail
-@property(nonatomic, copy) NSString *path;
+@property(nonatomic, copy, nullable) NSString *path;
 
 ///一个完整的URL 和 path二选一 优先使用这个
-@property(nonatomic, copy) NSString *URLString;
+@property(nonatomic, copy, nullable) NSString *URLString;
 
 ///额外参数，可传递对象，在拦截器会加入到 routeParams
-@property(nonatomic, copy) NSDictionary *extras;
+@property(nonatomic, copy, nullable) NSDictionary *extras;
 
 @end
 
@@ -112,7 +112,7 @@ typedef UIViewController* _Nullable (^GKRouteHandler)(NSDictionary * _Nullable r
 @property(nonatomic, assign) BOOL openURLWhileSchemeNotSupport;
 
 ///失败回调
-@property(nonatomic, copy, nullable) void(^failureHandler)(NSString *URLString, NSDictionary * _Nullable rounterParams);
+@property(nonatomic, copy, nullable) void(^failureHandler)(NSString *URLString, NSDictionary * _Nullable routeParams);
 
 ///添加拦截器
 - (void)addInterceptor:(id<GKRouteInterceptor>) interceptor;

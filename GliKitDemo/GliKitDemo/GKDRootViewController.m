@@ -155,16 +155,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-  
-    self.demo.intValue = indexPath.row;
-    self.demo.integerValue = indexPath.row;
-    if(indexPath.row == 5){
-        [self.demo.kvoHelper flushManualCallback];
+
+    NSInteger length = pow(2, 16) - 1;
+    NSMutableString *string = [NSMutableString string];
+    for(NSInteger i = 0;i < length;i ++){
+        [string appendString:@"买"];
     }
-    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
-        props.path = model.className;
-    }];
+    
+    NSLog(@"%ld", string.length);
+    
+//    self.demo.intValue = indexPath.row;
+//    self.demo.integerValue = indexPath.row;
+//    if(indexPath.row == 5){
+//        [self.demo.kvoHelper flushManualCallback];
+//    }
+//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+//    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
+//        props.path = model.className;
+//    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction
