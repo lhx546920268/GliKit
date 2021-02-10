@@ -12,6 +12,7 @@
 #import <GKTableViewSwipeCell.h>
 #import <GKObject.h>
 #import <GKKVOHelper.h>
+#import <objc/runtime.h>
 
 @interface DemoObservable : GKObject
 
@@ -39,6 +40,11 @@
 - (NSInteger)integerValue
 {
     return _integerValue == 0 ? 1 : _integerValue;
+}
+
+- (void)testxx
+{
+    NSLog(@"DemoObservable testxx");
 }
 
 @end
@@ -155,14 +161,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    NSInteger length = pow(2, 16) - 1;
-    NSMutableString *string = [NSMutableString string];
-    for(NSInteger i = 0;i < length;i ++){
-        [string appendString:@"买"];
-    }
-    
-    NSLog(@"%ld", string.length);
     
 //    self.demo.intValue = indexPath.row;
 //    self.demo.integerValue = indexPath.row;
@@ -173,6 +171,10 @@
 //    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
 //        props.path = model.className;
 //    }];
+    SEL selector = NSSelectorFromString(@"testxx");
+    [self performSelector:selector];
+    selector = NSSelectorFromString(@"runtimeTest");
+    [self performSelector:selector];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction
@@ -193,6 +195,51 @@
     
     
     return @[deleteBtn, btn];
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+    NSLog(@"resolveInstanceMethod %@", NSStringFromSelector(sel));
+    return [super resolveInstanceMethod:sel];
+}
+
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    NSLog(@"forwardingTargetForSelector %@", NSStringFromSelector(aSelector));
+//    if(aSelector == NSSelectorFromString(@"testxx")){
+//        return self.demo;
+//    }
+    return [super forwardingTargetForSelector:aSelector];
+}
+
+- (IMP)methodForSelector:(SEL)aSelector
+{
+    NSLog(@"methodForSelector %@", NSStringFromSelector(aSelector));
+    return [super methodForSelector:aSelector];
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
+{
+    Method method = class_getInstanceMethod(self.demo.class, aSelector);
+    class_addMethod(self.class, aSelector, [self.demo methodForSelector:aSelector], method_getTypeEncoding(method));
+    NSLog(@"methodSignatureForSelector %@", NSStringFromSelector(aSelector));
+    return [super methodSignatureForSelector:aSelector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation
+{
+    NSLog(@"forwardInvocation %@", NSStringFromSelector(anInvocation.selector));
+    [super forwardInvocation:anInvocation];
+}
+
+- (void)doesNotRecognizeSelector:(SEL)aSelector
+{
+    NSLog(@"doesNotRecognizeSelector %@", NSStringFromSelector(aSelector));
+}
+
+- (void)runtimeTest
+{
+    NSLog(@"runtimeTest");
 }
 
 @end
