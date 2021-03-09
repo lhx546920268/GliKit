@@ -20,6 +20,9 @@
 		CE4A912C243EF84100B8C1AA /* UIViewController+GKPush.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4A912B243EF84100B8C1AA /* UIViewController+GKPush.m */; };
 		CE525DA723C704EA00EB082E /* GKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE525DA623C704EA00EB082E /* GKLabel.m */; };
 		CE53A3CA259B1C2D00F3EBE8 /* GKLock.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53A3C9259B1C2D00F3EBE8 /* GKLock.m */; };
+		CE54444825E49C7700E69CAE /* GKTableViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CE54444725E49C7700E69CAE /* GKTableViewConfig.m */; };
+		CE54444C25E49D4400E69CAE /* GKScrollViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CE54444B25E49D4400E69CAE /* GKScrollViewConfig.m */; };
+		CE54445025E49EDE00E69CAE /* GKCollectionViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CE54444F25E49EDE00E69CAE /* GKCollectionViewConfig.m */; };
 		CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B432480E4B400534D91 /* GKTabBarController.m */; };
 		CE549B482480E4B400534D91 /* GKTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B452480E4B400534D91 /* GKTabBar.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
@@ -199,6 +202,12 @@
 		CE525DA623C704EA00EB082E /* GKLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLabel.m; sourceTree = "<group>"; };
 		CE53A3C8259B1C2D00F3EBE8 /* GKLock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLock.h; sourceTree = "<group>"; };
 		CE53A3C9259B1C2D00F3EBE8 /* GKLock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLock.m; sourceTree = "<group>"; };
+		CE54444625E49C7700E69CAE /* GKTableViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTableViewConfig.h; sourceTree = "<group>"; };
+		CE54444725E49C7700E69CAE /* GKTableViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKTableViewConfig.m; sourceTree = "<group>"; };
+		CE54444A25E49D4400E69CAE /* GKScrollViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScrollViewConfig.h; sourceTree = "<group>"; };
+		CE54444B25E49D4400E69CAE /* GKScrollViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKScrollViewConfig.m; sourceTree = "<group>"; };
+		CE54444E25E49EDE00E69CAE /* GKCollectionViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewConfig.h; sourceTree = "<group>"; };
+		CE54444F25E49EDE00E69CAE /* GKCollectionViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewConfig.m; sourceTree = "<group>"; };
 		CE549B402480E4B400534D91 /* GKTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarController.h; sourceTree = "<group>"; };
 		CE549B412480E4B400534D91 /* GKTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBar.h; sourceTree = "<group>"; };
 		CE549B422480E4B400534D91 /* GKTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarButton.h; sourceTree = "<group>"; };
@@ -1107,6 +1116,12 @@
 			children = (
 				CED0D2D4230BC6250057D405 /* GKNavigationItemHelper.h */,
 				CED0D2D5230BC6250057D405 /* GKNavigationItemHelper.m */,
+				CE54444625E49C7700E69CAE /* GKTableViewConfig.h */,
+				CE54444725E49C7700E69CAE /* GKTableViewConfig.m */,
+				CE54444A25E49D4400E69CAE /* GKScrollViewConfig.h */,
+				CE54444B25E49D4400E69CAE /* GKScrollViewConfig.m */,
+				CE54444E25E49EDE00E69CAE /* GKCollectionViewConfig.h */,
+				CE54444F25E49EDE00E69CAE /* GKCollectionViewConfig.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1430,6 +1445,7 @@
 				CED0D409230BECD00057D405 /* UIImage+GKUtils.m in Sources */,
 				CED0D3A1230BC8790057D405 /* GKSkeletonHelper.m in Sources */,
 				CED0D3A2230BC8790057D405 /* GKSkeletonAnimationHelper.m in Sources */,
+				CE54444C25E49D4400E69CAE /* GKScrollViewConfig.m in Sources */,
 				CED0D42E230BECF20057D405 /* UIView+GKAutoLayout.m in Sources */,
 				CED0D3A6230BC8790057D405 /* GKSkeletonSubLayer.m in Sources */,
 				CED0D44A230BF2210057D405 /* UIApplication+GKTheme.m in Sources */,
@@ -1441,6 +1457,7 @@
 				CED0D427230BECF20057D405 /* UIViewController+GKKeyboard.m in Sources */,
 				CED0D403230BECD00057D405 /* NSArray+GKUtils.m in Sources */,
 				CED0D3FD230BECD00057D405 /* NSObject+GKUtils.m in Sources */,
+				CE54444825E49C7700E69CAE /* GKTableViewConfig.m in Sources */,
 				CE4A912C243EF84100B8C1AA /* UIViewController+GKPush.m in Sources */,
 				CED0D3AF230BC8790057D405 /* GKAlertUtils.m in Sources */,
 				CED0D3B4230BC8790057D405 /* GKRouter.m in Sources */,
@@ -1458,6 +1475,7 @@
 				CED0D3D3230BC8790057D405 /* GKProgressView.m in Sources */,
 				CED0D446230BED900057D405 /* NSString+GKWeb.m in Sources */,
 				CED0D443230BED7F0057D405 /* UIViewController+GKTransition.m in Sources */,
+				CE54445025E49EDE00E69CAE /* GKCollectionViewConfig.m in Sources */,
 				CEB85F452326021A0045CB38 /* GKNestedScrollHelper.m in Sources */,
 				CED0D42F230BECF20057D405 /* UITableView+GKRowHeight.m in Sources */,
 				CED0D42B230BECF20057D405 /* UIView+GKXibUtils.m in Sources */,

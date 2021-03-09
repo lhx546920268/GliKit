@@ -54,10 +54,11 @@ GKConvenientCoder \
 /// 交换实例方法实现
 /// @param selector1 方法1
 /// @param prefix 前缀，方法2 = 前缀 + 方法1名字
-+ (void)gkExchangeImplementations:(SEL) selector1 prefix:(NSString*) prefix;
+/// @return 是否交互成功，如果某个方法没实现，则交换失败
++ (BOOL)gkExchangeImplementations:(SEL) selector1 prefix:(NSString*) prefix;
 
 ///交换实例方法实现
-+ (void)gkExchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
++ (BOOL)gkExchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
 
 // MARK: - coder
 

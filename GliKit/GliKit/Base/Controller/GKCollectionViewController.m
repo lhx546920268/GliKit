@@ -9,6 +9,8 @@
 #import "GKCollectionViewController.h"
 #import "UICollectionView+GKUtils.h"
 #import "UIView+GKEmptyView.h"
+#import "GKCollectionViewConfig.h"
+#import "GKBaseDefines.h"
 
 @interface GKCollectionViewController ()
 
@@ -69,8 +71,6 @@
 {
     if(_collectionView == nil){
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
-        _collectionView.dataSource = self;
-        _collectionView.delegate = self;
         _collectionView.alwaysBounceVertical = YES;
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.backgroundView = nil;
@@ -83,6 +83,15 @@
 {
     [super initViews];
     [self initCollectionView];
+    if(self.config){
+        NSAssert([self.config isKindOfClass:GKCollectionViewConfig.class], @"%@.config 必须是GKCollectionViewConfig的子类", NSStringFromClass(self.class));
+        [self.config config];
+        _collectionView.dataSource = self.config;
+        _collectionView.delegate = self.config;
+    }else{
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+    }
     self.contentView = _collectionView;
 }
 
@@ -129,15 +138,12 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 0;
+    GKThrowNotImplException
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"cell";
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    
-    return cell;
+    GKThrowNotImplException
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath

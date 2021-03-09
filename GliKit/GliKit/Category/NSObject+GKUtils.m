@@ -42,20 +42,28 @@
 }
 
 
-+ (void)gkExchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix
++ (BOOL)gkExchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix
 {
     Method method1 = class_getInstanceMethod(self.class, selector1);
     Method method2 = class_getInstanceMethod(self.class, NSSelectorFromString([NSString stringWithFormat:@"%@%@", prefix, NSStringFromSelector(selector1)]));
     
-    method_exchangeImplementations(method1, method2);
+    if(method1 && method2){
+        method_exchangeImplementations(method1, method2);
+        return YES;
+    }
+    return NO;
 }
 
-+ (void)gkExchangeImplementations:(SEL)selector1 selector2:(SEL)selector2
++ (BOOL)gkExchangeImplementations:(SEL)selector1 selector2:(SEL)selector2
 {
     Method method1 = class_getInstanceMethod(self.class, selector1);
     Method method2 = class_getInstanceMethod(self.class, selector2);
     
-    method_exchangeImplementations(method1, method2);
+    if(method1 && method2){
+        method_exchangeImplementations(method1, method2);
+        return YES;
+    }
+    return NO;
 }
 
 // MARK: - coder

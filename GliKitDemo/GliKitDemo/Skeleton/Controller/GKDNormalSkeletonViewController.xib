@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GKDNormalSkeletonViewController">
             <connections>
+                <outlet property="textField1" destination="2EX-0T-rhj" id="kuW-7i-YIP"/>
+                <outlet property="textField2" destination="Ka6-mm-HjO" id="rMf-um-eHr"/>
+                <outlet property="textField3" destination="b9L-UX-otE" id="3w9-Pg-3m6"/>
                 <outlet property="view" destination="cgO-zt-cPX" id="EDu-jS-sdN"/>
             </connections>
         </placeholder>
@@ -72,6 +73,24 @@
                         <constraint firstAttribute="bottom" secondItem="saX-D3-Irm" secondAttribute="bottom" constant="10" id="zeq-Yy-sVe"/>
                     </constraints>
                 </view>
+                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ka6-mm-HjO">
+                    <rect key="frame" x="36" y="395" width="316" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b9L-UX-otE">
+                    <rect key="frame" x="30" y="445" width="329" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2EX-0T-rhj">
+                    <rect key="frame" x="30" y="58" width="294" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -85,9 +104,10 @@
                 <constraint firstItem="NOG-Be-qYV" firstAttribute="top" secondItem="IWt-d9-xbO" secondAttribute="bottom" constant="30" id="vAi-wP-S23"/>
                 <constraint firstItem="IWt-d9-xbO" firstAttribute="top" secondItem="5PE-vv-uga" secondAttribute="bottom" constant="25" id="vmN-ZJ-9gb"/>
             </constraints>
+            <point key="canvasLocation" x="109.59999999999999" y="97.601199400299862"/>
         </view>
     </objects>
     <resources>
-        <image name="test_1" width="500" height="504"/>
+        <image name="test_1" width="250" height="252"/>
     </resources>
 </document>

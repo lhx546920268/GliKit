@@ -10,10 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIViewController (GKRouterUtils)
+@class GKRouteConfig;
 
-///设置路由参数，如果参数名和属性名一致，则不需要处理这个
-- (void)setRouterParams:(nullable NSDictionary*) params;
+@interface UIViewController (GKRouteUtils)
+
+///当前路由配置，只有通过路由的方式打开的才有
+@property(nonatomic, readonly) GKRouteConfig *routeConfig;
+
+///配置路由
+- (void)configRoute:(GKRouteConfig*) config;
 
 @end
 
@@ -36,11 +41,8 @@ typedef NS_ENUM(NSInteger, GKRouteStyle){
     GKRouteStyleOnlyOne,
 };
 
-///路由属性
-@interface GKRouteProps : NSObject
-
-///页面原始链接
-@property(nonatomic, readonly) NSURLComponents *URLComponents;
+///路由配置
+@interface GKRouteConfig : NSObject
 
 ///路由参数
 @property(nonatomic, readonly, nullable) NSDictionary *routeParams;
@@ -48,11 +50,16 @@ typedef NS_ENUM(NSInteger, GKRouteStyle){
 ///打开方式
 @property(nonatomic, assign) GKRouteStyle style;
 
+///以下3个属性优先级从高到低，3个值设置其中一个就行了
+
+///页面原始链接
+@property(nonatomic, copy, nullable) NSURLComponents *URLComponents;
+
+///一个完整的URL
+@property(nonatomic, copy, nullable) NSString *URLString;
+
 ///app的路由路径 如 goods/detail
 @property(nonatomic, copy, nullable) NSString *path;
-
-///一个完整的URL 和 path二选一 优先使用这个
-@property(nonatomic, copy, nullable) NSString *URLString;
 
 ///额外参数，可传递对象，在拦截器会加入到 routeParams
 @property(nonatomic, copy, nullable) NSDictionary *extras;
@@ -76,7 +83,7 @@ typedef void(^GKRouteInterceptHandler)(GKRouteInterceptPolicy policy);
 @protocol GKRouteInterceptor <NSObject>
 
 ///处理路由
-- (void)processRoute:(GKRouteProps*) props interceptHandler:(void(^)(GKRouteInterceptPolicy)) policy;
+- (void)processRoute:(GKRouteConfig*) config interceptHandler:(void(^)(GKRouteInterceptPolicy)) policy;
 
 @end
 
@@ -97,7 +104,7 @@ typedef NS_ENUM(NSInteger, GKRouteResult){
 typedef void(^GKRouteCompletion)(GKRouteResult result);
 
 ///页面初始化处理 自己处理则返回nil
-typedef UIViewController* _Nullable (^GKRouteHandler)(NSDictionary * _Nullable routeParams);
+typedef UIViewController* _Nullable (^GKRouteHandler)(GKRouteConfig *config);
 
 ///路由 在URLString中的特殊字符和参数值必须编码
 @interface GKRouter : NSObject
@@ -129,7 +136,7 @@ typedef UIViewController* _Nullable (^GKRouteHandler)(NSDictionary * _Nullable r
 - (void)registerPath:(NSString*) path forClass:(Class) cls;
 
 /**
-注册一个页面 与上一个方法互斥 不会调用 setRouterParams
+注册一个页面 与上一个方法互斥 不会调用 setRouteParams
 
 @param path 页面路径
 @param handler 页面初始化回调
@@ -148,7 +155,7 @@ typedef UIViewController* _Nullable (^GKRouteHandler)(NSDictionary * _Nullable r
  
  @param block 用来配置的
  */
-- (void)open:(void(NS_NOESCAPE ^)(GKRouteProps* props)) block;
+- (void)open:(void(NS_NOESCAPE ^)(GKRouteConfig* config)) block;
 
 @end
 

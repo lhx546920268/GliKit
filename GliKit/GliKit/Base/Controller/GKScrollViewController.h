@@ -12,13 +12,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GKScrollViewModel, GKRefreshControl, GKLoadMoreControl;
+@class GKScrollViewModel, GKRefreshControl, GKLoadMoreControl, GKScrollViewConfig;
 
 ///滚动视图控制器，具有加载更多和下拉刷新，键盘弹出时设置contentInset功能，防止键盘挡住输入框
 @interface GKScrollViewController : GKBaseViewController
 
 ///滚动视图 default `nil`
 @property(nonatomic, strong, nullable) UIScrollView *scrollView;
+
+///配置
+@property(nonatomic, strong, nullable) __kindof GKScrollViewConfig *config;
 
 ///scrollView 改变了
 @property(nonatomic, copy) void(^scrollViewDidChange)(UIScrollView * _Nullable scrollView);

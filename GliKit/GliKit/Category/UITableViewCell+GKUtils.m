@@ -29,7 +29,7 @@ static char GKTableViewHeaderFooterViewSectionKey;
 
 - (void)setGkSection:(NSUInteger)gkSection
 {
-    objc_setAssociatedObject(self, &GKTableViewHeaderFooterViewSectionKey, @(gkSection), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &GKTableViewHeaderFooterViewSectionKey, @(gkSection), OBJC_ASSOCIATION_RETAIN);
 }
 
 - (NSUInteger)gkSection

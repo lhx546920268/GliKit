@@ -7,7 +7,6 @@
 //
 
 #import "GKRouter.h"
-#import <objc/runtime.h>
 #import "GKBaseViewController.h"
 #import "GKObject.h"
 #import "NSObject+GKUtils.h"
@@ -20,10 +19,23 @@
 #import "GKBaseNavigationController.h"
 #import "UIViewController+GKTransition.h"
 #import "GKAppUtils.h"
+#import <objc/runtime.h>
 
-@implementation UIViewController (GKRouterUtils)
+static char CARouteConfigKey;
 
-- (void)setRouterParams:(NSDictionary*) params
+@implementation UIViewController (GKRouteUtils)
+
+- (GKRouteConfig *)routeConfig
+{
+    return objc_getAssociatedObject(self, &CARouteConfigKey);
+}
+
+- (void)setRouteConfig:(GKRouteConfig*) config
+{
+    objc_setAssociatedObject(self, &CARouteConfigKey, config, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)configRoute:(GKRouteConfig *)config
 {
     //子类重写
 }
@@ -31,10 +43,7 @@
 @end
 
 ///路由属性
-@interface GKRouteProps()
-
-///页面原始链接
-@property(nonatomic, strong) NSURLComponents *URLComponents;
+@interface GKRouteConfig()
 
 ///路由参数
 @property(nonatomic, strong) NSDictionary *routeParams;
@@ -47,11 +56,45 @@
 
 @end
 
-@implementation GKRouteProps
+@implementation GKRouteConfig
 
 - (BOOL)isPresent
 {
     return self.style == GKRouteStylePresent || self.style == GKRouteStylePresentWithoutNavigationBar;
+}
+
+- (NSString *)URLString
+{
+    if(_URLString){
+        return _URLString;
+    }
+    
+    return self.URLComponents.string;
+}
+
+- (NSString *)path
+{
+    if(_path){
+        return _path;
+    }
+    
+    NSURLComponents *components = self.URLComponents;
+    if(!components && self.URLString){
+        components = [NSURLComponents componentsWithString:self.URLString];
+    }
+    
+    if(components){
+        NSString *host = components.host;
+        NSString *path = components.path;
+        if([NSString isEmpty:host]){
+            host = path;
+        }else if(![NSString isEmpty:path]){
+            host = [NSString stringWithFormat:@"%@%@", host, path];
+        }
+        _path = host;
+    }
+    
+    return _path;
 }
 
 @end
@@ -170,40 +213,52 @@
     _registrations[path] = nil;
 }
 
-- (void)open:(void (NS_NOESCAPE ^)(GKRouteProps*))block
+- (void)open:(void (NS_NOESCAPE ^)(GKRouteConfig*))block
 {
     NSParameterAssert(block != nil);
     
-    GKRouteProps *props = [GKRouteProps new];
-    block(props);
-
-    if(props.URLString){
-        props.URLComponents = [NSURLComponents componentsWithString:props.URLString];
-    }else if(props.path){
-        props.URLComponents = [NSURLComponents componentsWithString:[self.appScheme stringByAppendingString:props.path]];
+    GKRouteConfig *config = [GKRouteConfig new];
+    @try {
+        block(config);
+        if(!config.URLComponents){
+            if(config.URLString){
+                config.URLComponents = [NSURLComponents componentsWithString:config.URLString];
+            }else if(config.path){
+                config.URLComponents = [NSURLComponents componentsWithString:[self.appScheme stringByAppendingString:config.path]];
+            }
+        }
+        
+        [self openWithConfig:config];
+    } @catch (NSException *exception) {
+        NSLog(@"%@", exception);
     }
-    
-    [self openWithProps:props];
 }
 
 // MARK: - ViewController
 
 
-- (UIViewController *)viewControllerForProps:(GKRouteProps*) props
+- (UIViewController *)viewControllerForConfig:(GKRouteConfig*) config
 {
     UIViewController *viewController = nil;
     
     BOOL processBySelf = NO;
     
-    NSURLComponents *components = props.URLComponents;
+    NSURLComponents *components = config.URLComponents;
     NSString *scheme = [components.scheme stringByAppendingString:@"://"];
     if([scheme isEqualToString:self.appScheme]){
         NSString *host = components.host;
+        NSString *path = components.path;
+        if([NSString isEmpty:host]){
+            host = path;
+        }else if(![NSString isEmpty:path]){
+            host = [NSString stringWithFormat:@"%@%@", host, path];
+        }
+        
         if(![NSString isEmpty:host]){
             
             GKRouteRegistration *registration = _registrations[host];
             if(registration.handler){
-                viewController = registration.handler(props.routeParams);
+                viewController = registration.handler(config);
                 processBySelf = YES;
             }else if(registration.cls){
                 Class cls = registration.cls;
@@ -224,12 +279,10 @@
     
     if(!viewController){
         if(!processBySelf){
-            [self cannotFoundWithProps:props];
+            [self cannotFoundWithConfig:config];
         }
-    }else if(props.routeParams.count > 0){
-        
-        [self setPropertyForViewController:viewController data:props.routeParams];
-        [viewController setRouterParams:props.routeParams];
+    }else{
+        [viewController configRoute:config];
     }
     
     return viewController;
@@ -257,18 +310,18 @@
 }
 
 ///打开一个页面
-- (void)openWithProps:(GKRouteProps*) props
+- (void)openWithConfig:(GKRouteConfig*) config
 {
-    NSURLComponents *components = props.URLComponents;
+    NSURLComponents *components = config.URLComponents;
     if(!components){
-        [self cannotFoundWithProps:props];
-        !props.completion ?: props.completion(GKRouteResultFailed);
+        [self cannotFoundWithConfig:config];
+        !config.completion ?: config.completion(GKRouteResultFailed);
         return;
     }
     
     NSMutableDictionary *params = nil;
     NSArray *queryItems = components.queryItems;
-    if(props.extras.count > 0 || queryItems.count > 0){
+    if(config.extras.count > 0 || queryItems.count > 0){
         params = [NSMutableDictionary dictionary];
         //添加URL上的参数
         for(NSURLQueryItem *item in queryItems){
@@ -276,49 +329,49 @@
                 params[item.name] = item.value;
             }
         }
-        [params addEntriesFromDictionary:props.extras];
+        [params addEntriesFromDictionary:config.extras];
     }
     
-    props.routeParams = params;
+    config.routeParams = params;
     
     if(_interceptors.count > 0){
-        [self interceptRoute:props forIndex:0];
+        [self interceptRoute:config forIndex:0];
     }else{
-        [self continueRoute:props];
+        [self continueRoute:config];
     }
 }
 
 ///拦截器处理
-- (void)interceptRoute:(GKRouteProps*) props forIndex:(NSInteger) index
+- (void)interceptRoute:(GKRouteConfig*) config forIndex:(NSInteger) index
 {
-    [self.interceptors[index] processRoute:props interceptHandler:^(GKRouteInterceptPolicy policy) {
+    [self.interceptors[index] processRoute:config interceptHandler:^(GKRouteInterceptPolicy policy) {
         if(policy == GKRouteInterceptPolicyAllow){
             if(index + 1 < self.interceptors.count){
-                [self interceptRoute:props forIndex:index + 1];
+                [self interceptRoute:config forIndex:index + 1];
             }else{
-                [self continueRoute:props];
+                [self continueRoute:config];
             }
         }else{
-            !props.completion ?: props.completion(GKRouteResultCancelled);
+            !config.completion ?: config.completion(GKRouteResultCancelled);
         }
     }];
 }
 
 ///跳转
-- (void)continueRoute:(GKRouteProps*) props
+- (void)continueRoute:(GKRouteConfig*) config
 {
-    NSURLComponents *components = props.URLComponents;
+    NSURLComponents *components = config.URLComponents;
     NSInteger tabBarIndex = [self tabBarIndexForName:components.host];
     if(tabBarIndex != NSNotFound){
         [self.gkCurrentViewController gkBackAnimated:NO completion:^{
             UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
             controller.selectedIndex = tabBarIndex;
-            !props.completion ?: props.completion(GKRouteResultSuccess);
+            !config.completion ?: config.completion(GKRouteResultSuccess);
         }];
         return;
     }
     
-    UIViewController *viewController = [self viewControllerForProps:props];
+    UIViewController *viewController = [self viewControllerForConfig:config];
     if(!viewController){
         if(self.openURLWhileSchemeNotSupport && ![self isSupportScheme:components.scheme]){
             [GKAppUtils openCompatURL:components.URL];
@@ -327,12 +380,12 @@
     }
     
     UIViewController *parentViewControlelr = self.gkCurrentViewController;
-    if(props.isPresent){
-        if(props.style == GKRouteStylePresent){
+    if(config.isPresent){
+        if(config.style == GKRouteStylePresent){
             viewController = viewController.gkCreateWithNavigationController;
         }
         [parentViewControlelr.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:^{
-            !props.completion ?: props.completion(GKRouteResultSuccess);
+            !config.completion ?: config.completion(GKRouteResultSuccess);
         }];
     }else{
         
@@ -341,14 +394,14 @@
             nav = (GKBaseNavigationController*)parentViewControlelr;
         }
         
-        if(props.completion != nil && [nav isKindOfClass:GKBaseNavigationController.class]){
+        if(config.completion != nil && [nav isKindOfClass:GKBaseNavigationController.class]){
             nav.transitionCompletion = ^{
-                props.completion(GKRouteResultSuccess);
+                config.completion(GKRouteResultSuccess);
             };
         }
         if(nav){
             NSArray *toReplacedViewControlelrs = nil;
-            switch (props.style) {
+            switch (config.style) {
                 case GKRouteStyleReplace : {
                     if(nav.viewControllers.count > 0){
                         toReplacedViewControlelrs = @[nav.viewControllers.lastObject];
@@ -386,13 +439,13 @@
 }
 
 ///找不到对应的页面
-- (void)cannotFoundWithProps:(GKRouteProps*) props
+- (void)cannotFoundWithConfig:(GKRouteConfig*) config
 {
-    NSString *URLString = props.URLString ? props.URLString : props.path;
+    NSString *URLString = config.URLString ? config.URLString : config.path;
 #ifdef DEBUG
     NSLog(@"Can not found viewControlelr for %@", URLString);
 #endif
-    !self.failureHandler ?: self.failureHandler(URLString, props.extras);
+    !self.failureHandler ?: self.failureHandler(URLString, config.extras);
 }
 
 ///判断scheme是否支持
@@ -401,49 +454,5 @@
     scheme = [scheme stringByAppendingString:@"://"];
     return [scheme isEqualToString:self.appScheme] || [scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"];
 }
-
-// MARK: - Property
-
-- (void)setPropertyForViewController:(UIViewController*) vc data:(NSDictionary*) data
-{
-    [self setPropertyForViewController:vc data:data clazz:vc.class];
-}
-
-- (void)setPropertyForViewController:(UIViewController*) vc data:(NSDictionary*) data clazz:(Class) clazz
-{
-    if(clazz == UIViewController.class){
-        return;
-    }
-    
-    //获取当前类的所有属性，该方法无法获取父类或者子类的属性
-    unsigned int count;
-    objc_property_t *properties = class_copyPropertyList(clazz, &count);
-    for(int i = 0;i < count;i ++){
-        
-        objc_property_t property = properties[i];
-        NSString *name = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
-        
-        id value = [data objectForKey:name];
-        if(value){
-            //类型地址 https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101-SW6
-            NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSUTF8StringEncoding];
-            
-            NSArray *attrs = [attr componentsSeparatedByString:@","];
-            
-            //判断是否是只读属性
-            if(attrs.count > 0 && ![attrs containsObject:@"R"]){
-                if([attr containsString:@"NSString"]){
-                    [vc setValue:[data gkStringForKey:name] forKey:name];
-                }else{
-                    [vc setValue:value forKey:name];
-                }
-            }
-        }
-    }
-    
-    //递归获取父类的属性
-    [self setPropertyForViewController:vc data:data clazz:[clazz superclass]];
-}
-
 
 @end

@@ -81,6 +81,11 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 - (void)gkBackToViewController:(Class) cls animated:(BOOL) flag;
 - (void)gkBackToViewController:(Class) cls animated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
 
+///返回某个路由 是否动画 返回完成回调
+- (void)gkBackToPath:(NSString*) path;
+- (void)gkBackToPath:(NSString*) path animated:(BOOL) flag;
+- (void)gkBackToPath:(NSString*) path animated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
+
 @end
 
 @interface UIViewController (GKNavigationBarItemUtils)

@@ -26,10 +26,9 @@
 
 + (void)load
 {
-    [GKRouter.sharedRouter registerPath:@"photo" forHandler:^UIViewController *(NSDictionary * _Nullable rounterParams) {
+    [GKRouter.sharedRouter registerPath:@"user/photo" forHandler:^UIViewController *(GKRouteConfig *config) {
         
         GKDPhotosViewController *vc = [GKDPhotosViewController new];
-        [vc setRouterParams:rounterParams];
         return vc;
     }];
 }
@@ -59,10 +58,10 @@
     });
 }
 
-- (void)setRouterParams:(NSDictionary *)params
+- (void)configRoute:(GKRouteConfig *)config
 {
-    self.photoName = [params gkStringForKey:@"name"];
-    self.selectHandler = params[@"selectHandler"];
+    self.photoName = [config.routeParams gkStringForKey:@"name"];
+    self.selectHandler = config.routeParams[@"selectHandler"];
     
     self.navigationItem.title = self.photoName;
 }

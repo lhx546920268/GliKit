@@ -15,7 +15,7 @@
 #import <SDWebImageSVGCoder.h>
 #import "GKDRootViewController.h"
 #import <NSDate+GKUtils.h>
-#import <mach-o/loader.h>
+#import "GKDLoadMonitor.h"
 
 @interface AppDelegate ()
 
@@ -50,6 +50,14 @@
              NSString *c = @"1";
         c.intValue;
     });
+    
+    NSTimeInterval time = 0;
+    for(NSDictionary *dic in GKDLoadMonitor.executeTimes){
+        time += [dic[@"time"] doubleValue];
+    }
+    
+    NSLog(@"load ms %f", time * 1000);
+    
     return YES;
 }
 

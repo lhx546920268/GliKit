@@ -41,6 +41,16 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
     NSString *prefix = @"gkNestedScroll_";
     [self gkExchangeImplementations:@selector(setDelegate:) prefix:prefix];
     [self gkExchangeImplementations:@selector(touchesShouldBegin:withEvent:inContentView:) prefix:prefix];
+    
+    //如果没实现
+    SEL selector1 = @selector(gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:);
+    if(![self respondsToSelector:selector1]){
+        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gkNestedScrollAdd_%@", NSStringFromSelector(selector1)]);
+        Method method = class_getInstanceMethod(self.class, selector2);
+        class_addMethod(self, selector1, method_getImplementation(method), method_getTypeEncoding(method));
+    }else{
+        [self gkExchangeImplementations:selector1 prefix:prefix];
+    }
 }
 
 ///交换方法
@@ -116,14 +126,23 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 // MARK: - Gesture
 
-///允许手势冲突
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+- (BOOL)gkNestedScrollAdd_gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     //只有平移手势才允许手势冲突
     if(gestureRecognizer == self.panGestureRecognizer && self.gkNestedParent){
         return otherGestureRecognizer == self.gkNestedChildScrollView.panGestureRecognizer;
     }
     return NO;
+}
+
+///允许手势冲突
+- (BOOL)gkNestedScroll_gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    //只有平移手势才允许手势冲突
+    if(gestureRecognizer == self.panGestureRecognizer && self.gkNestedParent){
+        return otherGestureRecognizer == self.gkNestedChildScrollView.panGestureRecognizer;
+    }
+    return [self gkNestedScroll_gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer];
 }
 
 // MARK: - Props

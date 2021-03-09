@@ -18,6 +18,7 @@
 #import "UIImage+GKTheme.h"
 #import "UIView+GKStateUtils.h"
 #import "GKTabBarController.h"
+#import "GKRouter.h"
 
 ///是否可以活动返回
 static char GKInteractivePopEnabledKey;
@@ -263,6 +264,35 @@ static char GKShowBackItemKey;
         }
     }
     if(viewController){
+        [self gkBeforeBack];
+        [self gkSetTransitionCompletion:completion];
+        [self.navigationController popToViewController:viewController animated:flag];
+    }else{
+        [self gkBackAnimated:flag completion:completion];
+    }
+}
+
+- (void)gkBackToPath:(NSString*) path
+{
+    [self gkBackToPath:path animated:YES];
+}
+
+- (void)gkBackToPath:(NSString*) path animated:(BOOL) flag
+{
+    [self gkBackToPath:path animated:flag completion:nil];
+}
+
+- (void)gkBackToPath:(NSString*) path animated:(BOOL) flag completion:(void (^)(void))completion
+{
+    UIViewController *viewController = nil;
+    for(UIViewController *vc in self.navigationController.viewControllers){
+        if([vc.routeConfig.path isEqualToString:path]){
+            viewController = vc;
+            break;
+        }
+    }
+    if(viewController){
+        [self gkBeforeBack];
         [self gkSetTransitionCompletion:completion];
         [self.navigationController popToViewController:viewController animated:flag];
     }else{

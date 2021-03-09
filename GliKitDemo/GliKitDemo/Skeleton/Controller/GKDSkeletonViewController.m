@@ -17,6 +17,13 @@
 
 @implementation GKDSkeletonViewController
 
++ (void)load
+{
+    [GKRouter.sharedRouter registerPath:@"skeleton" forHandler:^UIViewController * _Nullable(GKRouteConfig *config) {
+        return GKDSkeletonViewController.new;
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -52,8 +59,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
-        props.path = self.datas[indexPath.row].className;
+    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+        config.path = self.datas[indexPath.row].className;
     }];
 }
 

@@ -19,15 +19,18 @@
                     title: 'WebShare API Demo',
                     url: 'https://www.baidu.com'
                   }).then(() => {
+                      document.getElementById("p1").innerHTML = "Thanks for sharing!"
                     console.log('Thanks for sharing!');
                   })
                   .catch(console.error);
                 } else {
                   // fallback
                 }
+
             }
         </script>
         
+        <p id="p1">Hello World!</p>
     <button id="shareButton" onclick="share()">Share</button>
     </body>
     

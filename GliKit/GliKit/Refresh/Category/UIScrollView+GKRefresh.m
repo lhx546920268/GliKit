@@ -67,7 +67,7 @@ static char GKLoadMoreControlKey;
         if(refreshControl){
             [self addSubview:refreshControl];
         }
-        objc_setAssociatedObject(self, &GKRefreshControlKey, refreshControl, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(self, &GKRefreshControlKey, refreshControl, OBJC_ASSOCIATION_RETAIN);
     }
 }
 

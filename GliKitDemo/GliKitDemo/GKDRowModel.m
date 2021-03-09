@@ -35,11 +35,6 @@
 
 @implementation GKDRowModel
 
-+ (void)initialize
-{
-    NSLog(@"GKDRowModel initialize %@", UIApplication.sharedApplication.delegate);
-}
-
 @synthesize className;
 
 GKConvenientSecureCoder

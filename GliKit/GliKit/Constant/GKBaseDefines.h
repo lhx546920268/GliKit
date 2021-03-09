@@ -20,16 +20,30 @@
 #endif
 
 //拼接2个
+#ifndef GKConcat
 #define GKConcat(a, b) a##b
+#endif
 
 //weak 使用 WeakObj(self);  selfWeak
+#ifndef WeakObj
 #define WeakObj(o) __weak typeof(o) GKConcat(o, Weak) = o;
+#endif
 
 //strong 使用
+#ifndef StrongObj
 #define StrongObj(o) __strong typeof(o) o = GKConcat(o, Weak);
+#endif
 
 //未实现某个方法
+#ifndef GKThrowNotImplException
 #define GKThrowNotImplException @throw [[NSException alloc] initWithName:@"GKNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd)] userInfo:nil];
+#endif
+
+//延迟执行
+#ifndef dispatch_main_after
+#define dispatch_main_after(s, block)\
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(s * NSEC_PER_SEC)), dispatch_get_main_queue(), block);
+#endif
 
 #import <Masonry/Masonry.h>
 

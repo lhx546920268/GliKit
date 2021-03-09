@@ -13,11 +13,40 @@
 #import <GKObject.h>
 #import <GKKVOHelper.h>
 #import <objc/runtime.h>
+#import <objc/message.h>
+#import <GliKitDemo-Swift.h>
+
+@interface GKDParent : NSObject
+
+@end
+
+@implementation GKDParent
+
++ (void)initialize
+{
+    NSLog(@"GKDParent initialize %@", self.gkNameOfClass);
+}
+
+@end
+
+@interface GKDChild : GKDParent
+
+@end
+
+@implementation GKDChild
+
++ (void)initialize
+{
+    NSLog(@"GKDChild initialize %@", self.gkNameOfClass);
+}
+
+@end
+
 
 @interface DemoObservable : GKObject
 
 ///x
-@property(nonatomic, assign) NSInteger intValue;
+@property(nonatomic, assign) int intValue;
 
 ///x
 @property(nonatomic, assign) NSInteger integerValue;
@@ -26,13 +55,26 @@
 @property(nonatomic, copy) NSString *stringValue;
 
 ///
-@property(nonatomic, assign) CGSize sizeValue;
+@property(nonatomic, assign) CGFloat cgFloatValue;
+
+///
+@property(nonatomic, assign) double doubleValue;
+
+///
+@property(nonatomic, assign) float floatValue;
+
+///
+@property(nonatomic, assign) BOOL boolValue;
+
+///
+@property(nonatomic, assign) unsigned int uIntValue;
+
 
 @end
 
 @implementation DemoObservable
 
-- (NSInteger)intValue
+- (int)intValue
 {
     return _intValue == 0 ? 10 : _intValue;
 }
@@ -55,11 +97,37 @@
 
 @implementation GKDRootListCell
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+    NSLog(@"setSelected %d", selected);
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    NSLog(@"setHighlighted %d", highlighted);
+}
+
 @end
 
-@interface GKDRowModel(Readonly)
+@interface UIViewController (Test)
 
-@property(nonatomic, copy) NSString *stringValue;
+@property(nonatomic, assign) BOOL change;
+
+@end
+
+@implementation UIViewController (Test)
+
+- (void)setChange:(BOOL)change
+{
+    objc_setAssociatedObject(self, "change", @(change), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (BOOL)change
+{
+    return [objc_getAssociatedObject(self, "change") boolValue];
+}
 
 @end
 
@@ -82,15 +150,29 @@
     NSLog(@"GKDRootViewController dealloc");
 }
 
+- (void)testEncode:(const char*) encode one:(NSInteger) one str:(NSString*) str
+{
+    
+}
+
+- (void)test:(CGRect) a, ...
+{
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+//    GKDChild *child = GKDChild.new;
+    GKDParent *parent = GKDParent.new;
 
+    [self addObserver:self forKeyPath:@"change" options:NSKeyValueObservingOptionNew context:nil];
+    
+    self.change = YES;
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[
-                   [GKDRowModel modelWithTitle:@"相册" clazz:@"photo"],
-                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"GKDSkeletonViewController"],
+                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
                    [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
@@ -103,8 +185,6 @@
 
     [self initViews];
 
-    CGRect rect = {1, 2, 3, 5};
-    NSLog(@"rect = %@", NSStringFromCGRect(rect));
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
     
     self.demo = [DemoObservable new];
@@ -121,6 +201,28 @@
     GKDRowModel *model = GKDRowModel.new;
     [model setValue:@"string value" forKey:@"stringValue"];
     self.cls = self.class;
+    
+    NSString *name = @"名字";
+    name = [name stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSLog(@"name %@", name.stringByRemovingPercentEncoding);
+    
+    NSString *str = [NSString stringWithFormat:@"http://user/name?name=%@&age=1&stc=xai", name];
+    NSURLComponents *components = [NSURLComponents componentsWithString:str];
+
+    components.scheme = @"app";
+    NSLog(@"%@", components.URL.absoluteString);
+}
+
+- (void)setChange:(BOOL)change
+{
+    NSLog(@"will change");
+    [super setChange:change];
+    NSLog(@"did change");
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSLog(@"%@, %@", keyPath, change);
 }
 
 - (void)initViews
@@ -128,6 +230,7 @@
     self.style = UITableViewStyleGrouped;
     self.separatorEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     [self registerClass:GKDRootListCell.class];
+    [self registerClass:RootListCell.class];
     [super initViews];
 }
 
@@ -147,8 +250,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKDRootListCell *cell = [tableView dequeueReusableCellWithIdentifier:GKDRootListCell.gkNameOfClass forIndexPath:indexPath];
-    
+    RootListCell *cell = [tableView dequeueReusableCellWithIdentifier:RootListCell.gkNameOfClass forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
     cell.textLabel.text = self.datas[indexPath.row % self.datas.count].title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -161,20 +264,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-//    self.demo.intValue = indexPath.row;
-//    self.demo.integerValue = indexPath.row;
-//    if(indexPath.row == 5){
-//        [self.demo.kvoHelper flushManualCallback];
-//    }
-//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-//    [GKRouter.sharedRouter open:^(GKRouteProps * _Nonnull props) {
-//        props.path = model.className;
-//    }];
-    SEL selector = NSSelectorFromString(@"testxx");
-    [self performSelector:selector];
-    selector = NSSelectorFromString(@"runtimeTest");
-    [self performSelector:selector];
+
+    self.demo.intValue = indexPath.row;
+    self.demo.integerValue = indexPath.row;
+    if(indexPath.row == 5){
+        [self.demo.kvoHelper flushManualCallback];
+    }
+    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+        config.path = model.className;
+    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction
@@ -195,51 +294,6 @@
     
     
     return @[deleteBtn, btn];
-}
-
-+ (BOOL)resolveInstanceMethod:(SEL)sel
-{
-    NSLog(@"resolveInstanceMethod %@", NSStringFromSelector(sel));
-    return [super resolveInstanceMethod:sel];
-}
-
-- (id)forwardingTargetForSelector:(SEL)aSelector
-{
-    NSLog(@"forwardingTargetForSelector %@", NSStringFromSelector(aSelector));
-//    if(aSelector == NSSelectorFromString(@"testxx")){
-//        return self.demo;
-//    }
-    return [super forwardingTargetForSelector:aSelector];
-}
-
-- (IMP)methodForSelector:(SEL)aSelector
-{
-    NSLog(@"methodForSelector %@", NSStringFromSelector(aSelector));
-    return [super methodForSelector:aSelector];
-}
-
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
-{
-    Method method = class_getInstanceMethod(self.demo.class, aSelector);
-    class_addMethod(self.class, aSelector, [self.demo methodForSelector:aSelector], method_getTypeEncoding(method));
-    NSLog(@"methodSignatureForSelector %@", NSStringFromSelector(aSelector));
-    return [super methodSignatureForSelector:aSelector];
-}
-
-- (void)forwardInvocation:(NSInvocation *)anInvocation
-{
-    NSLog(@"forwardInvocation %@", NSStringFromSelector(anInvocation.selector));
-    [super forwardInvocation:anInvocation];
-}
-
-- (void)doesNotRecognizeSelector:(SEL)aSelector
-{
-    NSLog(@"doesNotRecognizeSelector %@", NSStringFromSelector(aSelector));
-}
-
-- (void)runtimeTest
-{
-    NSLog(@"runtimeTest");
 }
 
 @end

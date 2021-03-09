@@ -13,6 +13,7 @@
 #import "UIView+GKUtils.h"
 #import "NSObject+GKUtils.h"
 #import "GKBaseDefines.h"
+#import "GKTableViewConfig.h"
 
 @interface GKTableViewController ()
 
@@ -54,6 +55,15 @@
 {
     [super initViews];
     [self initTableView];
+    if(self.config){
+        NSAssert([self.config isKindOfClass:GKTableViewConfig.class], @"%@.config 必须是GKTableViewConfig的子类", NSStringFromClass(self.class));
+        [self.config config];
+        _tableView.dataSource = self.config;
+        _tableView.delegate = self.config;
+    }else{
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+    }
     self.contentView = _tableView;
 }
 
@@ -63,8 +73,6 @@
         Class clazz = [self tableViewClass];
         NSAssert(![clazz isKindOfClass:[UITableView class]], @"tableViewClass 必须是UITableView 或者 其子类");
         _tableView = [[clazz alloc] initWithFrame:CGRectZero style:_style];
-        _tableView.dataSource = self;
-        _tableView.delegate = self;
         _tableView.backgroundView = nil;
         _tableView.estimatedRowHeight = 0;
         _tableView.estimatedSectionFooterHeight = 0;
