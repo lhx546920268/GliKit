@@ -35,6 +35,11 @@ static char CARouteConfigKey;
     objc_setAssociatedObject(self, &CARouteConfigKey, config, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (NSString *)routePath
+{
+    return self.routeConfig.path;
+}
+
 - (void)configRoute:(GKRouteConfig *)config
 {
     //子类重写
@@ -48,15 +53,21 @@ static char CARouteConfigKey;
 ///路由参数
 @property(nonatomic, strong) NSDictionary *routeParams;
 
-///完成回调
-@property(nonatomic, copy) GKRouteCompletion completion;
-
 ///是否是弹出来
 @property(nonatomic, readonly) BOOL isPresent;
 
 @end
 
 @implementation GKRouteConfig
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.animated = YES;
+    }
+    return self;
+}
 
 - (BOOL)isPresent
 {
@@ -95,6 +106,16 @@ static char CARouteConfigKey;
     }
     
     return _path;
+}
+
+- (NSDictionary *)mExtras
+{
+    if(!_extras){
+        _extras = [NSMutableDictionary dictionary];
+    }
+    NSAssert([_extras isKindOfClass:NSMutableDictionary.class], @"CARouteConfig.mExtras must be NSMutableDictionary");
+    
+    return _extras;
 }
 
 @end
@@ -288,27 +309,6 @@ static char CARouteConfigKey;
     return viewController;
 }
 
-///获取在tabBar上面对应的下标
-- (NSInteger)tabBarIndexForName:(NSString*) name
-{
-    UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-    if([controller isKindOfClass:UITabBarController.class]){
-        for(NSInteger i = 0;i < controller.viewControllers.count;i ++){
-            UIViewController *vc = controller.viewControllers[i];
-            if ([vc isKindOfClass:UINavigationController.class]){
-                UINavigationController *nav = (UINavigationController*)vc;
-                vc = nav.viewControllers.firstObject;
-            }
-            
-            if([vc.gkNameOfClass isEqualToString:name]){
-                return i;
-            }
-        }
-    }
-    
-    return NSNotFound;
-}
-
 ///打开一个页面
 - (void)openWithConfig:(GKRouteConfig*) config
 {
@@ -360,31 +360,45 @@ static char CARouteConfigKey;
 ///跳转
 - (void)continueRoute:(GKRouteConfig*) config
 {
-    NSURLComponents *components = config.URLComponents;
-    NSInteger tabBarIndex = [self tabBarIndexForName:components.host];
-    if(tabBarIndex != NSNotFound){
-        [self.gkCurrentViewController gkBackAnimated:NO completion:^{
-            UITabBarController *controller = (UITabBarController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-            controller.selectedIndex = tabBarIndex;
-            !config.completion ?: config.completion(GKRouteResultSuccess);
-        }];
-        return;
+    UIViewController *parentViewControlelr = self.gkCurrentViewController;
+    GKBaseNavigationController *nav = (GKBaseNavigationController*)parentViewControlelr.navigationController;
+    NSString *path = config.path;
+    
+    if(config.style == GKRouteStyleBackIfEnabled && [nav isKindOfClass:UINavigationController.class]){
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
+        if(viewControllers.count >= 2){
+            UIViewController *vc = viewControllers[viewControllers.count - 2];
+            if([vc.routePath isEqualToString:path]){
+                [parentViewControlelr gkBack];
+                return;
+            }
+        }
     }
     
+    NSURLComponents *components = config.URLComponents;
     UIViewController *viewController = [self viewControllerForConfig:config];
     if(!viewController){
-        if(self.openURLWhileSchemeNotSupport && ![self isSupportScheme:components.scheme]){
+        
+        BOOL isSupport = [self isSupportScheme:components.scheme];
+        //重定向
+        if(isSupport && ![path isEqualToString:config.path]){
+            [self continueRoute:config];
+            return;
+        }
+        
+        if(self.openURLWhileSchemeNotSupport && !isSupport){
             [GKAppUtils openCompatURL:components.URL];
         }
         return;
     }
+    viewController.routeConfig = config;
+    !config.willRoute ?: config.willRoute(viewController);
     
-    UIViewController *parentViewControlelr = self.gkCurrentViewController;
     if(config.isPresent){
         if(config.style == GKRouteStylePresent){
             viewController = viewController.gkCreateWithNavigationController;
         }
-        [parentViewControlelr.gkTopestPresentedViewController presentViewController:viewController animated:YES completion:^{
+        [parentViewControlelr.gkTopestPresentedViewController presentViewController:viewController animated:config.animated completion:^{
             !config.completion ?: config.completion(GKRouteResultSuccess);
         }];
     }else{
@@ -415,21 +429,38 @@ static char CARouteConfigKey;
                             [viewControllers addObject:vc];
                         }
                     }
+                    toReplacedViewControlelrs = viewControllers;
                 }
                     break;
                 case  GKRouteStylePresent :
                 case GKRouteStylePush :
                 case GKRouteStylePresentWithoutNavigationBar :
+                case GKRouteStyleBackIfEnabled :
                     break;
             }
+            
+            if(config.routesToClosed.count > 0){
+                NSMutableArray *viewControllers = [NSMutableArray array];
+                for(UIViewController *vc in nav.viewControllers){
+                    NSString *path = vc.routePath;
+                    if(path && [config.routesToClosed containsObject:path]){
+                        [viewControllers addObject:vc];
+                    }
+                }
+                if(toReplacedViewControlelrs.count > 0){
+                    [viewControllers addObjectsFromArray:toReplacedViewControlelrs];
+                }
+                toReplacedViewControlelrs = viewControllers;
+            }
+            
             if(toReplacedViewControlelrs.count > 0){
                 NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
                 [viewControllers removeObjectsInArray:toReplacedViewControlelrs];
                 [viewControllers addObject:viewController];
                 
-                [nav setViewControllers:viewControllers animated:YES];
+                [nav setViewControllers:viewControllers animated:config.animated];
             }else{
-                [nav pushViewController:viewController animated:YES];
+                [nav pushViewController:viewController animated:config.animated];
             }
         }else{
             [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
@@ -452,7 +483,7 @@ static char CARouteConfigKey;
 - (BOOL)isSupportScheme:(NSString*) scheme
 {
     scheme = [scheme stringByAppendingString:@"://"];
-    return [scheme isEqualToString:self.appScheme] || [scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"];
+    return [scheme isEqualToString:self.appScheme];
 }
 
 @end
