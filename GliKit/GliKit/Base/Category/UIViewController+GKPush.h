@@ -13,12 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSObject (GKUIViewControllerUtils)
 
 ///获取当前显示的UIViewController
-@property(class, nonatomic, readonly) UIViewController *gkCurrentViewController;
-@property(nonatomic, readonly) UIViewController *gkCurrentViewController;
+@property(class, nonatomic, readonly) __kindof UIViewController *gkCurrentViewController;
+@property(nonatomic, readonly) __kindof UIViewController *gkCurrentViewController;
 
 ///获取当前显示的 UINavigationController 如果是部分present出来的，则忽略
-@property(class, nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
-@property(nonatomic, readonly, nullable) UINavigationController *gkCurrentNavigationController;
+@property(class, nonatomic, readonly, nullable) __kindof UINavigationController *gkCurrentNavigationController;
+@property(nonatomic, readonly, nullable) __kindof UINavigationController *gkCurrentNavigationController;
 
 // MARK: - push
 

@@ -14,7 +14,7 @@
 
 @implementation NSObject (GKUIViewControllerUtils)
 
-+ (UIViewController*)gkCurrentViewController
++ (__kindof UIViewController*)gkCurrentViewController
 {
     UIViewController *parentViewControlelr = UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController;
     //刚开始启动 不一定是tabBar
@@ -37,12 +37,12 @@
     }
 }
 
-- (UIViewController*)gkCurrentViewController
+- (__kindof UIViewController*)gkCurrentViewController
 {
     return NSObject.gkCurrentViewController;
 }
 
-+ (UINavigationController*)gkCurrentNavigationController
++ (__kindof UINavigationController*)gkCurrentNavigationController
 {
     UIViewController *parentViewControlelr = UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController;
     //刚开始启动 不一定是tabBar
@@ -64,7 +64,7 @@
     }
 }
 
-- (UINavigationController*)gkCurrentNavigationController
+- (__kindof UINavigationController*)gkCurrentNavigationController
 {
     return NSObject.gkCurrentNavigationController;
 }

@@ -453,6 +453,22 @@ static char CARouteConfigKey;
                 toReplacedViewControlelrs = viewControllers;
             }
             
+            if(![NSString isEmpty:config.closeUntilRoute]){
+                NSMutableArray *viewControllers = [NSMutableArray array];
+                NSArray *vcs = nav.viewControllers;
+                for(NSInteger i = vcs.count - 1;i >= 0;i --){
+                    UIViewController *vc = vcs[i];
+                    if([vc.routePath isEqualToString:config.closeUntilRoute]){
+                        [viewControllers addObjectsFromArray:[vcs subarrayWithRange:NSMakeRange(i, vcs.count - i)]];
+                        if(toReplacedViewControlelrs.count > 0){
+                            [viewControllers addObjectsFromArray:toReplacedViewControlelrs];
+                        }
+                        toReplacedViewControlelrs = viewControllers;
+                        break;
+                    }
+                }
+            }
+            
             if(toReplacedViewControlelrs.count > 0){
                 NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
                 [viewControllers removeObjectsInArray:toReplacedViewControlelrs];

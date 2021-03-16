@@ -78,6 +78,9 @@ typedef void(^GKRouteCompletion)(GKRouteResult result);
 ///需要关闭的路由
 @property(nonatomic, strong) NSSet<NSString*> *routesToClosed;
 
+///如果不为空，需要从后面开始遍历，直到该路由名称为止，关闭中间的所有界面（包含closeUntilRoute）
+@property(nonatomic, strong) NSString *closeUntilRoute;
+
 ///以下3个属性优先级从高到低，3个值设置其中一个就行了
 
 ///页面原始链接
