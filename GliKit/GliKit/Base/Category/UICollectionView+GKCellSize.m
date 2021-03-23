@@ -24,7 +24,6 @@
     };
     
     for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
-        
         [self gkExchangeImplementations:selectors[i] prefix:@"gkCellSize_"];
     }
 }

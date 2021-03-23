@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(class, nonatomic, readonly) GKAlertProps *defaultAlertProps;
 
 ///默认的actionSheet属性
-@property(class, nonatomic, readonly) GKAlertProps *defaultactionSheetProps;
+@property(class, nonatomic, readonly) GKAlertProps *defaultActionSheetProps;
 
 @end
 

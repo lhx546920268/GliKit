@@ -11,6 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///http参数类型
+typedef NSMutableDictionary<NSString*, id> GKHttpParameters;
+
+///http要上传的文件
+typedef NSMutableDictionary<NSString*, NSString*> GKHttpFiles;
+
 typedef NSString* GKHttpMethod NS_EXTENSIBLE_STRING_ENUM;
 
 ///get
@@ -42,10 +48,10 @@ static const int GKHttpFirstPage = 1;
 @property(nonatomic, readonly) NSString *requestURL;
 
 ///请求参数
-@property(nonatomic, readonly, nullable) NSMutableDictionary *params;
+@property(nonatomic, readonly, nullable) GKHttpParameters *params;
 
 ///要上传的文件
-@property(nonatomic, readonly, nullable) NSMutableDictionary *files;
+@property(nonatomic, readonly, nullable) GKHttpFiles *files;
 
 // MARK: - 状态
 
@@ -106,7 +112,7 @@ static const int GKHttpFirstPage = 1;
 @property(nonatomic, assign) BOOL shouldShowloadingToast;
 
 ///是否提示错误信息，default `NO`
-@property(nonatomic, assign) BOOL shouldAlertErrorMsg;
+@property(nonatomic, assign) BOOL shouldAlertErrorMessage;
 
 // MARK: - 子类重写 回调
 

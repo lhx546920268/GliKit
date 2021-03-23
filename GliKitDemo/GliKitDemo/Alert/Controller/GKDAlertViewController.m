@@ -183,10 +183,10 @@
     WeakObj(self)
     
     NSArray *titles = @[@"取消", @"确定", @"不能点的"];
-    GKAlertController *alert = [[GKAlertController alloc] initWithTitle:@"这是一个Alert标题" message:@"这是一个Alert副标题" icon:[UIImage imageNamed:@"swift"] style:GKAlertControllerStyleActionSheet cancelButtonTitle:@"取消" otherButtonTitles:titles];
+    GKAlertController *alert = [[GKAlertController alloc] initWithTitle:@"这是一个Alert标题" message:@"这是一个Alert副标题" icon:[UIImage imageNamed:@"swift"] style:GKAlertStyleActionSheet cancelButtonTitle:@"取消" otherButtonTitles:titles];
     alert.destructiveButtonIndex = 1;
     alert.alertActions[titles.count - 1].enabled = NO;
-    alert.selectionHandler = ^(NSUInteger index) {
+    alert.selectHandler = ^(NSUInteger index) {
         NSString *title = index < titles.count ? titles[index] : @"取消";
         [selfWeak gkShowSuccessWithText:[NSString stringWithFormat:@"点击%@了", title]];
     };

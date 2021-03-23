@@ -7,8 +7,6 @@
 //
 
 #import "GKBaseViewModel.h"
-#import "GKHttpTask.h"
-#import "GKHttpMultiTasks.h"
 #import "UIViewController+GKLoading.h"
 
 @interface GKBaseViewModel()

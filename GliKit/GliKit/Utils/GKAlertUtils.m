@@ -19,7 +19,7 @@
     destructiveButtonIndex:(NSInteger) destructiveButtonIndex
                    handler:(GKAlertButtonDidClickHandler) handler
 {
-    return [GKAlertUtils showAlertControllerWithStyle:GKAlertControllerStyleAlert title:title message:message icon:icon buttonTitles:buttonTitles cancelButtonTitle:nil destructiveButtonIndex:destructiveButtonIndex handler:handler];
+    return [GKAlertUtils showAlertControllerWithStyle:GKAlertStyleAlert title:title message:message icon:icon buttonTitles:buttonTitles cancelButtonTitle:nil destructiveButtonIndex:destructiveButtonIndex handler:handler];
 }
 
 + (GKAlertController*)showActionSheetWithTitle:(id) title
@@ -29,7 +29,7 @@
                cancelButtonTitle:(NSString*) cancelButtonTitle
                          handler:(GKAlertButtonDidClickHandler) handler
 {
-    return [GKAlertUtils showAlertControllerWithStyle:GKAlertControllerStyleActionSheet title:title message:message icon:icon buttonTitles:buttonTitles cancelButtonTitle:cancelButtonTitle destructiveButtonIndex:NSNotFound handler:handler];
+    return [GKAlertUtils showAlertControllerWithStyle:GKAlertStyleActionSheet title:title message:message icon:icon buttonTitles:buttonTitles cancelButtonTitle:cancelButtonTitle destructiveButtonIndex:NSNotFound handler:handler];
 }
 
 + (GKAlertController*)showAlertWithTitle:(id)title handler:(GKAlertConfirmHandler)handler
@@ -61,7 +61,7 @@
     }];
 }
 
-+ (GKAlertController*)showAlertControllerWithStyle:(GKAlertControllerStyle) style
++ (GKAlertController*)showAlertControllerWithStyle:(GKAlertStyle) style
                            title:(id) title
                    message:(id) message
                       icon:(UIImage*) icon
@@ -72,7 +72,7 @@
 {
     GKAlertController *alert = [[GKAlertController alloc] initWithTitle:title message:message icon:icon style:style cancelButtonTitle:cancelButtonTitle otherButtonTitles:buttonTitles];
     alert.destructiveButtonIndex = destructiveButtonIndex;
-    alert.selectionHandler = ^(NSUInteger index) {
+    alert.selectHandler = ^(NSUInteger index) {
         NSString *title = index < buttonTitles.count ? buttonTitles[index] : cancelButtonTitle;
         !handler ?: handler(index, title);
     };

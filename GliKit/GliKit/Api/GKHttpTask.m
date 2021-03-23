@@ -57,11 +57,6 @@ static NSMutableSet* GKSharedTasks()
 
 // MARK: - 参数
 
-- (nullable NSMutableDictionary*)files
-{
-    return nil;
-}
-
 - (NSString*)name
 {
     if(_name == nil){
@@ -82,7 +77,7 @@ static NSMutableSet* GKSharedTasks()
         NSString *URLString = [self requestURL];;
         GKHttpSessionManager *manager = [GKHttpSessionManager sharedManager];
         
-        NSMutableDictionary *files = [self files];
+        GKHttpFiles *files = [self files];
         if(files.count > 0){
             
             _URLSessionTask = [manager uploadTaskWithURLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval files:files success:^(NSURLSessionDataTask *task, id responseObject) {

@@ -71,6 +71,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
+    UICollectionViewCompositionalLayout *layout = [[UICollectionViewCompositionalLayout alloc] initWithSectionProvider:^NSCollectionLayoutSection * _Nullable(NSInteger section, id<NSCollectionLayoutEnvironment> _Nonnull environment) {
+        
+        NSCollectionLayoutItem *item1 = [NSCollectionLayoutItem itemWithLayoutSize:[NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension absoluteDimension:50] heightDimension:[NSCollectionLayoutDimension absoluteDimension:50]]];
+        NSCollectionLayoutItem *item2 = [NSCollectionLayoutItem itemWithLayoutSize:[NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension absoluteDimension:50] heightDimension:[NSCollectionLayoutDimension absoluteDimension:80]]];
+        
+        NSCollectionLayoutGroup *group = nil;
+        if(section % 2 == 0){
+            group = [NSCollectionLayoutGroup verticalGroupWithLayoutSize:[NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension absoluteDimension:UIScreen.gkWidth] heightDimension:[NSCollectionLayoutDimension estimatedDimension:50]] subitems:@[item1, item2]];
+        }else{
+            group = [NSCollectionLayoutGroup horizontalGroupWithLayoutSize:[NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension absoluteDimension:UIScreen.gkWidth] heightDimension:[NSCollectionLayoutDimension estimatedDimension:50]] subitems:@[item2]];
+            
+            }
+        
+        group.interItemSpacing = [NSCollectionLayoutSpacing fixedSpacing:20];
+        NSCollectionLayoutSection *layoutSection = [NSCollectionLayoutSection sectionWithGroup:group];
+        if(section % 2 != 0){
+            layoutSection.orthogonalScrollingBehavior = UICollectionLayoutSectionOrthogonalScrollingBehaviorPaging;
+        }
+        return layoutSection;
+    }];
+    self.layout = layout;
+    
     self.count = 10;
     NSMutableArray *models = [NSMutableArray array];
     
@@ -108,8 +132,13 @@
 
 - (void)handleTapEmpty
 {
-    self.count = 10;
+    self.count = 30;
     [self.collectionView reloadData];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 10;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

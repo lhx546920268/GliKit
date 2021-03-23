@@ -13,23 +13,21 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///弹窗样式
-typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
+typedef NS_ENUM(NSUInteger, GKAlertStyle)
 {
     ///UIActionSheet 样式
-    GKAlertControllerStyleActionSheet = 0,
+    GKAlertStyleActionSheet = 0,
     
     ///UIAlertView 样式
-    GKAlertControllerStyleAlert = 1
+    GKAlertStyleAlert = 1
 };
 
-/**
- 弹窗控制器 AlertView 和 ActionSheet的整合
- @warning 在显示show前设置好属性
- */
+///弹窗控制器 AlertView 和 ActionSheet的整合
+///@warning 在显示show前设置好属性
 @interface GKAlertController : GKBaseViewController
 
 ///样式
-@property(nonatomic, readonly) GKAlertControllerStyle style;
+@property(nonatomic, readonly) GKAlertStyle style;
 
 ///弹窗属性 默认使用单例
 @property(nonatomic, strong) GKAlertProps *props;
@@ -44,7 +42,7 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 @property(nonatomic, readonly, copy) NSArray<GKAlertAction*> *alertActions;
 
 ///点击回调 `index` 按钮下标 包含取消按钮 `actionSheet` 从上到下， `alert` 从左到右
-@property(nonatomic, copy, nullable) void(^selectionHandler)(NSUInteger index);
+@property(nonatomic, copy, nullable) void(^selectHandler)(NSUInteger index);
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -70,7 +68,7 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 - (instancetype)initWithTitle:(nullable id) title
                       message:(nullable id) message
                          icon:(nullable UIImage*) icon
-                        style:(GKAlertControllerStyle) style
+                        style:(GKAlertStyle) style
             cancelButtonTitle:(nullable NSString *) cancelButtonTitle
             otherButtonTitles:(nullable NSArray<NSString*>*) otherButtonTitles;
 
@@ -84,7 +82,7 @@ typedef NS_ENUM(NSUInteger, GKAlertControllerStyle)
 - (instancetype)initWithTitle:(nullable id) title
                       message:(nullable id) message
                          icon:(nullable UIImage*) icon
-                        style:(GKAlertControllerStyle) style
+                        style:(GKAlertStyle) style
             cancelButtonTitle:(nullable NSString *) cancelButtonTitle
            otherButtonActions:(nullable NSArray<GKAlertAction*>*) actions NS_DESIGNATED_INITIALIZER;
 

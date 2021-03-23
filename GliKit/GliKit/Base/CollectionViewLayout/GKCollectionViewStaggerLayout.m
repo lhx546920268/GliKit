@@ -1,58 +1,58 @@
 //
-//  GKCollectionViewFlowFillLayout.m
+//  GKCollectionViewStaggerLayout.m
 //  ThreadDemo
 //
 //  Created by 罗海雄 on 16/6/6.
 //  Copyright © 2016年 罗海雄. All rights reserved.
 //
 
-#import "GKCollectionViewFlowFillLayout.h"
+#import "GKCollectionViewStaggerLayout.h"
 #import "UIScreen+GKUtils.h"
 #import "GKCollectionViewLayoutInvalidationContext.h"
 
 @class GKCollectionFlowRowInfo;
 
 ///每个section的布局信息
-@interface GKCollectionViewFlowFillLayoutAttributes : NSObject
+@interface GKCollectionViewStaggerLayoutAttributes : NSObject
 
 ///头部布局信息
-@property(nonatomic,strong) UICollectionViewLayoutAttributes *headerLayoutAttributes;
+@property(nonatomic, strong) UICollectionViewLayoutAttributes *headerLayoutAttributes;
 
 ///悬浮的头部布局信息
-@property(nonatomic,readonly) UICollectionViewLayoutAttributes *stickHeaderLayoutAttributes;
+@property(nonatomic, readonly) UICollectionViewLayoutAttributes *stickHeaderLayoutAttributes;
 
 ///底部布局信息
-@property(nonatomic,strong) UICollectionViewLayoutAttributes *footerLayoutAttributes;
+@property(nonatomic, strong) UICollectionViewLayoutAttributes *footerLayoutAttributes;
 
 ///item布局信息
-@property(nonatomic,strong) NSMutableArray<UICollectionViewLayoutAttributes*> *itemInfos;
+@property(nonatomic, strong) NSMutableArray<UICollectionViewLayoutAttributes*> *itemInfos;
 
 ///行信息
-@property(nonatomic,strong) NSMutableArray<GKCollectionFlowRowInfo*> *rowInfos;
+@property(nonatomic, strong) NSMutableArray<GKCollectionFlowRowInfo*> *rowInfos;
 
 ///是否要悬浮头部
-@property(nonatomic,assign) BOOL shouldStickHeader;
+@property(nonatomic, assign) BOOL shouldStickHeader;
 
 ///section起点
-@property(nonatomic,readonly) CGFloat sectionBeginning;
+@property(nonatomic, readonly) CGFloat sectionBeginning;
 
 ///section终点
-@property(nonatomic,readonly) CGFloat sectionEnd;
+@property(nonatomic, readonly) CGFloat sectionEnd;
 
 ///是否存在元素
-@property(nonatomic,readonly) BOOL existElement;
+@property(nonatomic, readonly) BOOL existElement;
 
 ///item、header、footer 上下间距
-@property (nonatomic,assign) CGFloat minimumLineSpacing;
+@property (nonatomic, assign) CGFloat minimumLineSpacing;
 
 ///item左右间距
-@property (nonatomic,assign) CGFloat minimumInteritemSpacing;
+@property (nonatomic, assign) CGFloat minimumInteritemSpacing;
 
 ///section 偏移量
-@property (nonatomic,assign) UIEdgeInsets sectionInset;
+@property (nonatomic, assign) UIEdgeInsets sectionInset;
 
 ///关联的布局
-@property (nonatomic,weak) GKCollectionViewFlowFillLayout *layout;
+@property (nonatomic, weak) GKCollectionViewStaggerLayout *layout;
 
 @end
 
@@ -60,22 +60,22 @@
 @interface GKCollectionFlowRowInfo : NSObject
 
 ///关联的section 布局信息
-@property(nonatomic,weak) GKCollectionViewFlowFillLayoutAttributes *layoutAttributes;
+@property(nonatomic, weak) GKCollectionViewStaggerLayoutAttributes *layoutAttributes;
 
 ///行的最右边的item的 originX加载width
-@property(nonatomic,assign) CGFloat rightmost;
+@property(nonatomic, assign) CGFloat rightmost;
 
 ///行y轴起点
-@property(nonatomic,assign) CGFloat originY;
+@property(nonatomic, assign) CGFloat originY;
 
 ///最高item的frame
-@property(nonatomic,assign) CGRect highestFrame;
+@property(nonatomic, assign) CGRect highestFrame;
 
 ///所拥有的item布局信息
-@property(nonatomic,strong) NSMutableArray<UICollectionViewLayoutAttributes*> *itemInfos;
+@property(nonatomic, strong) NSMutableArray<UICollectionViewLayoutAttributes*> *itemInfos;
 
 ///最外一层的item
-@property(nonatomic,strong) NSMutableArray<NSValue*> *outmostItemInfos;
+@property(nonatomic, strong) NSMutableArray<NSValue*> *outmostItemInfos;
 
 ///根据item大小获取下一个item的位置 如果point.x < 0 ，表示没有空余的位置放item了
 - (CGPoint)itemOriginFromItemSize:(CGSize) size;
@@ -99,7 +99,7 @@
 {
     CGPoint point;
 
-    ///该行没有其他item
+    //该行没有其他item
     if(self.itemInfos.count == 0){
         point.y = self.originY;
         point.x = self.layoutAttributes.sectionInset.left;
@@ -118,7 +118,7 @@
     }
     
     if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost >= width){
-        ///这一行已经没有位置可以放item了
+        //这一行已经没有位置可以放item了
         if(self.outmostItemInfos.count < 2){
             point.x = -1;
         }else{
@@ -133,23 +133,23 @@
 
                 CGRect rect = CGRectMake(point.x, point.y, size.width, size.height);
                 if(size.width < frame.size.width){
-                    ///只挡住上面的item的一部分
+                    //只挡住上面的item的一部分
                     CGRect relpacedRect = CGRectMake(point.x + size.width + self.layoutAttributes.minimumInteritemSpacing, frame.origin.y, frame.size.width - size.width - self.layoutAttributes.minimumInteritemSpacing, frame.size.height);
                     [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(relpacedRect)];
                     
                     [self.outmostItemInfos insertObject:@(rect) atIndex:index];
                 }else{
-                    ///已完全挡住上一个item
+                    //已完全挡住上一个item
                     [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(rect)];
                 }
                 [self updateHighestFrame:rect];
 
-                ///合并相同高度的item
+                //合并相同高度的item
                 [self combineTheSameHeightItemForIndex:index];
             }
         }
     }else{
-        ///右边还有位置可以放item
+        //右边还有位置可以放item
         point.x = self.rightmost + self.layoutAttributes.minimumInteritemSpacing;
         point.y = self.originY;
         self.rightmost = point.x + size.width;
@@ -159,7 +159,7 @@
             [self.outmostItemInfos addObject:@(rect)];
         }else{
             CGRect lastRect = [[self.outmostItemInfos lastObject] CGRectValue];
-            ///相邻的item等高，合并
+            //相邻的item等高，合并
             if(rect.size.height == lastRect.size.height){
                 lastRect.size.width += rect.size.width + self.layoutAttributes.minimumInteritemSpacing;
                 [self.outmostItemInfos replaceObjectAtIndex:self.outmostItemInfos.count - 1 withObject:@(lastRect)];
@@ -181,10 +181,9 @@
     }
 }
 
-/**遍历最外围的item，获取最低的并且适合放size的 item
- *@param size 将要存放的item的大小
- *@return 适合存放item的位置，如果返回NSNotFound，标明没有适合的位置
- */
+/// 遍历最外围的item，获取最低的并且适合放size的 item
+/// @param size 将要存放的item的大小
+/// @return 适合存放item的位置，如果返回NSNotFound，标明没有适合的位置
 - (NSInteger)traverseOutmostItemInfosWithItemSize:(CGSize) size
 {
     NSValue *value = [self.outmostItemInfos firstObject];
@@ -194,7 +193,7 @@
     for(NSInteger i = 1;i < self.outmostItemInfos.count;i ++){
         value = self.outmostItemInfos[i];
         CGRect rect = [value CGRectValue];
-        ///最低，并且可以放下item
+        //最低，并且可以放下item
         if(rect.origin.y + rect.size.height <= frame.origin.y + frame.size.height && rect.size.width >= size.width){
             if(rect.origin.y + rect.size.height == frame.origin.y + frame.size.height){
                 //拿最左边的
@@ -216,23 +215,21 @@
     return index;
 }
 
-/**合并相邻的相同高度的item
- *@param index 要合并的位置
- */
+///合并相邻的相同高度的item
 - (void)combineTheSameHeightItemForIndex:(NSInteger) index
 {
     CGRect frame = [self.outmostItemInfos[index] CGRectValue];
     CGFloat bottom = frame.size.height + frame.origin.y;
     
     if(index > 0){
-        ///前一个
+        //前一个
         CGRect pframe = [self.outmostItemInfos[index - 1] CGRectValue];
         CGFloat pBottom = pframe.origin.y + pframe.size.height;
         if(fabs(bottom - pBottom) < 1.0){
             pframe.origin.x = MIN(frame.origin.x, pframe.origin.x);
             pframe.size.width += frame.size.width + self.layoutAttributes.minimumInteritemSpacing;
             
-             ///防止出现白边
+             //防止出现白边
             if(self.layoutAttributes.minimumLineSpacing == 0){
                 if(pBottom > bottom){
                     frame.size.height += pBottom - bottom;
@@ -249,14 +246,14 @@
     }
 
     if(index + 1 < self.outmostItemInfos.count){
-        ///后一个
+        //后一个
         CGRect pframe = [self.outmostItemInfos[index + 1] CGRectValue];
         CGFloat pBottom = pframe.origin.y + pframe.size.height;
         if(fabs(bottom - pBottom) < 1.0){
             pframe.origin.x = MIN(frame.origin.x, pframe.origin.x);
             pframe.size.width += frame.size.width + self.layoutAttributes.minimumInteritemSpacing;
             
-            ///防止出现白边
+            //防止出现白边
             if(self.layoutAttributes.minimumLineSpacing == 0){
                 if(pBottom > bottom){
                     frame.size.height += pBottom - bottom;
@@ -266,7 +263,6 @@
             }
             
             [self.outmostItemInfos replaceObjectAtIndex:index withObject:@(pframe)];
-
             [self.outmostItemInfos removeObjectAtIndex:index + 1];
         }
     }
@@ -275,7 +271,7 @@
 @end
 
 
-@implementation GKCollectionViewFlowFillLayoutAttributes
+@implementation GKCollectionViewStaggerLayoutAttributes
 
 @synthesize stickHeaderLayoutAttributes = _stickHeaderLayoutAttributes;
 
@@ -348,31 +344,23 @@
 
 @end
 
-@interface GKCollectionViewFlowFillLayout()
+@interface GKCollectionViewStaggerLayout()
 
-/**
- collectonView 代理
- */
-@property(nonatomic,readonly) id<GKCollectionViewFlowFillLayoutDelegate> delegate;
+///collectonView 代理
+@property(nonatomic, readonly) id<GKCollectionViewStaggerLayoutDelegate> delegate;
 
-/**
- 内容大小
- */
-@property(nonatomic,assign) CGSize contentSize;
+///内容大小
+@property(nonatomic, assign) CGSize contentSize;
 
-/**
- 布局属性
- */
-@property(nonatomic,strong) NSMutableArray<GKCollectionViewFlowFillLayoutAttributes*> *attributes;
+///布局属性
+@property(nonatomic, strong) NSMutableArray<GKCollectionViewStaggerLayoutAttributes*> *attributes;
 
-/**
- 是否已实现悬浮头部代理
- */
-@property(nonatomic,assign) BOOL shouldStickHeaderDelegate;
+///是否已实现悬浮头部代理
+@property(nonatomic, assign) BOOL hasStickHeaderDelegate;
 
 @end
 
-@implementation GKCollectionViewFlowFillLayout
+@implementation GKCollectionViewStaggerLayout
 
 - (instancetype)init
 {
@@ -414,9 +402,7 @@
     return self.contentSize;
 }
 
-/**
- * 计算内容大小
- */
+///计算内容大小
 - (void)caculateContentSize
 {
     [self.attributes removeAllObjects];
@@ -433,20 +419,20 @@
     CGFloat sectionHeaderItemSpace = self.sectionHeaderItemSpace;
 
     //判断是否已实现了代理
-    BOOL sectionHeaderHeightDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:headerHeightAtSection:)];
-    BOOL sectionFooterHeightDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:footerHeightAtSection:)];
-    BOOL sectionInsetDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:insetForSectionAtIndex:)];
-    BOOL minimumInteritemSpacingDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:minimumInteritemSpacingForSection:)];
-    BOOL minimumLineSpacingDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:minimumLineSpacingForSection:)];
+    BOOL sectionHeaderHeightDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:headerHeightAtSection:)];
+    BOOL sectionFooterHeightDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:footerHeightAtSection:)];
+    BOOL sectionInsetDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:insetForSectionAtIndex:)];
+    BOOL minimumInteritemSpacingDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:minimumInteritemSpacingForSection:)];
+    BOOL minimumLineSpacingDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:minimumLineSpacingForSection:)];
     
-    BOOL sectionFooterItemSpaceDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:footerItemSpaceAtSection:)];
-    BOOL sectionHeaderItemSpaceDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:headerItemSpaceAtSection:)];
-    BOOL shouldStickHeaderDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:shouldStickHeaderAtSection:)];
-    self.shouldStickHeaderDelegate = shouldStickHeaderDelegate;
+    BOOL sectionFooterItemSpaceDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:footerItemSpaceAtSection:)];
+    BOOL sectionHeaderItemSpaceDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:headerItemSpaceAtSection:)];
+    BOOL hasStickHeaderDelegate = [self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:shouldStickHeaderAtSection:)];
+    self.hasStickHeaderDelegate = hasStickHeaderDelegate;
 
-    NSAssert([self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:itemSizeForIndexPath:)], @"必须实现 collectionViewFlowFillLayout:itemSizeForIndexPath:");
+    NSAssert([self.delegate respondsToSelector:@selector(collectionViewStaggerLayout:itemSizeForIndexPath:)], @"必须实现 collectionViewStaggerLayout:itemSizeForIndexPath:");
 
-    CGFloat width = self.collectionView.bounds.size.width;
+    CGFloat width = self.collectionView.frame.size.width;
     if(width == 0){
         width = UIScreen.gkWidth;
     }
@@ -454,17 +440,17 @@
     CGFloat height = 0;
 
     for(NSInteger section = 0;section < numberOfSections;section ++){
-        GKCollectionViewFlowFillLayoutAttributes *layoutAttributes = [[GKCollectionViewFlowFillLayoutAttributes alloc] init];
+        GKCollectionViewStaggerLayoutAttributes *layoutAttributes = [[GKCollectionViewStaggerLayoutAttributes alloc] init];
         layoutAttributes.layout = self;
-        if(shouldStickHeaderDelegate){
-            layoutAttributes.shouldStickHeader = [self.delegate collectionViewFlowFillLayout:self shouldStickHeaderAtSection:section];
+        if(hasStickHeaderDelegate){
+            layoutAttributes.shouldStickHeader = [self.delegate collectionViewStaggerLayout:self shouldStickHeaderAtSection:section];
         }
 
         [self.attributes addObject:layoutAttributes];
 
         //获取区域偏移量
         if(sectionInsetDelegate){
-            sectionInset = [self.delegate collectionViewFlowFillLayout:self insetForSectionAtIndex:section];
+            sectionInset = [self.delegate collectionViewStaggerLayout:self insetForSectionAtIndex:section];
         }
 
         height += sectionInset.top;
@@ -472,22 +458,22 @@
         //获取头部高度
         if(sectionHeaderHeightDelegate){
             //实现了代理
-            sectionHeaderHeight = [self.delegate collectionViewFlowFillLayout:self headerHeightAtSection:section];
+            sectionHeaderHeight = [self.delegate collectionViewStaggerLayout:self headerHeightAtSection:section];
         }
 
         ///item与header的间距
         if(sectionHeaderItemSpaceDelegate){
-            sectionHeaderItemSpace = [self.delegate collectionViewFlowFillLayout:self headerItemSpaceAtSection:section];
+            sectionHeaderItemSpace = [self.delegate collectionViewStaggerLayout:self headerItemSpaceAtSection:section];
         }
 
         //左右间距
         if(minimumInteritemSpacingDelegate){
-            minimumInteritemSpacing = [self.delegate collectionViewFlowFillLayout:self minimumInteritemSpacingForSection:section];
+            minimumInteritemSpacing = [self.delegate collectionViewStaggerLayout:self minimumInteritemSpacingForSection:section];
         }
 
         //上下间距
         if(minimumLineSpacingDelegate){
-            minimumLineSpacing = [self.delegate collectionViewFlowFillLayout:self minimumLineSpacingForSection:section];
+            minimumLineSpacing = [self.delegate collectionViewStaggerLayout:self minimumLineSpacingForSection:section];
         }
 
         ///item数量
@@ -520,13 +506,10 @@
         //计算item 大小位置
         for(NSInteger item = 0;item < numberOfItems;item ++){
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-            CGSize itemSize = [self.delegate collectionViewFlowFillLayout:self itemSizeForIndexPath:indexPath];
+            CGSize itemSize = [self.delegate collectionViewStaggerLayout:self itemSizeForIndexPath:indexPath];
             
-            ///取1位小数 防止因为无穷小数导致 出现白边
-//            if(minimumInteritemSpacing == 0)
-//            {
-                itemSize.width = ((int)(itemSize.width * 10.0)) / 10.0;
-          //  }
+            //取1位小数 防止因为无穷小数导致 出现白边
+            itemSize.width = ((int)(itemSize.width * 10.0)) / 10.0;
             
             if(minimumLineSpacing == 0){
                 itemSize.height = ((int)(itemSize.height * 10.0)) / 10.0;
@@ -544,14 +527,10 @@
                 [layoutAttributes.rowInfos addObject:rowInfo];
             }
             
-//            if(minimumInteritemSpacing == 0)
-//            {
-                ///右边填满 防止因为无穷小数导致 出现白边
-                if(sectionInset.right == 0 && width - point.x - itemSize.width < 1.0)
-                {
-                    itemSize.width = width - point.x;
-                }
-           // }
+            //右边填满 防止因为无穷小数导致 出现白边
+            if(sectionInset.right == 0 && width - point.x - itemSize.width < 1.0){
+                itemSize.width = width - point.x;
+            }
 
             //item布局
             UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
@@ -568,12 +547,12 @@
         //获取底部高度
         if(sectionFooterHeightDelegate){
             //实现了代理
-            sectionFooterHeight = [self.delegate collectionViewFlowFillLayout:self footerHeightAtSection:section];
+            sectionFooterHeight = [self.delegate collectionViewStaggerLayout:self footerHeightAtSection:section];
         }
 
-        ///item与底部的间距
+        //item与底部的间距
         if(sectionFooterItemSpaceDelegate){
-            sectionFooterItemSpace = [self.delegate collectionViewFlowFillLayout:self footerItemSpaceAtSection:section];
+            sectionFooterItemSpace = [self.delegate collectionViewStaggerLayout:self footerItemSpaceAtSection:section];
         }
 
         //只有当section底部大于0时才显示
@@ -593,7 +572,7 @@
         height += sectionInset.bottom;
     }
 
-    self.contentSize = CGSizeMake(self.collectionView.bounds.size.width, height);
+    self.contentSize = CGSizeMake(self.collectionView.frame.size.width, height);
 }
 
 - (void)prepareLayout
@@ -605,9 +584,9 @@
 
 // MARK: - property
 
-- (id<GKCollectionViewFlowFillLayoutDelegate>)delegate
+- (id<GKCollectionViewStaggerLayoutDelegate>)delegate
 {
-    return (id<GKCollectionViewFlowFillLayoutDelegate>)self.collectionView.delegate;
+    return (id<GKCollectionViewStaggerLayoutDelegate>)self.collectionView.delegate;
 }
 
 - (void)setMinimumInteritemSpacing:(CGFloat)minimumInteritemSpacing
@@ -679,8 +658,8 @@
     
 
     for(NSInteger i = 0;i < self.attributes.count;i ++){
-        GKCollectionViewFlowFillLayoutAttributes *attribute = self.attributes[i];
-        ///该区域没有元素
+        GKCollectionViewStaggerLayoutAttributes *attribute = self.attributes[i];
+        //该区域没有元素
         if(!attribute.existElement){
             continue;
         }
@@ -704,12 +683,12 @@
             }
         }
         
-        ///section的头部超过rect的底部，该section以后的元素都不存在于该区域
+        //section的头部超过rect的底部，该section以后的元素都不存在于该区域
         if(attribute.sectionBeginning > bottom){
             break;
         }
         
-        ///section的底部小于rect的头部，改section的元素不存在该区域，继续查询下一个section
+        //section的底部小于rect的头部，改section的元素不存在该区域，继续查询下一个section
         if(attribute.sectionEnd < top){
             continue;
         }
@@ -726,7 +705,7 @@
             if(CGRectIntersectsRect(rect, attribute.footerLayoutAttributes.frame)){
                 [attributes addObject:attribute.footerLayoutAttributes];
             }else{
-                ///已超过范围
+                //已超过范围
                 break;
             }
         }
@@ -737,7 +716,7 @@
 
 - (UICollectionViewLayoutAttributes*)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GKCollectionViewFlowFillLayoutAttributes *attributes = self.attributes[indexPath.section];
+    GKCollectionViewStaggerLayoutAttributes *attributes = self.attributes[indexPath.section];
 
     return attributes.itemInfos[indexPath.item];
 }
@@ -745,7 +724,7 @@
 
 - (UICollectionViewLayoutAttributes*)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
-    GKCollectionViewFlowFillLayoutAttributes *attributes = self.attributes[indexPath.section];
+    GKCollectionViewStaggerLayoutAttributes *attributes = self.attributes[indexPath.section];
     if([elementKind isEqualToString:UICollectionElementKindSectionFooter]){
         return attributes.footerLayoutAttributes;
     }else if ([elementKind isEqualToString:UICollectionElementKindSectionHeader]){
@@ -767,7 +746,7 @@
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
     ///当要悬浮头部时要更新 header的frame
-    if(self.shouldStickHeaderDelegate){
+    if(self.hasStickHeaderDelegate){
         return YES;
     }
     return NO;
@@ -778,8 +757,8 @@
     GKCollectionViewLayoutInvalidationContext *context = [GKCollectionViewLayoutInvalidationContext new];
     
     for(NSInteger i = 0;i < self.attributes.count;i ++){
-        GKCollectionViewFlowFillLayoutAttributes *attribute = self.attributes[i];
-        ///该区域没有元素
+        GKCollectionViewStaggerLayoutAttributes *attribute = self.attributes[i];
+        //该区域没有元素
         if(!attribute.existElement){
             continue;
         }
@@ -803,13 +782,13 @@
 }
 
 ///获取悬浮头部属性
-- (UICollectionViewLayoutAttributes*)stickHeaderLayoutAttributesFromAttribute:(GKCollectionViewFlowFillLayoutAttributes*) attribute section:(NSUInteger) section
+- (UICollectionViewLayoutAttributes*)stickHeaderLayoutAttributesFromAttribute:(GKCollectionViewStaggerLayoutAttributes*) attribute section:(NSUInteger) section
 {
     UICollectionViewLayoutAttributes *attr = attribute.stickHeaderLayoutAttributes;
     CGRect frame = attr.frame;
     CGFloat offsetY = self.collectionView.contentOffset.y;
     frame.origin.y = MAX(offsetY, attribute.headerLayoutAttributes.frame.origin.y);
-    GKCollectionViewFlowFillLayoutAttributes *nextAttribute = [self nextStickAttributesForSection:section];
+    GKCollectionViewStaggerLayoutAttributes *nextAttribute = [self nextStickAttributesForSection:section];
     
     //下一个悬浮头部要把当前的顶上去
     if(nextAttribute){
@@ -825,11 +804,11 @@
 }
 
 ///获取某个区域对应的头部属性
-- (GKCollectionViewFlowFillLayoutAttributes*)attributesForBounds:(CGRect) bounds
+- (GKCollectionViewStaggerLayoutAttributes*)attributesForBounds:(CGRect) bounds
 {
-    GKCollectionViewFlowFillLayoutAttributes *attributes = nil;
+    GKCollectionViewStaggerLayoutAttributes *attributes = nil;
     
-    for(GKCollectionViewFlowFillLayoutAttributes *attr in self.attributes){
+    for(GKCollectionViewStaggerLayoutAttributes *attr in self.attributes){
         if(attr.sectionBeginning >= bounds.origin.y || attr.sectionEnd <= bounds.origin.y + bounds.size.height){
             attributes = attr;
             break;
@@ -840,11 +819,10 @@
 }
 
 ///获取下一个需要悬浮的头部属性
-- (GKCollectionViewFlowFillLayoutAttributes*)nextStickAttributesForSection:(NSUInteger) section
+- (GKCollectionViewStaggerLayoutAttributes*)nextStickAttributesForSection:(NSUInteger) section
 {
-    GKCollectionViewFlowFillLayoutAttributes *attributes = nil;
-    for(NSUInteger i = section + 1;i < self.attributes.count;i ++){
-        GKCollectionViewFlowFillLayoutAttributes *attr = self.attributes[i];
+    GKCollectionViewStaggerLayoutAttributes *attributes = nil;
+    for(GKCollectionViewStaggerLayoutAttributes *attr in self.attributes){
         if(attr.shouldStickHeader){
             attributes = attr;
             break;

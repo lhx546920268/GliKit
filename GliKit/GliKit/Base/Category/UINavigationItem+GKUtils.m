@@ -8,6 +8,7 @@
 
 #import "UINavigationItem+GKUtils.h"
 #import <objc/runtime.h>
+#import "NSObject+GKUtils.h"
 
 @implementation UINavigationItem (GKUtils)
 
@@ -29,12 +30,7 @@
         
         int count = sizeof(selectors) / sizeof(SEL);
         for(int i = 0;i < count;i ++){
-            
-            SEL selector1 = selectors[i];
-            SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"gk_%@", NSStringFromSelector(selector1)]);
-            Method method1 = class_getInstanceMethod(self, selector1);
-            Method method2 = class_getInstanceMethod(self, selector2);
-            method_exchangeImplementations(method1, method2);
+            [self gkExchangeImplementations:selectors[i] prefix:@"gk_"];
         }
     }
 }

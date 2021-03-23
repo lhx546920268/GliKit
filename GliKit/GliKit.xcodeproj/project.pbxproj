@@ -103,7 +103,7 @@
 		CED0D3D4230BC8790057D405 /* GKTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D203230BC6250057D405 /* GKTextView.m */; };
 		CED0D3D5230BC8790057D405 /* GKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D204230BC6250057D405 /* GKTextField.m */; };
 		CED0D3DB230BC8790057D405 /* GKBadgeValueView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D20A230BC6250057D405 /* GKBadgeValueView.m */; };
-		CED0D3DF230BCC110057D405 /* GKCollectionViewFlowFillLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D3DE230BCC110057D405 /* GKCollectionViewFlowFillLayout.m */; };
+		CED0D3DF230BCC110057D405 /* GKCollectionViewStaggerLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D3DE230BCC110057D405 /* GKCollectionViewStaggerLayout.m */; };
 		CED0D3FD230BECD00057D405 /* NSObject+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D3E2230BECCE0057D405 /* NSObject+GKUtils.m */; };
 		CED0D3FE230BECD00057D405 /* NSString+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D3E6230BECCE0057D405 /* NSString+GKUtils.m */; };
 		CED0D3FF230BECD00057D405 /* UIButton+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D3E7230BECCE0057D405 /* UIButton+GKUtils.m */; };
@@ -372,8 +372,8 @@
 		CED0D2E9230BC6250057D405 /* GKNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKNavigationBar.m; sourceTree = "<group>"; };
 		CED0D2EA230BC6250057D405 /* GKContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKContainer.h; sourceTree = "<group>"; };
 		CED0D2ED230BC6250057D405 /* GKSystemNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSystemNavigationBar.m; sourceTree = "<group>"; };
-		CED0D3DD230BCC110057D405 /* GKCollectionViewFlowFillLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewFlowFillLayout.h; sourceTree = "<group>"; };
-		CED0D3DE230BCC110057D405 /* GKCollectionViewFlowFillLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewFlowFillLayout.m; sourceTree = "<group>"; };
+		CED0D3DD230BCC110057D405 /* GKCollectionViewStaggerLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewStaggerLayout.h; sourceTree = "<group>"; };
+		CED0D3DE230BCC110057D405 /* GKCollectionViewStaggerLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewStaggerLayout.m; sourceTree = "<group>"; };
 		CED0D3E0230BE52B0057D405 /* GKAppUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKAppUtils.h; sourceTree = "<group>"; };
 		CED0D3E1230BECCE0057D405 /* NSObject+GKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+GKUtils.h"; sourceTree = "<group>"; };
 		CED0D3E2230BECCE0057D405 /* NSObject+GKUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+GKUtils.m"; sourceTree = "<group>"; };
@@ -1058,8 +1058,8 @@
 		CED0D2AD230BC6250057D405 /* CollectionViewLayout */ = {
 			isa = PBXGroup;
 			children = (
-				CED0D3DD230BCC110057D405 /* GKCollectionViewFlowFillLayout.h */,
-				CED0D3DE230BCC110057D405 /* GKCollectionViewFlowFillLayout.m */,
+				CED0D3DD230BCC110057D405 /* GKCollectionViewStaggerLayout.h */,
+				CED0D3DE230BCC110057D405 /* GKCollectionViewStaggerLayout.m */,
 				CED0D2AF230BC6250057D405 /* GKCollectionViewFlowLayout.h */,
 				CED0D2B2230BC6250057D405 /* GKCollectionViewFlowLayout.m */,
 				CED0D2B3230BC6250057D405 /* GKCollectionViewTopFlowLayout.h */,
@@ -1423,7 +1423,7 @@
 				CED0D384230BC8790057D405 /* GKDataBase.m in Sources */,
 				CED0D386230BC8790057D405 /* GKPhotosViewController.m in Sources */,
 				CED0D43F230BED690057D405 /* UIView+GKSkeleton.m in Sources */,
-				CED0D3DF230BCC110057D405 /* GKCollectionViewFlowFillLayout.m in Sources */,
+				CED0D3DF230BCC110057D405 /* GKCollectionViewStaggerLayout.m in Sources */,
 				CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */,
 				CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */,
 				CE525DA723C704EA00EB082E /* GKLabel.m in Sources */,

@@ -54,20 +54,20 @@
              cancelButtonTitle:(NSString *)cancelButtonTitle
              otherButtonTitles:(NSArray<NSString *> *)otherButtonTitles
 {
-    return [[GKAlertController alloc] initWithTitle:title message:message icon:nil style:GKAlertControllerStyleAlert cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
+    return [[GKAlertController alloc] initWithTitle:title message:message icon:nil style:GKAlertStyleAlert cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
 }
 
 + (instancetype)actionSheetWithTitle:(id)title
                              message:(id)message
                    otherButtonTitles:(NSArray<NSString *> *)otherButtonTitles
 {
-    return [[GKAlertController alloc] initWithTitle:title message:message icon:nil style:GKAlertControllerStyleActionSheet cancelButtonTitle:nil otherButtonTitles:otherButtonTitles];
+    return [[GKAlertController alloc] initWithTitle:title message:message icon:nil style:GKAlertStyleActionSheet cancelButtonTitle:nil otherButtonTitles:otherButtonTitles];
 }
 
 - (instancetype)initWithTitle:(id) title
                       message:(id) message
                          icon:(UIImage*) icon
-                        style:(GKAlertControllerStyle) style
+                        style:(GKAlertStyle) style
             cancelButtonTitle:(NSString *) cancelButtonTitle
             otherButtonTitles:(NSArray<NSString *> *)otherButtonTitles
 {
@@ -81,7 +81,7 @@
 - (instancetype)initWithTitle:(id)title
                       message:(id)message
                          icon:(UIImage *)icon
-                        style:(GKAlertControllerStyle)style
+                        style:(GKAlertStyle)style
             cancelButtonTitle:(NSString *)cancelButtonTitle
            otherButtonActions:(NSArray<GKAlertAction *> *)actions
 {
@@ -102,7 +102,7 @@
         self.actions = [NSMutableArray arrayWithArray:actions];
         
         switch (_style){
-            case GKAlertControllerStyleAlert : {
+            case GKAlertStyleAlert : {
                 if(self.actions.count == 0 && !self.cancelTitle){
                     self.cancelTitle = @"取消";
                 }
@@ -116,7 +116,7 @@
                 }
             }
                 break;
-            case GKAlertControllerStyleActionSheet :
+            case GKAlertStyleActionSheet :
                 break;
         }
         
@@ -132,7 +132,7 @@
     
     self.dialogShowAnimate = GKDialogAnimateCustom;
     self.dialogDismissAnimate = GKDialogAnimateCustom;
-    self.shouldDismissDialogOnTapTranslucent = self.style == GKAlertControllerStyleActionSheet && ![NSString isEmpty:self.cancelTitle];
+    self.shouldDismissDialogOnTapTranslucent = self.style == GKAlertStyleActionSheet && ![NSString isEmpty:self.cancelTitle];
     self.tapDialogBackgroundGestureRecognizer.delegate = self;
 }
 
@@ -251,11 +251,11 @@
         }
         
         switch (_style){
-            case GKAlertControllerStyleAlert : {
+            case GKAlertStyleAlert : {
                 self.container.frame = CGRectMake(margin, margin, width, 0);
             }
                 break;
-            case GKAlertControllerStyleActionSheet : {
+            case GKAlertStyleActionSheet : {
                 
                 self.container.frame = CGRectMake(props.contentInsets.left, margin, width, 0);
                 
@@ -303,9 +303,9 @@
 - (CGFloat)alertViewWidth
 {
     switch (_style){
-        case GKAlertControllerStyleAlert :
+        case GKAlertStyleAlert :
             return 260 + UIApplication.gkSeparatorHeight;
-        case GKAlertControllerStyleActionSheet : {
+        case GKAlertStyleActionSheet : {
             GKAlertProps *props = self.props;
             return self.view.gkWidth - props.contentInsets.left - props.contentInsets.right;
         }
@@ -321,11 +321,11 @@
     layout.minimumLineSpacing = UIApplication.gkSeparatorHeight;
     
     switch (_style){
-        case GKAlertControllerStyleActionSheet : {
+        case GKAlertStyleActionSheet : {
             layout.itemSize = CGSizeMake([self alertViewWidth], props.buttonHeight);
         }
             break;
-        case GKAlertControllerStyleAlert : {
+        case GKAlertStyleAlert : {
             layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - UIApplication.gkSeparatorHeight) / 2.0 : [self alertViewWidth], props.buttonHeight);
             layout.scrollDirection = self.actions.count > 2 ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
         }
@@ -351,14 +351,14 @@
     
     if(self.actions.count > 0){
         switch (_style){
-            case GKAlertControllerStyleAlert : {
+            case GKAlertStyleAlert : {
                 buttonHeight = self.actions.count < 3 ? props.buttonHeight : self.actions.count * (UIApplication.gkSeparatorHeight + props.buttonHeight);
                 if(headerHeight > 0){
                     buttonHeight += 0.1;
                 }
             }
                 break;
-            case GKAlertControllerStyleActionSheet : {
+            case GKAlertStyleActionSheet : {
                 buttonHeight = self.actions.count * props.buttonHeight + (self.actions.count - 1) * UIApplication.gkSeparatorHeight;
                 
                 if(headerHeight > 0){
@@ -405,11 +405,11 @@
     }
     
     switch (_style){
-        case GKAlertControllerStyleActionSheet : {
+        case GKAlertStyleActionSheet : {
             self.container.gkTop = self.view.gkHeight;
         }
             break;
-        case GKAlertControllerStyleAlert : {
+        case GKAlertStyleAlert : {
             self.container.gkTop = (self.view.gkHeight - self.container.gkHeight) / 2.0;
         }
             break;
@@ -424,11 +424,11 @@
 - (void)cancel:(id) sender
 {
     NSUInteger index = 0;
-    if(_style == GKAlertControllerStyleActionSheet){
+    if(_style == GKAlertStyleActionSheet){
         index = self.actions.count;
     }
     
-    void(^handler)(NSUInteger index) = self.selectionHandler;
+    void(^handler)(NSUInteger index) = self.selectHandler;
     self.dialogDismissCompletionHandler = ^{
         !handler ?: handler(index);
     };
@@ -438,7 +438,7 @@
 - (void)didExecuteDialogShowCustomAnimate:(void (^)(BOOL))completion
 {
     switch (_style){
-        case GKAlertControllerStyleAlert : {
+        case GKAlertStyleAlert : {
             self.container.alpha = 0;
             [UIView animateWithDuration:0.25 animations:^{
                 self.dialogBackgroundView.alpha = 1.0;
@@ -451,7 +451,7 @@
             } completion:completion];
         }
             break;
-        case GKAlertControllerStyleActionSheet : {
+        case GKAlertStyleActionSheet : {
             GKAlertProps *props = self.props;
             [UIView animateWithDuration:0.5
                                   delay:0
@@ -473,7 +473,7 @@
 - (void)didExecuteDialogDismissCustomAnimate:(void (^)(BOOL))completion
 {
     switch (_style){
-        case GKAlertControllerStyleAlert : {
+        case GKAlertStyleAlert : {
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.dialogBackgroundView.alpha = 0;
@@ -482,7 +482,7 @@
             }completion:completion];
         }
             break;
-        case GKAlertControllerStyleActionSheet : {
+        case GKAlertStyleActionSheet : {
             [UIView animateWithDuration:0.5
                                   delay:0
                  usingSpringWithDamping:1.0
@@ -517,7 +517,7 @@
         return action.title;
     }
     
-    if(self.style == GKAlertControllerStyleActionSheet && index == self.actions.count){
+    if(self.style == GKAlertStyleActionSheet && index == self.actions.count){
         return self.cancelTitle;
     }
     
@@ -579,7 +579,7 @@
     
     if(action.enabled){
         BOOL isCancel = NO;
-        if(self.style == GKAlertControllerStyleAlert && self.cancelTitle){
+        if(self.style == GKAlertStyleAlert && self.cancelTitle){
             isCancel = (indexPath.item == 0 && self.actions.count < 3) || (indexPath.item == self.actions.count - 1 && self.actions.count >= 3);
         }
         
@@ -624,12 +624,12 @@
     if(action.enabled){
         if(self.dismissAfterClickButton){
             
-            void(^handler)(NSUInteger index) = self.selectionHandler;
+            void(^handler)(NSUInteger index) = self.selectHandler;
             [self dismissDialogAnimated:YES completion:^{
                 !handler ?: handler(indexPath.item);
             }];
         }else{
-            !self.selectionHandler ?: self.selectionHandler(indexPath.item);
+            !self.selectHandler ?: self.selectHandler(indexPath.item);
         }
     }
 }
@@ -644,7 +644,7 @@
 - (GKAlertProps*)props
 {
     if(!_props){
-        _props = _style == GKAlertControllerStyleActionSheet ? [GKAlertProps defaultactionSheetProps] : [GKAlertProps defaultAlertProps];
+        _props = _style == GKAlertStyleActionSheet ? [GKAlertProps defaultActionSheetProps] : [GKAlertProps defaultAlertProps];
     }
     return _props;
 }

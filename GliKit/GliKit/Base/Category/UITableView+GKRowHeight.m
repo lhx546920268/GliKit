@@ -9,7 +9,6 @@
 #import "UITableView+GKRowHeight.h"
 #import <objc/runtime.h>
 #import "UIView+GKAutoLayout.h"
-#import "NSObject+GKUtils.h"
 #import "GKRowHeightModel.h"
 
 @implementation UITableView (GKRowHeight)

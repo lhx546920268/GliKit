@@ -16,6 +16,7 @@
 #import "GKDRootViewController.h"
 #import <NSDate+GKUtils.h>
 #import "GKDLoadMonitor.h"
+#import <mach/mach.h>
 
 @interface AppDelegate ()
 
@@ -55,6 +56,13 @@
     for(NSDictionary *dic in GKDLoadMonitor.executeTimes){
         time += [dic[@"time"] doubleValue];
     }
+    
+    NSLog(@"timeIntervalSince1970 %f", NSDate.date.timeIntervalSinceReferenceDate);
+    NSLog(@"CFAbsoluteTimeGetCurrent %f", CFAbsoluteTimeGetCurrent());
+    NSLog(@"mach_absolute_time %lld", mach_absolute_time());
+    NSLog(@"mach_approximate_time %lld", mach_approximate_time());
+    NSLog(@"mach_continuous_time %lld", mach_continuous_time());
+    NSLog(@"mach_continuous_approximate_time %lld", mach_continuous_approximate_time());
     
     NSLog(@"load ms %f", time * 1000);
     

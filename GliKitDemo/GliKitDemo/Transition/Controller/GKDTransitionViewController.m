@@ -92,13 +92,21 @@
     vc.view.backgroundColor = UIColor.whiteColor;
     vc.gkShowBackItem = YES;
     UINavigationController *nav = vc.gkCreateWithNavigationController;
+  
+    [self presentViewController:nav animated:YES completion:^{
+        NSLog(@"%@", self.navigationController.presentedViewController);
+        NSLog(@"%@", self.presentingViewController);
+        
+        NSLog(@"%@", nav.presentedViewController);
+        NSLog(@"%@", nav.presentingViewController);
+    }];
     
-    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
-    nav.partialPresentProps.cornerRadius = 10;
-    nav.partialPresentProps.dismissCallback = ^{
-        NSLog(@"dialogDismissCompletionHandler");
-    };
-    [nav partialPresentFromBottom];
+//    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
+//    nav.partialPresentProps.cornerRadius = 10;
+//    nav.partialPresentProps.dismissCallback = ^{
+//        NSLog(@"dialogDismissCompletionHandler");
+//    };
+//    [nav partialPresentFromBottom];
 }
 
 - (void)handleTap:(UIButton*) sender

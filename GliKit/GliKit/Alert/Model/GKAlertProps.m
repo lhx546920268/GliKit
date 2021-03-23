@@ -63,7 +63,7 @@ GKConvenientCopying
     return alertProps;
 }
 
-+ (GKAlertProps *)defaultactionSheetProps
++ (GKAlertProps *)defaultActionSheetProps
 {
     static GKAlertProps *actionSheetProps = nil;
     static dispatch_once_t onceToken;
