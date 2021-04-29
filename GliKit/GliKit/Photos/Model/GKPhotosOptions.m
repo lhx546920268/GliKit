@@ -40,7 +40,7 @@
 
 + (instancetype)resultWithData:(NSData*) data options:(GKPhotosOptions*) options
 {
-    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)@{(NSString*) kCGImageSourceShouldAllowFloat : @YES});
+    CGImageSourceRef source = CGImageSourceCreateWithData(CFBridgingRetain(data), CFBridgingRetain(@{(NSString*) kCGImageSourceShouldAllowFloat : @YES}));
     if(!source)
         return nil;
     
@@ -77,7 +77,7 @@
                                     (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
                                     (id)kCGImageSourceCreateThumbnailWithTransform : @YES};
         
-        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef)compressedImageOptions);
+        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, CFBridgingRetain(compressedImageOptions));
         if(imageRef != NULL){
             result.compressedImage = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
             CGImageRelease(imageRef);
@@ -95,7 +95,7 @@
                               (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
                               (id)kCGImageSourceCreateThumbnailWithTransform : @YES};
         
-        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef)thumbnailOptions);
+        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, CFBridgingRetain(thumbnailOptions));
         if(imageRef != NULL){
             result.thumbnail = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
             CGImageRelease(imageRef);

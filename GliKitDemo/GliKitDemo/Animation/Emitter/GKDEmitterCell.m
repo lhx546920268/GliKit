@@ -7,6 +7,7 @@
 //
 
 #import "GKDEmitterCell.h"
+#import <AdSupport/AdSupport.h>
 
 @implementation GKDEmitterCell
 

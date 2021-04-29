@@ -288,7 +288,7 @@
             }
             
             //添加动画
-            self.progressLayer.path = (__bridge CGPathRef)[animatedPaths lastObject];
+            self.progressLayer.path = CFBridgingRetain(animatedPaths.lastObject);
             
             CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"path"];
             animation.values = animatedPaths;

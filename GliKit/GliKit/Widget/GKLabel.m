@@ -52,11 +52,11 @@ static NSRegularExpression *URLRegularExpression = nil;
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
-    if(size.width < 2777777){
+    if(size.width != UIViewNoIntrinsicMetric && size.width < 2777777){
         size.width += _contentInsets.left + _contentInsets.right;
     }
     
-    if(size.height < 2777777){
+    if(size.width != UIViewNoIntrinsicMetric && size.height < 2777777){
         size.height += _contentInsets.top + _contentInsets.bottom;
     }
     

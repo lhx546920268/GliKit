@@ -16,6 +16,8 @@
 #import <objc/message.h>
 #import <GliKitDemo-Swift.h>
 
+
+
 @interface GKDParent : NSObject
 
 @end
@@ -131,6 +133,12 @@
 
 @end
 
+typedef struct SUser
+{
+    NSString *name;
+    int age;
+}User;
+
 @interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate, GKSwipeCellDelegate>
 
 @property(nonatomic, strong) NSArray<GKDRowModel*> *datas;
@@ -140,6 +148,9 @@
 
 ///
 @property(nonatomic, strong) Class cls;
+
+///
+@property(nonatomic, copy) dispatch_block_t gcdBlock;
 
 @end
 
@@ -162,13 +173,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    GKDChild *child = GKDChild.new;
-    GKDParent *parent = GKDParent.new;
 
-    [self addObserver:self forKeyPath:@"change" options:NSKeyValueObservingOptionNew context:nil];
-    
-    self.change = YES;
+//    GKDParent *parent = GKDParent.new;
+//
+////    GKDChild *child = GKDChild.new;
+//
+//
+//    [self addObserver:self forKeyPath:@"change" options:NSKeyValueObservingOptionNew context:nil];
+//
+//    self.change = YES;
     self.navigationItem.title = GKAppUtils.appName;
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
@@ -186,31 +199,63 @@
     [self initViews];
 
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
-    
-    self.demo = [DemoObservable new];
-    [self.demo.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
-        if(oldValue != newValue){
-            NSLog(@"%@, %@, %@", keyPath, newValue, oldValue);
-        }
-    } forKeyPath:@"intValue"];
-    
-    [self.demo.kvoHelper addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
-        NSLog(@"manualCallback %@, %@, %@", keyPath, newValue, oldValue);
-    } forKeyPath:@"integerValue"];
-    
-    GKDRowModel *model = GKDRowModel.new;
-    [model setValue:@"string value" forKey:@"stringValue"];
-    self.cls = self.class;
-    
-    NSString *name = @"名字";
-    name = [name stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
-    NSLog(@"name %@", name.stringByRemovingPercentEncoding);
-    
-    NSString *str = [NSString stringWithFormat:@"http://user/name?name=%@&age=1&stc=xai", name];
-    NSURLComponents *components = [NSURLComponents componentsWithString:str];
+//
+//    self.demo = [DemoObservable new];
+//    [self.demo.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
+//        if(oldValue != newValue){
+//            NSLog(@"%@, %@, %@", keyPath, newValue, oldValue);
+//        }
+//    } forKeyPath:@"intValue"];
+//
+//    [self.demo.kvoHelper addObserver:self manualCallback:^(NSString * _Nonnull keyPath, NSNumber*  _Nullable newValue, NSNumber*  _Nullable oldValue) {
+//        NSLog(@"manualCallback %@, %@, %@", keyPath, newValue, oldValue);
+//    } forKeyPath:@"integerValue"];
+//
+//    GKDRowModel *model = GKDRowModel.new;
+//    [model setValue:@"string value" forKey:@"stringValue"];
+//    self.cls = self.class;
+//
+//    NSString *name = @"名字";
+//    name = [name stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+//    NSLog(@"name %@", name.stringByRemovingPercentEncoding);
+//
+//    NSString *str = [NSString stringWithFormat:@"http://user/name?name=%@&age=1&stc=xai", name];
+//    NSURLComponents *components = [NSURLComponents componentsWithString:str];
+//
+//    components.scheme = @"app";
+//    NSLog(@"%@", components.URL.absoluteString);
 
-    components.scheme = @"app";
-    NSLog(@"%@", components.URL.absoluteString);
+}
+
+- (void)handleTap:(UITapGestureRecognizer*) tap
+{
+//    [CATransaction begin];
+//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+//    animation.fromValue = @(tap.view.center.y);
+//    animation.toValue = @(300);
+//    animation.fillMode = kCAFillModeForwards;
+//    animation.removedOnCompletion = NO;
+//    animation.duration = 1;
+//
+//    [CATransaction setCompletionBlock:^{
+//        NSLog(@"%f", tap.view.layer.position.y);
+//        NSLog(@"%f", tap.view.center.y);
+//    }];
+//
+//    [tap.view.layer addAnimation:animation forKey:@"p"];
+//
+//    [CATransaction commit];
+    
+    [UIView animateWithDuration:1 animations:^{
+            tap.view.center = CGPointMake(tap.view.center.x, 300);
+        } completion:^(BOOL finished) {
+            NSLog(@"%f", tap.view.layer.position.y);
+            NSLog(@"%f", tap.view.center.y);
+        }];
+    
+    dispatch_main_after(0.5, ^{
+        NSLog(@"%f", tap.view.layer.position.y);
+    });
 }
 
 - (void)setChange:(BOOL)change
