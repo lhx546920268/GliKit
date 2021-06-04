@@ -95,14 +95,7 @@ static char CARouteConfigKey;
     }
     
     if(components){
-        NSString *host = components.host;
-        NSString *path = components.path;
-        if([NSString isEmpty:host]){
-            host = path;
-        }else if(![NSString isEmpty:path]){
-            host = [NSString stringWithFormat:@"%@%@", host, path];
-        }
-        _path = host;
+        _path = components.path;
     }
     
     return _path;
@@ -161,24 +154,6 @@ static char CARouteConfigKey;
     });
     
     return sharedRouter;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.openURLWhileSchemeNotSupport = YES;
-    }
-    return self;
-}
-
-- (NSString *)appScheme
-{
-    if(!_appScheme){
-        return @"app://";
-    }
-    
-    return _appScheme;
 }
 
 - (NSMutableDictionary<NSString *,GKRouteRegistration *> *)registrations
@@ -245,7 +220,7 @@ static char CARouteConfigKey;
             if(config.URLString){
                 config.URLComponents = [NSURLComponents componentsWithString:config.URLString];
             }else if(config.path){
-                config.URLComponents = [NSURLComponents componentsWithString:[self.appScheme stringByAppendingString:config.path]];
+                config.URLComponents = [NSURLComponents componentsWithString:config.path];
             }
         }
         
@@ -264,38 +239,24 @@ static char CARouteConfigKey;
     
     BOOL processBySelf = NO;
     
-    NSURLComponents *components = config.URLComponents;
-    NSString *scheme = [components.scheme stringByAppendingString:@"://"];
-    if([scheme isEqualToString:self.appScheme]){
-        NSString *host = components.host;
-        NSString *path = components.path;
-        if([NSString isEmpty:host]){
-            host = path;
-        }else if(![NSString isEmpty:path]){
-            host = [NSString stringWithFormat:@"%@%@", host, path];
+    NSString *path = config.path;
+    if(![NSString isEmpty:path]){
+        
+        GKRouteRegistration *registration = _registrations[path];
+        if(registration.handler){
+            viewController = registration.handler(config);
+            processBySelf = YES;
+        }else if(registration.cls){
+            Class cls = registration.cls;
+            viewController = [cls new];
+        }else{
+            Class cls = NSClassFromString(path);
+            viewController = [cls new];
         }
         
-        if(![NSString isEmpty:host]){
-            
-            GKRouteRegistration *registration = _registrations[host];
-            if(registration.handler){
-                viewController = registration.handler(config);
-                processBySelf = YES;
-            }else if(registration.cls){
-                Class cls = registration.cls;
-                viewController = [cls new];
-            }else{
-                Class cls = NSClassFromString(host);
-                viewController = [cls new];
-            }
-            
-            if(![viewController isKindOfClass:UIViewController.class]){
-                viewController = nil;
-            }
+        if(![viewController isKindOfClass:UIViewController.class]){
+            viewController = nil;
         }
-    }else if([scheme isEqualToString:@"http://"] || [scheme isEqualToString:@"https://"]){
-        GKBaseWebViewController *web = [[GKBaseWebViewController alloc] initWithURLString:components.string];
-        viewController = web;
     }
     
     if(!viewController){
@@ -375,19 +336,13 @@ static char CARouteConfigKey;
         }
     }
     
-    NSURLComponents *components = config.URLComponents;
     UIViewController *viewController = [self viewControllerForConfig:config];
     if(!viewController){
         
-        BOOL isSupport = [self isSupportScheme:components.scheme];
         //重定向
-        if(isSupport && ![path isEqualToString:config.path]){
+        if(![path isEqualToString:config.path]){
             [self continueRoute:config];
             return;
-        }
-        
-        if(self.openURLWhileSchemeNotSupport && !isSupport){
-            [GKAppUtils openCompatURL:components.URL];
         }
         return;
     }
@@ -493,13 +448,6 @@ static char CARouteConfigKey;
     NSLog(@"Can not found viewControlelr for %@", URLString);
 #endif
     !self.failureHandler ?: self.failureHandler(URLString, config.extras);
-}
-
-///判断scheme是否支持
-- (BOOL)isSupportScheme:(NSString*) scheme
-{
-    scheme = [scheme stringByAppendingString:@"://"];
-    return [scheme isEqualToString:self.appScheme];
 }
 
 @end

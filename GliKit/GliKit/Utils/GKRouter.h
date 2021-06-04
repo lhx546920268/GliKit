@@ -136,12 +136,6 @@ typedef UIViewController* _Nullable (^GKRouteHandler)(GKRouteConfig *config);
 ///单例
 @property(class, nonatomic, readonly) GKRouter *sharedRouter;
 
-///app default @"app://"
-@property(nonatomic, copy, null_resettable) NSString *appScheme;
-
-///当scheme不支持时，是否用 UIApplication 打开 default YES
-@property(nonatomic, assign) BOOL openURLWhileSchemeNotSupport;
-
 ///失败回调
 @property(nonatomic, copy, nullable) void(^failureHandler)(NSString *URLString, NSDictionary * _Nullable routeParams);
 

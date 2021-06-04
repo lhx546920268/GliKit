@@ -324,7 +324,7 @@
 
 - (void)addCancelableTask:(GKHttpTask*) task
 {
-    [self addCancelableTask:task cancelTheSame:NO];
+    [self addCancelableTask:task cancelTheSame:YES];
 }
 
 - (void)addCancelableTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
