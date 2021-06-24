@@ -40,6 +40,7 @@
 		CEBAB9EA243F1ECF005C0E7D /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBAB9E8243F1E0A005C0E7D /* GKImagePicker.m */; };
 		CEBFAA4A230CD5DD007B8D47 /* UIColor+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */; };
 		CEC2D970239F4D5400F14210 /* UIApplication+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */; };
+		CEC81618268042B300C7A2E8 /* GKIndexSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC81617268042B300C7A2E8 /* GKIndexSearchBar.m */; };
 		CEC9C327242B4A420082E631 /* GKKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC9C326242B4A420082E631 /* GKKeyChainStore.m */; };
 		CECE565523A88387007A96C4 /* GKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CECE565423A88387007A96C4 /* GKButton.m */; };
 		CED0D2EF230BC8780057D405 /* GKAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D22C230BC6250057D405 /* GKAlertController.m */; };
@@ -243,6 +244,8 @@
 		CEBFAA49230CD5DD007B8D47 /* UIColor+GKTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GKTheme.m"; sourceTree = "<group>"; };
 		CEC2D96E239F4D5400F14210 /* UIApplication+GKUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+GKUtils.h"; sourceTree = "<group>"; };
 		CEC2D96F239F4D5400F14210 /* UIApplication+GKUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+GKUtils.m"; sourceTree = "<group>"; };
+		CEC81616268042B300C7A2E8 /* GKIndexSearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKIndexSearchBar.h; sourceTree = "<group>"; };
+		CEC81617268042B300C7A2E8 /* GKIndexSearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKIndexSearchBar.m; sourceTree = "<group>"; };
 		CEC9C325242B4A420082E631 /* GKKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKKeyChainStore.h; sourceTree = "<group>"; };
 		CEC9C326242B4A420082E631 /* GKKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKKeyChainStore.m; sourceTree = "<group>"; };
 		CECE565323A88387007A96C4 /* GKButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKButton.h; sourceTree = "<group>"; };
@@ -700,6 +703,8 @@
 				CED0D203230BC6250057D405 /* GKTextView.m */,
 				CE525DA523C704EA00EB082E /* GKLabel.h */,
 				CE525DA623C704EA00EB082E /* GKLabel.m */,
+				CEC81616268042B300C7A2E8 /* GKIndexSearchBar.h */,
+				CEC81617268042B300C7A2E8 /* GKIndexSearchBar.m */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -1394,6 +1399,7 @@
 				CED0D33A230BC8780057D405 /* GKContainer.m in Sources */,
 				CED3A7F8230D443200C304B3 /* UIScrollView+GKEmptyView.m in Sources */,
 				CED0D33C230BC8780057D405 /* GKNavigationBar.m in Sources */,
+				CEC81618268042B300C7A2E8 /* GKIndexSearchBar.m in Sources */,
 				CED0D408230BECD00057D405 /* UITableViewCell+GKUtils.m in Sources */,
 				CED0D425230BECF20057D405 /* UINavigationItem+GKUtils.m in Sources */,
 				CEC9C327242B4A420082E631 /* GKKeyChainStore.m in Sources */,

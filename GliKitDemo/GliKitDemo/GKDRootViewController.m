@@ -15,7 +15,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <GliKitDemo-Swift.h>
-
+#import <GKIndexSearchBar.h>
 
 
 @interface GKDParent : NSObject
@@ -225,6 +225,19 @@ typedef struct SUser
 //    components.scheme = @"app";
 //    NSLog(@"%@", components.URL.absoluteString);
 
+    GKIndexSearchBar *searchBar = [GKIndexSearchBar new];
+    searchBar.indexTitles = @[@"热", @"全", @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"#"];
+    searchBar.indexDidChange = ^(NSUInteger index, NSString *title) {
+    
+        NSLog(@"%lu, %@", (unsigned long)index, title);
+    };
+    
+    [self.view addSubview:searchBar];
+    
+    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(0);
+            make.trailing.equalTo(-10);
+    }];
 }
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
