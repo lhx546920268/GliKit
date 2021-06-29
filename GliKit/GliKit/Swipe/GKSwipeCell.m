@@ -323,7 +323,7 @@
                 
                 switch (self.currentDirection) {
                     case GKSwipeDirectionLeft :
-                        frame.origin.x = self.cell.gkRight;
+                        frame.origin.x = self.cell.gkWidth;
                         break;
                     case GKSwipeDirectionRight :
                         frame.origin.x = self.cell.gkLeft - view.gkWidth;
