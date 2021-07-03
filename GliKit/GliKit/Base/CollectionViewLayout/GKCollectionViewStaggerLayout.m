@@ -501,6 +501,7 @@
         [helper reset];
         helper.layoutAttributes = layoutAttributes;
         helper.originY = height;;
+        helper.highestFrame = CGRectMake(0, height, 0, 0);
 
         //计算item 大小位置
         for(NSInteger item = 0; item < numberOfItems; item ++){

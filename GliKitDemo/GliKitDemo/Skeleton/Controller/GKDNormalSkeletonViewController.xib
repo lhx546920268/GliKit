@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GKDNormalSkeletonViewController">
             <connections>
+                <outlet property="imageView" destination="5PE-vv-uga" id="tM6-x2-UOp"/>
                 <outlet property="textField1" destination="2EX-0T-rhj" id="kuW-7i-YIP"/>
                 <outlet property="textField2" destination="Ka6-mm-HjO" id="rMf-um-eHr"/>
                 <outlet property="textField3" destination="b9L-UX-otE" id="3w9-Pg-3m6"/>

@@ -328,12 +328,12 @@ typedef struct SUser
 //    if(indexPath.row == 5){
 //        [self.demo.kvoHelper flushManualCallback];
 //    }
-//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-//    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
-//        config.path = model.className;
-//    }];
-    NSString *url = [NSString stringWithFormat:@"zegocity://www.zegocity.com/app/web?url=%@", [@"https://www.baidu.com" stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
-    [UIApplication.sharedApplication openURL:[NSURL URLWithString:url]];
+    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+        config.path = model.className;
+    }];
+//    NSString *url = [NSString stringWithFormat:@"zegocity://www.zegocity.com/app/web?url=%@", [@"https://www.baidu.com" stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
+//    [UIApplication.sharedApplication openURL:[NSURL URLWithString:url]];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction

@@ -165,14 +165,20 @@
         self.layer.masksToBounds = YES;
         
     }else{
-        CAShapeLayer *layer = (CAShapeLayer*)self.layer.mask;
-        if(![layer isKindOfClass:[CAShapeLayer class]]){
-            layer = [CAShapeLayer layer];
+        if (cornerRadius == 0) {
+            self.layer.mask = nil;
+        } else {
+            CAShapeLayer *layer = (CAShapeLayer*)self.layer.mask;
+            if(![layer isKindOfClass:[CAShapeLayer class]]){
+                layer = [CAShapeLayer layer];
+            }
+            
+            rect.origin.x = 0;
+            rect.origin.y = 0;
+            UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+            [layer setPath:path.CGPath];
+            self.layer.mask = layer;
         }
-        
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-        [layer setPath:path.CGPath];
-        self.layer.mask = layer;
     }
 }
 

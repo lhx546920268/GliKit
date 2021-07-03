@@ -135,8 +135,7 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
     
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
     [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
-    
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleNotificaiton:) name:@"xxxxx你好" object:nil];
+
     
 //    CFRunLoopObserverRef observer = CFRunLoopObserverCreate(NULL, kCFRunLoopAllActivities, YES, 0, runLoopObserverCallBack, NULL);
 //    CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopCommonModes);
@@ -180,12 +179,6 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
 //    [one1 print];
     
     return YES;
-}
-
-
-- (void)handleNotificaiton:(NSNotification*) notification
-{
-    NSLog(@"收到了 %@", notification);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

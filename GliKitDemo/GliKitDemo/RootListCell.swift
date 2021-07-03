@@ -26,13 +26,7 @@ class RootListCell: GKTableViewSwipeCell {
         }
         
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        print("发送")
-        NotificationCenter.default.post(name: Notification.Name("xxxxx你好"), object: self)
-    }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
