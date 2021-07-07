@@ -73,40 +73,18 @@
 
 - (IBAction)handleFromBottom:(UIButton*)sender
 {
-//    UIViewController *vc = [UIViewController new];
-//    vc.navigationItem.title = sender.currentTitle;
-//    vc.view.backgroundColor = UIColor.whiteColor;
-//
-//    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [btn setTitle:@"显示" forState:UIControlStateNormal];
-//    [btn addTarget:self action:@selector(handleTap:) forControlEvents:UIControlEventTouchUpInside];
-//    [vc.view addSubview:btn];
-//
-//    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.center.equalTo(0);
-//    }];
-
-    
-    GKDRootViewController *vc = [GKDRootViewController new];
+    UIViewController *vc = [UIViewController new];
     vc.navigationItem.title = sender.currentTitle;
     vc.view.backgroundColor = UIColor.whiteColor;
-    vc.gkShowBackItem = YES;
-    UINavigationController *nav = vc.gkCreateWithNavigationController;
-  
-    [self presentViewController:nav animated:YES completion:^{
-        NSLog(@"%@", self.navigationController.presentedViewController);
-        NSLog(@"%@", self.presentingViewController);
-        
-        NSLog(@"%@", nav.presentedViewController);
-        NSLog(@"%@", nav.presentingViewController);
-    }];
+
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     
-//    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
-//    nav.partialPresentProps.cornerRadius = 10;
-//    nav.partialPresentProps.dismissCallback = ^{
-//        NSLog(@"dialogDismissCompletionHandler");
-//    };
-//    [nav partialPresentFromBottom];
+    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
+    nav.partialPresentProps.cornerRadius = 10;
+    nav.partialPresentProps.dismissCallback = ^{
+        NSLog(@"dialogDismissCompletionHandler");
+    };
+    [nav partialPresentFromBottom];
 }
 
 - (void)handleTap:(UIButton*) sender
