@@ -36,6 +36,9 @@ static NSString *const GKColorAlpha = @"alpha";
 ///获取颜色的16进制 含透明度 FFFFFFFF
 @property(nonatomic, readonly) NSString *gkColorHex;
 
+///是否是浅色
+@property(nonatomic, readonly) BOOL isLightColor;
+
 ///颜色是否相同
 - (BOOL)isEqualToColor:(nullable UIColor*) color;
 

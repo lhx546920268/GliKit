@@ -66,6 +66,20 @@
     return @"ff000000";
 }
 
+- (BOOL)isLightColor
+{
+    CGFloat red, green, blue, alpha;
+    
+    BOOL success = [self getRed:&red green:&green blue:&blue alpha:&alpha];
+    if (success) {
+        CGFloat grayLevel = red * 0.299 + green * 0.587 + blue * 0.114; //转成YUV
+        if (grayLevel * 255 >= 192) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (UIColor*)gkColorWithAlpha:(CGFloat) alpha
 {
     NSDictionary *dic = [self gkColorARGB];

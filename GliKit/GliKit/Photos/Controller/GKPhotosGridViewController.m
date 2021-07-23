@@ -48,6 +48,9 @@
 ///底部工具条
 @property(nonatomic, strong) GKPhotosToolBar *photosToolBar;
 
+///图片加载选项
+@property(nonatomic, strong) PHImageRequestOptions *requestOptions;
+
 @end
 
 @implementation GKPhotosGridViewController
@@ -69,6 +72,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.requestOptions = [PHImageRequestOptions new];
+    self.requestOptions.networkAccessAllowed = YES;
     
     if(self.navigationController.presentingViewController){
         [self gkSetRightItemWithTitle:@"取消" action:@selector(handleCancel)];
@@ -205,7 +211,7 @@
     NSMutableArray *datas = [NSMutableArray arrayWithCapacity:totalCount];
     
     for(PHAsset *selectedAsset in assets){
-        [self.imageManager requestImageDataForAsset:selectedAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        [self.imageManager requestImageDataForAsset:selectedAsset options:self.requestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
             totalCount --;
             if(imageData){
                 [datas addObject:imageData];
@@ -251,7 +257,7 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)
-    [self.imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+    [self.imageManager requestImageDataForAsset:asset options:self.requestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         
         StrongObj(self)
         if(self){
@@ -380,11 +386,11 @@
         }
         
         if(self.stopCachingAssets.count > 0){
-            [self.imageManager stopCachingImagesForAssets:self.stopCachingAssets targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:nil];
+            [self.imageManager stopCachingImagesForAssets:self.stopCachingAssets targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:self.requestOptions];
         }
         
         if(self.startCachingAssets.count > 0){
-            [self.imageManager startCachingImagesForAssets:self.startCachingAssets targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:nil];
+            [self.imageManager startCachingImagesForAssets:self.startCachingAssets targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:self.requestOptions];
         }
         
         self.previousPrecachingRect = precachingRect;
@@ -424,7 +430,7 @@
     cell.delegate = self;
     cell.asset = asset;
     
-    [self.imageManager requestImageForAsset:asset targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [self.imageManager requestImageForAsset:asset targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:self.requestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         
         if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){
             cell.imageView.image = result;

@@ -28,14 +28,14 @@
 ///底部工具条
 @property(nonatomic, strong) GKPhotosToolBar *photosToolBar;
 
-///加载图片选项
-@property(nonatomic, strong) PHImageRequestOptions *imageRequestOptions;
-
 ///选中
 @property(nonatomic, readonly) GKPhotosCheckBox *checkBox;
 
 ///标题
 @property(nonatomic, strong) UILabel *titleLabel;
+
+///图片加载选项
+@property(nonatomic, strong) PHImageRequestOptions *requestOptions;
 
 @end
 
@@ -60,13 +60,13 @@
 {
     [super viewDidLoad];
     
+    self.requestOptions = [PHImageRequestOptions new];
+    self.requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
+    self.requestOptions.networkAccessAllowed = YES;
+    
     self.gkBackBarButtonItem.customView.tintColor = UIColor.whiteColor;
     self.navigatonBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
     self.view.backgroundColor = UIColor.blackColor;
-    
-    PHImageRequestOptions *options = [PHImageRequestOptions new];
-    options.resizeMode = PHImageRequestOptionsResizeModeFast;
-    self.imageRequestOptions = options;
     
     [self initViews];
 }
@@ -188,7 +188,7 @@
     NSMutableArray *datas = [NSMutableArray arrayWithCapacity:totalCount];
     
     for(PHAsset *selectedAsset in assets){
-        [PHImageManager.defaultManager requestImageDataForAsset:selectedAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        [PHImageManager.defaultManager requestImageDataForAsset:selectedAsset options:self.requestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
             totalCount --;
             if(imageData){
                 [datas addObject:imageData];
@@ -323,7 +323,7 @@
     cell.asset = asset;
     
     CGSize size = [UIImage gkFitImageSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) size:CGSizeMake(collectionView.frame.size.width * self.photosOptions.scale, 0) type:GKImageFitTypeWidth];
-    [PHImageManager.defaultManager requestImageForAsset:asset targetSize:size contentMode:PHImageContentModeAspectFit options:self.imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [PHImageManager.defaultManager requestImageForAsset:asset targetSize:size contentMode:PHImageContentModeAspectFit options:self.requestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         
         if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){
             [cell onLoadImage:result];

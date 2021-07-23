@@ -40,6 +40,9 @@
 ///图片管理
 @property(nonatomic, strong) PHCachingImageManager *imageManager;
 
+///图片加载选项
+@property(nonatomic, strong) PHImageRequestOptions *requestOptions;
+
 @end
 
 @implementation GKPhotosViewController
@@ -76,6 +79,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.requestOptions = [PHImageRequestOptions new];
+    self.requestOptions.networkAccessAllowed = YES;
     
     if(self.navigationController.presentingViewController){
         [self gkSetRightItemWithTitle:@"取消" action:@selector(handleCancel)];
@@ -256,7 +262,7 @@
         PHAsset *asset = collection.assets[0];
         cell.assetLocalIdentifier = asset.localIdentifier;
         
-        [self.imageManager requestImageForAsset:asset targetSize:CGSizeMake(60, 60) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        [self.imageManager requestImageForAsset:asset targetSize:CGSizeMake(60, 60) contentMode:PHImageContentModeAspectFill options:self.requestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
             if([asset.localIdentifier isEqualToString:cell.assetLocalIdentifier]){
                 cell.thumbnailImageView.image = result;
                 if(!result){
