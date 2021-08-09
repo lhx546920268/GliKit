@@ -7,6 +7,7 @@
 //
 
 #import "GKObject.h"
+#import "NSArray+GKUtils.h"
 
 @implementation GKObject
 
@@ -23,7 +24,7 @@
     if(array.count > 0){
         NSMutableArray *models = [NSMutableArray arrayWithCapacity:array.count];
         for(NSDictionary *dic in array){
-            [models addObject:[[self class] modelFromDictionary:dic]];
+            [models gkAddNotNilObject:[[self class] modelFromDictionary:dic]];
         }
         return models;
     }
@@ -36,7 +37,7 @@
     if(array.count > 0){
         NSMutableArray *models = [NSMutableArray arrayWithCapacity:MIN(maxCount, array.count)];
         for(NSDictionary *dic in array){
-            [models addObject:[[self class] modelFromDictionary:dic]];
+            [models gkAddNotNilObject:[[self class] modelFromDictionary:dic]];
             if(models.count >= maxCount){
                 break;
             }

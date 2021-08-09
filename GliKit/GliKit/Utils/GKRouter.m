@@ -45,6 +45,11 @@ static char CARouteConfigKey;
     //子类重写
 }
 
+- (BOOL)isRouteEqual:(GKRouteConfig *)config
+{
+    return [self.routeConfig isEqual:config];
+}
+
 @end
 
 ///路由属性
@@ -111,6 +116,19 @@ static char CARouteConfigKey;
     return _extras;
 }
 
+- (BOOL)isEqual:(GKRouteConfig*) config
+{
+    if (![config isKindOfClass:GKRouteConfig.class]) {
+        return NO;
+    }
+    
+    if (![config.path isEqualToString:self.path]) {
+        return NO;
+    }
+    
+    return [self.routeParams isEqualToDictionary:config.routeParams];
+}
+
 @end
 
 ///注册的信息
@@ -136,6 +154,9 @@ static char CARouteConfigKey;
 ///拦截器
 @property(nonatomic, readonly) NSMutableArray *interceptors;
 
+///当前需要关闭的界面
+@property(nonatomic, strong) NSMutableArray *toClosedViewControllers;
+
 @end
 
 @implementation GKRouter
@@ -154,6 +175,14 @@ static char CARouteConfigKey;
     });
     
     return sharedRouter;
+}
+
+- (NSMutableArray *)toClosedViewControllers
+{
+    if (!_toClosedViewControllers) {
+        _toClosedViewControllers = [NSMutableArray array];
+    }
+    return _toClosedViewControllers;
 }
 
 - (NSMutableDictionary<NSString *,GKRouteRegistration *> *)registrations
@@ -369,22 +398,21 @@ static char CARouteConfigKey;
             };
         }
         if(nav){
-            NSArray *toReplacedViewControlelrs = nil;
+            NSMutableArray *toReplacedViewControlelrs = self.toClosedViewControllers;
+            NSArray *viewControllers = nav.viewControllers;
             switch (config.style) {
                 case GKRouteStyleReplace : {
-                    if(nav.viewControllers.count > 0){
-                        toReplacedViewControlelrs = @[nav.viewControllers.lastObject];
+                    if(viewControllers.count > 0){
+                        [toReplacedViewControlelrs addObject:nav.viewControllers.lastObject];
                     }
                 }
                     break;
                 case GKRouteStyleOnlyOne : {
-                    NSMutableArray *viewControllers = [NSMutableArray array];
-                    for(UIViewController *vc in nav.viewControllers){
+                    for(UIViewController *vc in viewControllers){
                         if([vc isKindOfClass:viewController.class]){
-                            [viewControllers addObject:vc];
+                            [toReplacedViewControlelrs addObject:vc];
                         }
                     }
-                    toReplacedViewControlelrs = viewControllers;
                 }
                     break;
                 case  GKRouteStylePresent :
@@ -395,44 +423,44 @@ static char CARouteConfigKey;
             }
             
             if(config.routesToClosed.count > 0){
-                NSMutableArray *viewControllers = [NSMutableArray array];
-                for(UIViewController *vc in nav.viewControllers){
+                for(UIViewController *vc in viewControllers){
                     NSString *path = vc.routePath;
                     if(path && [config.routesToClosed containsObject:path]){
-                        [viewControllers addObject:vc];
+                        [toReplacedViewControlelrs addObject:vc];
                     }
                 }
-                if(toReplacedViewControlelrs.count > 0){
-                    [viewControllers addObjectsFromArray:toReplacedViewControlelrs];
-                }
-                toReplacedViewControlelrs = viewControllers;
             }
             
+            if(config.closeRouteIfSame){
+                for(UIViewController *vc in viewControllers){
+                    if ([vc.routeConfig isEqual:config]) {
+                        [toReplacedViewControlelrs addObject:vc];
+                    }
+                }
+            }
+
+            
             if(![NSString isEmpty:config.closeUntilRoute]){
-                NSMutableArray *viewControllers = [NSMutableArray array];
-                NSArray *vcs = nav.viewControllers;
-                for(NSInteger i = vcs.count - 1;i >= 0;i --){
-                    UIViewController *vc = vcs[i];
+                for(NSInteger i = viewController.count - 1;i >= 0;i --){
+                    UIViewController *vc = viewController[i];
                     if([vc.routePath isEqualToString:config.closeUntilRoute]){
-                        [viewControllers addObjectsFromArray:[vcs subarrayWithRange:NSMakeRange(i, vcs.count - i)]];
-                        if(toReplacedViewControlelrs.count > 0){
-                            [viewControllers addObjectsFromArray:toReplacedViewControlelrs];
-                        }
-                        toReplacedViewControlelrs = viewControllers;
+                        NSArray *subArray = [viewControllers subarrayWithRange:NSMakeRange(i, viewControllers.count - i)];
+                        [toReplacedViewControlelrs addObjectsFromArray:subArray];
                         break;
                     }
                 }
             }
             
             if(toReplacedViewControlelrs.count > 0){
-                NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
-                [viewControllers removeObjectsInArray:toReplacedViewControlelrs];
-                [viewControllers addObject:viewController];
+                NSMutableArray *vcs = [NSMutableArray arrayWithArray:viewControllers];
+                [vcs removeObjectsInArray:viewControllers];
+                [vcs addObject:viewController];
                 
-                [nav setViewControllers:viewControllers animated:config.animated];
+                [nav setViewControllers:vcs animated:config.animated];
             }else{
                 [nav pushViewController:viewController animated:config.animated];
             }
+            [toReplacedViewControlelrs removeAllObjects];
         }else{
             [parentViewControlelr gkPushViewControllerUseTransitionDelegate:viewController];
         }

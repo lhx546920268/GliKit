@@ -9,6 +9,31 @@
 #import "GKDChildPageViewController.h"
 #import <UIScrollView+GKNestedScroll.h>
 
+@interface GKChildPageListCell : UICollectionViewCell
+
+///
+@property(nonatomic, readonly) UILabel *textLabel;
+
+@end
+
+@implementation GKChildPageListCell
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _textLabel = [UILabel new];
+        [self.contentView addSubview:_textLabel];
+        
+        [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(0);
+        }];
+    }
+    return self;
+}
+
+@end
+
 @interface GKDChildPageViewController ()
 
 
@@ -24,8 +49,8 @@
 
 - (void)initViews
 {
-    [self registerClass:[UITableViewCell class]];
-    self.tableView.gkNestedScrollEnabled = YES;
+    [self registerClass:[GKChildPageListCell class]];
+    self.collectionView.gkNestedScrollEnabled = YES;
     [super initViews];
   //  self.refreshEnable = YES;
     self.loadMoreEnabled = YES;
@@ -44,22 +69,22 @@
     [self performSelector:@selector(stopLoadMoreWithMore:) withObject:@(NO) afterDelay:2.0];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return 130;
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[UITableViewCell gkNameOfClass] forIndexPath:indexPath];
+    GKChildPageListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKChildPageListCell.gkNameOfClass forIndexPath:indexPath];
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld个", indexPath.row];
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     NSLog(@"click child");
 }
 

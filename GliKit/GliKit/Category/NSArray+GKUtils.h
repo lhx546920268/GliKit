@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///过滤数组 数组本身不变 返回一个新的数组
 - (NSArray<ObjectType>*)gkFilteredArrayUsingBlock:(BOOL(^)(ObjectType obj)) block;
 
+///获取字典
+- (nullable NSDictionary*)gkDictionaryAtIndex:(NSInteger) index;
+
 @end
 
 @interface NSMutableArray<ObjectType> (GKUtils)

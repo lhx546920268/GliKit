@@ -45,65 +45,23 @@ GKConvenientCopying
     [super viewDidLoad];
 
     self.navigationItem.title = GKAppUtils.appName;
-    
-    CGSize size = CGSizeMake(120, 120);
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(100, 100, size.width, size.width)];
-    view.backgroundColor = UIColor.redColor;
-    [self.view addSubview:view];
-    
-    UIColor *color = UIColor.whiteColor;
-    CALayer *layer = view.layer;
-    
-    CGFloat circleSpacing = 2;
-    CGFloat circleSize = (size.width - 2 * circleSpacing) / 4;
-    CGFloat x = (layer.bounds.size.width - size.width) / 2;
-    CGFloat y = (layer.bounds.size.height - circleSize) / 2;
-    CFTimeInterval duration = 0.5;
-    CFTimeInterval beginTime = CACurrentMediaTime();
-    CFTimeInterval beginTimes[] = {0, 0.125, 0.25, 0.375};
-    CAMediaTimingFunction *timingFunction = [[CAMediaTimingFunction alloc] initWithControlPoints:0.2 :0.68 :0.18 :1.08];
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
 
-    animation.fromValue = @1.0;
-    animation.toValue = @0.2;
-    // Animation
-//    animation.keyTimes = @[@0, @0.3, @1];
-//    animation.timingFunctions = @[timingFunction, timingFunction];
-//    animation.values = @[@1, @0.3, @1];
-    animation.duration = duration;
-    animation.repeatCount = HUGE;
-    animation.removedOnCompletion = NO;
-    animation.autoreverses = YES;
+    self.datas = @[
+                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
+                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
+                   ];
 
-    // Draw circles
-    for(NSInteger i = 0;i < 4;i ++) {
-        CALayer *circle = [CALayer layer];
-        circle.backgroundColor = color.CGColor;
-        circle.cornerRadius = circleSize / 2;
-        
-        CGRect frame = CGRectMake(x + circleSize * i + circleSpacing * i, y, circleSize, circleSize);
+    [self initViews];
 
-        animation.beginTime = beginTime + beginTimes[i];
-        circle.frame = frame;
-        [circle addAnimation:animation forKey:@"animation"];
-        [layer addSublayer:circle];
-    }
-//    self.datas = @[
-//                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
-//                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-//                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
-//                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
-//                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
-//                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-//                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-//                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
-//                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
-//                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
-//                   ];
-//
-//    [self initViews];
-//
-//    [self gkSetLeftItemWithTitle:@"左边" action:nil];
+    [self gkSetLeftItemWithTitle:@"左边" action:nil];
 //
 //    GKChild *child = [GKChild new];
 //    child.name = @"niy";

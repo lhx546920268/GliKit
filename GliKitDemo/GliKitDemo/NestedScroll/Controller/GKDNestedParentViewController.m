@@ -7,11 +7,56 @@
 //
 
 #import "GKDNestedParentViewController.h"
-#import "GKDNestedTableViewCell.h"
 #import "GKDNestedPageViewController.h"
 #import <UIScrollView+GKNestedScroll.h>
 
-@interface GKDNestedPageCell : UITableViewCell
+@interface GKNestedSectionHeader : UICollectionReusableView
+
+@end
+
+@implementation GKNestedSectionHeader
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        UILabel *label = [UILabel new];
+        label.text = @"悬浮";
+        [self addSubview:label];
+        
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(0);
+        }];
+    }
+    return self;
+}
+
+@end
+
+@interface GKNestedCollectionViewCell : UICollectionViewCell
+
+@end
+
+@implementation GKNestedCollectionViewCell
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"按钮" forState:UIControlStateNormal];
+        [self.contentView addSubview:btn];
+        
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(0);
+        }];
+    }
+    return self;
+}
+
+@end
+
+@interface GKDNestedPageCell : UICollectionViewCell
 
 ///要显示的viewController
 @property(nonatomic, strong) UIViewController *viewController;
@@ -39,21 +84,21 @@
 
 - (void)initViews
 {
-    [self registerNib:[GKDNestedTableViewCell class]];
-    [self registerClassForHeaderFooterView:[UITableViewHeaderFooterView class]];
+    [self registerClass:[GKNestedCollectionViewCell class]];
     [self registerClass:[GKDNestedPageCell class]];
+    [self registerHeaderClass:GKNestedSectionHeader.class];
     
-    self.tableView.gkNestedParent = YES;
-    self.tableView.gkNestedScrollEnabled = YES;
+    self.collectionView.gkNestedParent = YES;
+    self.collectionView.gkNestedScrollEnabled = YES;
     [super initViews];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 3;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     switch (section) {
         case 0 :
@@ -68,49 +113,39 @@
     return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
      switch (indexPath.section) {
            case 0 :
-               return 0;
+               return CGSizeZero;
            case 1 :
-               return 45;
+               return CGSizeMake(collectionView.gkWidth, 45);
            case 2 :
-               return tableView.gkHeight;
+               return CGSizeMake(collectionView.gkWidth, collectionView.gkHeight);
            default:
                break;
        }
-       return 0;
+       return CGSizeZero;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    return section == 0 ? 50 : CGFLOAT_MIN;
+    return section == 0 ? CGSizeMake(collectionView.gkWidth, 50) : CGSizeZero;
 }
 
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if(section == 0){
-        UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[UITableViewHeaderFooterView gkNameOfClass]];
-        
-        header.textLabel.text = @"悬浮";
-        
-        return header;
-    }
-    return nil;
+    return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GKNestedSectionHeader.gkNameOfClass forIndexPath:indexPath];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 1){
-        GKDNestedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[GKDNestedTableViewCell gkNameOfClass] forIndexPath:indexPath];
-        
-        [cell.btn setTitle:[NSString stringWithFormat:@"第%ld个按钮", indexPath.row] forState:UIControlStateNormal];
-        cell.contentView.tag = indexPath.row + 1;
+        GKNestedCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKNestedCollectionViewCell.gkNameOfClass forIndexPath:indexPath];
         
         return cell;
     }else{
-        GKDNestedPageCell *cell = [tableView dequeueReusableCellWithIdentifier:[GKDNestedPageCell gkNameOfClass] forIndexPath:indexPath];
+        GKDNestedPageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKDNestedPageCell.gkNameOfClass forIndexPath:indexPath];
         cell.parentViewController = self;
         cell.viewController = self.page;
         
@@ -118,9 +153,9 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     NSLog(@"click parent");
 }
 
@@ -128,16 +163,6 @@
 @end
 
 @implementation GKDNestedPageCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if(self){
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    return self;
-}
 
 - (void)setViewController:(UIViewController *)viewController
 {

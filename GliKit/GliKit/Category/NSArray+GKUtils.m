@@ -58,6 +58,11 @@
     return [array copy];
 }
 
+- (NSDictionary *)gkDictionaryAtIndex:(NSInteger)index
+{
+    return [self gkObjectAtIndex:index clazz:NSDictionary.class];
+}
+
 @end
 
 @implementation NSMutableArray (Utils)

@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///配置路由
 - (void)configRoute:(GKRouteConfig*) config;
 
+///路由是否一致
+- (BOOL)isRouteEqual:(GKRouteConfig*) config;
+
 @end
 
 ///路由方式
@@ -77,6 +80,9 @@ typedef void(^GKRouteCompletion)(GKRouteResult result);
 
 ///需要关闭的路由
 @property(nonatomic, strong) NSSet<NSString*> *routesToClosed;
+
+///是否需要关闭一样的路由
+@property(nonatomic, assign) BOOL closeRouteIfSame;
 
 ///如果不为空，需要从后面开始遍历，直到该路由名称为止，关闭中间的所有界面（包含closeUntilRoute）
 @property(nonatomic, strong) NSString *closeUntilRoute;

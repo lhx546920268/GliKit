@@ -38,6 +38,9 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 ///原图
 @property(nonatomic, strong, nullable) UIImage *originalImage;
 
+///压缩后的图片大小
+@property(nonatomic, assign) CGSize compressedImageSize;
+
 ///通过相册选项 图片数据创建 创建失败返回nil
 + (nullable instancetype)resultWithData:(nullable NSData*) data options:(GKPhotosOptions*) options;
 + (nullable instancetype)resultWithImage:(nullable UIImage*) image options:(GKPhotosOptions*) options;
