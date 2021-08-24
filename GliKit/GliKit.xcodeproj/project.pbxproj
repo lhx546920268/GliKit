@@ -14,6 +14,8 @@
 		CE1194282368122800987274 /* UICollectionView+GKCellSize.m in Sources */ = {isa = PBXBuildFile; fileRef = CED0D2B7230BC6250057D405 /* UICollectionView+GKCellSize.m */; };
 		CE1CAA4125821D8800941773 /* GKSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1CAA4025821D8800941773 /* GKSwipeCell.m */; };
 		CE1CAA4625821E9A00941773 /* GKCollectionViewSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1CAA4525821E9A00941773 /* GKCollectionViewSwipeCell.m */; };
+		CE2A841826D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2A841726D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m */; };
+		CE2A841C26D4937200726A42 /* GKCollectionStaggerFlowHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2A841B26D4937200726A42 /* GKCollectionStaggerFlowHelper.m */; };
 		CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C671233B410100C4F196 /* UIImage+GKTheme.m */; };
 		CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C672233B410100C4F196 /* UIFont+GKTheme.m */; };
 		CE4805F924C53DE900606778 /* GKBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4805F824C53DE800606778 /* GKBannerView.m */; };
@@ -191,6 +193,10 @@
 		CE1CAA4525821E9A00941773 /* GKCollectionViewSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewSwipeCell.m; sourceTree = "<group>"; };
 		CE27D6DB25BFC6EE0082798D /* GKItemSizeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKItemSizeModel.h; sourceTree = "<group>"; };
 		CE27D6DD25BFC7540082798D /* GKRowHeightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRowHeightModel.h; sourceTree = "<group>"; };
+		CE2A841626D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewStaggerLayoutAttributes.h; sourceTree = "<group>"; };
+		CE2A841726D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewStaggerLayoutAttributes.m; sourceTree = "<group>"; };
+		CE2A841A26D4937200726A42 /* GKCollectionStaggerFlowHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionStaggerFlowHelper.h; sourceTree = "<group>"; };
+		CE2A841B26D4937200726A42 /* GKCollectionStaggerFlowHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionStaggerFlowHelper.m; sourceTree = "<group>"; };
 		CE37C671233B410100C4F196 /* UIImage+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C672233B410100C4F196 /* UIFont+GKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+GKTheme.m"; sourceTree = "<group>"; };
 		CE37C673233B410100C4F196 /* UIFont+GKTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+GKTheme.h"; sourceTree = "<group>"; };
@@ -1071,6 +1077,10 @@
 				CED0D2B0230BC6250057D405 /* GKCollectionViewTopFlowLayout.m */,
 				CEFE9085230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.h */,
 				CEFE9086230FC5A5006A0EBD /* GKCollectionViewLayoutInvalidationContext.m */,
+				CE2A841626D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.h */,
+				CE2A841726D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m */,
+				CE2A841A26D4937200726A42 /* GKCollectionStaggerFlowHelper.h */,
+				CE2A841B26D4937200726A42 /* GKCollectionStaggerFlowHelper.m */,
 			);
 			path = CollectionViewLayout;
 			sourceTree = "<group>";
@@ -1377,6 +1387,7 @@
 				CED0D42C230BECF20057D405 /* UIViewController+GKUtils.m in Sources */,
 				CED0D404230BECD00057D405 /* NSDictionary+GKUtils.m in Sources */,
 				CED0D3FE230BECD00057D405 /* NSString+GKUtils.m in Sources */,
+				CE2A841826D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m in Sources */,
 				CE9B66D42484EE2E00825F90 /* GKNavigationTransitionAnimator.m in Sources */,
 				CED0D31E230BC8780057D405 /* UICollectionView+GKUtils.m in Sources */,
 				CED0D32A230BC8780057D405 /* GKNavigationItemHelper.m in Sources */,
@@ -1431,6 +1442,7 @@
 				CED0D43F230BED690057D405 /* UIView+GKSkeleton.m in Sources */,
 				CED0D3DF230BCC110057D405 /* GKCollectionViewStaggerLayout.m in Sources */,
 				CEE8C8852319066700E7CA75 /* GKImageCropViewController.m in Sources */,
+				CE2A841C26D4937200726A42 /* GKCollectionStaggerFlowHelper.m in Sources */,
 				CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */,
 				CE525DA723C704EA00EB082E /* GKLabel.m in Sources */,
 				CED0D387230BC8790057D405 /* GKPhotosPreviewViewController.m in Sources */,

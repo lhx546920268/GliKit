@@ -42,7 +42,7 @@
 
 @end
 
-@interface GKTabBarController ()<GKTabBarDelegate>
+@interface GKTabBarController ()<GKTabBarDelegate, UINavigationControllerDelegate>
 
 ///选中的视图
 @property(nonatomic,assign) NSUInteger selectedItemIndex;
@@ -82,6 +82,11 @@
             
             //创建选项卡按钮
             GKTabBarItem *item = _items[i];
+            
+            if([item.viewController isKindOfClass:UINavigationController.class]){
+                UINavigationController *nav = (UINavigationController*)item.viewController;
+                nav.delegate = self;
+            }
 
             GKTabBarButton *btn = [GKTabBarButton new];
             btn.textLabel.textColor = self.normalColor;
@@ -127,6 +132,7 @@
         _tabBar = [[GKTabBar alloc] initWithButtons:self.buttons];
         _tabBar.delegate = self;
         [_tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.trailing.bottom.equalTo(0);
             make.height.equalTo(self.gkTabBarHeight);
         }];
     }
@@ -274,18 +280,9 @@
             if(viewController.view.superview == nil){
                 [self addChildViewController:viewController];
                 self.contentView = viewController.view;
-                
-                [self.tabBar removeFromSuperview];
-                if([viewController isKindOfClass:UINavigationController.class]){
-                    UINavigationController *nav = (UINavigationController*)viewController;
-                    viewController = nav.viewControllers.firstObject;
-                }
-                
-                [viewController.view addSubview:self.tabBar];
-                [self.tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.leading.trailing.bottom.equalTo(0);
-                }];
+                [self.view bringSubviewToFront:self.tabBar];
             }
+            [viewController setNeedsStatusBarAppearanceUpdate];
         }
         
         _selectedIndex = selectedItemIndex;
@@ -338,6 +335,35 @@
         self.tabBar.hidden = hidden;
     }
 }
+
+
+// MARK: - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if(viewController == navigationController.viewControllers.firstObject){
+        if (self.tabBar.superview != self.view) {
+            [self.view addSubview:self.tabBar];
+            [_tabBar mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.leading.trailing.bottom.equalTo(0);
+            }];
+        }
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if(viewController != navigationController.viewControllers.firstObject){
+        UIView *superview = navigationController.viewControllers.firstObject.view;
+        if (self.tabBar.superview != superview) {
+            [superview addSubview:self.tabBar];
+            [_tabBar mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.leading.trailing.bottom.equalTo(0);
+            }];
+        }
+    }
+}
+
 
 @end
 
