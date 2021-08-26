@@ -199,7 +199,7 @@
         case UIGestureRecognizerStateEnded :
         case UIGestureRecognizerStateCancelled : {
             //通过速度获取可能移到的位置
-            CGFloat translationX = self.translationX + [pan velocityInView:self.cell].x;
+            CGFloat translationX = self.translationX + [pan velocityInView:self.cell].x * 0.490750;
             BOOL show = YES;
             switch (self.currentDirection) {
                 case GKSwipeDirectionLeft :

@@ -1,0 +1,1 @@
+../../../../../GliKit/GliKit/Base/CollectionViewLayout/GKCollectionViewStaggerLayoutAttributes.h

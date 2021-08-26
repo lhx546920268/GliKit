@@ -8,7 +8,7 @@
 
 #import "GKCollectionStaggerFlowHelper.h"
 #import "GKCollectionViewStaggerLayoutAttributes.h"
-#import "UIView+GKUtils.h"
+#import "UIScreen+GKUtils.h"
 
 @implementation GKCollectionStaggerFlowHelper
 

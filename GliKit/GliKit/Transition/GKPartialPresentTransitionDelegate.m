@@ -464,8 +464,8 @@
     
     //快速滑动也算完成
     CGPoint velocity = [pan velocityInView:containerView];
-    translation.x += velocity.x;
-    translation.y += velocity.y;
+    translation.x += velocity.x * 0.490750;
+    translation.y += velocity.y * 0.490750;
     
     BOOL complete = [self percentForTranslation:translation] >= 0.4;
     if(complete){

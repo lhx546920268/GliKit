@@ -80,7 +80,7 @@
         
         CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, CFBridgingRetain(compressedImageOptions));
         if(imageRef != NULL){
-            UIImage compressedImage* = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
+            UIImage *compressedImage = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
             result.compressedImage = compressedImage;
             result.compressedImageSize = CGSizeMake(compressedImage.size.width * compressedImage.scale, compressedImage.size.height * compressedImage.scale);
             CGImageRelease(imageRef);

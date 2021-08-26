@@ -441,8 +441,8 @@ static char CARouteConfigKey;
 
             
             if(![NSString isEmpty:config.closeUntilRoute]){
-                for(NSInteger i = viewController.count - 1;i >= 0;i --){
-                    UIViewController *vc = viewController[i];
+                for(NSInteger i = viewControllers.count - 1;i >= 0;i --){
+                    UIViewController *vc = viewControllers[i];
                     if([vc.routePath isEqualToString:config.closeUntilRoute]){
                         NSArray *subArray = [viewControllers subarrayWithRange:NSMakeRange(i, viewControllers.count - i)];
                         [toReplacedViewControlelrs addObjectsFromArray:subArray];
