@@ -126,7 +126,7 @@
             CGPoint point = [pan translationInView:self.scrollView];
             
 //            NSLog(@"velocity %f", [pan velocityInView:self.scrollView.subviews.firstObject].x);
-            CGFloat x = fabs(point.x + [pan velocityInView:self.scrollView].x * 0.490750);
+            CGFloat x = fabs(point.x + [pan velocityInView:self.scrollView].x * 0.3);
             NSInteger page = floor(self.scrollView.contentOffset.x / UIScreen.gkWidth);
             
             CGFloat value = x - UIScreen.gkWidth * page;
@@ -135,10 +135,10 @@
                 page ++;
             }
             if (page >= 7) {
-                return;
+                page = 6;
             }
             [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-                            [self.scrollView setContentOffset:CGPointMake(page * UIScreen.gkWidth, 0)];
+                [self.scrollView setContentOffset:CGPointMake(page * UIScreen.gkWidth, 0)];
             } completion:nil];
         }
             break;

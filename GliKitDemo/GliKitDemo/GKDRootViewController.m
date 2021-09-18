@@ -58,6 +58,7 @@ GKConvenientCopying
                    [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
                    [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
                    ];
+    
 
     [self initViews];
 
@@ -110,10 +111,11 @@ GKConvenientCopying
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
-        config.path = model.className;
-    }];
+    [UIApplication.sharedApplication openURL:[NSURL URLWithString:@"zegocity://www.zegocity.com/message/center"] options:nil completionHandler:nil];
+//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+//    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+//        config.path = model.className;
+//    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction

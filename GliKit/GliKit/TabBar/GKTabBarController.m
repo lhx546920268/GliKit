@@ -151,6 +151,18 @@
     }
 }
 
+- (BOOL)isDisplaying
+{
+    UIViewController *vc = self.selectedViewController;
+    if ([vc isKindOfClass:UINavigationController.class]) {
+        UINavigationController *nav = (UINavigationController*)vc;
+        return nav.viewControllers.count <= 1;
+    }
+    
+    return [super isDisplaying] && self.presentingViewController == nil;
+}
+
+
 // MARK: - CATabBar delegate
 
 - (void)tabBar:(GKTabBar *)tabBar didClickAtIndex:(NSInteger)index
@@ -353,7 +365,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if(viewController != navigationController.viewControllers.firstObject){
+    if(viewController != navigationController.viewControllers.firstObject && self.tabBar.superview == self.view){
         UIView *superview = navigationController.viewControllers.firstObject.view;
         if (self.tabBar.superview != superview) {
             [superview addSubview:self.tabBar];
