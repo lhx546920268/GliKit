@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///去空获取对象 并且如果对象是NSNumber将会转化成字符串
 - (nullable NSString*)gkStringForKey:(id<NSCopying>) key;
+- (NSString*)gkStringForKey:(id<NSCopying>) key defaultValue:(NSString*) defaultValue;
 
 ///去空获取对象 并且如果对象是NSNumber将会转化成字符串，如果 == nil 返回 @""
 - (NSString*)gkNonnullStringForKey:(id<NSCopying>) key;

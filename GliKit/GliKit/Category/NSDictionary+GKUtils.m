@@ -26,13 +26,14 @@
     }
 }
 
+- (NSString *)gkStringForKey:(id<NSCopying>)key defaultValue:(NSString *)defaultValue
+{
+    return [self gkStringForKey:key] ?: defaultValue;
+}
+
 - (NSString *)gkNonnullStringForKey:(id<NSCopying>)key
 {
-    NSString *str = [self gkStringForKey:key];
-    if(!str){
-        str = @"";
-    }
-    return str;
+    return [self gkStringForKey:key] ?: @"";
 }
 
 - (id)gkNumberForKey:(id<NSCopying>) key
