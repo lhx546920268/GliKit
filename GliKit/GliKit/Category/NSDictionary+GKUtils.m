@@ -49,27 +49,57 @@
 
 - (int)gkIntForKey:(id<NSCopying>) key
 {
-    return [[self gkNumberForKey:key] intValue];
+    return [self gkIntForKey:key defaultValue:0];
+}
+
+- (int)gkIntForKey:(id<NSCopying>)key defaultValue:(int)defaultValue
+{
+    id value = [self gkNumberForKey:key];
+    return value != nil ? [value intValue] : defaultValue;
 }
 
 - (NSInteger)gkIntegerForKey:(id<NSCopying>) key
 {
-    return [[self gkNumberForKey:key] integerValue];
+    return [self gkIntegerForKey:key defaultValue:0];
+}
+
+- (NSInteger)gkIntegerForKey:(id<NSCopying>)key defaultValue:(NSInteger)defaultValue
+{
+    id value = [self gkNumberForKey:key];
+    return value != nil ? [value integerValue] : defaultValue;
 }
 
 - (float)gkFloatForKey:(id<NSCopying>) key
 {
-    return [[self gkNumberForKey:key] floatValue];
+    return [self gkFloatForKey:key defaultValue:0];
+}
+
+- (float)gkFloatForKey:(id<NSCopying>)key defaultValue:(float)defaultValue
+{
+    id value = [self gkNumberForKey:key];
+    return value != nil ? [value floatValue] : defaultValue;
 }
 
 - (double)gkDoubleForKey:(id<NSCopying>) key
 {
-    return [[self gkNumberForKey:key] doubleValue];
+    return [self gkDoubleForKey:key defaultValue:0];
+}
+
+- (double)gkDoubleForKey:(id<NSCopying>)key defaultValue:(double)defaultValue
+{
+    id value = [self gkNumberForKey:key];
+    return value != nil ? [value doubleValue] : defaultValue;
 }
 
 - (BOOL)gkBoolForKey:(id<NSCopying>) key
 {
-    return [[self gkNumberForKey:key] boolValue];
+    return [self gkBoolForKey:key defaultValue:NO];
+}
+
+- (BOOL)gkBoolForKey:(id<NSCopying>)key defaultValue:(BOOL)defaultValue
+{
+    id value = [self gkNumberForKey:key];
+    return value != nil ? [value boolValue] : defaultValue;
 }
 
 - (NSDictionary*)gkDictionaryForKey:(id<NSCopying>) key

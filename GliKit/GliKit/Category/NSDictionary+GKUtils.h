@@ -23,14 +23,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///获取整数
 - (int)gkIntForKey:(id<NSCopying>) key;
+- (int)gkIntForKey:(id<NSCopying>) key defaultValue:(int) defaultValue;
 - (NSInteger)gkIntegerForKey:(id<NSCopying>) key;
+- (NSInteger)gkIntegerForKey:(id<NSCopying>) key defaultValue:(NSInteger) defaultValue;
 
 ///获取小数
 - (float)gkFloatForKey:(id<NSCopying>) key;
+- (float)gkFloatForKey:(id<NSCopying>) key defaultValue:(float) defaultValue;
 - (double)gkDoubleForKey:(id<NSCopying>) key;
+- (double)gkDoubleForKey:(id<NSCopying>) key defaultValue:(double) defaultValue;
 
 ///获取布尔
 - (BOOL)gkBoolForKey:(id<NSCopying>) key;
+- (BOOL)gkBoolForKey:(id<NSCopying>) key defaultValue:(BOOL) defaultValue;
 
 ///获取字典
 - (nullable NSDictionary*)gkDictionaryForKey:(id<NSCopying>) key;
