@@ -72,7 +72,7 @@
         size.width *= scale;
         size.height *= scale;
         
-        size = [UIImage gkFitImageSize:imageSize size:size type:GKImageFitTypeWidth];
+        size = [UIImage gkFitImageSize:imageSize size:size];
         
         NSDictionary *compressedImageOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
                                     (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
@@ -93,7 +93,7 @@
         size.width *= scale;
         size.height *= scale;
         
-        size = [UIImage gkFitImageSize:imageSize size:size type:GKImageFitTypeWidth];
+        size = [UIImage gkFitImageSize:imageSize size:size];
         NSDictionary *thumbnailOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
                               (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
                               (id)kCGImageSourceCreateThumbnailWithTransform : @YES};
@@ -124,7 +124,7 @@
         self.numberOfItemsPerRow = 4;
         self.shouldDisplayAllPhotos = YES;
         self.displayFistCollection = YES;
-        self.compressedImageSize = CGSizeMake(512, 512);
+        self.compressedImageSize = CGSizeMake(540, 0);
         self.scale = UIImage.gkImageScale;
     }
     return self;

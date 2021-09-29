@@ -60,10 +60,10 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 ///裁剪选项
 @property(nonatomic, strong, nullable) GKImageCropSettings *cropSettings;
 
-///缩略图大小 default `zero`
+///缩略图大小 default `zero` 只缩放宽度
 @property(nonatomic, assign) CGSize thumbnailSize;
 
-///压缩图片的大小 default `512`
+///压缩图片的大小 default `540` 只缩放宽度
 @property(nonatomic, assign) CGSize compressedImageSize;
 
 ///是否需要原图 default `NO`

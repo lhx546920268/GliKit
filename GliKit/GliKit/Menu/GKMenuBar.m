@@ -22,9 +22,6 @@
 ///是否是点击按钮
 @property(nonatomic, assign) BOOL isClickItem;
 
-///是否已经可以计算item
-@property(nonatomic, assign) BOOL measureEnabled;
-
 @end
 
 @implementation GKMenuBar
@@ -76,8 +73,8 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     self.itemPadding = 10.0;
-    self.itemInterval = 5.0;
-    self.indicatorHeight = 2.0;
+    self.itemSpacing = 5.0;
+    self.indicatorSize = CGSizeMake(0, 2.0);
     
     _callDelegateWhenSetSelectedIndex = NO;
     _selectedIndex = 0;
@@ -112,7 +109,7 @@
     if(self.gkWidth > 0 && self.gkHeight > 0 && !CGSizeEqualToSize(self.bounds.size, _collectionView.frame.size)){
         _collectionView.frame = self.bounds;
         
-        self.measureEnabled = YES;
+        _measureEnabled = YES;
         
         [self reloadData];
         [self layoutIndicatorWithAnimate:NO];
@@ -146,6 +143,19 @@
         }
             break;
     }
+    
+    if (_currentStyle == GKMenuBarStyleFill) {
+        CGFloat fillItemWidth = self.contentWidth / self.items.count;
+        CGFloat spacing = (self.contentWidth - totalWidth + self.itemSpacing * (self.items.count - 1)) / self.items.count;
+        for (GKMenuBarItem *item in self.items) {
+            if (self.shouldEqualItemSpacing) {
+                item.itemWidth += spacing;
+            } else {
+                item.itemWidth = fillItemWidth;
+            }
+        }
+    }
+    
     !self.measureCompletionHandler ?: self.measureCompletionHandler();
 }
 
@@ -182,7 +192,7 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return self.currentStyle == GKMenuBarStyleFill ? 0 : self.itemInterval;
+    return self.currentStyle == GKMenuBarStyleFill ? 0 : self.itemSpacing;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -220,7 +230,7 @@
 
 - (UIView *)indicator
 {
-    if(!_indicator && self.indicatorHeight > 0){
+    if(!_indicator && self.indicatorSize.height > 0){
         _indicator = [UIView new];
         _indicator.backgroundColor = self.indicatorColor;
         [self.collectionView addSubview:_indicator];
@@ -277,20 +287,34 @@
     
     CGFloat x = 0;
     if(!CGRectEqualToRect(CGRectZero, cell.frame)){
-        x = cell.gkLeft + (cell.gkWidth - item.itemWidth) / 2.0;
+        x = cell.gkLeft + (cell.gkWidth - [self indicatorWidthForIndex:index]) / 2.0;
     }else{
-        x = self.contentInset.left;
-        CGFloat itemInterval = 0;
+        x = self.contentInset.left + (item.itemWidth - [self indicatorWidthForIndex:index]) / 2;
+        CGFloat spacing = 0;
         if(self.currentStyle == GKMenuBarStyleFit){
-            itemInterval = self.itemInterval;
+            spacing = self.itemSpacing;
         }
         
         for(NSInteger i = 0;i < index;i ++){
             item = self.items[i];
-            x += item.itemWidth + itemInterval;
+            x += item.itemWidth + spacing;
         }
     }
     return x;
+}
+
+///获取下划线宽度
+- (CGFloat)indicatorWidthForIndex:(NSUInteger) index
+{
+    GKMenuBarItem *item = self.items[index];
+    
+    if(self.currentStyle == GKMenuBarStyleFill && self.indicatorSize.width < 0){
+        return item.itemWidth;
+    }else if(self.indicatorSize.width > 0 ) {
+        return self.indicatorSize.width;
+    }else{
+        return item.contentSize.width + self.itemPadding;
+    }
 }
 
 ///设置下划线的位置
@@ -298,20 +322,14 @@
 {
     if(!self.measureEnabled)
         return;
+    
     if(self.indicator){
         CGRect frame = self.indicator.frame;
         
         frame.origin.x = [self indicatorXForIndex:_selectedIndex];
-        frame.size.height = self.indicatorHeight;
-        frame.origin.y = self.gkHeight - self.indicatorHeight;
-        
-        GKMenuBarItem *item = self.items[_selectedIndex];
-        
-        if(self.currentStyle == GKMenuBarStyleFill && self.indicatorShouldFill){
-            frame.size.width = item.itemWidth;
-        }else{
-            frame.size.width = item.contentSize.width + self.itemPadding;
-        }
+        frame.size.height = self.indicatorSize.height;
+        frame.origin.y = self.gkHeight - self.indicatorSize.height - self.indicatorPadding;
+        frame.size.width = [self indicatorWidthForIndex:_selectedIndex];
         
         if(flag){
             [UIView animateWithDuration:0.25 animations:^(void){
@@ -388,11 +406,11 @@
         CGFloat x = [self indicatorXForIndex:_selectedIndex];
         CGFloat offset = percent * ([self indicatorXForIndex:index] - x);
         
-        GKMenuBarItem *item1 = self.items[_selectedIndex];
-        GKMenuBarItem *item2 = self.items[index];
+        CGFloat width1 = [self indicatorWidthForIndex:_selectedIndex];
+        CGFloat width2 = [self indicatorWidthForIndex:index];
         
         frame.origin.x = x + offset;
-        frame.size.width = item1.itemWidth + (item2.itemWidth - item1.itemWidth) * percent;
+        frame.size.width = width1 + (width2 - width1) * percent;
         
         self.indicator.frame = frame;
     }

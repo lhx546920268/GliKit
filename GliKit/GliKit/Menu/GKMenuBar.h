@@ -67,14 +67,14 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 ///按钮选中下划线颜色 只有 indicatorHeight > 0 才创建
 @property(nonatomic, readonly) UIView *indicator;
 
-///按钮选中下划线高度 default `2.0`
-@property(nonatomic, assign) CGFloat indicatorHeight;
+///按钮选中下划线大小 default `{0, 2.0}`，宽度是小于0则表示填满，0表示和item内容宽度一样，其他值显示固定宽度
+@property(nonatomic, assign) CGSize indicatorSize;
+
+///下划线距离间距，default `0`
+@property(nonatomic, assign) CGFloat indicatorPadding;
 
 ///按钮选中下划线颜色 default `themeColor`
 @property(nonatomic, strong, null_resettable) UIColor *indicatorColor;
-
-///下划线是否填满 default `NO` GKTabMenuBarStyleFill 有效
-@property(nonatomic, assign) BOOL indicatorShouldFill;
 
 //MARK: - 按钮样式
 
@@ -84,11 +84,14 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 ///当前样式
 @property(nonatomic, readonly) GKMenuBarStyle currentStyle;
 
-///按钮间 只有 GKTabMenuBarStyleFit 生效 default `5.0`
-@property(nonatomic, assign) CGFloat itemInterval;
+///按钮间隔 只有 GKTabMenuBarStyleFit 生效 default `5.0`
+@property(nonatomic, assign) CGFloat itemSpacing;
 
 ///按钮宽度延伸 left + right defautl `10.0`
 @property(nonatomic, assign) CGFloat itemPadding;
+
+///按钮间隔是否等分 default is `YES` GKTabMenuBarStyleFill 生效
+@property(nonatomic,assign) BOOL shouldEqualItemSpacing;
 
 ///内容宽度
 @property(nonatomic, readonly) CGFloat contentWidth;
@@ -103,6 +106,9 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 
 ///计算完成回调 layoutSubviews 后
 @property(nonatomic, copy, nullable) void(^measureCompletionHandler)(void);
+
+///是否已经可以计算item
+@property(nonatomic, readonly) BOOL measureEnabled;
 
 ///代理回调
 @property(nonatomic, weak, nullable) id<GKMenuBarDelegate> delegate;

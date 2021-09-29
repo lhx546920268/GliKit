@@ -51,8 +51,12 @@
     CGFloat totalWidth = 0;
     int i = 0;
     
+    UIFont *font = self.normalFont;
+    if (self.selectedFont.pointSize > font.pointSize) {
+        font = self.selectedFont;
+    }
     for(GKTabMenuBarItem *item in self.items){
-        CGSize size = [item.title gkStringSizeWithFont:self.normalFont];
+        CGSize size = [item.title gkStringSizeWithFont:font];
         
         if(item.icon != nil){
             size.width += item.icon.size.width + item.iconPadding;
@@ -63,7 +67,7 @@
         
         totalWidth += item.itemWidth;
         if(i != self.items.count - 1){
-            totalWidth += self.itemInterval;
+            totalWidth += self.itemSpacing;
         }
         i ++;
     }
@@ -76,12 +80,12 @@
 {
     GKTabMenuBarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[GKTabMenuBarCell gkNameOfClass] forIndexPath:indexPath];
     
+    BOOL tick = self.selectedIndex == indexPath.item;
     GKTabMenuBarItem *item = self.items[indexPath.item];
-    [cell.button setTitleColor:self.selectedTextColor forState:UIControlStateSelected];
-    [cell.button setTitleColor:self.normalTextColor forState:UIControlStateNormal];
+    [cell.button setTitleColor:tick ? self.selectedTextColor : self.normalTextColor forState:UIControlStateNormal];
     [cell.button.titleLabel setFont:self.selectedIndex == indexPath.item ? self.selectedFont : self.normalFont];
     cell.item = item;
-    cell.tick = self.selectedIndex == indexPath.item;
+    cell.tick = tick;
     cell.divider.hidden = !self.displayItemDidvider || indexPath.item == self.items.count - 1 || self.currentStyle == GKMenuBarStyleFit;
     
     return cell;
@@ -209,5 +213,31 @@
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
+
+- (void)setPercent:(float) percent forIndex:(NSUInteger) index
+{
+    [super setPercent:percent forIndex:index];
+    if(!self.measureEnabled)
+        return;
+    
+    GKTabMenuBarCell *cell1 = (GKTabMenuBarCell*)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedIndex inSection:0]];
+    GKTabMenuBarCell *cell2 = (GKTabMenuBarCell*)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+    
+    [cell1.button setTitleColor:[self getColorFrom:self.selectedTextColor to:self.normalTextColor percent:percent] forState:UIControlStateNormal];
+    [cell2.button setTitleColor:[self getColorFrom:self.normalTextColor to:self.selectedTextColor percent:percent] forState:UIControlStateNormal];
+}
+
+- (UIColor*)getColorFrom:(UIColor*) from to:(UIColor*) to percent:(float) percent
+{
+    NSDictionary *fromARGB = from.gkColorARGB;
+    NSDictionary *toARGB = to.gkColorARGB;
+    CGFloat red = [fromARGB[GKColorRed] floatValue] + ([toARGB[GKColorRed] floatValue] - [fromARGB[GKColorRed] floatValue]) * percent;
+    CGFloat green = [fromARGB[GKColorGreen] floatValue] + ([toARGB[GKColorGreen] floatValue] - [fromARGB[GKColorGreen] floatValue]) * percent;
+    CGFloat blue = [fromARGB[GKColorBlue] floatValue] + ([toARGB[GKColorBlue] floatValue] - [fromARGB[GKColorBlue] floatValue]) * percent;
+    CGFloat alpha = [fromARGB[GKColorAlpha] floatValue] + ([toARGB[GKColorAlpha] floatValue] - [fromARGB[GKColorAlpha] floatValue]) * percent;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 
 @end

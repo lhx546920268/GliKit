@@ -45,13 +45,16 @@
 
 // MARK: - resize
 
-- (CGSize)gkFitWithSize:(CGSize) size type:(GKImageFitType) type
+- (CGSize)gkFitWithSize:(CGSize) size
 {
-    return [UIImage gkFitImageSize:self.size size:size type:type];
+    return [UIImage gkFitImageSize:self.size size:size];
 }
 
-+ (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size type:(GKImageFitType) type
++ (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size
 {
+    if (size.width <= 0 && size.height <= 0) {
+        return imageSize;
+    }
     CGFloat width = imageSize.width;
     CGFloat height = imageSize.height;
     
@@ -59,46 +62,38 @@
         width = MIN(width, size.width > size.height ? size.height : size.width);
         height = width;
     }else{
-        CGFloat heightScale = height / size.height;
-        CGFloat widthScale = width / size.width;
-        
-        switch (type) {
-            case GKImageFitTypeSize : {
-                if(height >= size.height && width >= size.width){
-                    if(heightScale > widthScale){
-                        height = floorf(height / heightScale);
-                        width = floorf(width / heightScale);
-                    }else{
-                        height = floorf(height / widthScale);
-                        width = floorf(width / widthScale);
-                    }
-                } else {
-                    if(height >= size.height && width <= size.width) {
-                        height = floorf(height / heightScale);
-                        width = floorf(width / heightScale);
-                    } else if(height <= size.height && width >= size.width){
-                        height = floorf(height / widthScale);
-                        width = floorf(width / widthScale);
-                    }
+        if (size.width > 0 && size.height > 0) {
+            CGFloat heightScale = height / size.height;
+            CGFloat widthScale = width / size.width;
+            if(height >= size.height && width >= size.width){
+                if(heightScale > widthScale){
+                    height = floorf(height / heightScale);
+                    width = floorf(width / heightScale);
+                }else{
+                    height = floorf(height / widthScale);
+                    width = floorf(width / widthScale);
                 }
-            }
-                break;
-            case GKImageFitTypeWidth : {
-                if(width > size.width) {
+            } else {
+                if(height >= size.height && width <= size.width) {
+                    height = floorf(height / heightScale);
+                    width = floorf(width / heightScale);
+                } else if(height <= size.height && width >= size.width){
                     height = floorf(height / widthScale);
                     width = floorf(width / widthScale);
                 }
             }
-                break;
-            case GKImageFitTypeHeight : {
-                if(height > size.height) {
-                    height = floorf(height / heightScale);
-                    width = floorf(width / heightScale);
-                }
+        } else if (size.width > 0) {
+            if(width > size.width) {
+                CGFloat widthScale = width / size.width;
+                height = floorf(height / widthScale);
+                width = floorf(width / widthScale);
             }
-                break;
-            default:
-                break;
+        } else {
+            if(height > size.height) {
+                CGFloat heightScale = height / size.height;
+                height = floorf(height / heightScale);
+                width = floorf(width / heightScale);
+            }
         }
     }
     
@@ -110,7 +105,7 @@
     CGFloat width = self.size.width;
     CGFloat height = self.size.height;
     
-    size = [UIImage gkFitImageSize:CGSizeMake(width, height) size:size type:GKImageFitTypeSize];
+    size = [UIImage gkFitImageSize:CGSizeMake(width, height) size:size];
     
     if(size.height >= height || size.width >= width)
         return self;

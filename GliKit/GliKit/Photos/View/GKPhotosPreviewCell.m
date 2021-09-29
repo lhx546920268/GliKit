@@ -147,7 +147,7 @@
 
 - (CGRect)rectFromImage:(UIImage*) image
 {
-    CGSize size = [UIImage gkFitImageSize:CGSizeMake(self.asset.pixelWidth, self.asset.pixelHeight) size:_scrollView.frame.size type:GKImageFitTypeWidth];
+    CGSize size = [UIImage gkFitImageSize:CGSizeMake(self.asset.pixelWidth, self.asset.pixelHeight) size:CGSizeMake(_scrollView.frame.size.width, 0)];
     return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
 }
 

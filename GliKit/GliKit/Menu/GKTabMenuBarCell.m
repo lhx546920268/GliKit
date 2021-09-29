@@ -61,8 +61,7 @@
 - (void)setTick:(BOOL) tick
 {
     _tick = tick;
-    _button.selected = _tick;
-    _button.tintColor = [_button titleColorForState:_tick ? UIControlStateSelected : UIControlStateNormal];
+    _button.tintColor = [_button titleColorForState:UIControlStateNormal];
 }
 
 - (void)setCustomView:(UIView *)customView

@@ -10,19 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///图片等比例缩小方式
-typedef NS_ENUM(NSInteger, GKImageFitType)
-{
-    ///宽和高 宽高有一个大于指定值都会整体缩放
-    GKImageFitTypeSize = 0,
-    
-    ///宽 只有宽度大于指定宽度时，才缩放
-    GKImageFitTypeWidth,
-    
-    ///高 只有高度度大于指定宽度时，才缩放
-    GKImageFitTypeHeight,
-};
-
 ///二维码容错率
 typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
 {
@@ -58,15 +45,13 @@ typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
 ///可使用 AVFoundation 中的AVMakeRectWithAspectRatioInsideRect
 
 /// 通过给定的大小，获取等比例缩小后的图片尺寸
-/// @param size 要缩小的图片最大尺寸
-/// @param type 缩小方式
-- (CGSize)gkFitWithSize:(CGSize) size type:(GKImageFitType) type;
+/// @param size 要缩小的图片最大尺寸 小于0不缩放，比如高度小于0，先按宽度缩放，高度再根据宽度的比例来缩放
+- (CGSize)gkFitWithSize:(CGSize) size;
 
 /// 通过给定的大小，获取等比例缩小后的图片尺寸
 /// @param imageSize 要缩小的图片大小
-/// @param size 要缩小的图片最大尺寸
-/// @param type 缩小方式
-+ (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size type:(GKImageFitType) type;
+/// @param size 要缩小的图片最大尺寸 小于0不缩放，比如高度小于0，先按宽度缩放，高度再根据宽度的比例来缩放
++ (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size;
 
 /// 通过给定大小获取图片的等比例缩小的缩率图
 /// @param size 目标图片大小

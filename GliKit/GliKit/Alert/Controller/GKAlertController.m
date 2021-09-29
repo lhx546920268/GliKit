@@ -167,7 +167,7 @@
             if(self.icon){
                 self.header.imageView.image = self.icon;
                 if(self.icon.size.width > constraintWidth){
-                    CGSize size = [self.icon gkFitWithSize:CGSizeMake(constraintWidth, 0) type:GKImageFitTypeWidth];
+                    CGSize size = [self.icon gkFitWithSize:CGSizeMake(constraintWidth, 0)];
                     self.header.imageView.frame = CGRectMake((self.header.gkWidth - size.width) / 2, y, size.width, size.height);
                 }else{
                     self.header.imageView.frame = CGRectMake((self.header.gkWidth - self.icon.size.width) / 2, y, self.icon.size.width, self.icon.size.height);
