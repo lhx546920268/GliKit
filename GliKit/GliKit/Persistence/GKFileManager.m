@@ -81,7 +81,12 @@
     return dic;
 }
 
-+ (NSString*)writeImage:(UIImage*) image scale:(float) scale
++ (NSString*)writeImage:(UIImage *)image scale:(float)scale
+{
+    return [self writeImage:image originalData:nil scale:scale];
+}
+
++ (NSString*)writeImage:(UIImage *)image originalData:(NSData *)originalData scale:(float)scale
 {
     scale = MIN(scale, 1.0);
     scale = MAX(scale, 0);
@@ -92,6 +97,9 @@
     NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", NSString.gkUUID, @"jpg"]];
     
     NSData *imageData = UIImageJPEGRepresentation(image, scale);
+    if (originalData != nil && imageData.length > originalData.length) {
+        imageData = originalData;
+    }
     
     NSError *error = nil;
     if([imageData writeToFile:fileName options:NSDataWritingAtomic error:&error]){

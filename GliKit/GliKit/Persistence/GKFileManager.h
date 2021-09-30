@@ -55,10 +55,12 @@ NS_ASSUME_NONNULL_BEGIN
  把图片写入临时文件 比例是 0.0 ~ 1.0 jpg格式
  
  *@param image 要写入文件的图片
+ *@param originalData 原始图片数据，图片压缩后可能会比原图大，如果比原图大，就用原图数据
  *@param scale 图片压缩比率
  *@return 成功写入的文件
  */
 + (nullable NSString*)writeImage:(UIImage*) image scale:(float) scale;
++ (NSString*)writeImage:(UIImage*) image originalData:(NSData*) originalData scale:(float) scale;
 
 /**
  批量删除文件

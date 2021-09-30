@@ -35,6 +35,9 @@ typedef NS_ENUM(NSInteger, GKPhotosIntention){
 ///压缩后的图片
 @property(nonatomic, strong, nullable) UIImage *compressedImage;
 
+///压缩后的图片路径
+@property(nonatomic, copy) NSString *filePath;
+
 ///原图
 @property(nonatomic, strong, nullable) UIImage *originalImage;
 

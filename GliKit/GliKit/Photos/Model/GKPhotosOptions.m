@@ -10,6 +10,7 @@
 #import <ImageIO/ImageIO.h>
 #import "UIImage+GKUtils.h"
 #import "UIImage+GKTheme.h"
+#import "GKFileManager.h"
 
 @implementation GKPhotosPickResult
 
@@ -27,13 +28,19 @@
         
         UIImage *compressedImage = [image gkAspectFitWithSize:options.compressedImageSize];
         result.compressedImage = compressedImage;
+        result.filePath = [GKFileManager writeImage:compressedImage scale:0.9];
         result.compressedImageSize = CGSizeMake(compressedImage.size.width * compressedImage.scale, compressedImage.size.height * compressedImage.scale);
         image = compressedImage;
+    } else {
+        result.filePath = [GKFileManager writeImage:image scale:1.0];
     }
     
     if(!CGSizeEqualToSize(CGSizeZero, options.thumbnailSize)){
-        
-        result.thumbnail = [image gkAspectFitWithSize:options.thumbnailSize];
+        CGSize size = options.thumbnailSize;
+        CGFloat scale = options.scale;
+        size.width *= scale;
+        size.height *= scale;
+        result.thumbnail = [image gkAspectFitWithSize:size];
     }
     
     return result;
@@ -51,6 +58,7 @@
         return nil;
     }
     
+    UIImage *image = nil;
     NSNumber *width = CFDictionaryGetValue(properties, kCGImagePropertyPixelWidth);
     NSNumber *height = CFDictionaryGetValue(properties, kCGImagePropertyPixelHeight);
     CGSize imageSize = CGSizeMake(width.doubleValue, height.doubleValue);
@@ -62,6 +70,7 @@
         CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, 0, NULL);
         if(imageRef != NULL){
             result.originalImage = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
+            image = result.originalImage;
             CGImageRelease(imageRef);
         }
     }
@@ -74,34 +83,39 @@
         
         size = [UIImage gkFitImageSize:imageSize size:size];
         
-        NSDictionary *compressedImageOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
-                                    (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
-                                    (id)kCGImageSourceCreateThumbnailWithTransform : @YES};
-        
-        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, CFBridgingRetain(compressedImageOptions));
+        CGImageRef imageRef;
+        if (size.width < imageSize.width || size.height < imageSize.height) {
+            NSDictionary *compressedImageOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
+                                        (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+                                        (id)kCGImageSourceCreateThumbnailWithTransform : @YES};
+            
+            imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef)compressedImageOptions);
+        } else {
+            imageRef = CGImageSourceCreateImageAtIndex(source, 0, NULL);
+        }
+
         if(imageRef != NULL){
             UIImage *compressedImage = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
+            image = compressedImage;
             result.compressedImage = compressedImage;
+            result.filePath = [GKFileManager writeImage:compressedImage originalData:data scale:0.9];
             result.compressedImageSize = CGSizeMake(compressedImage.size.width * compressedImage.scale, compressedImage.size.height * compressedImage.scale);
             CGImageRelease(imageRef);
         }
+    } else {
+        if (!image) {
+            image = [UIImage imageWithData:data];
+        }
+        result.filePath = [GKFileManager writeImage:image  scale:1.0];
     }
     
     if(!CGSizeEqualToSize(CGSizeZero, options.thumbnailSize)){
-        
         CGSize size = options.thumbnailSize;
         size.width *= scale;
         size.height *= scale;
         
-        size = [UIImage gkFitImageSize:imageSize size:size];
-        NSDictionary *thumbnailOptions = @{(id)kCGImageSourceThumbnailMaxPixelSize : @(MAX(size.width, size.height)),
-                              (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
-                              (id)kCGImageSourceCreateThumbnailWithTransform : @YES};
-        
-        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, CFBridgingRetain(thumbnailOptions));
-        if(imageRef != NULL){
-            result.thumbnail = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
-            CGImageRelease(imageRef);
+        if (!image) {
+            image = [UIImage imageWithData:data];
         }
     }
     

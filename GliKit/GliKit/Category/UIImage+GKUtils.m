@@ -59,7 +59,13 @@
     CGFloat height = imageSize.height;
     
     if(width == height){
-        width = MIN(width, size.width > size.height ? size.height : size.width);
+        CGFloat value;
+        if (size.width > 0 && size.height > 0) {
+            value = MIN(size.width, size.height);
+        } else {
+            value = MAX(size.width, size.height);
+        }
+        width = MIN(value, width);
         height = width;
     }else{
         if (size.width > 0 && size.height > 0) {

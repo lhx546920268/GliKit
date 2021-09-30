@@ -45,12 +45,12 @@ typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
 ///可使用 AVFoundation 中的AVMakeRectWithAspectRatioInsideRect
 
 /// 通过给定的大小，获取等比例缩小后的图片尺寸
-/// @param size 要缩小的图片最大尺寸 小于0不缩放，比如高度小于0，先按宽度缩放，高度再根据宽度的比例来缩放
+/// @param size 要缩小的图片最大尺寸 小于等于0不缩放，比如高度小于0，先按宽度缩放，高度再根据宽度的比例来缩放
 - (CGSize)gkFitWithSize:(CGSize) size;
 
 /// 通过给定的大小，获取等比例缩小后的图片尺寸
 /// @param imageSize 要缩小的图片大小
-/// @param size 要缩小的图片最大尺寸 小于0不缩放，比如高度小于0，先按宽度缩放，高度再根据宽度的比例来缩放
+/// @param size 要缩小的图片最大尺寸 小于等于0不缩放，比如高度小于0，先按宽度缩放，高度再根据宽度的比例来缩放
 + (CGSize)gkFitImageSize:(CGSize) imageSize size:(CGSize) size;
 
 /// 通过给定大小获取图片的等比例缩小的缩率图
