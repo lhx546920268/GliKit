@@ -90,6 +90,7 @@
     
     self.collectionView.gkNestedParent = YES;
     self.collectionView.gkNestedScrollEnabled = YES;
+
     [super initViews];
 }
 

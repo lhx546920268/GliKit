@@ -51,7 +51,7 @@
     if(!parent.gkChildDidScrollToParent){
         WeakObj(self)
         parent.gkChildDidScrollToParent = ^{
-            for(GKDChildPageViewController *page in selfWeak.pageViewControllers){
+            for(GKDChildPageViewController *page in selfWeak.subPages){
                 if(page.isInit){
                     page.scrollView.contentOffset = CGPointZero;
                 }

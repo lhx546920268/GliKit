@@ -223,8 +223,9 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
         UIScrollView *scrollView = self.parentScrollView.gkNestedChildScrollView;
         CGFloat y = scrollView.contentOffset.y + self.currentSpeed * self.timePerFrame;
         CGPoint contentOffset = scrollView.contentOffset;
-        if(y + scrollView.gkHeight >= scrollView.contentSize.height){
-            y = scrollView.contentSize.height - scrollView.gkHeight;
+        CGFloat max = scrollView.contentSize.height + scrollView.contentInset.bottom;
+        if(y + scrollView.gkHeight >= max){
+            y = max - scrollView.gkHeight;
             [self stopDisplayLink];
         }
         contentOffset.y = y;

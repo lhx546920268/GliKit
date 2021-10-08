@@ -79,14 +79,7 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     GKTabMenuBarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[GKTabMenuBarCell gkNameOfClass] forIndexPath:indexPath];
-    
-    BOOL tick = self.selectedIndex == indexPath.item;
-    GKTabMenuBarItem *item = self.items[indexPath.item];
-    [cell.button setTitleColor:tick ? self.selectedTextColor : self.normalTextColor forState:UIControlStateNormal];
-    [cell.button.titleLabel setFont:self.selectedIndex == indexPath.item ? self.selectedFont : self.normalFont];
-    cell.item = item;
-    cell.tick = tick;
-    cell.divider.hidden = !self.displayItemDidvider || indexPath.item == self.items.count - 1 || self.currentStyle == GKMenuBarStyleFit;
+    [self configCell:cell forIndex:indexPath.item];
     
     return cell;
 }
@@ -101,13 +94,24 @@
     }
 }
 
+- (void)configCell:(GKTabMenuBarCell*) cell forIndex:(NSUInteger) index
+{
+    BOOL tick = self.selectedIndex == index;
+    GKTabMenuBarItem *item = self.items[index];
+    [cell.button setTitleColor:tick ? self.selectedTextColor : self.normalTextColor forState:UIControlStateNormal];
+    [cell.button.titleLabel setFont:tick ? self.selectedFont : self.normalFont];
+    cell.item = item;
+    cell.tick = tick;
+    cell.divider.hidden = !self.displayItemDidvider || index == self.items.count - 1 || self.currentStyle == GKMenuBarStyleFit;
+}
+
 - (void)onSelectItemAtIndex:(NSUInteger)index oldIndex:(NSUInteger)oldIndex
 {
     //取消以前的选中状态
     GKTabMenuBarCell *cell = [self cellForIndex:oldIndex];
-    cell.tick = NO;
+    [self configCell:cell forIndex:oldIndex];
     cell = [self cellForIndex:index];
-    cell.tick = YES;
+    [self configCell:cell forIndex:index];
 }
 
 // MARK: - Property
