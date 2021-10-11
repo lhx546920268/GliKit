@@ -362,12 +362,14 @@
     switch (pan.state) {
         case UIGestureRecognizerStateBegan :
         case UIGestureRecognizerStateChanged : {
-            CGFloat absCenterX = self.cropFrame.origin.x + self.cropFrame.size.width / 2;
-            CGFloat absCenterY = self.cropFrame.origin.y + self.cropFrame.size.height / 2;
-            CGFloat scaleRatio = view.frame.size.width / self.cropFrame.size.width;
+            CGRect cropFrame = self.cropFrame;
+            CGFloat absCenterX = cropFrame.origin.x + cropFrame.size.width / 2;
+            CGFloat absCenterY = cropFrame.origin.y + cropFrame.size.height / 2;
+            CGFloat heightScaleRatio = view.frame.size.height / cropFrame.size.height;
+            CGFloat widthScaleRatio = view.frame.size.width / cropFrame.size.width;
             
-            CGFloat acceleratorX = 1 - ABS(absCenterX - view.center.x) / (scaleRatio * absCenterX);
-            CGFloat acceleratorY = 1 - ABS(absCenterY - view.center.y) / (scaleRatio * absCenterY);
+            CGFloat acceleratorX = 1 - ABS(absCenterX - view.center.x) / (widthScaleRatio * absCenterX);
+            CGFloat acceleratorY = 1 - ABS(absCenterY - view.center.y) / (heightScaleRatio * absCenterY);
             CGPoint translation = [pan translationInView:view.superview];
             
             [view setCenter:(CGPoint){view.center.x + translation.x * acceleratorX, view.center.y + translation.y * acceleratorY}];

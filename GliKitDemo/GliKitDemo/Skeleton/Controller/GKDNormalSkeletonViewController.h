@@ -10,6 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum
+{
+    VerticalAlignmentTop = 0, // default
+    VerticalAlignmentMiddle,
+    VerticalAlignmentBottom,
+} VerticalAlignment;
+
+@interface SOLabel : UILabel
+
+@property (nonatomic, readwrite) VerticalAlignment verticalAlignment;
+
+@end
+
 @interface GKDNormalSkeletonViewController : GKBaseViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;

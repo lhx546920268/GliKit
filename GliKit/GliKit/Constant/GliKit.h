@@ -17,6 +17,7 @@
 #import "UIScreen+GKUtils.h"
 #import "UIView+GKOptimize.h"
 #import "UIView+GKXibUtils.h"
+#import "UIView+GKAutoLayout.h"
 
 #import "UIViewController+GKDialog.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
