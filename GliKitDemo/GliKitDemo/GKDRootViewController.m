@@ -63,14 +63,6 @@ GKConvenientCopying
     [self initViews];
 
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
-//
-//    GKChild *child = [GKChild new];
-//    child.name = @"niy";
-//    child.childName = @"viy";
-//
-//    GKChild *val = [child copy];
-    
-//    NSLog(@"cls %@", val.childName);
 }
 
 - (void)initViews
@@ -99,7 +91,21 @@ GKConvenientCopying
     RootListCell *cell = [tableView dequeueReusableCellWithIdentifier:RootListCell.gkNameOfClass forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
-    cell.textLabel.text = self.datas[indexPath.row % self.datas.count].title;
+    
+    NSString *title = self.datas[indexPath.row % self.datas.count].title;
+    if (indexPath.row % 2 == 0) {
+        NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:title];
+        [attr addAttribute:NSStrokeWidthAttributeName value:@(-2) range:NSMakeRange(0, attr.length)];
+        [attr addAttribute:NSStrokeColorAttributeName value:UIColor.blackColor range:NSMakeRange(0, attr.length)];
+        cell.textLabel.attributedText = attr;
+    } else {
+    cell.textLabel.text = title;
+    }
+    
+    UIFont *font = [UIFont fontWithName:@"NotoSansMyanmar-Medium" size:17];
+    NSLog(@"%@", font);
+    cell.textLabel.font = font;
+    cell.textLabel.textColor = UIColor.blackColor;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.tintColor = UIColor.redColor;
     cell.swipeDirection = GKSwipeDirectionLeft | GKSwipeDirectionRight;
