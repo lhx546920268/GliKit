@@ -195,6 +195,7 @@
     }
     
     if(index < count){
+        self.contentOffset = self.collectionView.contentOffset;
         switch (_scrollDirection) {
             case UICollectionViewScrollDirectionHorizontal :
                 [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:flag];
@@ -202,6 +203,10 @@
             case UICollectionViewScrollDirectionVertical :
                 [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:flag];
                 break;
+        }
+        
+        if (!flag) {
+            [self adjustPosition];
         }
     }
 }
@@ -414,7 +419,7 @@
 {
     if(!decelerate){
         [self startAnimating];
-        self.contentOffset = CGPointZero;
+        [self adjustPosition];
     }
 }
 
@@ -422,12 +427,18 @@
 {
     if(!scrollView.dragging){
         [self startAnimating];
-        self.contentOffset = CGPointZero;
+        [self adjustPosition];
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    [self adjustPosition];
+}
+
+- (void)adjustPosition
+{
+    UIScrollView *scrollView = self.collectionView;
     switch (_scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal : {
             CGFloat pagewidth = scrollView.gkWidth;
@@ -435,8 +446,7 @@
             if(self.shouldScrollCircularly){
                 if(page == 0){
                     if(self.contentOffset.x > scrollView.contentOffset.x){
-                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth * (_numberOfCells + 1), 0, pagewidth, scrollView.gkHeight) animated:NO]; // 最后+1,循环到第1页
-                        self.contentOffset = CGPointMake(pagewidth * (_numberOfCells + 1), 0);
+                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth * _numberOfCells, 0, pagewidth, scrollView.gkHeight) animated:NO]; // 最后+1,循环到第1页
                         self.pageControl.currentPage = _numberOfCells - 1;
                     }
                 }else if (page >= (_numberOfCells + 1)){
@@ -459,8 +469,7 @@
             if(self.shouldScrollCircularly){
                 if(page == 0){
                     if(self.contentOffset.y > scrollView.contentOffset.y){
-                        [self.collectionView scrollRectToVisible:CGRectMake(0, pageHeight * (_numberOfCells + 1), scrollView.gkWidth, pageHeight) animated:NO]; // 最后+1,循环到第1页
-                        self.contentOffset = CGPointMake(0, self.gkHeight * (_numberOfCells + 1));
+                        [self.collectionView scrollRectToVisible:CGRectMake(0, pageHeight * _numberOfCells, scrollView.gkWidth, pageHeight) animated:NO]; // 最后+1,循环到第1页
                         self.pageControl.currentPage = _numberOfCells - 1;
                     }
                 }else if (page >= (_numberOfCells + 1)){
@@ -477,6 +486,7 @@
         }
             break;
     }
+    self.contentOffset = CGPointZero;
 }
 
 @end
