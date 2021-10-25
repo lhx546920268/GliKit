@@ -270,6 +270,10 @@ static char GKPageIndexKey;
             }
                 break;
         }
+        
+        if (!flag) {
+            [self adjustPosition];
+        }
     }
 }
 
@@ -591,8 +595,37 @@ static char GKPageIndexKey;
 
 // MARK: - UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    [self stopAnimating];
+    self.contentOffset = scrollView.contentOffset;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate){
+        [self startAnimating];
+        [self adjustPosition];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(!scrollView.dragging){
+        [self startAnimating];
+        [self adjustPosition];
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self adjustPosition];
+}
+
+///调整位置
+- (void)adjustPosition
+{
+    UIScrollView *scrollView = self.scrollView;
     switch (self.scrollDirection) {
         case GKPageViewScrollDirectionHorizontal : {
             
@@ -601,15 +634,13 @@ static char GKPageIndexKey;
             if(self.shouldScrollInfinitely){
                 if(page == 0){
                     if(self.contentOffset.x > scrollView.contentOffset.x){
-                        self.contentOffset = CGPointMake([self offsetForIndex:self.numberOfItems + 1], 0);
-                        [self.scrollView setContentOffset:self.contentOffset]; // 最后+1,循环到第1页
+                        [self.scrollView setContentOffset:CGPointMake([self offsetForIndex:self.numberOfItems], 0)]; // 最后+1,循环到第1页
                         _currentPage = 0;
                     }
                 }else if (page >= (self.numberOfItems + 1)){
                     
                     if(self.contentOffset.x < scrollView.contentOffset.x){
-                        self.contentOffset = CGPointMake([self offsetForIndex:1], 0);
-                        [self.scrollView setContentOffset:self.contentOffset];// 最后+1,循环第1页
+                        [self.scrollView setContentOffset:CGPointMake([self offsetForIndex:1], 0)];// 最后+1,循环第1页
                         _currentPage = self.numberOfItems - 1;
                     }
                 }else{
@@ -626,14 +657,12 @@ static char GKPageIndexKey;
             if(self.shouldScrollInfinitely){
                 if(page == 0){
                     if(self.contentOffset.y > scrollView.contentOffset.y){
-                        self.contentOffset = CGPointMake(0, [self offsetForIndex:self.numberOfItems + 1]);
-                        [self.scrollView setContentOffset:self.contentOffset]; // 最后+1,循环到第1页
+                        [self.scrollView setContentOffset:CGPointMake(0, [self offsetForIndex:self.numberOfItems])]; // 最后+1,循环到第1页
                         _currentPage = 0;
                     }
                 }else if (page >= (self.numberOfItems + 1)){
                     if(self.contentOffset.y < scrollView.contentOffset.y){
-                        self.contentOffset = CGPointMake(0, [self offsetForIndex:1]);
-                        [self.scrollView setContentOffset:self.contentOffset]; // 最后+1,循环第1页
+                        [self.scrollView setContentOffset:CGPointMake(0, [self offsetForIndex:1])]; // 最后+1,循环第1页
                         _currentPage = self.numberOfItems - 1;
                     }
                 }else{
@@ -647,28 +676,7 @@ static char GKPageIndexKey;
     }
     
     [self layoutItems];
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self stopAnimating];
-    self.contentOffset = scrollView.contentOffset;
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate){
-        self.contentOffset = CGPointZero;
-        [self startAnimating];
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    if(!scrollView.dragging){
-        self.contentOffset = CGPointZero;
-        [self startAnimating];
-    }
+    self.contentOffset = CGPointZero;
 }
 
 // MARK: -  private method
