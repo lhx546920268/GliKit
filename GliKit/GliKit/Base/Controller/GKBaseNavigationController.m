@@ -228,6 +228,12 @@
     return YES;
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    //避免和其他手势冲突，比如在有UIScrollView的页面，比较难侧滑返回
+    return gestureRecognizer == self.interactivePopGestureRecognizer;
+}
+
 // MARK: - UIStatusBar
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -39,28 +39,80 @@ GKConvenientCopying
 
 @end
 
+@interface CATextContainer : NSTextContainer
+
+@end
+
+@implementation CATextContainer
+//
+//- (CGSize)size
+//{
+//    CGSize size = [super size];
+//    NSLog(@"%@", NSStringFromCGSize(size));
+//    return size;
+//}
+
+@end
+
+@interface CALayoutManager : NSLayoutManager
+
+@end
+
+@implementation CALayoutManager
+
+- (CGRect)usedRectForTextContainer:(NSTextContainer *)container
+{
+    CGRect rect = [super usedRectForTextContainer:container];
+    NSLog(@"%@", NSStringFromCGRect(rect));
+//    rect.size.height += 10;
+    return rect;
+}
+
+@end
+
 @implementation GKDRootViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     self.navigationItem.title = GKAppUtils.appName;
+    
+    NSTextStorage *textStorage = [NSTextStorage new];
 
-    self.datas = @[
-                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
-                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
-                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
-                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
-                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
-                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
-                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
-                   ];
+    CALayoutManager *layoutManager = [CALayoutManager new];
+    [textStorage addLayoutManager: layoutManager];
+
+    NSTextContainer *container = [CATextContainer new];
+    container.lineFragmentPadding = 0;
+    [layoutManager addTextContainer:container];
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:container];
+    textView.backgroundColor = UIColor.redColor;
+    textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    textView.text = @"အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊";
+    [self.view addSubview:textView];
+    
+    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(20);
+        make.top.equalTo(150);
+        make.trailing.equalTo(-20);
+        make.height.equalTo(100);
+    }];
+
+//    self.datas = @[
+//                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
+//                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
+//                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+//                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+//                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+//                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+//                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+//                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+//                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+//                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
+//                   ];
     
 
-    [self initViews];
+//    [self initViews];
 
     [self gkSetLeftItemWithTitle:@"左边" action:nil];
 }
