@@ -10,6 +10,8 @@
 		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
 		CE0D6B9225F716A500F3459E /* GKDLoadMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */; };
 		CE134D5F24F363BE00F34CB4 /* GKDBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */; };
+		CE1AFE26272A3E2B0029B42D /* NotoSansMyanmar.ttc in Resources */ = {isa = PBXBuildFile; fileRef = CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */; };
+		CE2C55212727E3B30047DA92 /* Oxygen-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */; };
 		CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */; };
 		CE37C67E233B49C000C4F196 /* GKDTableEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67D233B49C000C4F196 /* GKDTableEmptyViewController.m */; };
 		CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C680233B49D500C4F196 /* GKDCollectionEmptyViewController.m */; };
@@ -74,6 +76,8 @@
 		CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDLoadMonitor.m; sourceTree = "<group>"; };
 		CE134D5D24F363BE00F34CB4 /* GKDBannerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDBannerViewController.h; sourceTree = "<group>"; };
 		CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDBannerViewController.m; sourceTree = "<group>"; };
+		CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = NotoSansMyanmar.ttc; sourceTree = "<group>"; };
+		CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oxygen-Bold.ttf"; sourceTree = "<group>"; };
 		CE37C679233B49AF00C4F196 /* GKDNormalEmptyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNormalEmptyViewController.h; sourceTree = "<group>"; };
 		CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNormalEmptyViewController.m; sourceTree = "<group>"; };
 		CE37C67C233B49C000C4F196 /* GKDTableEmptyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTableEmptyViewController.h; sourceTree = "<group>"; };
@@ -468,6 +472,8 @@
 				CEE8C8AC231915DB00E7CA75 /* GKDRootViewController.m */,
 				CE37C685233B4AAA00C4F196 /* GKDRowModel.h */,
 				CE37C686233B4AAA00C4F196 /* GKDRowModel.m */,
+				CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */,
+				CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */,
 				CE97636223B59F27001A5DD3 /* test.html */,
 				CEE8C89B231911EB00E7CA75 /* Assets.xcassets */,
 				CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */,
@@ -574,12 +580,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEB37EBD249B6A8D00C15460 /* meat_1.jpg in Resources */,
+				CE2C55212727E3B30047DA92 /* Oxygen-Bold.ttf in Resources */,
 				CEB37EBE249B6A8D00C15460 /* meat_2.jpg in Resources */,
 				CEC2D977239F8C0900F14210 /* GKDAlertViewController.xib in Resources */,
 				CE8CC363246BC9E600EE6414 /* 512x384.webp in Resources */,
 				CEB37EB3249B42EF00C15460 /* confeti3.png in Resources */,
 				CEE8C89F231911EB00E7CA75 /* LaunchScreen.storyboard in Resources */,
 				CEB37EBA249B698A00C15460 /* meat.jpg in Resources */,
+				CE1AFE26272A3E2B0029B42D /* NotoSansMyanmar.ttc in Resources */,
 				CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */,
 				CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */,
 				CEB85F53232630560045CB38 /* GKDNestedTableViewCell.xib in Resources */,

@@ -32,6 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///键盘弹出是否需要调整contentInsets default `YES`
 @property(nonatomic, assign) BOOL shouldAdjustContentInsetsForKeyboard;
 
+/// 是否需要根据安全区域自动调整 inset default `YES`
+@property(nonatomic,readonly) BOOL shouldAdjustContentInsetForSafeArea;
+
+
 ///scroll view 原始的contentInsets
 @property(nonatomic, assign) UIEdgeInsets contentInsets;
 

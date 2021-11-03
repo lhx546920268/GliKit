@@ -49,7 +49,9 @@
 
 - (void)initViews
 {
+    self.flowLayout.itemSize = CGSizeMake((UIScreen.gkWidth - 10) / 3, 60);
     [self registerClass:[GKChildPageListCell class]];
+    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom, 0);
     self.collectionView.gkNestedScrollEnabled = YES;
     [super initViews];
   //  self.refreshEnable = YES;

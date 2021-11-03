@@ -53,10 +53,13 @@
 ///单击图片
 - (void)photosBrowseCellDidClick:(GKPhotosBrowseCell*) cell;
 
+///准备要滑动关闭预览了
+- (void)photosBrowseCell:(GKPhotosBrowseCell*) cell swipeForPercent:(CGFloat) percent;
+
 @end
 
 ///图片浏览cell
-@interface GKPhotosBrowseCell : UICollectionViewCell<UIScrollViewDelegate>
+@interface GKPhotosBrowseCell : UICollectionViewCell<UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 ///滚动视图，用于图片放大缩小
 @property(nonatomic, readonly) UIScrollView *scrollView;
@@ -66,6 +69,12 @@
 
 ///代理
 @property(nonatomic, weak) id<GKPhotosBrowseCellDelegate> delegate;
+
+///平移手势
+@property(nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer;
+
+///初始位置
+@property(nonatomic, readonly) CGPoint initCenter;
 
 ///重新布局图片当图片加载完成时
 - (void)layoutImageAfterLoadWithAnimated:(BOOL) animated;
@@ -94,6 +103,9 @@
         _scrollView.bouncesZoom = YES;
         _scrollView.alwaysBounceVertical = NO;
         _scrollView.alwaysBounceHorizontal = NO;
+        if (@available(iOS 11, *)) {
+            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
         [self.contentView addSubview:_scrollView];
         
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -110,12 +122,15 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tap];
         
-        
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
         doubleTap.numberOfTapsRequired = 2;
         [self addGestureRecognizer:doubleTap];
         
         [tap requireGestureRecognizerToFail:doubleTap];
+        
+        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        _panGestureRecognizer.delegate = self;
+        [self.scrollView addGestureRecognizer:_panGestureRecognizer];
     }
     return self;
 }
@@ -134,9 +149,50 @@
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    if([self.delegate respondsToSelector:@selector(photosBrowseCellDidClick:)]){
-        [self.delegate photosBrowseCellDidClick:self];
+    [self.delegate photosBrowseCellDidClick:self];
+}
+
+- (void)handlePan:(UIPanGestureRecognizer*) pan
+{
+    CGPoint point = [pan translationInView:self.scrollView];
+    switch (pan.state) {
+        case UIGestureRecognizerStateBegan :
+            _initCenter = _imageView.center;
+            break;
+        case UIGestureRecognizerStateChanged : {
+            _imageView.center = CGPointMake(_initCenter.x + point.x, _initCenter.y + point.y);
+            CGFloat alpha = 1.0 - fabs((_imageView.center.y - _initCenter.y)) / self.gkHeight * 2;;
+            [self.delegate photosBrowseCell:self swipeForPercent:alpha];
+        }
+            break;
+        default: {
+            CGPoint center = _imageView.center;
+            CGFloat y = [pan velocityInView:self.scrollView].y * 0.2;
+            if (fabs(center.y + y - _initCenter.y) > 100) {
+                [self.delegate photosBrowseCellDidClick:self];
+            } else {
+                [UIView animateWithDuration:0.25 animations:^{
+                    [self.delegate photosBrowseCell:self swipeForPercent:1.0];
+                    self.imageView.center = self.initCenter;
+                }];
+            }
+        }
+            break;
     }
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer == _panGestureRecognizer) {
+        //只支持垂直
+        if (self.scrollView.contentOffset.y <= -self.scrollView.adjustedContentInset.top) {
+            CGPoint velocity = [_panGestureRecognizer velocityInView:self.scrollView];
+            return fabs(velocity.y) > fabs(velocity.x);
+        } else {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 // MARK: - UIScrollViewDelegate
@@ -258,6 +314,21 @@
     
     self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
     self.animateDuration = 0.25;
+    
+    self.shouldScrollToVisible = YES;
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    [self initViews];
+}
+
+- (BOOL)shouldAdjustContentInsetForSafeArea
+{
+    return NO;
+}
+
+- (void)initViews
+{
+    self.automaticallyAdjustsScrollViewInsets = NO;
     _backgroundView = [UIView new];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.userInteractionEnabled = NO;
@@ -266,9 +337,6 @@
     [_backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(0);
     }];
-    
-    self.shouldScrollToVisible = YES;
-    self.view.backgroundColor = [UIColor clearColor];
     
     [self registerClass:GKPhotosBrowseCell.class];
     self.collectionView.showsVerticalScrollIndicator = NO;
@@ -298,6 +366,13 @@
         make.leading.trailing.equalTo(0);
         make.bottom.equalTo(self.gkSafeAreaLayoutGuideBottom).offset(-20);
     }];
+    
+    [super initViews];
+}
+
+- (void)setContentView:(UIView *)contentView
+{
+    //do nothing
 }
 
 - (void)viewDidLayoutSubviews
@@ -341,7 +416,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 ///显示完成
@@ -565,11 +640,13 @@
     if(self.isAnimating)
         return;
     
-    if(cell.scrollView.zoomScale == 1.0){
-        [self dismissAimated:YES];
-    }else{
-        [cell.scrollView setZoomScale:1.0 animated:YES];
-    }
+    [self dismissAimated:YES];
+}
+
+- (void)photosBrowseCell:(GKPhotosBrowseCell *)cell swipeForPercent:(CGFloat)percent
+{
+    self.pageLabel.hidden = percent < 1.0;
+    self.backgroundView.alpha = percent;
 }
 
 @end

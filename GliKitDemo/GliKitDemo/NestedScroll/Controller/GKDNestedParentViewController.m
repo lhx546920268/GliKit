@@ -90,8 +90,14 @@
     
     self.collectionView.gkNestedParent = YES;
     self.collectionView.gkNestedScrollEnabled = YES;
+    self.collectionView.showsVerticalScrollIndicator = NO;
 
     [super initViews];
+}
+
+- (BOOL)shouldAdjustContentInsetForSafeArea
+{
+    return NO;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

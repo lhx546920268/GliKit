@@ -10,6 +10,8 @@
 #import "GKDRowModel.h"
 #import <GliKitDemo-Swift.h>
 #import <GKAppUtils.h>
+#import <NSJSONSerialization+GKUtils.h>
+#import <SDWebImageDownloader.h>
 
 @interface GKParent : NSObject<NSCopying>
 
@@ -70,6 +72,33 @@ GKConvenientCopying
 
 @end
 
+@interface DemoView : UIView
+
+@end
+
+@implementation DemoView
+
+- (void)drawRect:(CGRect)rect
+{
+    
+}
+
+@end
+
+@interface GKDRootViewController ()
+
+@property(nonatomic, strong) UILabel *countLabel;
+
+@property(nonatomic, assign) NSInteger count;
+
+///
+@property(nonatomic, copy) NSString *dir;
+@property(nonatomic, copy) NSString *doc;
+@property(nonatomic, copy) NSString *imageDir;
+@property(nonatomic, strong) NSArray *files;
+
+@end
+
 @implementation GKDRootViewController
 
 - (void)viewDidLoad {
@@ -77,44 +106,147 @@ GKConvenientCopying
 
     self.navigationItem.title = GKAppUtils.appName;
     
-    NSTextStorage *textStorage = [NSTextStorage new];
-
-    CALayoutManager *layoutManager = [CALayoutManager new];
-    [textStorage addLayoutManager: layoutManager];
-
-    NSTextContainer *container = [CATextContainer new];
-    container.lineFragmentPadding = 0;
-    [layoutManager addTextContainer:container];
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:container];
-    textView.backgroundColor = UIColor.redColor;
-    textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
-    textView.text = @"အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊အမှတ်-၇၄၂၊ရွှေနှန်းဆီလမ်း၊မဟာစည်ရိပ်ကျောင်းတိုက်ဘေး၊မရမ်းကုန်းမြို့နယ်၊ရန်ကုန်မြို့၊";
-    [self.view addSubview:textView];
+//    UITextView *textView = [UITextView new];
+//    textView.text = @"လက်ခံသူအကောင့် nomnal 粗体";
+//    UIFont *font = [UIFont fontWithName:@"NotoSansMyanmar-Bold" size:15];
+//    textView.font = font;
+//    [self.view addSubview:textView];
+//
+//    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.leading.equalTo(20);
+//        make.top.equalTo(150);
+//        make.trailing.equalTo(-20);
+//        make.height.equalTo(100);
+//    }];
+//
+//    textView = [UITextView new];
+//    textView.text = @"လက်ခံသူအကောင့် nomnal 粗体";
+//    font = [UIFont fontWithName:@"Oxygen-Bold" size:15];
+//    textView.font = font;
+//    [self.view addSubview:textView];
+//
+//    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.leading.equalTo(20);
+//        make.top.equalTo(280);
+//        make.trailing.equalTo(-20);
+//        make.height.equalTo(100);
+//    }];
+//
+//    DemoView *view = [DemoView new];
+//    [self.view addSubview:view];
+//
+//    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(0);
+//    }];
+//
+//    dispatch_main_after(1, ^{
+//        NSLog(@"%@", view.layer.contents);
+//    })
     
-    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(20);
-        make.top.equalTo(150);
-        make.trailing.equalTo(-20);
-        make.height.equalTo(100);
-    }];
+    self.datas = @[
+                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
+                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
+                   ];
 
-//    self.datas = @[
-//                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
-//                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-//                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
-//                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
-//                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
-//                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-//                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-//                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
-//                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
-//                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
-//                   ];
+
+    [self initViews];
+
+//    self.countLabel = [UILabel new];
+//    self.countLabel.text = @"0";
+//    self.countLabel.font = [UIFont boldSystemFontOfSize:40];
+//    [self.view addSubview:self.countLabel];
+//
+//    [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.center.equalTo(0);
+//    }];
     
+    [self gkSetLeftItemWithTitle:@"左边" action:@selector(start)];
+    
+    NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject;
+    NSString *dir = [doc stringByAppendingPathComponent:@"车"];
+    NSString *imageDir = [doc stringByAppendingPathComponent:@"图片"];
+    
+    NSFileManager *manager = NSFileManager.defaultManager;
+    self.files = [manager contentsOfDirectoryAtPath:dir error:nil];
+    self.dir = dir;
+    self.imageDir = imageDir;
+    self.doc = doc;
+}
 
-//    [self initViews];
+- (void)start
+{
+    [self downloadNext];
+}
 
-    [self gkSetLeftItemWithTitle:@"左边" action:nil];
+- (void)downloadNext
+{
+    if (self.count < self.files.count) {
+        [self downloadForFilename:self.files[self.count]];
+        self.countLabel.text = [NSString stringWithFormat:@"%ld", self.count + 1];
+    }
+}
+
+- (void)downloadForFilename:(NSString*) filename
+{
+    NSString *file = [self.dir stringByAppendingPathComponent:filename];
+    NSData *data = [NSData dataWithContentsOfFile:file];
+    NSDictionary *dic = [NSJSONSerialization gkDictionaryFromData:data];
+    NSArray *list = [[[dic gkDictionaryForKey:@"result"] gkDictionaryForKey:@"getSingleFilterInfo"] gkArrayForKey:@"pList"];
+    
+    NSString *imageDir = [self.imageDir stringByAppendingPathComponent:[filename stringByReplacingOccurrencesOfString:@".json" withString:@""]];
+    if (![NSFileManager.defaultManager fileExistsAtPath:imageDir isDirectory:nil]) {
+        if (![NSFileManager.defaultManager createDirectoryAtPath:imageDir withIntermediateDirectories:YES attributes:nil error:nil]) {
+            NSLog(@"下载失败 %@", filename);
+            self.count ++;
+            [self downloadNext];
+            return;
+        }
+    }
+    
+    NSInteger count = list.count;
+    if (count > 0) {
+        __block NSInteger totalCount = 0;
+        for (NSDictionary *dict in list) {
+            NSString *icon = [dict gkStringForKey:@"icon"];
+            if (![NSString isEmpty:icon]) {
+                NSString *title = [dict gkStringForKey:@"text"];
+                [SDWebImageDownloader.sharedDownloader downloadImageWithURL:[NSURL URLWithString:icon] completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                    
+                    totalCount ++;
+                    if (data) {
+                        NSString *suffix = [[icon componentsSeparatedByString:@"."] lastObject];
+                        if ([NSString isEmpty:suffix]) {
+                            suffix = @"png";
+                        }
+                        NSString *imageFile = [imageDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", title, suffix]];
+                        if (![data writeToFile:imageFile atomically:YES]) {
+                            NSLog(@"写入文件失败 %@ - %@", filename, title);
+                        }
+                    } else {
+                        NSLog(@"下载失败 %@ - %@", filename, title);
+                    }
+                    if (totalCount >= count) {
+                        self.count ++;
+                        [self downloadNext];
+                    }
+                }];
+            } else {
+                totalCount ++;
+            }
+        }
+    } else {
+        NSLog(@"下载失败 %@", filename);
+        self.count ++;
+        [self downloadNext];
+    }
 }
 
 - (void)initViews
@@ -123,6 +255,16 @@ GKConvenientCopying
     self.separatorEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     [self registerClass:RootListCell.class];
     [super initViews];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    NSLog(@"velocity %f %f, %f, %f", [scrollView.panGestureRecognizer velocityInView:scrollView].y, velocity.y, scrollView.contentOffset.y, targetContentOffset->y);
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"%f", scrollView.contentOffset.y);
 }
 
 //MARK: UITableViewDelegate
@@ -155,7 +297,7 @@ GKConvenientCopying
     }
     
     UIFont *font = [UIFont fontWithName:@"NotoSansMyanmar-Medium" size:17];
-    NSLog(@"%@", font);
+//    NSLog(@"%@", font);
     cell.textLabel.font = font;
     cell.textLabel.textColor = UIColor.blackColor;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

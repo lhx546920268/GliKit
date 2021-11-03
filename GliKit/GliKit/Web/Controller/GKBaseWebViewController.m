@@ -124,10 +124,6 @@ static WKProcessPool *sharedProcessPool;
         _webView.allowsLinkPreview = NO;
     }
     
-    if(@available(iOS 11.0, *)){
-        _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
-    
     _webView.navigationDelegate = self;
     _webView.opaque = NO;
     _webView.UIDelegate = self;

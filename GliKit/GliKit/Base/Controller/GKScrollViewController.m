@@ -40,7 +40,7 @@
     if(_scrollView != scrollView){
         _scrollView = scrollView;
         if (@available(iOS 11.0, *)) {
-            if([_scrollView isKindOfClass:UITableView.class] || [_scrollView isKindOfClass:UICollectionView.class]){
+            if(self.shouldAdjustContentInsetForSafeArea && ([_scrollView isKindOfClass:UITableView.class] || [_scrollView isKindOfClass:UICollectionView.class])){
                 _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentScrollableAxes;
             } else {
                 _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -48,6 +48,11 @@
         }
         !self.scrollViewDidChange ?: self.scrollViewDidChange(_scrollView);
     }
+}
+
+- (BOOL)shouldAdjustContentInsetForSafeArea
+{
+    return YES;
 }
 
 // MARK: - 加载视图
@@ -65,30 +70,6 @@
 - (void)reloadListData
 {
     
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    if(@available(iOS 11, *)){
-        if(self.scrollView){
-            UIEdgeInsets insets = self.scrollView.contentInset;
-            UIWindow *window = UIApplication.sharedApplication.delegate.window;
-            CGRect frame = [self.scrollView.superview convertRect:self.scrollView.frame toView:window];
-            if(CGRectGetMaxY(frame) > window.gkHeight - window.safeAreaInsets.bottom) {
-                insets.bottom = window.safeAreaInsets.bottom;
-            }
-            
-            if(self.refreshing){
-                insets.top = 0;
-            }
-            if(!self.refreshing && !self.loadingMore){
-                self.scrollView.contentInset = insets;
-            }
-            self.scrollView.gkLoadMoreControl.originalContentInset = insets;
-            self.scrollView.gkRefreshControl.originalContentInset = insets;
-        }
-    }
 }
 
 // MARK: - Refresh

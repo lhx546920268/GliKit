@@ -40,6 +40,11 @@
     [self initViews];
 }
 
+- (BOOL)shouldAdjustContentInsetForSafeArea
+{
+    return NO;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];

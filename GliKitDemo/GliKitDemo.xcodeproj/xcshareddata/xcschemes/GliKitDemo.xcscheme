@@ -75,11 +75,6 @@
       </EnvironmentVariables>
       <AdditionalOptions>
          <AdditionalOption
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "YES">
-         </AdditionalOption>
-         <AdditionalOption
             key = "MallocScribble"
             value = ""
             isEnabled = "YES">
