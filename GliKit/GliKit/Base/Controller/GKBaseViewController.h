@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "UIView+GKEmptyView.h"
+#import "GKCancelableTask.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class GKContainer,
-GKHttpTask,
-GKHttpMultiTasks,
 GKBaseViewModel,
 GKNavigationBar,
 GKSystemNavigationBar,
@@ -45,27 +44,8 @@ GKNavigationItemHelper;
 
 // MARK: - 内容视图
 
-///固定在顶部的视图 xib不要用
-@property(nonatomic, strong, nullable) UIView *topView;
-
-///固定在底部的视图 xib不要用
-@property(nonatomic, strong, nullable) UIView *bottomView;
-
-///内容视图 xib 不要用
-@property(nonatomic, strong, nullable) UIView *contentView;
-
 ///视图容器 self.view xib 不要用，如果 showAsDialog = YES，self.view将不再是 container 且 要自己设置container的约束
 @property(nonatomic, readonly, nullable) GKContainer *container;
-
-/// 设置顶部视图
-/// @param topView 顶部视图
-/// @param height 视图高度，GKWrapContent 为自适应
-- (void)setTopView:(nullable UIView *)topView height:(CGFloat) height;
-
-/// 设置底部视图
-/// @param bottomView 底部视图
-/// @param height 视图高度，GKWrapContent 为自适应
-- (void)setBottomView:(nullable UIView *)bottomView height:(CGFloat) height;
 
 // MARK: - 导航栏
 
@@ -94,19 +74,45 @@ GKNavigationItemHelper;
 
 /// 添加需要取消的请求 在dealloc
 /// @param task 请求
-- (void)addCancelableTask:(GKHttpTask*) task;
+- (void)addCancelableTask:(id<GKCancelableTask>) task;
 
 /// @param cancel 是否取消相同的任务 通过 task.name 来判断
-- (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel;
+- (void)addCancelableTask:(id<GKCancelableTask>) task cancelTheSame:(BOOL) cancel;
 
-///添加需要取消的请求队列 在 dealloc
-- (void)addCancelableTasks:(GKHttpMultiTasks*) tasks;
-
-///加载页面数据 第一次加载 或者 网络错误重新加载
+/// 加载页面数据 第一次加载 或者 网络错误重新加载
 - (void)gkReloadData NS_REQUIRES_SUPER;
 
-///数据加载完成回调 子类重写
+/// 数据加载完成回调 子类重写
 - (void)onLoadData;
+
+// MARK: - 手势
+
+/// 手势代理
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
+
+@end
+
+///用于 GKContainer 的扩展
+@interface GKBaseViewController (GKContainerExtension)
+
+///固定在顶部的视图 xib不要用
+@property(nonatomic, strong, nullable) UIView *topView;
+
+///固定在底部的视图 xib不要用
+@property(nonatomic, strong, nullable) UIView *bottomView;
+
+///内容视图 xib 不要用
+@property(nonatomic, strong, nullable) UIView *contentView;
+
+/// 设置顶部视图
+/// @param topView 顶部视图
+/// @param height 视图高度，GKWrapContent 为自适应
+- (void)setTopView:(nullable UIView *)topView height:(CGFloat) height;
+
+/// 设置底部视图
+/// @param bottomView 底部视图
+/// @param height 视图高度，GKWrapContent 为自适应
+- (void)setBottomView:(nullable UIView *)bottomView height:(CGFloat) height;
 
 @end
 

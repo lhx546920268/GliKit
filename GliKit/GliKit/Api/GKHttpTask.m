@@ -55,7 +55,10 @@ static NSMutableSet* GKSharedTasks()
     return self;
 }
 
-// MARK: - 参数
+- (NSString *)taskKey
+{
+    return self.name;
+}
 
 - (NSString*)name
 {

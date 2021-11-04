@@ -27,6 +27,9 @@ Pod::Spec.new do |spec|
   spec.source_files  = "GliKit/**/*.{h,m}"
   spec.dependency 'SDWebImage', '~> 5.9.2'
   spec.dependency 'Masonry', '~> 1.1.0'
-  spec.dependency 'AFNetworking', '~> 4.0.0'
+  spec.dependency 'AFNetworking/NSURLSession', '~> 4.0.1'
+  spec.dependency 'AFNetworking/Reachability', '~> 4.0.1'
+  spec.dependency 'AFNetworking/Security', '~> 4.0.1'
+  spec.dependency 'AFNetworking/Serialization', '~> 4.0.1'
   spec.dependency 'FMDB', '~> 2.7.5'
 end

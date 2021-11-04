@@ -91,6 +91,12 @@ GKConvenientCopying
 
 @property(nonatomic, assign) NSInteger count;
 
+
+
+@end
+
+@interface GKDRootViewController ()
+
 ///
 @property(nonatomic, copy) NSString *dir;
 @property(nonatomic, copy) NSString *doc;

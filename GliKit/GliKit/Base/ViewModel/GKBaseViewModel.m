@@ -58,19 +58,14 @@
     
 }
 
-- (void)addCancelableTask:(GKHttpTask*) task
+- (void)addCancelableTask:(id<GKCancelableTask>)task
 {
     [self.viewController addCancelableTask:task];
 }
 
-- (void)addCancelableTask:(GKHttpTask*) task cancelTheSame:(BOOL) cancel
+- (void)addCancelableTask:(id<GKCancelableTask>)task cancelTheSame:(BOOL)cancel
 {
     [self.viewController addCancelableTask:task cancelTheSame:cancel];
-}
-
-- (void)addCancelableTasks:(GKHttpMultiTasks*) tasks
-{
-    [self.viewController addCancelableTasks:tasks];
 }
 
 - (void)reloadData

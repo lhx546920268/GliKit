@@ -9,9 +9,17 @@ target 'GliKit' do
   # Pods for GliKit
   pod 'SDWebImage', '~> 5.9.2'
   pod 'Masonry', '~> 1.1.0'
-  pod 'AFNetworking', '~> 4.0.1'
+  pod 'AFNetworking', '~> 4.0.1', :subspecs => ["NSURLSession", "Reachability", "Security", "Serialization"]
   
   #数据库
   pod 'FMDB', '~> 2.7.5'
 
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+        end
+    end
 end

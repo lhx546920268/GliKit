@@ -191,6 +191,7 @@
 		CE1CAA4025821D8800941773 /* GKSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKSwipeCell.m; sourceTree = "<group>"; };
 		CE1CAA4425821E9A00941773 /* GKCollectionViewSwipeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewSwipeCell.h; sourceTree = "<group>"; };
 		CE1CAA4525821E9A00941773 /* GKCollectionViewSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewSwipeCell.m; sourceTree = "<group>"; };
+		CE21683E2733964E00DADC23 /* GKCancelableTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCancelableTask.h; sourceTree = "<group>"; };
 		CE27D6DB25BFC6EE0082798D /* GKItemSizeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKItemSizeModel.h; sourceTree = "<group>"; };
 		CE27D6DD25BFC7540082798D /* GKRowHeightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRowHeightModel.h; sourceTree = "<group>"; };
 		CE2A841626D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewStaggerLayoutAttributes.h; sourceTree = "<group>"; };
@@ -980,6 +981,7 @@
 				CED0D287230BC6250057D405 /* GKHttpTask.h */,
 				CED0D28B230BC6250057D405 /* GKHttpTask.m */,
 				CED0D286230BC6250057D405 /* GKHttpTaskDelegate.h */,
+				CE21683E2733964E00DADC23 /* GKCancelableTask.h */,
 			);
 			path = Api;
 			sourceTree = "<group>";

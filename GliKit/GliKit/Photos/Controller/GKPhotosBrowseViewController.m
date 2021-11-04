@@ -185,7 +185,7 @@
 {
     if (gestureRecognizer == _panGestureRecognizer) {
         //只支持垂直
-        if (self.scrollView.contentOffset.y <= -self.scrollView.adjustedContentInset.top) {
+        if (self.scrollView.contentOffset.y <= 0) {
             CGPoint velocity = [_panGestureRecognizer velocityInView:self.scrollView];
             return fabs(velocity.y) > fabs(velocity.x);
         } else {

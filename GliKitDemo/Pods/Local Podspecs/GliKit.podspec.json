@@ -20,8 +20,17 @@
     "Masonry": [
       "~> 1.1.0"
     ],
-    "AFNetworking": [
-      "~> 4.0.0"
+    "AFNetworking/NSURLSession": [
+      "~> 4.0.1"
+    ],
+    "AFNetworking/Reachability": [
+      "~> 4.0.1"
+    ],
+    "AFNetworking/Security": [
+      "~> 4.0.1"
+    ],
+    "AFNetworking/Serialization": [
+      "~> 4.0.1"
     ],
     "FMDB": [
       "~> 2.7.5"

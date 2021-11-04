@@ -9,8 +9,6 @@
 #import "GKBaseViewController.h"
 #import "NSObject+GKUtils.h"
 #import "GKContainer.h"
-#import "GKHttpTask.h"
-#import "GKHttpMultiTasks.h"
 #import "UIViewController+GKKeyboard.h"
 #import "GKBaseViewModel.h"
 #import "GKNavigationBar.h"
@@ -26,7 +24,7 @@
 @interface GKBaseViewController ()<UIGestureRecognizerDelegate>
 
 ///用来在delloc之前 要取消的请求
-@property(nonatomic, strong) NSHashTable *currentTasks;
+@property(nonatomic, strong) NSHashTable<id<GKCancelableTask>> *currentTasks;
 
 ///点击回收键盘手势
 @property(nonatomic, strong) UITapGestureRecognizer *dismissKeyboardGestureRecognizer;
@@ -55,48 +53,6 @@
 - (UIUserInterfaceStyle)overrideUserInterfaceStyle
 {
     return UIUserInterfaceStyleLight;
-}
-
-// MARK: - 内容视图
-
-- (void)setTopView:(UIView *)topView
-{
-    [_container setTopView:topView];
-}
-
-- (void)setTopView:(UIView *)topView height:(CGFloat)height
-{
-    [_container setTopView:topView height:height];
-}
-
-- (UIView*)topView
-{
-    return _container.topView;
-}
-
-- (void)setBottomView:(UIView *)bottomView
-{
-    [_container setBottomView:bottomView];
-}
-
-- (void)setBottomView:(UIView *)bottomView height:(CGFloat)height
-{
-    [_container setBottomView:bottomView height:height];
-}
-
-- (UIView*)bottomView
-{
-    return _container.bottomView;
-}
-
-- (void)setContentView:(UIView *)contentView
-{
-    [_container setContentView:contentView];
-}
-
-- (UIView*)contentView
-{
-    return _container.contentView;
 }
 
 // MARK: - View Life Cycle
@@ -322,37 +278,27 @@
     return _currentTasks;
 }
 
-- (void)addCancelableTask:(GKHttpTask*) task
+- (void)addCancelableTask:(id<GKCancelableTask>)task
 {
     [self addCancelableTask:task cancelTheSame:YES];
 }
 
-- (void)addCancelableTask:(GKHttpTask *)task cancelTheSame:(BOOL)cancel
+- (void)addCancelableTask:(id<GKCancelableTask>)task cancelTheSame:(BOOL)cancel
 {
     if(cancel){
-        [self cancelTaskforName:task.name];
+        [self cancelTaskforKey:task.taskKey];
     }
     if(task){
         [self.currentTasks addObject:task];
     }
 }
 
-- (void)addCancelableTasks:(GKHttpMultiTasks*) tasks
-{
-    if(tasks){
-        [self.currentTasks addObject:tasks];
-    }
-}
-
 ///移除无效的请求
-- (void)cancelTaskforName:(NSString*) name
+- (void)cancelTaskforKey:(NSString*) key
 {
-    for(id obj in _currentTasks){
-        if([obj isKindOfClass:GKHttpTask.class]){
-            GKHttpTask *task = (GKHttpTask*)obj;
-            if([task.name isEqualToString:name]){
-                [task cancel];
-            }
+    for(id<GKCancelableTask> task in _currentTasks){
+        if([task.taskKey isEqualToString:key]){
+            [task cancel];
         }
     }
 }
@@ -372,14 +318,8 @@
 - (void)dealloc
 {
     //取消正在执行的请求
-    for(id obj in _currentTasks){
-        if([obj isKindOfClass:GKHttpTask.class]){
-            GKHttpTask *task = (GKHttpTask*)obj;
-            [task cancel];
-        }else if ([obj isKindOfClass:GKHttpMultiTasks.class]){
-            GKHttpMultiTasks *tasks = (GKHttpMultiTasks*)obj;
-            [tasks cancelAllTasks];
-        }
+    for(id<GKCancelableTask> task in _currentTasks){
+        [task cancel];
     }
 }
 
@@ -420,7 +360,54 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    return touch.view == self.view;
+    if (gestureRecognizer == self.dismissKeyboardGestureRecognizer) {
+        return touch.view == self.view;
+    }
+    return YES;
+}
+
+@end
+
+@implementation GKBaseViewController(GKContainerExtension)
+
+- (void)setTopView:(UIView *)topView
+{
+    [_container setTopView:topView];
+}
+
+- (void)setTopView:(UIView *)topView height:(CGFloat)height
+{
+    [_container setTopView:topView height:height];
+}
+
+- (UIView*)topView
+{
+    return _container.topView;
+}
+
+- (void)setBottomView:(UIView *)bottomView
+{
+    [_container setBottomView:bottomView];
+}
+
+- (void)setBottomView:(UIView *)bottomView height:(CGFloat)height
+{
+    [_container setBottomView:bottomView height:height];
+}
+
+- (UIView*)bottomView
+{
+    return _container.bottomView;
+}
+
+- (void)setContentView:(UIView *)contentView
+{
+    [_container setContentView:contentView];
+}
+
+- (UIView*)contentView
+{
+    return _container.contentView;
 }
 
 @end

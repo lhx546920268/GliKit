@@ -43,6 +43,9 @@ static NSMutableSet* GKSharedContainers()
 ///锁
 @property(nonatomic, strong) GKLock *lock;
 
+///uuid
+@property(nonatomic, copy) NSString *uuid;
+
 @end
 
 @implementation GKHttpMultiTasks
@@ -59,6 +62,14 @@ static NSMutableSet* GKSharedContainers()
     }
     
     return self;
+}
+
+- (NSString *)uuid
+{
+    if (!_uuid) {
+        _uuid = NSUUID.UUID.UUIDString;
+    }
+    return _uuid;
 }
 
 - (void)addTask:(GKHttpTask *)task
@@ -189,6 +200,18 @@ static NSMutableSet* GKSharedContainers()
             [self task:task didComplete:task.isApiSuccess || (!task.isNetworkError && self.onlyFlagNetworkError)];
         }
     })
+}
+
+// MARK: - GKCancelableTask
+
+- (NSString *)taskKey
+{
+    return self.uuid;
+}
+
+- (void)cancel
+{
+    [self cancelAllTasks];
 }
 
 @end

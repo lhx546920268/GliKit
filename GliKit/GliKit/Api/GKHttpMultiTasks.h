@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GKCancelableTask.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class GKHttpTask;
 
 ///多任务处理
-@interface GKHttpMultiTasks : NSObject
+@interface GKHttpMultiTasks : NSObject<GKCancelableTask>
 
 ///当有一个任务失败时，是否取消所有任务 default `YES`
 @property(nonatomic, assign) BOOL shouldCancelAllTaskWhileOneFail;

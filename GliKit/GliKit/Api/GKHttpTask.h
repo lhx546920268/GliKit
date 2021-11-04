@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GKHttpTaskDelegate.h"
+#import "GKCancelableTask.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,7 +35,7 @@ static const int GKHttpFirstPage = 1;
  单个http请求任务 子类可重写对应的方法
  不需要添加一个属性来保持 strong ，任务开始后会添加到一个全局 队列中
  */
-@interface GKHttpTask : NSObject
+@interface GKHttpTask : NSObject<GKCancelableTask>
 
 // MARK: - http参数
 
