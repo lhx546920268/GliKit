@@ -10,6 +10,7 @@
 		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
 		CE0D6B9225F716A500F3459E /* GKDLoadMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */; };
 		CE134D5F24F363BE00F34CB4 /* GKDBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */; };
+		CE1641DC274397BA0064B2CE /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1641DB274397BA0064B2CE /* CoreAudio.framework */; };
 		CE1AFE26272A3E2B0029B42D /* NotoSansMyanmar.ttc in Resources */ = {isa = PBXBuildFile; fileRef = CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */; };
 		CE2C55212727E3B30047DA92 /* Oxygen-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */; };
 		CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */; };
@@ -76,6 +77,7 @@
 		CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDLoadMonitor.m; sourceTree = "<group>"; };
 		CE134D5D24F363BE00F34CB4 /* GKDBannerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDBannerViewController.h; sourceTree = "<group>"; };
 		CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDBannerViewController.m; sourceTree = "<group>"; };
+		CE1641DB274397BA0064B2CE /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = NotoSansMyanmar.ttc; sourceTree = "<group>"; };
 		CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oxygen-Bold.ttf"; sourceTree = "<group>"; };
 		CE37C679233B49AF00C4F196 /* GKDNormalEmptyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNormalEmptyViewController.h; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE1641DC274397BA0064B2CE /* CoreAudio.framework in Frameworks */,
 				1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +198,7 @@
 		9BB3C0682925525264F42BDB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE1641DB274397BA0064B2CE /* CoreAudio.framework */,
 				4FD52519E97361498535A3AF /* libPods-GliKitApp.a */,
 				EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */,
 			);
@@ -547,7 +551,7 @@
 			attributes = {
 				CLASSPREFIX = GKD;
 				DefaultBuildSystemTypeForWorkspace = Latest;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = luohaixiong;
 				TargetAttributes = {
 					CEE8C88E231911E900E7CA75 = {
@@ -850,6 +854,10 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/libwebp/src",
+				);
 			};
 			name = Debug;
 		};
@@ -901,6 +909,10 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "GliKitDemo/GliKitDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/libwebp/src",
+				);
 			};
 			name = Release;
 		};

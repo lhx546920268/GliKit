@@ -218,7 +218,7 @@
 - (void)setLampOpen:(BOOL)open
 {
     AVCaptureDevice *device = [self backFacingCamera];
-    
+
     if(device.hasTorch){
         
         [device lockForConfiguration:nil];

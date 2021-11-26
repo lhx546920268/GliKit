@@ -10,6 +10,7 @@ import UIKit
 
 class RootListCell: GKTableViewSwipeCell {
     
+    @objc
     public let titleLabel: UILabel = {
         let label = UILabel()
         
@@ -22,7 +23,7 @@ class RootListCell: GKTableViewSwipeCell {
         contentView.addSubview(titleLabel)
         titleLabel.mas_makeConstraints { (make) in
             make?.leading.equalTo()(15)
-            make?.centerX.equalTo()
+            make?.centerY.equalTo()
         }
         
     }

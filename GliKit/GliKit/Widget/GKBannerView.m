@@ -446,12 +446,12 @@
             if(self.shouldScrollCircularly){
                 if(page == 0){
                     if(self.contentOffset.x > scrollView.contentOffset.x){
-                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth * _numberOfCells, 0, pagewidth, scrollView.gkHeight) animated:NO]; // 最后+1,循环到第1页
+                        self.collectionView.contentOffset = CGPointMake(pagewidth * _numberOfCells, 0); // 最后+1,循环到第1页
                         self.pageControl.currentPage = _numberOfCells - 1;
                     }
                 }else if (page >= (_numberOfCells + 1)){
                     if(self.contentOffset.x < scrollView.contentOffset.x){
-                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth, 0, pagewidth, scrollView.gkHeight) animated:NO]; // 最后+1,循环第1页
+                        self.collectionView.contentOffset = CGPointMake(pagewidth, 0); // 最后+1,循环第1页
                         self.pageControl.currentPage = 0;
                     }
                 }else{
@@ -469,12 +469,12 @@
             if(self.shouldScrollCircularly){
                 if(page == 0){
                     if(self.contentOffset.y > scrollView.contentOffset.y){
-                        [self.collectionView scrollRectToVisible:CGRectMake(0, pageHeight * _numberOfCells, scrollView.gkWidth, pageHeight) animated:NO]; // 最后+1,循环到第1页
+                        self.collectionView.contentOffset = CGPointMake(0, pageHeight * _numberOfCells); // 最后+1,循环到第1页
                         self.pageControl.currentPage = _numberOfCells - 1;
                     }
                 }else if (page >= (_numberOfCells + 1)){
                     if(self.contentOffset.y < scrollView.contentOffset.y){
-                        [self.collectionView scrollRectToVisible:CGRectMake(0, pageHeight, scrollView.gkWidth, pageHeight) animated:NO]; // 最后+1,循环第1页
+                        self.collectionView.contentOffset = CGPointMake(0, pageHeight);// 最后+1,循环第1页
                         self.pageControl.currentPage = 0;
                     }
                 }else{

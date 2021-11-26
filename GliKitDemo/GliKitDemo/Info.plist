@@ -31,6 +31,12 @@
     <string>Use your photo album to upload your avatar and post</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Use your photo album to upload your avatar and post</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Use your location to recommend post</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Use your location to recommend post</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Use your location to recommend post</string>
     <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
     <string>YES</string>
     <key>NSCameraUsageDescription</key>

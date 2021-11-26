@@ -184,15 +184,22 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if (gestureRecognizer == _panGestureRecognizer) {
-        //只支持垂直
-        if (self.scrollView.contentOffset.y <= 0) {
-            CGPoint velocity = [_panGestureRecognizer velocityInView:self.scrollView];
-            return fabs(velocity.y) > fabs(velocity.x);
-        } else {
-            return NO;
+        BOOL scrollEnabled = self.scrollView.contentSize.height > self.scrollView.gkHeight;
+        
+        BOOL isTop = self.scrollView.contentOffset.y <= 0;
+        BOOL isBottom = fabs(self.scrollView.contentOffset.y - self.scrollView.contentSize.height + self.scrollView.gkHeight) < 1.0;
+        if (isTop || (scrollEnabled && isBottom)) {
+            CGPoint velocity = [_panGestureRecognizer velocityInView:self];
+            if (fabs(velocity.y) > fabs(velocity.x)) {
+                if (scrollEnabled) {
+                    return (isTop && velocity.y > 0) || (isBottom && velocity.y < 0);
+                } else {
+                    return YES;
+                }
+            }
         }
     }
-    return YES;
+    return [super gestureRecognizerShouldBegin:gestureRecognizer];
 }
 
 // MARK: - UIScrollViewDelegate
