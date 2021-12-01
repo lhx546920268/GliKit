@@ -285,47 +285,65 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 
 - (void)showAsDialog
 {
+    [self showAsDialogAnimated:YES];
+}
+
+- (void)showAsDialogAnimated:(BOOL)animated
+{
     if(self.dialogShouldUseNewWindow){
         if(self.isDialogShowing){
             return;
         }
         [UIApplication.sharedApplication loadDialogWindowIfNeeded];
         [self setIsShowAsDialog:YES];
-        self.dialogShouldAnimate = YES;
+        self.dialogShouldAnimate = animated;
         if(self.dialogWindow.rootViewController){
             self.modalPresentationStyle = UIModalPresentationCustom;
-            [self.dialogWindow.rootViewController.gkTopestPresentedViewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
+            [self.dialogWindow.rootViewController.gkTopestPresentedViewController presentViewController:self animated:NO completion:nil];
         }else{
             self.dialogWindow.rootViewController = self;
-            !self.dialogShowCompletionHandler ?: self.dialogShowCompletionHandler();
+        }
+        
+        if (!animated) {
+            [self onDialogShowInternal];
         }
     }else{
-        [self showAsDialogInViewController:UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController];
+        [self showAsDialogInViewController:UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController animated:animated];
     }
 }
 
 - (void)showAsDialogInViewController:(UIViewController *)viewController
 {
-    [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil];
+    [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil animated:YES];
+}
+
+- (void)showAsDialogInViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil animated:animated];
 }
 
 - (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void (NS_NOESCAPE ^)(UIView *, UIView *))layoutHandler
 {
-    [self showAsDialogInViewController:viewController inPresentWay:NO layoutHandler:layoutHandler];
+    [self showAsDialogInViewController:viewController inPresentWay:NO layoutHandler:layoutHandler animated:YES];
 }
 
-- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (NS_NOESCAPE ^)(UIView *, UIView *))layoutHandler
+- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void (^)(UIView * _Nonnull, UIView * _Nonnull))layoutHandler animated:(BOOL)animated
+{
+    [self showAsDialogInViewController:viewController inPresentWay:NO layoutHandler:layoutHandler animated:animated];
+}
+
+- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (NS_NOESCAPE ^)(UIView *, UIView *))layoutHandler animated:(BOOL)animated
 {
     if(self.isDialogShowing){
         return;
     }
     [self setIsShowAsDialog:YES];
-    self.dialogShouldAnimate = YES;
+    self.dialogShouldAnimate = animated;
     
     if(inPresentWay){
         //设置使背景透明
         self.modalPresentationStyle = UIModalPresentationCustom;
-        [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
+        [viewController presentViewController:self animated:NO completion:nil];
     }else{
         [viewController.view addSubview:self.view];
         [viewController addChildViewController:self];
@@ -336,7 +354,10 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
                 make.edges.equalTo(viewController.view);
             }];
         }
-        !self.dialogShowCompletionHandler ?: self.dialogShowCompletionHandler();
+    }
+    
+    if (!animated) {
+        [self onDialogShowInternal];
     }
 }
 
@@ -353,6 +374,7 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
             switch (self.dialogShowAnimate) {
                 case GKDialogAnimateNone : {
                     self.dialogBackgroundView.alpha = 1.0;
+                    [self onDialogShowInternal];
                 }
                     break;
                 case GKDialogAnimateScale : {
@@ -368,6 +390,8 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
                         animation.duration = 0.25;
                         [self.dialog.layer addAnimation:animation forKey:@"scale"];
                         
+                    } completion:^(BOOL finished) {
+                        [self onDialogShowInternal];
                     }];
                 }
                     break;
@@ -382,6 +406,8 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
                         animation.toValue = @(self.dialog.layer.position.y);
                         animation.duration = 0.25;
                         [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    } completion:^(BOOL finished) {
+                        [self onDialogShowInternal];
                     }];
                 }
                     break;
@@ -397,13 +423,15 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
                         animation.toValue = @(self.dialog.layer.position.y);
                         animation.duration = 0.25;
                         [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    } completion:^(BOOL finished) {
+                        [self onDialogShowInternal];
                     }];
                 }
                     break;
                 case GKDialogAnimateCustom : {
                     
                     [self didExecuteDialogShowCustomAnimate:^(BOOL finish){
-                        
+                        [self onDialogShowInternal];
                     }];
                 }
                     break;
@@ -414,6 +442,14 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
     }
     
 }
+
+- (void)onDialogShowInternal
+{
+    !self.dialogShowCompletionHandler ?: self.dialogShowCompletionHandler();
+    [self onDialogShow];
+}
+
+- (void)onDialogShow{}
 
 - (void)dismissDialog
 {
@@ -543,13 +579,16 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 ///弹窗消失
 - (void)afterDialogDismissWithCompletion:(void(^)(void)) completion
 {
-    !completion ?: completion();
-    !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
     if(self.dialogShouldUseNewWindow && self.dialogWindow.rootViewController == self){
         self.dialogWindow.rootViewController = nil;
     }
+    !completion ?: completion();
+    !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
     [UIApplication.sharedApplication removeDialogWindowIfNeeded];
+    [self onDialogDismiss];
 }
+
+- (void)onDialogDismiss{}
 
 - (void)didExecuteDialogShowCustomAnimate:(void(^)(BOOL finish)) completion
 {

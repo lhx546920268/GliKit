@@ -80,15 +80,18 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 
 ///显示 如果 dialogShouldUseNewWindow，则在新的窗口上显示，否则在 window.rootViewController.topest 通过present方式显示
 - (void)showAsDialog;
+- (void)showAsDialogAnimated:(BOOL) animated;
 
 ///在指定viewController 上显示
 - (void)showAsDialogInViewController:(UIViewController *)viewController;
+- (void)showAsDialogInViewController:(UIViewController *)viewController animated:(BOOL) animated;
 
 
 /// 显示在指定viewControlelr
 /// @param viewController parent
 /// @param layoutHandler 布局回调 如果为空，则在viewController 上铺满
 - (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
+- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler animated:(BOOL) animated;
 
 ///隐藏
 - (void)dismissDialog;
@@ -103,6 +106,10 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 
 ///键盘弹出来，调整弹窗位置，子类可重写
 - (void)adjustDialogPosition;
+
+///弹窗显示 消失回调，子类可重写
+- (void)onDialogShow;
+- (void)onDialogDismiss;
 
 @end
 

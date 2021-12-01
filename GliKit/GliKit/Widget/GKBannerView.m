@@ -130,9 +130,16 @@
     [super layoutSubviews];
     self.isLayoutSubviews = YES;
     
-    if(!CGSizeEqualToSize(self.collectionView.frame.size, self.bounds.size)){
-        self.collectionView.frame = self.bounds;
-        [self fetchData];
+    CGSize size = self.collectionView.frame.size;
+    if(!CGSizeEqualToSize(size, self.bounds.size)){
+        if (size.height <= self.bounds.size.height && size.width <= self.bounds.size.width) {
+            self.collectionView.frame = self.bounds;
+            [self fetchData];
+        } else {
+            //缩小 需要先刷新数据，否则会抛出警告
+            [self fetchData];
+            self.collectionView.frame = self.bounds;
+        }
     }
 }
 
@@ -387,7 +394,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return collectionView.bounds.size;
+    CGSize size1 = self.frame.size;
+    CGSize size2 = collectionView.frame.size;
+    return CGSizeMake(MIN(size1.width, size2.width), MIN(size1.height, size2.height));
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

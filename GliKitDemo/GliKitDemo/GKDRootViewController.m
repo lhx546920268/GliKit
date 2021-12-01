@@ -244,21 +244,21 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        NSLog(@"%@", view.layer.contents);
 //    })
     
-    self.datas = @[
-                   [GKDRowModel modelWithTitle:@"အင်ဂျင်းပါဝါ (CC)" clazz:@"user/photo"],
-                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
-                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
-                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
-                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
-                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
-                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
-                   ];
-
-
-    [self initViews];
+//    self.datas = @[
+//                   [GKDRowModel modelWithTitle:@"အင်ဂျင်းပါဝါ (CC)" clazz:@"user/photo"],
+//                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
+//                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+//                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+//                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+//                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+//                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+//                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+//                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+//                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
+//                   ];
+//
+//
+//    [self initViews];
 
 //    self.countLabel = [UILabel new];
 //    self.countLabel.text = @"0";
@@ -300,7 +300,26 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        make.size.equalTo(CGSizeMake(200, 80));
 //    }];
     
-    self.geocoder = [CLGeocoder new];
+//    self.geocoder = [CLGeocoder new];
+    UIView *view = [UIView new];
+    view.backgroundColor = UIColor.redColor;
+    [self.view addSubview:view];
+    
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(100);
+        make.center.equalTo(0);
+    }];
+    
+    [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)]];
+}
+
+- (void)handleTap:(UITapGestureRecognizer*) tap
+{
+    static CGFloat size = 100;
+    [tap.view mas_updateConstraints:^(MASConstraintMaker *make) {
+        size = size == 100 ? 50 : 100;
+        make.size.equalTo(size);
+    }];
 }
 
 - (void)start
