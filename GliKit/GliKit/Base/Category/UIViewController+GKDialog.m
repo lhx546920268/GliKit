@@ -185,7 +185,7 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 {
     UITapGestureRecognizer *tap = objc_getAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey);
     if(!tap){
-        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissDialog)];
+        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapDialogBackground)];
         objc_setAssociatedObject(self, &GKTapDialogBackgroundGestureRecognizerKey, tap, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return tap;
@@ -279,6 +279,13 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 - (BOOL)isDialogViewDidLayoutSubviews
 {
     return [objc_getAssociatedObject(self, &GKIsDialogViewDidLayoutSubviewsKey) boolValue];
+}
+
+// MARK: - Action
+
+- (void)handleTapDialogBackground
+{
+    [self dismissDialog];
 }
 
 // MARK: - public method
@@ -584,8 +591,8 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
     }
     !completion ?: completion();
     !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
-    [UIApplication.sharedApplication removeDialogWindowIfNeeded];
     [self onDialogDismiss];
+    [UIApplication.sharedApplication removeDialogWindowIfNeeded];
 }
 
 - (void)onDialogDismiss{}

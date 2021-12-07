@@ -111,6 +111,9 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 - (void)onDialogShow;
 - (void)onDialogDismiss;
 
+///点击弹窗背景
+- (void)handleTapDialogBackground;
+
 @end
 
 NS_ASSUME_NONNULL_END

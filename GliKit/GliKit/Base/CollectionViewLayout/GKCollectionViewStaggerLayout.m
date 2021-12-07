@@ -436,6 +436,8 @@
     return nil;
 }
 
+// MARK: - 悬浮吸顶
+
 + (Class)invalidationContextClass
 {
     return GKCollectionViewLayoutInvalidationContext.class;
@@ -506,21 +508,6 @@
     return attr;
 }
 
-///获取某个区域对应的头部属性
-- (GKCollectionViewStaggerLayoutAttributes*)attributesForBounds:(CGRect) bounds
-{
-    GKCollectionViewStaggerLayoutAttributes *attributes = nil;
-    
-    for(GKCollectionViewStaggerLayoutAttributes *attr in self.attributes){
-        if(attr.sectionBeginning >= bounds.origin.y || attr.sectionEnd <= bounds.origin.y + bounds.size.height){
-            attributes = attr;
-            break;
-        }
-    }
-    
-    return attributes;
-}
-
 ///获取下一个需要悬浮的头部属性
 - (GKCollectionViewStaggerLayoutAttributes*)nextStickAttributesForSection:(NSUInteger) section
 {
@@ -534,6 +521,8 @@
     
     return attributes;
 }
+
+// MARK: - 装饰背景
 
 ///填充背景装饰
 - (void)fillDecoratorAttributesInRect:(CGRect) rect forAttributes:(NSMutableArray<UICollectionViewLayoutAttributes*>*) attributes

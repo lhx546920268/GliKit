@@ -143,10 +143,14 @@
                 type = [type stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                 
                 Class clazz1 = NSClassFromString(type);
-                value = [decoder decodeObjectOfClass:clazz1 forKey:name];
+                if (clazz1 != NULL) {
+                    value = [decoder decodeObjectOfClass:clazz1 forKey:name];
+                } else {
+                    value = [decoder decodeObjectForKey:name];
+                }
             }else{
                 value = [decoder decodeObjectForKey:name];
-                if(!value){
+                if(!value){ //基本数据类型不能为nil
                     value = @(0);
                 }
             }
