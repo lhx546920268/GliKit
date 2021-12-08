@@ -1,0 +1,6 @@
+module Pods_MobileRecharge {
+  umbrella header "Pods-MobileRecharge-umbrella.h"
+
+  export *
+  module * { export * }
+}

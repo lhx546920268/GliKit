@@ -1,0 +1,34 @@
+{
+  "name": "GameRecharge",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "accounting": "^0.4.1",
+    "react": "16.9.0",
+    "react-native": "0.61.2",
+    "core-js": "^3.4.0",
+    "js-md5": "^0.7.3",
+    "react-native-iphone-x-helper": "^1.2.1",
+    "react-native-linear-gradient": "^2.5.4",
+    "react-native-zego-framework": "^1.0.32",
+    "react-navigation": "^4.0.10",
+    "react-navigation-stack": "^1.9.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/runtime": "^7.7.2",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.57.0",
+    "react-test-renderer": "16.9.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
