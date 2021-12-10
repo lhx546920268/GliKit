@@ -8,6 +8,7 @@
 
 #import "GKDNormalSkeletonViewController.h"
 #import <UIView+GKSkeleton.h>
+#import <SDWebImage.h>
 
 @implementation SOLabel
 
@@ -96,12 +97,13 @@
     self.textField1.delegate = self;
     self.textField2.delegate = self;
     self.textField3.delegate = self;
-    
+    [UIStackView new];
     [self.imageView gkSetCornerRadius:20 corners:UIRectCornerTopRight rect:self.imageView.frame];
     self.imageView.userInteractionEnabled = YES;
     [self.imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)]];
     self.textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     self.textView.textContainerInset = UIEdgeInsetsZero;
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://cdn.weimob.com/saas/activity/bargain/css/font.svg?t=1509359605871"]];
 }
 
 

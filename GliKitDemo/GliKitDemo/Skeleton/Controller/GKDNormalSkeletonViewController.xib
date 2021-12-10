@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,13 +41,13 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是列表内容" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byh-QU-M4N">
-                            <rect key="frame" x="70" y="10" width="104" height="21"/>
+                            <rect key="frame" x="70" y="10" width="104" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是列表内容" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tlk-X8-9pN">
-                            <rect key="frame" x="70" y="39" width="104" height="21"/>
+                            <rect key="frame" x="70" y="38.5" width="104" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -93,10 +93,29 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Kj2-R7-CEI">
+                    <rect key="frame" x="20" y="395" width="335" height="110"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fFk-r7-UCt">
+                            <rect key="frame" x="0.0" y="0.0" width="158" height="110"/>
+                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5py-Hw-d3n">
+                            <rect key="frame" x="178" y="0.0" width="157" height="110"/>
+                            <color key="backgroundColor" systemColor="systemPinkColor"/>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="110" id="G9F-rZ-x5s"/>
+                    </constraints>
+                </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="Kj2-R7-CEI" firstAttribute="top" secondItem="wr8-FE-NOd" secondAttribute="bottom" constant="75" id="Bxq-I2-cE0"/>
+                <constraint firstAttribute="trailing" secondItem="Kj2-R7-CEI" secondAttribute="trailing" constant="20" id="KUt-fj-dAJ"/>
                 <constraint firstItem="5PE-vv-uga" firstAttribute="top" secondItem="cgO-zt-cPX" secondAttribute="top" constant="100" id="OPi-6x-maj"/>
+                <constraint firstItem="Kj2-R7-CEI" firstAttribute="leading" secondItem="cgO-zt-cPX" secondAttribute="leading" constant="20" id="VND-Qg-Nol"/>
                 <constraint firstItem="r4a-zm-Szd" firstAttribute="top" secondItem="5PE-vv-uga" secondAttribute="bottom" constant="10" id="WnC-Q4-qcZ"/>
                 <constraint firstItem="wr8-FE-NOd" firstAttribute="top" secondItem="r4a-zm-Szd" secondAttribute="bottom" constant="10" id="bqs-Oy-kWd"/>
                 <constraint firstItem="5PE-vv-uga" firstAttribute="centerX" secondItem="cgO-zt-cPX" secondAttribute="centerX" id="gBU-as-VFc"/>
@@ -115,6 +134,12 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

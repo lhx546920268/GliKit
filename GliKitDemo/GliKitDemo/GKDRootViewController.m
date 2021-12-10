@@ -244,21 +244,21 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        NSLog(@"%@", view.layer.contents);
 //    })
     
-//    self.datas = @[
-//                   [GKDRowModel modelWithTitle:@"အင်ဂျင်းပါဝါ (CC)" clazz:@"user/photo"],
-//                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-//                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
-//                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
-//                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
-//                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-//                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-//                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
-//                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
-//                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
-//                   ];
-//
-//
-//    [self initViews];
+    self.datas = @[
+                   [GKDRowModel modelWithTitle:@"အင်ဂျင်းပါဝါ (CC)" clazz:@"user/photo"],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
+                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+                   [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
+                   [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
+                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+                   [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
+                   [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
+                   ];
+
+
+    [self initViews];
 
 //    self.countLabel = [UILabel new];
 //    self.countLabel.text = @"0";
@@ -301,16 +301,6 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    }];
     
 //    self.geocoder = [CLGeocoder new];
-    UIView *view = [UIView new];
-    view.backgroundColor = UIColor.redColor;
-    [self.view addSubview:view];
-    
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(100);
-        make.center.equalTo(0);
-    }];
-    
-    [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)]];
 }
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
@@ -444,18 +434,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:23.10251 longitude:113.354397];
-    [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-        
-        NSLog(@"%@", error);
-            NSLog(@"%@", placemarks);
-    }];
 
-//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-//    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
-//        config.path = model.className;
-//    }];
+    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+        config.path = model.className;
+    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction

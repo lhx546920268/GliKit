@@ -344,6 +344,8 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
     if(self.isDialogShowing){
         return;
     }
+    
+    [self setIsDialogShowing:YES];
     [self setIsShowAsDialog:YES];
     self.dialogShouldAnimate = animated;
     
