@@ -9,9 +9,6 @@
 #import "GKDWebViewController.h"
 #import <GliKitDemo-Swift.h>
 
-NSString *const abc = @"";
-const NSString  *bcd = @"xx";
-
 @interface GKDWebViewController ()
 
 @end
@@ -22,8 +19,7 @@ const NSString  *bcd = @"xx";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    bcd = @"";
-    self.URL = [NSURL URLWithString:@"https://devtest.zegobird.com:11111/public/pages/conpun/index.html"];//[NSBundle.mainBundle URLForResource:@"test" withExtension:@"html"];
+    self.URL = [NSURL URLWithString:@"https://www.baidu.com"]; //[NSBundle.mainBundle URLForResource:@"test" withExtension:@"html"];
     [self loadWebContent];
 }
 

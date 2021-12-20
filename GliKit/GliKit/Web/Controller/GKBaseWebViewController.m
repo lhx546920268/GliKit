@@ -125,11 +125,9 @@ static WKProcessPool *sharedProcessPool;
     }
     
     _webView.navigationDelegate = self;
-    _webView.opaque = NO;
+    //_webView.opaque = NO; //背景透明，开了可能会有性能问题
     _webView.UIDelegate = self;
     _webView.scrollView.delegate = self;
-    _webView.scrollView.backgroundColor = [UIColor clearColor];
-    _webView.backgroundColor = [UIColor clearColor];
     [_webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
     [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
     [contentView insertSubview:_webView belowSubview:progressView];

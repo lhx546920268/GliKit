@@ -71,7 +71,7 @@ static NSString *sharedUUID = nil;
             uuid = [GKKeyChainStore stringForKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
             
             if([NSString isEmpty:uuid]){
-                uuid = NSUUID.new.UUIDString;
+                uuid = [NSUUID UUID].UUIDString;
                 [GKKeyChainStore setString:uuid forKey:key service:service accessGroup:UIApplication.gkKeychainAcessGroup];
             }
             
