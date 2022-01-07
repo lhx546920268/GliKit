@@ -10,10 +10,15 @@
 
 static CGFloat appSeparatorHeight = 0;
 static CGFloat appNavigationBarMargin = 15;
-static UIStatusBarStyle appStatusBarStyle = UIStatusBarStyleDefault;
+static UIStatusBarStyle appStatusBarStyle;
 static NSString *appKeychainAccessGroup = nil;
 
 @implementation UIApplication (GKTheme)
+
++ (void)load
+{
+    appStatusBarStyle = UIApplication.gkDarkStatusBarStyle;
+}
 
 + (CGFloat)gkSeparatorHeight
 {
@@ -60,6 +65,15 @@ static NSString *appKeychainAccessGroup = nil;
 + (void)setGkStatusBarStyle:(UIStatusBarStyle)gkStatusBarStyle
 {
     appStatusBarStyle = gkStatusBarStyle;
+}
+
++ (UIStatusBarStyle)gkDarkStatusBarStyle
+{
+    if (@available(iOS 13, *)) {
+        return UIStatusBarStyleDarkContent;
+    } else {
+        return UIStatusBarStyleDefault;
+    }
 }
 
 + (CGFloat)gkStatusBarHeight

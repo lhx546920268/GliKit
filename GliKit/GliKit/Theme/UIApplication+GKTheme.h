@@ -26,6 +26,9 @@
 ///状态栏样式
 @property (class, nonatomic, assign) UIStatusBarStyle gkStatusBarStyle;
 
+///兼容的dark 样式
+@property(class, nonatomic, readonly) UIStatusBarStyle gkDarkStatusBarStyle;
+
 ///状态栏高度
 @property (class, nonatomic, readonly) CGFloat gkStatusBarHeight;
 

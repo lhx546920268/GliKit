@@ -18,6 +18,7 @@
 #import "SDWebImagePrefetcher.h"
 #import <SDImageCache.h>
 #import "UIViewController+GKSafeAreaCompatible.h"
+#import "UIApplication+GKTheme.h"
 
 @implementation GKPhotosBrowseModel
 
@@ -423,7 +424,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIApplication.gkDarkStatusBarStyle;
 }
 
 ///显示完成

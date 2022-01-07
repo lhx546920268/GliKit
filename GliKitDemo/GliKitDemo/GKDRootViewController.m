@@ -435,10 +435,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
-        config.path = model.className;
-    }];
+    [UIApplication.sharedApplication openURL:[NSURL URLWithString:@"zegocity://www.zegocity.com/post/list?cateId=39"]];
+//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+//    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+//        config.path = model.className;
+//    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction

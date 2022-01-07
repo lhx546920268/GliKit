@@ -45,7 +45,7 @@
         self.hidesBottomBarWhenPushed = YES;
         self.shouldCreateNavigationBar = YES;
         self.modalPresentationStyle = UIModalPresentationFullScreen;
-        self.statusBarStyle = UIStatusBarStyleDefault;
+        self.statusBarStyle = UIApplication.gkDarkStatusBarStyle;
     }
     return self;
 }
