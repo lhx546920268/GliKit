@@ -13,13 +13,13 @@
 - (void)gkAddArrowWithStart:(CGPoint)start end:(CGPoint)end angle:(CGFloat)angle length:(CGFloat)length
 {
     //不一定是直线
-    CGFloat extraAngle = atan(fabs(start.y - end.y) / fabs(start.x - end.x));
+    CGFloat extraAngle = atan((end.y - start.y) / (end.x - start.x));
     
-    CGFloat angle1 = angle + extraAngle;
+    CGFloat angle1 = angle - extraAngle;
     [self moveToPoint:start];
     [self addLineToPoint:CGPointMake(start.x + cos(angle1) * length, start.y - sin(angle1) * length)];
     
-    CGFloat angle2 = angle - extraAngle;
+    CGFloat angle2 = angle + extraAngle;
     [self moveToPoint:start];
     [self addLineToPoint:CGPointMake(start.x + cos(angle2) * length, start.y + sin(angle2) * length)];
 }
