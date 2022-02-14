@@ -136,7 +136,11 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
     [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
 
-    
+    [UIView animateWithDuration:0 delay:0 options:0 animations:^{
+            
+        } completion:^(BOOL finished) {
+            
+        }];
 //    CFRunLoopObserverRef observer = CFRunLoopObserverCreate(NULL, kCFRunLoopAllActivities, YES, 0, runLoopObserverCallBack, NULL);
 //    CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopCommonModes);
 //    CFRelease(observer);
@@ -177,6 +181,26 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
 //
 //    TestOne *one1 = CFBridgingRelease(obj1);
 //    [one1 print];
+    
+    dispatch_queue_t queue = dispatch_queue_create("xx", DISPATCH_QUEUE_CONCURRENT);
+    
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < 10000; i ++) {
+            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMd];
+            if (time.length != 10) {
+                NSLog(@"10 diff");
+            }
+        }
+    });
+    
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < 10000; i ++) {
+            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMdHm];
+            if (time.length != 16) {
+                NSLog(@"16 diff");
+            }
+        }
+    });
     
     return YES;
 }

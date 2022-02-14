@@ -10,6 +10,7 @@
 #import <BackgroundTasks/BackgroundTasks.h>
 #import "EmptyView/Controller/GKDEmptyViewController.h"
 
+@import CoreText;
 @import CoreAudio;
 
 @interface GKInnterModel : NSObject
@@ -26,6 +27,7 @@
 
 - (void)test
 {
+    
     [self test];
     NSLog(@"test %@", self.name);
 }

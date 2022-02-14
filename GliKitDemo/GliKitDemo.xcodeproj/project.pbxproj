@@ -551,7 +551,7 @@
 			attributes = {
 				CLASSPREFIX = GKD;
 				DefaultBuildSystemTypeForWorkspace = Latest;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = luohaixiong;
 				TargetAttributes = {
 					CEE8C88E231911E900E7CA75 = {

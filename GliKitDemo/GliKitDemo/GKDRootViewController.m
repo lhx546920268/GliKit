@@ -93,87 +93,65 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 @interface LuckyDrawView : UIView
 
-@property(nonatomic,assign) CGPoint previousPoint1;
-@property(nonatomic,assign) CGPoint previousPoint2;
-@property(nonatomic,assign) CGPoint currentPoint;
-@property(nonatomic,assign) CGFloat lineWidth;
-
 @end
 
 @implementation LuckyDrawView
-{
-    CGMutablePathRef path;
-}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.lineWidth = 30;
         self.opaque = NO;
-        path = CGPathCreateMutable();
     }
     return self;
 }
 
 - (void)dealloc
 {
-    CGPathRelease(path);
+
 }
 
 - (void)drawRect:(CGRect)rect
 {
+    [UIColor.whiteColor set];
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, UIColor.redColor.CGColor);
-    CGContextAddRect(context, rect);
-    CGContextFillPath(context);
-    
-    CGContextAddPath(context, path);
     CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextSetLineWidth(context, self.lineWidth);
-    CGContextSetStrokeColorWithColor(context, UIColor.clearColor.CGColor);
-    CGContextSetBlendMode(context, kCGBlendModeClear);
+    CGContextSetLineJoin(context, kCGLineJoinRound);
+    CGContextSetLineWidth(context, 2);
+    
+    const CGFloat components[] = {3, 3};
+    CGContextSetLineDash(context, 0, components, 2);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    CGPoint point1 = CGPointMake(10, 10);
+    CGPoint point2 = CGPointMake(20, rect.size.height / 2);
+    
+    [path moveToPoint:point1];
+    [path addLineToPoint:point2];
+//    [path addQuadCurveToPoint:CGPointMake(rect.size.width, rect.size.height - 10) controlPoint:point2];
+    
+    CGContextAddPath(context, path.CGPath);
     CGContextStrokePath(context);
-}
+    
+    
+    CGFloat extraAngle = atan((point2.y - point1.y) / (point2.x - point1.x));
+    CGFloat angle = 30.0 / 180.0 * M_PI - extraAngle;
+    
+    CGFloat radius = 8;
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    self.previousPoint1 = [touch previousLocationInView:self];
-    self.currentPoint = [touch locationInView:self];
-}
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    self.previousPoint2 = self.previousPoint1;
-    self.previousPoint1 = [touch previousLocationInView:self];
-    self.currentPoint = [touch locationInView:self];
+    NSLog(@"sin %f", sin(angle) * radius);
+    NSLog(@"cos %f", cos(angle) * radius);
     
-    CGRect bounds = [self addPathPreviousPreviousPoint:self.previousPoint2 withPreviousPoint:self.previousPoint1 withCurrentPoint:self.currentPoint];
+    CGContextSetLineDash(context, 0, NULL, 0);
+    path = [UIBezierPath bezierPath];
+    [path moveToPoint:point1];
+    [path addLineToPoint:CGPointMake(point1.x + cos(angle) * radius, point1.y - sin(angle) * radius)];
     
-    CGRect drawBox = bounds;
-    drawBox.origin.x -= self.lineWidth * 2.0;
-    drawBox.origin.y -= self.lineWidth * 2.0;
-    drawBox.size.width += self.lineWidth * 4.0;
-    drawBox.size.height += self.lineWidth * 4.0;
+    angle = 30.0 / 180.0 * M_PI + extraAngle;
+    [path moveToPoint:point1];
+    [path addLineToPoint:CGPointMake(point1.x + cos(angle) * radius, point1.y + sin(angle) * radius)];
+    CGContextAddPath(context, path.CGPath);
     
-    [self setNeedsDisplayInRect:drawBox];
-}
-
-- (CGRect)addPathPreviousPreviousPoint:(CGPoint)p2Point withPreviousPoint:(CGPoint)p1Point withCurrentPoint:(CGPoint)cpoint {
-    
-    CGPoint mid1 = midPoint(p1Point, p2Point);
-    CGPoint mid2 = midPoint(cpoint, p1Point);
-    CGMutablePathRef subpath = CGPathCreateMutable();
-    CGPathMoveToPoint(subpath, NULL, mid1.x, mid1.y);
-    CGPathAddQuadCurveToPoint(subpath, NULL, p1Point.x, p1Point.y, mid2.x, mid2.y);
-    CGRect bounds = CGPathGetBoundingBox(subpath);
-    
-    CGPathAddPath(path, NULL, subpath);
-    CGPathRelease(subpath);
-    
-    return bounds;
+    CGContextStrokePath(context);
 }
 
 @end
@@ -258,7 +236,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                    ];
 
 
-    [self initViews];
+//    [self initViews];
 
 //    self.countLabel = [UILabel new];
 //    self.countLabel.text = @"0";
@@ -293,12 +271,13 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        make.size.equalTo(CGSizeMake(200, 80));
 //    }];
 //
-//    LuckyDrawView *view = [LuckyDrawView new];
-//    [self.view addSubview:view];
-//    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.center.equalTo(0);
-//        make.size.equalTo(CGSizeMake(200, 80));
-//    }];
+    LuckyDrawView *view = [LuckyDrawView new];
+    view.backgroundColor = UIColor.redColor;
+    [self.view addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(0);
+        make.size.equalTo(CGSizeMake(200, 80));
+    }];
     
 //    self.geocoder = [CLGeocoder new];
 }
