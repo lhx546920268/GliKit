@@ -51,6 +51,9 @@
 ///图片加载选项
 @property(nonatomic, strong) PHImageRequestOptions *requestOptions;
 
+///是否要滑动底部
+@property(nonatomic, assign) BOOL shouldScrollToBottom;
+
 @end
 
 @implementation GKPhotosGridViewController
@@ -73,6 +76,7 @@
 {
     [super viewDidLoad];
     
+    self.shouldScrollToBottom = YES;
     self.requestOptions = [PHImageRequestOptions new];
     self.requestOptions.networkAccessAllowed = YES;
     
@@ -164,10 +168,6 @@
     self.collectionView.gkShouldShowEmptyView = YES;
     
     [super initViews];
-    
-    if(self.collection.assets.count > 0){
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.collection.assets.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
-    }
 }
 
 // MARK: - action
@@ -443,6 +443,14 @@
     }];
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.shouldScrollToBottom) {
+        self.shouldScrollToBottom = NO;
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.collection.assets.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
