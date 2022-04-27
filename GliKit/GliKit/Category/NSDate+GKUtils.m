@@ -13,13 +13,14 @@
 
 // MARK: - 单例
 
-+ (NSMutableDictionary<NSString*, NSDateFormatter*>*)sharedDateFormatters
++ (NSCache<NSString*, NSDateFormatter*>*)sharedDateFormatters
 {
     static dispatch_once_t once = 0;
-    static NSMutableDictionary<NSString*, NSDateFormatter*> *dateFormatters = nil;
+    //字典 多线程会闪退
+    static NSCache<NSString*, NSDateFormatter*> *dateFormatters = nil;
     dispatch_once(&once, ^(void){
         
-        dateFormatters = [NSMutableDictionary dictionary];
+        dateFormatters = [NSCache new];
     });
     
     return  dateFormatters;
@@ -27,18 +28,14 @@
 
 + (NSDateFormatter*)sharedDateFormatterForFormat:(NSString *)format
 {
-    NSMutableDictionary *formatters = [self sharedDateFormatters];
-    NSDateFormatter *dateFormatter = formatters[format];
+    NSParameterAssert(format != nil);
+    NSCache *formatters = [self sharedDateFormatters];
+    NSDateFormatter *dateFormatter = [formatters objectForKey:format];
     if(!dateFormatter){
-        @synchronized (self) {
-            dateFormatter = formatters[format];
-            if(!dateFormatter){
-                dateFormatter = NSDateFormatter.new;
-                dateFormatter.locale = NSLocale.currentLocale;
-                dateFormatter.dateFormat = format;
-                formatters[format] = dateFormatter;
-            }
-        }
+        dateFormatter = NSDateFormatter.new;
+        dateFormatter.locale = NSLocale.currentLocale;
+        dateFormatter.dateFormat = format;
+        [formatters setObject:dateFormatter forKey:format];
     }
     
     return dateFormatter;

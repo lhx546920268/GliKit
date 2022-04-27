@@ -15,6 +15,9 @@
 
 @interface GKTextView()<UITextPasteDelegate>
 
+///文本串长度
+@property(nonatomic, readonly) NSInteger textLength;
+
 @end
 
 @implementation GKTextView
@@ -154,6 +157,11 @@
     return _textLengthAttributes;
 }
 
+- (NSInteger)textLength
+{
+    return self.emojiAsOne ? self.text.gkLengthEmojiAsOne : self.text.length;
+}
+
 // MARK: - dealloc
 
 - (void)dealloc
@@ -187,7 +195,8 @@
         
         CGFloat padding = 8;
         NSString *text = [self textByRemoveMarkedRange];
-        NSString *string = [NSString stringWithFormat:@"%d/%d", (int)text.length, (int)self.maxLength];
+        NSInteger length = self.emojiAsOne ? text.gkLengthEmojiAsOne : text.length;
+        NSString *string = [NSString stringWithFormat:@"%ld/%ld", length, self.maxLength];
         
         NSDictionary *attrs = self.textLengthAttributes;
         CGSize size = [string sizeWithAttributes:attrs];
@@ -227,11 +236,12 @@
     NSString *text = self.text;
     
     //有输入法情况下忽略
-    if(!self.markedTextRange && self.maxLength != NSUIntegerMax && text.length > self.maxLength){
+    NSInteger textLength = self.textLength;
+    if(!self.markedTextRange && self.maxLength != NSUIntegerMax && textLength > self.maxLength){
         NSUInteger maxLength = self.maxLength;
         
         //删除超过长度的字符串
-        NSUInteger length = text.length - maxLength;
+        NSUInteger length = textLength - maxLength;
         NSRange range = self.selectedRange;
         
         //NSUInteger 没有负值
@@ -240,7 +250,8 @@
         range.location = location;
         text = [text stringByReplacingCharactersInRange:NSMakeRange(location, length) withString:@""];
         self.text = text;
-        if(range.location < text.length){
+        textLength = self.emojiAsOne ? text.gkLengthEmojiAsOne : text.length;
+        if(range.location < textLength){
             self.selectedRange = range;
         }
     }

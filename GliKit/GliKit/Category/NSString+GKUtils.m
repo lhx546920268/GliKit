@@ -185,6 +185,18 @@
     return [self stringByReplacingOccurrencesOfString:regex withString:@"" options:NSRegularExpressionSearch range:range];;
 }
 
+// MARK: - Emoji
+
+- (NSUInteger)gkLengthEmojiAsOne
+{
+    __block NSUInteger length = 0;
+    [self enumerateSubstringsInRange:NSMakeRange(0, self.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop) {
+        length += 1;
+    }];
+    
+    return length;
+}
+
 @end
 
 

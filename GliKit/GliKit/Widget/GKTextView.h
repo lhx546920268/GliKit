@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否需要显示 当前输入数量和 最大输入数量 当 maxLength = NSUIntegerMax 时，不显示，default `NO`
 @property(nonatomic, assign) BOOL shouldDisplayTextLength;
 
+///是否把一个表情当成一个长度 default NO
+@property(nonatomic, assign) BOOL emojiAsOne;
+
 ///输入限制文字 属性
 @property(nonatomic, copy, null_resettable) NSDictionary *textLengthAttributes;
 

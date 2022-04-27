@@ -80,6 +80,11 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 - (NSString*)gkStringByFilterWithType:(GKTextType)type;
 - (NSString*)gkStringByFilterWithType:(GKTextType) type range:(NSRange) range;
 
+// MARK: - Emoji
+
+///把一个表情当成一个字符，emoji表情的长度不一的
+@property(nonatomic, readonly) NSUInteger gkLengthEmojiAsOne;
+
 @end
 
 @interface NSMutableString (GKUtils)
