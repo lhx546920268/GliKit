@@ -29,6 +29,9 @@ static GKHttpMethod const GKHttpMethodPost = @"POST";
 ///翻页起始页
 static const int GKHttpFirstPage = 1;
 
+///数据解析出错错误码
+static const int GKHttpDataParseError = -1000010;
+
 @class UIView;
 
 /**
@@ -84,6 +87,9 @@ static const int GKHttpFirstPage = 1;
 ///是否是网络错误
 @property(nonatomic, readonly) BOOL isNetworkError;
 
+///是否是数据解析失败
+@property(nonatomic, readonly) BOOL isDataParseFail;
+
 ///接口是否请求成功
 @property(nonatomic, readonly) BOOL isApiSuccess;
 
@@ -127,6 +133,9 @@ static const int GKHttpFirstPage = 1;
 
 ///请求成功 在这里解析数据，这里是在异步线程调用的
 - (void)onSuccess NS_REQUIRES_SUPER;
+
+///数据解析错误 这里是在异步线程调用的
+- (void)onDataParseFail;
 
 ///请求失败 保证在主线程回调
 - (void)onFail NS_REQUIRES_SUPER;

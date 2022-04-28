@@ -231,6 +231,19 @@ static NSMutableSet* GKSharedTasks()
     if([self.delegate respondsToSelector:@selector(taskDidSuccess:)]){
         [self.delegate taskDidSuccess:self];
     }
+    //防止解析错误
+    @try {
+        [self onSuccess];
+        if([self.delegate respondsToSelector:@selector(taskDidSuccess:)]){
+            [self.delegate taskDidSuccess:self];
+        }
+    } @catch (NSException *exception) {
+        _isDataParseFail = YES;
+        [self onDataParseFail];
+        [self requestDidFail];
+        return;
+    }
+    
     dispatch_main_async_safe(^{
         [self.lock lock];
         if(!self.isCancelled){
@@ -239,6 +252,11 @@ static NSMutableSet* GKSharedTasks()
         }
         [self.lock unlock];
     })
+}
+
+- (void)onDataParseFail
+{
+    
 }
 
 ///请求失败
