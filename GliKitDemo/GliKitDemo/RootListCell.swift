@@ -9,7 +9,7 @@
 import UIKit
 
 class RootListCell: GKTableViewSwipeCell {
-    
+    var abc = false
     @objc
     public let titleLabel: UILabel = {
         let label = UILabel()

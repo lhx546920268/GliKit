@@ -1,20 +1,22 @@
 //
-//  CheckBox.swift
+//  Radio.swift
 //  GliKitDemo
 //
-//  Created by 罗海雄 on 2021/3/4.
-//  Copyright © 2021 luohaixiong. All rights reserved.
+//  Created by 罗海雄 on 2022/2/17.
+//  Copyright © 2022 luohaixiong. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class CheckBox: UIButton {
+class Radio: UIView {
+    
     
     var value: Int = 0
+    var abc = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        setTitle("", for: .normal)
+       
     }
     
     override func layoutSubviews() {

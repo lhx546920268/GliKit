@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
+		CE0C4C3D27BE583400BF7E19 /* Radio.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C4C3C27BE583400BF7E19 /* Radio.swift */; };
 		CE0D6B9225F716A500F3459E /* GKDLoadMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */; };
 		CE134D5F24F363BE00F34CB4 /* GKDBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */; };
 		CE1641DC274397BA0064B2CE /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1641DB274397BA0064B2CE /* CoreAudio.framework */; };
@@ -18,11 +19,15 @@
 		CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C680233B49D500C4F196 /* GKDCollectionEmptyViewController.m */; };
 		CE37C684233B4A2700C4F196 /* GKDEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C683233B4A2700C4F196 /* GKDEmptyViewController.m */; };
 		CE37C687233B4AAA00C4F196 /* GKDRowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C686233B4AAA00C4F196 /* GKDRowModel.m */; };
+		CE3884F627FD4D830013F1D4 /* Pyidaungsu-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE3884F427FD4D830013F1D4 /* Pyidaungsu-Bold.ttf */; };
+		CE3884F727FD4D830013F1D4 /* Pyidaungsu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE3884F527FD4D830013F1D4 /* Pyidaungsu-Regular.ttf */; };
 		CE48AB1A25F081AC00B4F012 /* RootListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE48AB1925F081AC00B4F012 /* RootListCell.swift */; };
 		CE48AB1E25F08BA700B4F012 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE48AB1D25F08BA700B4F012 /* CheckBox.swift */; };
 		CE549B4B2481027900534D91 /* GKDTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B4A2481027900534D91 /* GKDTabBarController.m */; };
 		CE8CC363246BC9E600EE6414 /* 512x384.webp in Resources */ = {isa = PBXBuildFile; fileRef = CE8CC362246BC9E600EE6414 /* 512x384.webp */; };
 		CE97636323B59F27001A5DD3 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = CE97636223B59F27001A5DD3 /* test.html */; };
+		CEAA8B3627FE78F400AC0147 /* MyanmarSangamMN.ttc in Resources */ = {isa = PBXBuildFile; fileRef = CEAA8B3527FE78F400AC0147 /* MyanmarSangamMN.ttc */; };
+		CEAA8B3827FE7C7100AC0147 /* MyanmarMN.ttc in Resources */ = {isa = PBXBuildFile; fileRef = CEAA8B3727FE7C7100AC0147 /* MyanmarMN.ttc */; };
 		CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */; };
 		CEB37EB2249B42EF00C15460 /* star_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB37EAB249B42EF00C15460 /* star_white.png */; };
 		CEB37EB3249B42EF00C15460 /* confeti3.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB37EAC249B42EF00C15460 /* confeti3.png */; };
@@ -73,6 +78,7 @@
 		85141611C461B48B8263ABC7 /* Pods-GliKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.release.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.release.xcconfig"; sourceTree = "<group>"; };
 		B183DC3A9632FD62AABE12BD /* Pods-GliKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.debug.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.debug.xcconfig"; sourceTree = "<group>"; };
 		C2F6786776DB100AB02C78D3 /* Pods-GliKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitDemo.release.xcconfig"; path = "Target Support Files/Pods-GliKitDemo/Pods-GliKitDemo.release.xcconfig"; sourceTree = "<group>"; };
+		CE0C4C3C27BE583400BF7E19 /* Radio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Radio.swift; sourceTree = "<group>"; };
 		CE0D6B9025F716A500F3459E /* GKDLoadMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDLoadMonitor.h; sourceTree = "<group>"; };
 		CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDLoadMonitor.m; sourceTree = "<group>"; };
 		CE134D5D24F363BE00F34CB4 /* GKDBannerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDBannerViewController.h; sourceTree = "<group>"; };
@@ -90,6 +96,8 @@
 		CE37C683233B4A2700C4F196 /* GKDEmptyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDEmptyViewController.m; sourceTree = "<group>"; };
 		CE37C685233B4AAA00C4F196 /* GKDRowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDRowModel.h; sourceTree = "<group>"; };
 		CE37C686233B4AAA00C4F196 /* GKDRowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDRowModel.m; sourceTree = "<group>"; };
+		CE3884F427FD4D830013F1D4 /* Pyidaungsu-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pyidaungsu-Bold.ttf"; sourceTree = "<group>"; };
+		CE3884F527FD4D830013F1D4 /* Pyidaungsu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pyidaungsu-Regular.ttf"; sourceTree = "<group>"; };
 		CE48AB1825F081AC00B4F012 /* GliKitDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GliKitDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		CE48AB1925F081AC00B4F012 /* RootListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootListCell.swift; sourceTree = "<group>"; };
 		CE48AB1D25F08BA700B4F012 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
@@ -97,6 +105,8 @@
 		CE549B4A2481027900534D91 /* GKDTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTabBarController.m; sourceTree = "<group>"; };
 		CE8CC362246BC9E600EE6414 /* 512x384.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 512x384.webp; sourceTree = "<group>"; };
 		CE97636223B59F27001A5DD3 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
+		CEAA8B3527FE78F400AC0147 /* MyanmarSangamMN.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = MyanmarSangamMN.ttc; sourceTree = "<group>"; };
+		CEAA8B3727FE7C7100AC0147 /* MyanmarMN.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = MyanmarMN.ttc; sourceTree = "<group>"; };
 		CEAB052E236FB17600D2A4CF /* GKDWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDWebViewController.h; sourceTree = "<group>"; };
 		CEAB052F236FB17600D2A4CF /* GKDWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDWebViewController.m; sourceTree = "<group>"; };
 		CEB37EAB249B42EF00C15460 /* star_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_white.png; sourceTree = "<group>"; };
@@ -476,6 +486,10 @@
 				CEE8C8AC231915DB00E7CA75 /* GKDRootViewController.m */,
 				CE37C685233B4AAA00C4F196 /* GKDRowModel.h */,
 				CE37C686233B4AAA00C4F196 /* GKDRowModel.m */,
+				CEAA8B3527FE78F400AC0147 /* MyanmarSangamMN.ttc */,
+				CEAA8B3727FE7C7100AC0147 /* MyanmarMN.ttc */,
+				CE3884F427FD4D830013F1D4 /* Pyidaungsu-Bold.ttf */,
+				CE3884F527FD4D830013F1D4 /* Pyidaungsu-Regular.ttf */,
 				CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */,
 				CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */,
 				CE97636223B59F27001A5DD3 /* test.html */,
@@ -491,6 +505,7 @@
 				CE48AB1825F081AC00B4F012 /* GliKitDemo-Bridging-Header.h */,
 				CE0D6B9025F716A500F3459E /* GKDLoadMonitor.h */,
 				CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */,
+				CE0C4C3C27BE583400BF7E19 /* Radio.swift */,
 			);
 			path = GliKitDemo;
 			sourceTree = "<group>";
@@ -602,9 +617,13 @@
 				CEB37EB4249B42EF00C15460 /* confeti2.png in Resources */,
 				CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */,
 				CEB37EB2249B42EF00C15460 /* star_white.png in Resources */,
+				CEAA8B3827FE7C7100AC0147 /* MyanmarMN.ttc in Resources */,
 				CEDEC98B24B6A669001B623D /* icon_filled_brand_head_dark.svg in Resources */,
 				CEC3C852231E59CD003ADE7A /* GKDTableViewSkeletonCell.xib in Resources */,
+				CE3884F727FD4D830013F1D4 /* Pyidaungsu-Regular.ttf in Resources */,
 				CE97636323B59F27001A5DD3 /* test.html in Resources */,
+				CEAA8B3627FE78F400AC0147 /* MyanmarSangamMN.ttc in Resources */,
+				CE3884F627FD4D830013F1D4 /* Pyidaungsu-Bold.ttf in Resources */,
 				CEB37EB7249B42EF00C15460 /* ic_launcher.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,6 +685,7 @@
 				CEC2D976239F8C0900F14210 /* GKDAlertViewController.m in Sources */,
 				CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */,
 				CEC1732F233DE50A00A1ADA8 /* GKDProgressViewController.m in Sources */,
+				CE0C4C3D27BE583400BF7E19 /* Radio.swift in Sources */,
 				CEB85F4E232630210045CB38 /* GKDNestedParentViewController.m in Sources */,
 				CEC3C851231E59CD003ADE7A /* GKDTableViewSkeletonCell.m in Sources */,
 				CE37C67E233B49C000C4F196 /* GKDTableEmptyViewController.m in Sources */,

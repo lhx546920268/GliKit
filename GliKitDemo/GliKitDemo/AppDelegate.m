@@ -18,6 +18,7 @@
 #import "GKDLoadMonitor.h"
 #import <mach/mach.h>
 #import <objc/runtime.h>
+#import <stdatomic.h>
 
 @interface NSObject (Text)
 
@@ -41,6 +42,7 @@
 
 + (BOOL)resolveClassMethod:(SEL)sel
 {
+   
     NSLog(@"resolveClassMethod %@", NSStringFromSelector(sel));
     return [super resolveClassMethod:sel];
 }
@@ -201,6 +203,7 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
             }
         }
     });
+
     
     return YES;
 }

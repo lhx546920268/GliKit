@@ -66,6 +66,10 @@
     <array>
         <string>Oxygen-Bold.ttf</string>
         <string>NotoSansMyanmar.ttc</string>
+        <string>Pyidaungsu-Bold.ttf</string>
+        <string>Pyidaungsu-Regular.ttf</string>
+        <string>MyanmarSangamMN.ttc</string>
+        <string>MyanmarMN.ttc</string>
     </array>
 </dict>
 </plist>

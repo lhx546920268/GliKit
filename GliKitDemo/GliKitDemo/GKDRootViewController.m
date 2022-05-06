@@ -14,6 +14,8 @@
 #import <SDWebImageDownloader.h>
 #import <MapKit/MapKit.h>
 
+@import CoreText;
+
 @interface GKParent : NSObject<NSCopying>
 
 @property(nonatomic, copy) NSString *name;
@@ -108,7 +110,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (void)dealloc
 {
-
+  
 }
 
 - (void)drawRect:(CGRect)rect
@@ -118,6 +120,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineJoin(context, kCGLineJoinRound);
     CGContextSetLineWidth(context, 2);
+    
+    
     
     const CGFloat components[] = {3, 3};
     CGContextSetLineDash(context, 0, components, 2);
@@ -178,6 +182,92 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 @end
 
+@interface MyTextAttachment : NSTextAttachment
+
+@end
+
+@implementation MyTextAttachment
+
+
+@end
+
+@interface MYLabel : UILabel
+
+@end
+
+@implementation MYLabel
+
+- (void)layoutSublayersOfLayer:(CALayer *)layer
+{
+    [super layoutSublayersOfLayer:layer];
+//
+//    NSArray *layers = self.layer.sublayers;
+//    if ([layer isKindOfClass:CATextLayer.class]) {
+//        NSLog(@"%@", layer);
+//    }
+//    for (CALayer *layer in layers) {
+//        if ([layer isKindOfClass:CATextLayer.class]) {
+//            NSLog(@"%@", layer);
+//        } else {
+//            NSLog(@"%@", layer.sublayers);
+//        }
+//
+//        layer.masksToBounds = YES;
+//    }
+}
+
+- (void)drawTextInRect:(CGRect)rect
+{
+    [super drawTextInRect:rect];
+}
+
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = [super intrinsicContentSize];
+    if (size.height != UIViewNoIntrinsicMetric) {
+        size.height = ceil(size.height * 1.2);
+    }
+    return size;
+}
+
+@end
+
+@interface GKDRootListCell : UITableViewCell
+
+///
+@property(nonatomic, readonly) UILabel *titleLabel;
+@end
+
+@implementation GKDRootListCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _titleLabel = [MYLabel new];
+        
+        UIFont *font = [UIFont fontWithName:@"Pyidaungsu-Bold" size:16];
+        NSLog(@"%@", font);
+        _titleLabel.font = font;
+//        _titleLabel.layer.masksToBounds = NO;
+//        _titleLabel.clipsToBounds = NO;
+//        _titleLabel.baselineAdjustment = UIBaselineAdjustmentNone;
+        [self.contentView addSubview:_titleLabel];
+        
+        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(0);
+            make.leading.equalTo(15);
+            make.height.equalTo(ceil(font.lineHeight + 3));
+        }];
+    }
+    
+    return self;
+}
+
+@end
+
+
+
 @implementation GKDRootViewController
 
 - (void)viewDidLoad {
@@ -223,9 +313,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    })
     
     self.datas = @[
-                   [GKDRowModel modelWithTitle:@"အင်ဂျင်းပါဝါ (CC)" clazz:@"user/photo"],
-                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-                   [GKDRowModel modelWithTitle:@"UIViewController 过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"ဧရိယာ(စတုရန်ပေ)Alert" clazz:@"user/photo"],
+                   [GKDRowModel modelWithTitle:@"ပြင်ဆင်ပြီး/မပြီး" clazz:@"skeleton"],
+                   [GKDRowModel modelWithTitle:@"ပါဝင်ပစ္စည်း" clazz:@"GKDTransitionViewController"],
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
                    [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
@@ -235,9 +325,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                    [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
                    ];
 
+    [self initViews];
 
-//    [self initViews];
-
+//    NSArray *familyNames = [UIFont familyNames];
+//    for (NSString *familyName in familyNames) {
+//        NSLog(@"%@", [UIFont fontNamesForFamilyName:familyName]);
+//    }
 //    self.countLabel = [UILabel new];
 //    self.countLabel.text = @"0";
 //    self.countLabel.font = [UIFont boldSystemFontOfSize:40];
@@ -259,11 +352,31 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    self.imageDir = imageDir;
 //    self.doc = doc;
     
-    
+//    UIImage *image = [UIImage imageNamed:@"tab_cart_s"];
+//    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:@"谢谢惠顾"];
+//
+//    MyTextAttachment *attachment = [MyTextAttachment new];
+//    attachment.image = [image imageWithAlignmentRectInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
+//    attachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
+//
+//    NSString *str1 = @"⁡ㅤ1";
+//    NSLog(@"str1 length %ld", str1.length);
+//    NSMutableAttributedString *imageAttr = [[NSMutableAttributedString alloc] initWithString:str1];
+////    [imageAttr appendAttributedString:[[NSAttributedString alloc] initWithString:str1]];
+//
+//    NSLog(@"%ld", imageAttr.length);
+//
+//    [attr insertAttributedString:imageAttr atIndex:0];
+//
+//    [attr addAttribute:NSKernAttributeName value:@15 range:NSMakeRange(0, attr.length)];
+//
+//    [attr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:20] range:NSMakeRange(0, attr.length)];
+//
+//    NSLayoutManager *layoutManager = [NSLayoutManager new];
 //    UILabel *label = [UILabel new];
-//    label.text = @"谢谢惠顾";
-//    label.font = [UIFont boldSystemFontOfSize:40];
-//    label.textAlignment = NSTextAlignmentCenter;
+//
+//    label.attributedText = attr;
+//    label.backgroundColor = UIColor.redColor;
 //    [self.view addSubview:label];
 //
 //    [label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -271,24 +384,31 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        make.size.equalTo(CGSizeMake(200, 80));
 //    }];
 //
-    LuckyDrawView *view = [LuckyDrawView new];
-    view.backgroundColor = UIColor.redColor;
-    [self.view addSubview:view];
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(0);
-        make.size.equalTo(CGSizeMake(200, 80));
-    }];
+//    NSLog(@"text length %ld", label.text.length);
+//
+//    LuckyDrawView *view = [LuckyDrawView new];
+//    view.backgroundColor = UIColor.redColor;
+//    [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)]];
+//    [self.view addSubview:view];
+//    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.center.equalTo(0);
+//        make.size.equalTo(CGSizeMake(200, 80));
+//    }];
+    
     
 //    self.geocoder = [CLGeocoder new];
 }
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    static CGFloat size = 100;
-    [tap.view mas_updateConstraints:^(MASConstraintMaker *make) {
-        size = size == 100 ? 50 : 100;
-        make.size.equalTo(size);
-    }];
+//    static CGFloat size = 100;
+//    [tap.view mas_updateConstraints:^(MASConstraintMaker *make) {
+//        size = size == 100 ? 50 : 100;
+//        make.size.equalTo(size);
+//    }];
+    [UIView performSystemAnimation:UISystemAnimationDelete onViews:@[tap.view] options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            
+    } completion:nil];
 }
 
 - (void)start
@@ -364,6 +484,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     self.style = UITableViewStyleGrouped;
     self.separatorEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     [self registerClass:RootListCell.class];
+    [self registerClass:GKDRootListCell.class];
     [super initViews];
 }
 
@@ -387,25 +508,22 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 45;
+    return 60;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RootListCell *cell = [tableView dequeueReusableCellWithIdentifier:RootListCell.gkNameOfClass forIndexPath:indexPath];
+    GKDRootListCell *cell = [tableView dequeueReusableCellWithIdentifier:GKDRootListCell.gkNameOfClass forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.delegate = self;
+//    cell.delegate = self;
     
     NSString *title = self.datas[indexPath.row % self.datas.count].title;
-    
-    UIFont *font = [UIFont fontWithName:@"NotoSansMyanmar-Bold" size:17];
-//    NSLog(@"%@", font);
-    cell.titleLabel.font = font;
     cell.titleLabel.text = title;
     cell.titleLabel.textColor = UIColor.blackColor;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.tintColor = UIColor.redColor;
-    cell.swipeDirection = GKSwipeDirectionLeft | GKSwipeDirectionRight;
+    NSLog(@"%@ %f", title, [title gkStringSizeWithFont:cell.titleLabel.font].height);
+//    cell.swipeDirection = GKSwipeDirectionLeft | GKSwipeDirectionRight;
     
     return cell;
 }
@@ -414,7 +532,10 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    [UIApplication.sharedApplication openURL:[NSURL URLWithString:@"zegocity://www.zegocity.com/post/list?cateId=39"]];
+    NSAssert(indexPath.row != 0, @"indexPath idnei");
+//    NSString *encodedURL = [@"https://devtest.zegobird.com:11111/public/pages/coupon/index.html" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSString *str = [NSString stringWithFormat:@"zegodealer:///app/web?url=%@", encodedURL];
+//    [UIApplication.sharedApplication openURL:[NSURL URLWithString:str]];
 //    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
 //    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
 //        config.path = model.className;
