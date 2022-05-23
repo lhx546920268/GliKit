@@ -394,31 +394,21 @@
     if (self.fromZero) {
         self.progressLayer.strokeEnd = progress;
         self.progressLayer.strokeStart = 0;
-        if (animated) {
-            //动画显示进度条
-            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-            pathAnimation.duration = 0.25;
-            pathAnimation.fromValue = @(previousProgress);
-            pathAnimation.toValue = @(progress);
-            pathAnimation.removedOnCompletion = YES;
-
-            [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
-        }
     } else {
         self.progressLayer.strokeStart = progress;
         self.progressLayer.strokeEnd = 1.0;
-        if (animated) {
-            //动画显示进度条
-            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
-            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-            pathAnimation.duration = 0.25;
-            pathAnimation.fromValue = @(previousProgress);
-            pathAnimation.toValue = @(progress);
-            pathAnimation.removedOnCompletion = YES;
+    }
+    
+    if (animated) {
+        //动画显示进度条
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:self.fromZero ? @"strokeEnd" : @"strokeStart"];
+        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        pathAnimation.duration = 0.25;
+        pathAnimation.fromValue = @(previousProgress);
+        pathAnimation.toValue = @(progress);
+        pathAnimation.removedOnCompletion = YES;
 
-            [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
-        }
+        [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
     }
 }
 
