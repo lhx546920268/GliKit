@@ -26,7 +26,7 @@ static WKProcessPool *sharedProcessPool;
 @interface GKBaseWebViewController ()
 
 ///加载进度条
-@property(nonatomic, strong) GKProgressView *progressView;
+@property(nonatomic, strong) GKStraightLineProgressView *progressView;
 
 ///获取userAgent的 webView，因为 在iOS 12中，在调用 navigatior.userAgent 后，设置customUserAgent会不生效
 @property(nonatomic, strong) WKWebView *userAgentWebView;
@@ -113,9 +113,9 @@ static WKProcessPool *sharedProcessPool;
     UIView *contentView = [UIView new];
     self.contentView = contentView;
     
-    GKProgressView *progressView = [[GKProgressView alloc] initWithStyle:GKProgressViewStyleStraightLine];
+    GKStraightLineProgressView *progressView = [GKStraightLineProgressView new];
     progressView.progressColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
-    progressView.trackColor = [UIColor clearColor];
+    progressView.backgroundColor = [UIColor clearColor];
     [contentView addSubview:progressView];
     self.progressView = progressView;
     

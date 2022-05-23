@@ -17,34 +17,29 @@
 ///原来的进度
 @property(nonatomic,assign) float previousProgress;
 
-///进度条layer
-@property(nonatomic,strong) CAShapeLayer *progressLayer;
+///
+@property(nonatomic, assign) CGSize progressSize;
 
 @end
 
 @implementation GKProgressView
 
+@synthesize progressColor = _progressColor;
+
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if(self){
-        _style = GKProgressViewStyleStraightLine;
         [self initParams];
     }
     
     return self;
 }
 
-- (instancetype)initWithStyle:(GKProgressViewStyle) style
-{
-    return [self initWithFrame:CGRectZero style:style];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame style:(GKProgressViewStyle) style
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self){
-        _style = style;
         [self initParams];
     }
     
@@ -53,23 +48,8 @@
 
 - (void)initParams
 {
+    NSAssert(![self isMemberOfClass:GKProgressView.class], @"You must use GKProgressView subclass");
     _openProgress = YES;
-    _progressColor = [UIColor greenColor];
-    _trackColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    
-    switch (_style){
-        case GKProgressViewStyleCircle : {
-            _progressLineWidth = 10.0;
-        }
-            break;
-        case GKProgressViewStyleRoundCakesFromEmpty : {
-            _progressLineWidth = 3.0;
-        }
-            break;
-        default:
-            break;
-    }
-    
     self.clipsToBounds = YES;
     self.userInteractionEnabled = NO;
     self.backgroundColor = [UIColor clearColor];
@@ -77,23 +57,33 @@
     self.hideAfterFinish = YES;
     self.hideWidthAnimated = YES;
     
-    self.progressLayer = [CAShapeLayer layer];
-    self.progressLayer.fillColor = [UIColor clearColor].CGColor;
-    [self.layer addSublayer:self.progressLayer];
+    _progressLayer = [CAShapeLayer layer];
+    _progressLayer.fillColor = UIColor.clearColor.CGColor;
+    _progressLayer.lineJoin = kCALineJoinRound;
+    _progressLayer.lineCap = kCALineCapRound;
+    [self.layer addSublayer:_progressLayer];
     
-    [(CAShapeLayer*)self.layer setFillColor:[UIColor clearColor].CGColor];
+    [self updateProgressStyle];
 }
 
-+ (Class)layerClass
+- (void)updateProgressStyle
 {
-    return [CAShapeLayer class];
+    
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self setupStyle];
-    [self updateProgressLayer];
+    if (!CGSizeEqualToSize(self.progressSize, self.frame.size)) {
+        self.progressSize = self.frame.size;
+        [self onProgressSizeChange:self.progressSize];
+        [self updateProgressInternalWithAnimated:NO];
+    }
+}
+
+- (void)onProgressSizeChange:(CGSize)size
+{
+    
 }
 
 // MARK: - property setup
@@ -112,65 +102,17 @@
 - (void)setProgressColor:(UIColor *)progressColor
 {
     if(![_progressColor isEqualToColor:progressColor]){
-        if(progressColor == nil)
-            progressColor = [UIColor greenColor];
-        
         _progressColor = progressColor;
-        
-        [self setupStyle];
-        [self updateProgressLayer];
+        [self updateProgressStyle];
     }
 }
 
-- (void)setTrackColor:(UIColor *)trackColor
+- (UIColor *)progressColor
 {
-    if(![_trackColor isEqualToColor:trackColor]){
-        if(trackColor == nil)
-            trackColor = [UIColor clearColor];
-        
-        _trackColor = trackColor;
-        
-        [self setupStyle];
-        [self updateProgressLayer];
-    }
+    return _progressColor ?: UIColor.greenColor;
 }
 
-- (void)setProgressLineWidth:(CGFloat)progressLineWidth
-{
-    if(_progressLineWidth != progressLineWidth){
-        _progressLineWidth = progressLineWidth;
-        [self setupStyle];
-        [self updateProgressLayer];
-    }
-}
-
-- (void)setShowPercent:(BOOL)showPercent
-{
-    if(_style != GKProgressViewStyleCircle)
-        return;
-    if(_showPercent != showPercent){
-        _showPercent = showPercent;
-        
-        if(_showPercent){
-            if(!self.percentLabel){
-                _percentLabel = [UILabel new];
-                _percentLabel.textColor = [UIColor blackColor];
-                _percentLabel.font = [UIFont systemFontOfSize:20];
-                _percentLabel.textAlignment = NSTextAlignmentCenter;
-                [self addSubview:_percentLabel];
-                
-                [_percentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.center.equalTo(self);
-                }];
-            }
-        }else if(self.percentLabel){
-            [self.percentLabel removeFromSuperview];
-            _percentLabel = nil;
-        }
-    }
-}
-
-- (void)setProgress:(float)progress
+- (void)setProgress:(CGFloat)progress
 {
     if(!_openProgress)
         return;
@@ -192,115 +134,17 @@
             self.previousProgress = 0;
         }
         
-        [self updateProgress];
-    }
-}
-
-///设置样式
-- (void)setupStyle
-{
-    if(CGSizeEqualToSize(self.bounds.size, CGSizeZero))
-        return;
-    CAShapeLayer *layer = (CAShapeLayer*)self.layer;
-    
-    switch (_style){
-        case GKProgressViewStyleCircle : {
-            self.progressLayer.lineWidth = _progressLineWidth;
-            self.progressLayer.strokeColor = self.progressColor.CGColor;
-            layer.lineWidth = _progressLineWidth;
-            layer.strokeColor = _trackColor.CGColor;
-        }
-            break;
-        case GKProgressViewStyleStraightLine : {
-            self.progressLayer.strokeColor = self.progressColor.CGColor;
-            self.progressLayer.lineWidth = self.bounds.size.width;
-            layer.lineWidth = self.bounds.size.height;
-            layer.strokeColor = _trackColor.CGColor;
-        }
-            break;
-        case GKProgressViewStyleRoundCakesFromEmpty : {
-            self.progressLayer.fillColor = self.progressColor.CGColor;
-            layer.strokeColor = _trackColor.CGColor;
-            layer.lineWidth = _progressLineWidth;
-        }
-            break;
-        case GKProgressViewStyleRoundCakesFromFull : {
-            self.progressLayer.fillColor = self.progressColor.CGColor;
-            layer.strokeColor = _trackColor.CGColor;
-            layer.lineWidth = _progressLineWidth;
-        }
-            break;
+        [self updateProgressInternalWithAnimated:YES];
     }
 }
 
 ///更新进度条
-- (void)updateProgress
+- (void)updateProgressInternalWithAnimated:(BOOL) animated
 {
     [self.layer removeAllAnimations];
     [self.progressLayer removeAllAnimations];
     
-    [CATransaction begin];
-    switch (_style){
-        case GKProgressViewStyleStraightLine :
-        case GKProgressViewStyleCircle : {
-            if(self.percentLabel){
-                self.percentLabel.text = [NSString stringWithFormat:@"%d%%", (int)(_progress * 100)];
-            }
-            
-            self.progressLayer.strokeEnd = _progress;
-            
-            //动画显示进度条
-            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-            pathAnimation.duration = 0.25;
-            pathAnimation.fromValue = @(_previousProgress);
-            pathAnimation.toValue = @(_progress);
-            pathAnimation.removedOnCompletion = YES;
-            
-            [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
-        }
-            break;
-        case GKProgressViewStyleRoundCakesFromEmpty :
-        case GKProgressViewStyleRoundCakesFromFull : {
-            //动画帧数量
-            NSInteger frames = ceil(0.25 * 60);
-            NSMutableArray *animatedPaths = [NSMutableArray arrayWithCapacity:frames];
-            
-            //起始弧度 、目标弧度
-            CGFloat startAngle = - M_PI_2;
-            float progress = _style == GKProgressViewStyleRoundCakesFromEmpty ? _progress : (1 - _progress);
-            CGFloat endAngle = - M_PI_2 +  M_PI * 2 * progress;
-            
-            //当前最新的弧度
-            progress = _style == GKProgressViewStyleRoundCakesFromEmpty ? _previousProgress : (1 - _previousProgress);
-            CGFloat lastAngle = - M_PI_2 +  M_PI * 2 * progress;
-            
-            //圆心、半径
-            CGPoint center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
-            CGFloat radius = MIN(self.bounds.size.width / 2.0, self.bounds.size.height / 2.0);
-            
-            for(NSInteger i = 1;i <= frames;i ++) {
-                UIBezierPath *path = [UIBezierPath bezierPath];
-                [path addArcWithCenter:center radius:radius startAngle:startAngle endAngle:lastAngle + ((endAngle - lastAngle) / frames * i) clockwise:YES];
-                [path addLineToPoint:center];
-                [path closePath];
-                [animatedPaths addObject:(id)path.CGPath];
-            }
-            
-            //添加动画
-            self.progressLayer.path = CFBridgingRetain(animatedPaths.lastObject);
-            
-            CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"path"];
-            animation.values = animatedPaths;
-            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-            animation.duration = 0.25;
-            animation.removedOnCompletion = YES;
-            [self.progressLayer addAnimation:animation forKey:@"path"];
-        }
-            break;
-        default:
-            break;
-    }
+    [self updateProgress:self.progress previousProgress:self.previousProgress animated:animated];
     
     if(_progress >= 1.0){
         WeakObj(self)
@@ -309,6 +153,22 @@
         };
     }
     [CATransaction commit];
+}
+
+- (void)updateProgress:(CGFloat)progress previousProgress:(CGFloat)previousProgress animated:(BOOL)animated
+{
+    self.progressLayer.strokeEnd = progress;
+    if (animated) {
+        //动画显示进度条
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        pathAnimation.duration = 0.25;
+        pathAnimation.fromValue = @(previousProgress);
+        pathAnimation.toValue = @(progress);
+        pathAnimation.removedOnCompletion = YES;
+
+        [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
+    }
 }
 
 ///动画结束，隐藏进度条
@@ -337,8 +197,6 @@
     }
 }
 
-// MARK: - private method
-
 ///重新设置
 - (void)reset
 {
@@ -346,38 +204,222 @@
     _progress = 0;
 }
 
-///更新进度条样式
-- (void)updateProgressLayer
-{
-    CGSize size = self.bounds.size;
-    if(CGSizeEqualToSize(size, CGSizeZero))
-        return;
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    
-    switch (_style){
-        case GKProgressViewStyleStraightLine : {
-            [path moveToPoint:CGPointMake(0, size.height / 2.0)];
-            [path addLineToPoint:CGPointMake(size.width, size.height / 2.0)];
-        }
-            break;
-        case GKProgressViewStyleCircle :
-        case GKProgressViewStyleRoundCakesFromEmpty :
-        case GKProgressViewStyleRoundCakesFromFull : {
-            CGPoint point = CGPointMake(size.width / 2.0, size.height / 2.0);
-            CGFloat radius = MIN(size.width / 2.0, size.height / 2.0) - _progressLineWidth / 2.0;
+@end
 
-            [path addArcWithCenter:point radius:radius startAngle:-M_PI_2 endAngle:3 * M_PI_2 clockwise:YES];
-            
-        }
-            break;
-    }
+@implementation GKStraightLineProgressView
+
+- (void)initParams
+{
+    [super initParams];
+    self.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+}
+
+- (void)onProgressSizeChange:(CGSize)size
+{
+    self.progressLayer.frame = self.bounds;
+    self.progressLayer.lineWidth = size.height;
     
-    if(_style != GKProgressViewStyleRoundCakesFromEmpty && _style != GKProgressViewStyleRoundCakesFromFull) {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(0, size.height / 2.0)];
+    [path addLineToPoint:CGPointMake(size.width, size.height / 2.0)];
+    self.progressLayer.path = path.CGPath;
+}
+
+- (void)updateProgressStyle
+{
+    self.progressLayer.strokeColor = self.progressColor.CGColor;
+}
+
+@end
+
+@implementation GKCircleProgressView
+
+@synthesize trackColor = _trackColor;
+
+- (void)initParams
+{
+    CAShapeLayer *layer = (CAShapeLayer*)self.layer;
+    layer.fillColor = UIColor.clearColor.CGColor;
+    _trackColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    
+    _progressLineWidth = 10.0;
+    [super initParams];
+}
+
++ (Class)layerClass
+{
+    return CAShapeLayer.class;
+}
+
+- (void)onProgressSizeChange:(CGSize)size
+{
+    self.progressLayer.frame = self.bounds;
+    
+    CGPoint center = CGPointMake(size.width / 2.0, size.height / 2.0);
+    CGFloat radius = MIN(size.width / 2.0, size.height / 2.0) - _progressLineWidth / 2.0;
+
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path addArcWithCenter:center radius:radius startAngle:-M_PI_2 endAngle:3 * M_PI_2 clockwise:YES];
+    self.progressLayer.path = path.CGPath;
+    
+    CAShapeLayer *layer = (CAShapeLayer*)self.layer;
+    layer.path = path.CGPath;
+}
+
+- (void)updateProgressStyle
+{
+    self.progressLayer.strokeColor = self.progressColor.CGColor;
+    self.progressLayer.lineWidth = self.progressLineWidth;
+    
+    CAShapeLayer *layer = (CAShapeLayer*)self.layer;
+    layer.lineWidth = self.progressLineWidth;
+    layer.strokeColor = self.trackColor.CGColor;
+}
+
+- (void)setProgressLineWidth:(CGFloat)progressLineWidth
+{
+    if(_progressLineWidth != progressLineWidth){
+        _progressLineWidth = progressLineWidth;
+        [self updateProgressStyle];
+    }
+}
+
+- (void)setTrackColor:(UIColor *)trackColor
+{
+    if(![_trackColor isEqualToColor:trackColor]){
+        _trackColor = trackColor;
+        CAShapeLayer *layer = (CAShapeLayer*)self.layer;
+        layer.strokeColor = self.trackColor.CGColor;
+    }
+}
+
+- (UIColor *)trackColor
+{
+    return _trackColor ?: UIColor.clearColor;
+}
+
+- (void)setShowPercent:(BOOL)showPercent
+{
+    if(_showPercent != showPercent){
+        _showPercent = showPercent;
+        
+        if(_showPercent){
+            if(!self.percentLabel){
+                _percentLabel = [UILabel new];
+                _percentLabel.textColor = [UIColor blackColor];
+                _percentLabel.font = [UIFont systemFontOfSize:20];
+                _percentLabel.textAlignment = NSTextAlignmentCenter;
+                [self addSubview:_percentLabel];
+                
+                [_percentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.center.equalTo(self);
+                }];
+            }
+        }else if(self.percentLabel){
+            [self.percentLabel removeFromSuperview];
+            _percentLabel = nil;
+        }
+    }
+}
+
+- (void)updateProgress:(CGFloat)progress previousProgress:(CGFloat)previousProgress
+{
+    if(self.percentLabel){
+        self.percentLabel.text = [NSString stringWithFormat:@"%.0f%%", progress * 100];
+    }
+}
+
+@end
+
+@implementation GKRoundCakesProgressView
+
+- (void)initParams
+{
+    _fromZero = YES;
+    [super initParams];
+    self.progressLayer.lineJoin = kCALineJoinMiter;
+    self.progressLayer.lineCap = kCALineCapButt;
+}
+
+- (void)onProgressSizeChange:(CGSize)size
+{
+    [self updateProgressPath];
+}
+
+- (void)setFromZero:(BOOL)fromZero
+{
+    if (_fromZero != fromZero) {
+        _fromZero = fromZero;
+        self.progressLayer.strokeEnd = _fromZero ? self.progress : 1.0;
+        self.progressLayer.strokeStart = _fromZero ? 0 : self.progress;
+    }
+}
+
+- (void)setInnerMargin:(CGFloat)innerMargin
+{
+    if (_innerMargin != innerMargin) {
+        _innerMargin = innerMargin;
+        [self updateProgressPath];
+    }
+}
+
+- (void)updateProgressPath
+{
+    CGSize size = self.progressSize;
+    if (!CGSizeEqualToSize(CGSizeZero, size)) {
+        CGFloat min = MIN(size.width, size.height);
+        CGFloat radius = min / 2.0 - self.innerMargin;
+        NSAssert(radius > 0, @"%@ size - innerMargin must be greater 0", NSStringFromClass(self.class));
+        
+        self.progressLayer.position = CGPointMake(size.width / 2, size.height / 2);
+        self.progressLayer.bounds = CGRectMake(0, 0, min - self.innerMargin * 2, min - self.innerMargin * 2);
+        self.progressLayer.lineWidth = radius;
+        
+        size = self.progressLayer.bounds.size;
+        CGPoint center = CGPointMake(size.width / 2, size.height / 2);
+
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path addArcWithCenter:center radius:radius / 2 startAngle:-M_PI_2 endAngle:3 * M_PI_2 clockwise:YES];
         self.progressLayer.path = path.CGPath;
     }
-    
-    [(CAShapeLayer*)self.layer setPath:path.CGPath];
-    [self updateProgress];
+}
+
+- (void)updateProgressStyle
+{
+    self.progressLayer.strokeColor = self.progressColor.CGColor;
+}
+
+- (void)updateProgress:(CGFloat)progress previousProgress:(CGFloat)previousProgress animated:(BOOL)animated
+{
+    if (self.fromZero) {
+        self.progressLayer.strokeEnd = progress;
+        self.progressLayer.strokeStart = 0;
+        if (animated) {
+            //动画显示进度条
+            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+            pathAnimation.duration = 0.25;
+            pathAnimation.fromValue = @(previousProgress);
+            pathAnimation.toValue = @(progress);
+            pathAnimation.removedOnCompletion = YES;
+
+            [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
+        }
+    } else {
+        self.progressLayer.strokeStart = progress;
+        self.progressLayer.strokeEnd = 1.0;
+        if (animated) {
+            //动画显示进度条
+            CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
+            pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+            pathAnimation.duration = 0.25;
+            pathAnimation.fromValue = @(previousProgress);
+            pathAnimation.toValue = @(progress);
+            pathAnimation.removedOnCompletion = YES;
+
+            [self.progressLayer addAnimation:pathAnimation forKey:@"progress"];
+        }
+    }
 }
 
 @end

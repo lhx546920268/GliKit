@@ -30,7 +30,7 @@
 @property(nonatomic, strong) NSTimer *timer;
 
 ///xx
-@property(nonatomic, assign) float progress;
+@property(nonatomic, assign) CGFloat progress;
 
 @end
 
@@ -41,7 +41,7 @@
     
     self.navigationItem.title = @"进度条";
     
-    GKProgressView *view = [[GKProgressView alloc] initWithStyle:GKProgressViewStyleStraightLine];
+    GKProgressView *view = [[GKStraightLineProgressView alloc] init];
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(15);
@@ -54,7 +54,9 @@
     CGFloat margin = 15;
     CGFloat width = floor((UIScreen.gkWidth - margin * 5) / 3.0);
     
-    view = [[GKProgressView alloc] initWithStyle:GKProgressViewStyleCircle];
+    GKCircleProgressView *progressView = [[GKCircleProgressView alloc] init];
+    progressView.showPercent = YES;
+    view = progressView;
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(15);
@@ -63,7 +65,7 @@
     }];
     self.circleProgressView = view;
     
-    view = [[GKProgressView alloc] initWithStyle:GKProgressViewStyleRoundCakesFromEmpty];
+    view = [[GKRoundCakesProgressView alloc] init];
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.circleProgressView.mas_trailing).offset(margin);
@@ -72,7 +74,14 @@
     }];
     self.roundCakesFromEmptyProgressView = view;
     
-    view = [[GKProgressView alloc] initWithStyle:GKProgressViewStyleRoundCakesFromFull];
+    GKRoundCakesProgressView *roundCatesView = [[GKRoundCakesProgressView alloc] init];
+    roundCatesView.fromZero = NO;
+    roundCatesView.innerMargin = 10;
+    roundCatesView.layer.cornerRadius = width / 2;
+    roundCatesView.layer.masksToBounds = YES;
+    roundCatesView.layer.borderWidth = 5;
+    roundCatesView.layer.borderColor = roundCatesView.progressColor.CGColor;
+    view = roundCatesView;
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.roundCakesFromEmptyProgressView.mas_trailing).offset(margin);
@@ -109,8 +118,8 @@
         self.progress = 0;
         WeakObj(self)
         if (@available(iOS 10.0, *)) {
-            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01 repeats:YES block:^(NSTimer * _Nonnull timer) {
-                selfWeak.progress += 0.01;
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+                selfWeak.progress += 0.1;
                 selfWeak.straightLineProgressView.progress = selfWeak.progress;
                 selfWeak.circleProgressView.progress = selfWeak.progress;
                 selfWeak.roundCakesFromEmptyProgressView.progress = selfWeak.progress;

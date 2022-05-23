@@ -29,23 +29,17 @@ typedef NS_ENUM(NSInteger, GKProgressViewStyle){
 ///进度条
 @interface GKProgressView : UIView
 
+///进度条layer
+@property(nonatomic, readonly) CAShapeLayer *progressLayer;
+
 ///是否开启进度条 default `YES` 当设置为`NO`时，将重置 progress
 @property(nonatomic, assign) BOOL openProgress;
 
 ///当前进度，default `0.0`，范围 0.0 ~ 1.0 当 openProgress = NO 时，忽略所有设置的值
-@property(nonatomic, assign) float progress;
+@property(nonatomic, assign) CGFloat progress;
 
 ///进度条进度颜色 default `greenColor`
-@property(nonatomic, strong) UIColor *progressColor;
-
-///进度条轨道颜色 default `[UIColor colorWithWhite:0.9 alpha:1.0]`
-@property(nonatomic, strong) UIColor *trackColor;
-
-///进度条样式
-@property(nonatomic, readonly) GKProgressViewStyle style;
-
-///进度条线条大小，当style = GKProgressViewStyleCircle，default `10.0`，当 style = GKProgressViewStyleRoundCakes，default `3.0`
-@property(nonatomic, assign) CGFloat progressLineWidth;
+@property(nonatomic, strong, null_resettable) UIColor *progressColor;
 
 ///是否隐藏 当进度满的时候 default `YES`
 @property(nonatomic, assign) BOOL hideAfterFinish;
@@ -53,17 +47,47 @@ typedef NS_ENUM(NSInteger, GKProgressViewStyle){
 ///是否动画隐藏，使用渐变 default `YES`
 @property(nonatomic, assign) BOOL hideWidthAnimated;
 
-///是否显示百分比 default `NO`，只有当style = GKProgressViewStyleCircle 时 有效
+///更新进度条样式
+- (void)updateProgressStyle;
+
+///进度条大小变了
+- (void)onProgressSizeChange:(CGSize) size;
+
+///更新进度条
+- (void)updateProgress:(CGFloat) progress previousProgress:(CGFloat) previousProgress animated:(BOOL) animated;
+
+@end
+
+///直线进度条
+@interface GKStraightLineProgressView : GKProgressView
+
+@end
+
+///圆环进度条
+@interface GKCircleProgressView : GKProgressView
+
+///进度条轨道颜色 default `[UIColor colorWithWhite:0.9 alpha:1.0]`
+@property(nonatomic, strong, null_resettable) UIColor *trackColor;
+
+///是否显示百分比 default `NO`
 @property(nonatomic, assign) BOOL showPercent;
 
-///百分比label, 显示在圆环中间，只有当style = GKProgressViewStyleCircle && showPercent = YES 时 有效
+///百分比label, 显示在圆环中间
 @property(nonatomic, readonly, nullable) UILabel *percentLabel;
 
-///[self initWithFrame:CGRectZero style:style]
-- (instancetype)initWithStyle:(GKProgressViewStyle) style;
+///进度条线条大小 default `10.0`
+@property(nonatomic, assign) CGFloat progressLineWidth;
 
-///根据样式初始化
-- (instancetype)initWithFrame:(CGRect)frame style:(GKProgressViewStyle) style;
+@end
+
+///圆饼进度条
+@interface GKRoundCakesProgressView : GKProgressView
+
+///是否从0到1, default `YES`
+@property(nonatomic, assign) BOOL fromZero;
+
+///边框和圆饼的间距，default `0`
+@property(nonatomic, assign) CGFloat innerMargin;
 
 @end
 
