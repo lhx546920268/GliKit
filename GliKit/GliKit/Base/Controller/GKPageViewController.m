@@ -254,29 +254,31 @@ static char GKVisiblePageKey;
 {
     [self layoutVisiablePages];
     
-    CGFloat offset = scrollView.contentOffset.x;
-    if(offset <= 0 || offset >= scrollView.gkWidth * (self.menuBar.titles.count - 1)){
-        return;
+    if (self.shouldUseMenuBar && scrollView.isDragging) {
+        CGFloat offset = scrollView.contentOffset.x;
+        if(offset <= 0 || offset >= scrollView.gkWidth * (self.menuBar.titles.count - 1)){
+            return;
+        }
+        
+        //是否是向右滑动
+        BOOL toRight = scrollView.contentOffset.x >= self.beginOffset.x;
+        
+        CGFloat width = scrollView.gkWidth;
+        int index = (toRight ? offset : (offset + width)) / width;
+        if(index != self.menuBar.selectedIndex)
+            return;
+        
+        offset = (int)offset % (int)width;
+        if(!toRight){
+            offset = width - offset;
+        }
+        float percent = offset / width;
+        
+        //向左还是向右
+        NSUInteger willIndex = toRight ? self.menuBar.selectedIndex + 1 : self.menuBar.selectedIndex - 1;
+        
+        [self.menuBar setPercent:percent forIndex:willIndex];
     }
-    
-    //是否是向右滑动
-    BOOL toRight = scrollView.contentOffset.x >= self.beginOffset.x;
-    
-    CGFloat width = scrollView.gkWidth;
-    int index = (toRight ? offset : (offset + width)) / width;
-    if(index != self.menuBar.selectedIndex)
-        return;
-    
-    offset = (int)offset % (int)width;
-    if(!toRight){
-        offset = width - offset;
-    }
-    float percent = offset / width;
-    
-    //向左还是向右
-    NSUInteger willIndex = toRight ? self.menuBar.selectedIndex + 1 : self.menuBar.selectedIndex - 1;
-    
-    [self.menuBar setPercent:percent forIndex:willIndex];
     
     [super scrollViewDidScroll:scrollView];
 }
