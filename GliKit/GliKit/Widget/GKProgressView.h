@@ -80,7 +80,19 @@ typedef NS_ENUM(NSInteger, GKProgressViewStyle){
 
 @end
 
-///圆饼进度条
+/**
+ 圆饼进度条
+ eg.
+ ```
+ GKRoundCakesProgressView *roundCatesView = [[GKRoundCakesProgressView alloc] init];
+ roundCatesView.fromZero = NO;
+ roundCatesView.innerMargin = 10;
+ roundCatesView.layer.cornerRadius = width / 2;
+ roundCatesView.layer.masksToBounds = YES;
+ roundCatesView.layer.borderWidth = 5;
+ roundCatesView.layer.borderColor = roundCatesView.progressColor.CGColor;
+ ```
+ */
 @interface GKRoundCakesProgressView : GKProgressView
 
 ///是否从0到1, default `YES`
