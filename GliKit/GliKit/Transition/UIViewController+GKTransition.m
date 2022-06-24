@@ -92,12 +92,22 @@ static char GKPartialPresentPropsKey;
 
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController
 {
-    [self gkPushViewControllerUseTransitionDelegate:viewController useNavigationBar:YES];
+    [self gkPushViewControllerUseTransitionDelegate:viewController completion:nil];
+}
+
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController completion:(void (^)(void))completion
+{
+    [self gkPushViewControllerUseTransitionDelegate:viewController useNavigationBar:YES completion:completion];
 }
 
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use
 {
-    [GKPresentTransitionDelegate pushViewController:viewController useNavigationBar:use parentedViewConttroller:self];
+    [self gkPushViewControllerUseTransitionDelegate:viewController useNavigationBar:use completion:nil];
+}
+
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL)use completion:(void (^)(void))completion
+{
+    [GKPresentTransitionDelegate pushViewController:viewController useNavigationBar:use parentedViewConttroller:self completion:completion];
 }
 
 @end

@@ -54,8 +54,12 @@ typedef NS_ENUM(NSInteger, GKPresentTransitionStyle)
  *@param vc 被push的
  *@param flag 是否使用导航栏
  *@param parentedViewConttroller push的
+ *@param completion 完成回调
  */
-+ (nullable UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller;
++ (nullable UINavigationController*)pushViewController:(UIViewController*) vc
+                                      useNavigationBar:(BOOL) flag
+                               parentedViewConttroller:(UIViewController*) parentedViewConttroller
+                                            completion:(void(^ __nullable)(void)) completion;
 
 @end
 

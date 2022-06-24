@@ -7,149 +7,35 @@
 //
 
 #import "GKRouter.h"
-#import "GKBaseViewController.h"
-#import "GKObject.h"
 #import "NSObject+GKUtils.h"
 #import "NSDictionary+GKUtils.h"
 #import "NSString+GKUtils.h"
 #import "UIViewController+GKUtils.h"
-#import "GKBaseWebViewController.h"
 #import "UIViewController+GKPush.h"
 #import "GKBaseDefines.h"
 #import "GKBaseNavigationController.h"
 #import "UIViewController+GKTransition.h"
 #import "GKAppUtils.h"
-#import <objc/runtime.h>
-
-static char CARouteConfigKey;
-
-@implementation UIViewController (GKRouteUtils)
-
-- (GKRouteConfig *)routeConfig
-{
-    return objc_getAssociatedObject(self, &CARouteConfigKey);
-}
-
-- (void)setRouteConfig:(GKRouteConfig*) config
-{
-    objc_setAssociatedObject(self, &CARouteConfigKey, config, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NSString *)routePath
-{
-    return self.routeConfig.path;
-}
-
-- (void)configRoute:(GKRouteConfig *)config
-{
-    //子类重写
-}
-
-- (BOOL)isRouteEqual:(GKRouteConfig *)config
-{
-    return [self.routeConfig isEqual:config];
-}
-
-@end
 
 ///路由属性
-@interface GKRouteConfig()
+@interface GKRouteConfig(GKRoutePrivate)
 
 ///路由参数
 @property(nonatomic, strong) NSDictionary *routeParams;
 
-///是否是弹出来
-@property(nonatomic, readonly) BOOL isPresent;
-
 @end
 
-@implementation GKRouteConfig
+@interface UIViewController (GKRoutePrivate)
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.animated = YES;
-    }
-    return self;
-}
-
-- (BOOL)isPresent
-{
-    return self.style == GKRouteStylePresent || self.style == GKRouteStylePresentWithoutNavigationBar;
-}
-
-- (NSString *)URLString
-{
-    if(_URLString){
-        return _URLString;
-    }
-    
-    return self.URLComponents.string;
-}
-
-- (NSString *)path
-{
-    if(_path){
-        return _path;
-    }
-    
-    NSURLComponents *components = self.URLComponents;
-    if(!components && self.URLString){
-        components = [NSURLComponents componentsWithString:self.URLString];
-    }
-    
-    if(components){
-        _path = components.path;
-    }
-    
-    return _path;
-}
-
-- (NSDictionary *)mExtras
-{
-    if(!_extras){
-        _extras = [NSMutableDictionary dictionary];
-    }
-    NSAssert([_extras isKindOfClass:NSMutableDictionary.class], @"CARouteConfig.mExtras must be NSMutableDictionary");
-    
-    return _extras;
-}
-
-- (BOOL)isEqual:(GKRouteConfig*) config
-{
-    if (![config isKindOfClass:GKRouteConfig.class]) {
-        return NO;
-    }
-    
-    if (![config.path isEqualToString:self.path]) {
-        return NO;
-    }
-    
-    return [self.routeParams isEqualToDictionary:config.routeParams];
-}
-
-@end
-
-///注册的信息
-@interface GKRouteRegistration : NSObject
-
-///类
-@property(nonatomic, strong) Class cls;
-
-///回调
-@property(nonatomic, copy) GKRouteHandler handler;
-
-@end
-
-@implementation GKRouteRegistration
+///当前路由配置，只有通过路由的方式打开的才有
+@property(nonatomic, strong) GKRouteConfig *routeConfig;
 
 @end
 
 @interface GKRouter ()
 
 //已注册的
-@property(nonatomic, readonly) NSMutableDictionary<NSString*, GKRouteRegistration*> *registrations;
+@property(nonatomic, readonly) NSMutableDictionary<NSString*, GKRouteHandler> *registrations;
 
 ///拦截器
 @property(nonatomic, readonly) NSMutableArray *interceptors;
@@ -185,7 +71,7 @@ static char CARouteConfigKey;
     return _toClosedViewControllers;
 }
 
-- (NSMutableDictionary<NSString *,GKRouteRegistration *> *)registrations
+- (NSMutableDictionary<NSString *, GKRouteHandler> *)registrations
 {
     if(!_registrations){
         _registrations = [NSMutableDictionary new];
@@ -213,24 +99,12 @@ static char CARouteConfigKey;
     [self.interceptors removeObject:interceptor];
 }
 
-- (void)registerPath:(NSString *)path forClass:(Class)cls
-{
-    NSParameterAssert(path != nil);
-    NSAssert([cls isKindOfClass:UIViewController.class], @"the class for %@ must be a UIViewController", path);
-    
-    GKRouteRegistration *registration = [GKRouteRegistration new];
-    registration.cls = cls;
-    self.registrations[path] = registration;
-}
-
 - (void)registerPath:(NSString *)path forHandler:(GKRouteHandler)handler
 {
     NSParameterAssert(path != nil);
     NSParameterAssert(handler != nil);
     
-    GKRouteRegistration *registration = [GKRouteRegistration new];
-    registration.handler = handler;
-    self.registrations[path] = registration;
+    self.registrations[path] = handler;
 }
 
 - (void)unregisterPath:(NSString *)path
@@ -271,17 +145,9 @@ static char CARouteConfigKey;
     NSString *path = config.path;
     if(![NSString isEmpty:path]){
         
-        GKRouteRegistration *registration = _registrations[path];
-        if(registration.handler){
-            viewController = registration.handler(config);
-            processBySelf = YES;
-        }else if(registration.cls){
-            Class cls = registration.cls;
-            viewController = [cls new];
-        }else{
-            Class cls = NSClassFromString(path);
-            viewController = [cls new];
-        }
+        GKRouteHandler handler = _registrations[path];
+        viewController = handler(config);
+        processBySelf = YES;
         
         if(![viewController isKindOfClass:UIViewController.class]){
             viewController = nil;
@@ -394,7 +260,8 @@ static char CARouteConfigKey;
         
         if(config.completion != nil && [nav isKindOfClass:GKBaseNavigationController.class]){
             nav.transitionCompletion = ^{
-                config.completion(GKRouteResultSuccess);
+                //防止动画过程中被改变
+                !config.completion ?: config.completion(GKRouteResultSuccess);
             };
         }
         if(nav){
@@ -471,11 +338,11 @@ static char CARouteConfigKey;
 ///找不到对应的页面
 - (void)cannotFoundWithConfig:(GKRouteConfig*) config
 {
-    NSString *URLString = config.URLString ? config.URLString : config.path;
 #ifdef DEBUG
+    NSString *URLString = config.URLString ? config.URLString : config.path;
     NSLog(@"Can not found viewControlelr for %@", URLString);
 #endif
-    !self.failureHandler ?: self.failureHandler(URLString, config.extras);
+    !self.failureHandler ?: self.failureHandler(config);
 }
 
 @end

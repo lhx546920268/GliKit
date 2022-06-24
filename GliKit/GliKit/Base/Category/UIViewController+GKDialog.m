@@ -334,7 +334,7 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
     [self showAsDialogInViewController:viewController inPresentWay:NO layoutHandler:layoutHandler animated:YES];
 }
 
-- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void (^)(UIView * _Nonnull, UIView * _Nonnull))layoutHandler animated:(BOOL)animated
+- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void (NS_NOESCAPE^)(UIView *, UIView *))layoutHandler animated:(BOOL)animated
 {
     [self showAsDialogInViewController:viewController inPresentWay:NO layoutHandler:layoutHandler animated:animated];
 }

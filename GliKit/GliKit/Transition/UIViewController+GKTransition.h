@@ -40,7 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///使用自定义过渡方式
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController;
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController completion:(void(^ __nullable)(void)) completion;
 - (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use;
+- (void)gkPushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use completion:(void(^ __nullable)(void)) completion;
 
 @end
 

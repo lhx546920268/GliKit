@@ -133,7 +133,7 @@
 
 // MARK: - Class method
 
-+ (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller
++ (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller completion:(void (^)(void))completion
 {
     GKPresentTransitionDelegate *delegate = [[GKPresentTransitionDelegate alloc] init];
     if(flag){
@@ -146,12 +146,14 @@
             if(vc.navigationController){
                 [delegate addInteractiveTransitionToViewController:vc];
             }
+            !completion ?: completion();
         }];
     }else{
         vc.gkTransitioningDelegate = delegate;
         [parentedViewConttroller.gkTopestPresentedViewController presentViewController:vc animated:YES completion:^(void){
 
             [delegate addInteractiveTransitionToViewController:vc];
+            !completion ?: completion();
         }];
     }
 
