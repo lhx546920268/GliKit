@@ -66,6 +66,12 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 ///判断是否是整数
 @property(nonatomic, readonly) BOOL isInteger;
 
+///判断是否是邮箱
+- (BOOL)isEmail;
+
+///判断是否是 url
+- (BOOL)isURL;
+
 // MARK: - Hash
 
 ///获取md5字符串

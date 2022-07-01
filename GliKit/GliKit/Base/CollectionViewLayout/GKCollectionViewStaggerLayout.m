@@ -307,8 +307,8 @@
 
 - (void)setSectionHeaderHeight:(CGFloat)sectionHeaderHeight
 {
-    if(_sectionFooterHeight != sectionHeaderHeight){
-        _sectionFooterHeight = sectionHeaderHeight;
+    if(_sectionHeaderHeight != sectionHeaderHeight){
+        _sectionHeaderHeight = sectionHeaderHeight;
         if(![self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]){
             [self invalidateLayout];
         }

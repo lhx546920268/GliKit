@@ -124,6 +124,34 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]].length == 0;
 }
 
+- (BOOL)isEmail
+{
+    if ([NSString isEmpty:self]) {
+        return NO;
+    }
+    NSString *regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    return [predicate evaluateWithObject:self];
+}
+
+- (BOOL)isURL
+{
+    if ([NSString isEmpty:self]) {
+        return NO;
+    }
+    NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+    NSString *scheme = @"((http[s]?)://)?"; //协议 可选
+    NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
+    
+    allCharacter = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+    NSString *path = [NSString stringWithFormat:@"(%@+)*", allCharacter]; //路径
+    
+    NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    return [predicate evaluateWithObject:self];
+}
+
 // MARK: - Hash
 
 - (NSString*)gkMD5String
