@@ -13,8 +13,11 @@
 #import <NSJSONSerialization+GKUtils.h>
 #import <SDWebImageDownloader.h>
 #import <MapKit/MapKit.h>
+#import <objc/runtime.h>
 
+@import NetworkExtension;
 @import CoreText;
+@import AVKit;
 
 @interface GKParent : NSObject<NSCopying>
 
@@ -326,6 +329,30 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                    ];
 
     [self initViews];
+    
+//    self.view.backgroundColor = UIColor.redColor;
+//
+//    UIImage *image = [UIImage imageNamed:@"im_bg_servicebg_white"];
+//
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+//    [self.view addSubview:imageView];
+//
+//    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(120);
+//        make.centerX.equalTo(0);
+//    }];
+//
+//    NSLog(@"%@", NSStringFromCGSize(image.size));
+//    UIImage *image2 = [image resizableImageWithCapInsets:UIEdgeInsetsMake(18, 20, 18, 20) resizingMode:UIImageResizingModeTile];
+//
+//    UIImageView *imageView2 = [[UIImageView alloc] initWithImage:image2];
+//    [self.view addSubview:imageView2];
+//
+//    [imageView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(imageView.mas_bottom).offset(20);
+//        make.centerX.equalTo(0);
+//        make.size.equalTo(CGSizeMake(250, 300));
+//    }];
 
 //    NSArray *familyNames = [UIFont familyNames];
 //    for (NSString *familyName in familyNames) {
@@ -397,6 +424,15 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     
 //    self.geocoder = [CLGeocoder new];
+    
+    Class cls = NSClassFromString(@"");
+    [cls toText];
+}
+
++ (BOOL)toText
+{
+    NSLog(@"to text %@", @"1");
+    return NO;
 }
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
@@ -532,14 +568,14 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    NSAssert(indexPath.row != 0, @"indexPath idnei");
+//    [UIApplication.sharedApplication openURL:[NSURL URLWithString:@"www.baidu.com"]];
 //    NSString *encodedURL = [@"https://devtest.zegobird.com:11111/public/pages/coupon/index.html" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //    NSString *str = [NSString stringWithFormat:@"zegodealer:///app/web?url=%@", encodedURL];
 //    [UIApplication.sharedApplication openURL:[NSURL URLWithString:str]];
-//    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
-//    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
-//        config.path = model.className;
-//    }];
+    GKDRowModel *model = self.datas[indexPath.row % self.datas.count];
+    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+        config.path = model.className;
+    }];
 }
 
 - (NSArray<UIView *> *)swipeCell:(UIView<GKSwipeCell> *)cell swipeButtonsForDirection:(GKSwipeDirection)direction

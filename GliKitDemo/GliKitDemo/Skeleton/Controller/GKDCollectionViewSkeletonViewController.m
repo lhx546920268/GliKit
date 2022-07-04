@@ -15,6 +15,12 @@
 
 @property(nonatomic, strong) NSArray *datas;
 
+///
+@property(nonatomic, assign) NSInteger expandIndex;
+
+///
+@property(nonatomic, strong) NSArray<UIColor*> *colors;
+
 @end
 
 @implementation GKDCollectionViewSkeletonViewController
@@ -23,7 +29,10 @@
 {
     [super viewDidLoad];
     
+    self.colors = @[UIColor.redColor, UIColor.orangeColor, UIColor.greenColor, UIColor.greenColor, UIColor.cyanColor, UIColor.blueColor, UIColor.purpleColor];
+    
     self.navigationItem.title = @"UICollectionView";
+    self.expandIndex = NSNotFound;
     
     NSMutableArray *datas = [NSMutableArray array];
     for(NSInteger i = 0;i < 30;i ++){
@@ -60,10 +69,15 @@
     return self.datas.count;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(collectionView.gkWidth - 20, self.expandIndex == indexPath.item ? 120 : 70);
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     GKDCollectionViewSkeletonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKDCollectionViewSkeletonCell.gkNameOfClass forIndexPath:indexPath];
-    
+    cell.animatedView.backgroundColor = self.colors[indexPath.item % self.colors.count];
     return cell;
 }
 
@@ -77,6 +91,11 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    self.expandIndex = indexPath.item;
+    [UIView animateWithDuration:3 animations:^{
+        [collectionView performBatchUpdates:^{
+        } completion:nil];
+    }];
 }
 
 @end

@@ -204,8 +204,69 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
         }
     });
 
+    NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+    NSString *scheme = @"((http[s]?)://)?"; //协议 可选
+    NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
     
+    allCharacter = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+    NSString *path = [NSString stringWithFormat:@"(%@+)*", allCharacter]; //路径
+    
+    NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
+    
+    NSLog(@"%@", pattern);
+
+//
+//    [self logCharacterSet:NSCharacterSet.URLUserAllowedCharacterSet];
+//    NSLog(@"----------------");
+//    [self logCharacterSet:NSCharacterSet.URLPasswordAllowedCharacterSet];
+//    NSLog(@"----------------");
+//    [self logCharacterSet:NSCharacterSet.URLHostAllowedCharacterSet];
+//    NSLog(@"----------------");
+//    [self logCharacterSet:NSCharacterSet.URLPathAllowedCharacterSet];
+//    NSLog(@"----------------");
+//    [self logCharacterSet:NSCharacterSet.URLFragmentAllowedCharacterSet];
+//    NSLog(@"----------------");
+    
+    // 0-9a-zA-Z!$&'()*+,-./:;=?@_~  URLQueryAllowedCharacterSet
+    // 0-9a-zA-Z!$&'()*+,-.:;=?@_~  URLUserAllowedCharacterSet  URLPasswordAllowedCharacterSet
+    // 0-9a-zA-Z!$&'()*+,-.:;=?@[]_~ URLHostAllowedCharacterSet
+    // 0-9a-zA-Z!$&'()*+,-./:=?@_~  URLPathAllowedCharacterSet
+    
+    // 0-9a-zA-Z!$&'()*+,-./:;=?@_~  URLFragmentAllowedCharacterSet
     return YES;
+}
+
+
+
+
+- (void) logCharacterSet:(NSCharacterSet*)characterSet
+{
+    unichar unicharBuffer[20];
+    int index = 0;
+
+    for (unichar uc = 0; uc < (0xFFFF); uc ++)
+    {
+        if ([characterSet characterIsMember:uc])
+        {
+            unicharBuffer[index] = uc;
+
+            index ++;
+
+            if (index == 20)
+            {
+                NSString * characters = [NSString stringWithCharacters:unicharBuffer length:index];
+                NSLog(@"%@", characters);
+
+                index = 0;
+            }
+        }
+    }
+
+    if (index != 0)
+    {
+        NSString * characters = [NSString stringWithCharacters:unicharBuffer length:index];
+        NSLog(@"%@", characters);
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
