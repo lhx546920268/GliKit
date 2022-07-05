@@ -138,7 +138,7 @@
                 }
                     break;
                 case UIControlContentVerticalAlignmentCenter : {
-                    rect.origin.y = contentRect.origin.y + (contentRect.size.height - rect.size.height) / 2.0 + insets.top - insets.bottom;
+                    rect.origin.y = (contentRect.size.height - self.contentEdgeInsets.top - self.contentEdgeInsets.bottom - rect.size.height) / 2.0 + self.contentEdgeInsets.top + insets.top - insets.bottom;
                 }
                     break;
                 case UIControlContentVerticalAlignmentBottom : {

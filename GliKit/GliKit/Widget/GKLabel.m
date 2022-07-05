@@ -244,12 +244,10 @@ static NSRegularExpression *URLRegularExpression = nil;
 {
     if(!URLRegularExpression){
         
-        NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+        NSString *allCharacter = @"0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~";
         NSString *scheme = @"((http[s]?)://)?"; //协议 可选
-        NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
-        
-        allCharacter = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
-        NSString *path = [NSString stringWithFormat:@"(%@+)*", allCharacter]; //路径
+        NSString *host = [NSString stringWithFormat:@"(([%@]+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
+        NSString *path = [NSString stringWithFormat:@"[#%/%@]*", allCharacter]; //路径
         
         NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
         URLRegularExpression = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
