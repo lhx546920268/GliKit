@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///列表配置
+///列表配置 主要用于 tableView delegate 和 dataSource 代码太多时，防止viewController代码臃肿
 @interface GKTableViewConfig : GKScrollViewConfig<UITableViewDelegate, UITableViewDataSource>
 
 ///绑定的viewController

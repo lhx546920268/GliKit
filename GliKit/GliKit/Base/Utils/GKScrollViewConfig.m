@@ -7,6 +7,7 @@
 //
 
 #import "GKScrollViewConfig.h"
+#import "GKBaseDefines.h"
 
 @implementation GKScrollViewConfig
 
@@ -44,7 +45,7 @@
 
 - (void)config
 {
-    
+    GKThrowNotImplException
 }
 
 @end

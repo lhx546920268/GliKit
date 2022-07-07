@@ -11,6 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///列表配置 主要用于 collectionView delegate 和 dataSource 代码太多时，防止viewController代码臃肿
 @interface GKCollectionViewConfig : GKScrollViewConfig<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 ///绑定的viewController

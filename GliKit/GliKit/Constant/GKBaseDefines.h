@@ -19,7 +19,7 @@
 #define NSLog(...) {}
 #endif
 
-//拼接2个
+//拼接2个，把2个变量名称拼接成一个变量名称，比如 GKConcat(self, Weak)，就变成selfWeak
 #ifndef GKConcat
 #define GKConcat(a, b) a##b
 #endif
@@ -39,7 +39,7 @@
 #define GKThrowNotImplException @throw [[NSException alloc] initWithName:@"GKNotImplException" reason:[NSString stringWithFormat:@"%@ 必须实现 %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd)] userInfo:nil];
 #endif
 
-//延迟执行
+//延迟执行，秒
 #ifndef dispatch_main_after
 #define dispatch_main_after(s, block)\
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(s * NSEC_PER_SEC)), dispatch_get_main_queue(), block);

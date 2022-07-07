@@ -76,7 +76,7 @@
     }];
 
     NSArray *colors = @[UIColor.redColor, UIColor.orangeColor, UIColor.yellowColor, UIColor.greenColor, UIColor.cyanColor, UIColor.blueColor, UIColor.purpleColor];
-    NSArray *widths = @[@100, @130, @200, @250, @180, @320, @150];
+//    NSArray *widths = @[@100, @130, @200, @250, @180, @320, @150];
     CGFloat margin = 0;
     CGFloat totalWith = margin;
     CGFloat height = 200;

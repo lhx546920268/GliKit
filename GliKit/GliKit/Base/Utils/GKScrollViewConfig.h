@@ -11,7 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///列表配置
+///列表配置，不要直接用这个类，继承子类 GKCollectionViewConfig和GKTableViewConfig
+///使用时 直接创建并设置viewController.config属性就行了
 @interface GKScrollViewConfig : NSObject
 
 ///绑定的viewController
