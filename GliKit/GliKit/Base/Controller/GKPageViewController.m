@@ -254,7 +254,7 @@ static char GKVisiblePageKey;
 {
     [self layoutVisiablePages];
     
-    if (self.shouldUseMenuBar && scrollView.isDragging) {
+    if (self.shouldUseMenuBar) {
         CGFloat offset = scrollView.contentOffset.x;
         if(offset <= 0 || offset >= scrollView.gkWidth * (self.menuBar.titles.count - 1)){
             return;
