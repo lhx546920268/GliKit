@@ -81,6 +81,15 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
     [self stopDisplayLink];
 }
 
+- (void)checkScrollEnabled
+{
+    UIScrollView *child = self.parentScrollView.gkNestedChildScrollView;
+    CGFloat maxOffsetY = floor(self.parentScrollView.contentSize.height - self.parentScrollView.gkHeight);
+    self.parentScrollEnabled = self.parentScrollView.contentOffset.y < maxOffsetY;
+    self.childScrollEnabled = !self.parentScrollEnabled;
+}
+
+
 // MARK: - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -113,9 +122,15 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
                 self.childScrollEnabled = YES;
             }
         }else{
-            //不能让父容器继续滑动了
             if(!self.parentScrollEnabled){
-                scrollView.contentOffset = CGPointMake(0, maxOffsetY);
+                UIScrollView *child = self.parentScrollView.gkNestedChildScrollView;
+                if (child.contentOffset.y > -child.contentInset.top) {
+                    //不能让父容器继续滑动了
+                    scrollView.contentOffset = CGPointMake(0, maxOffsetY);
+                } else {
+                    self.parentScrollEnabled = YES;
+                    self.childScrollEnabled = NO;
+                }
             }
         }
         

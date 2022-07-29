@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否正在模拟系统自动滑动
 @property(nonatomic, readonly) BOOL autoScrolling;
 
+///校验哪个可以滑动
+- (void)checkScrollEnabled;
+
 ///用户触摸屏幕了
 - (void)onTouchScreen;
 
