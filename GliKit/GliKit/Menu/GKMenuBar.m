@@ -22,6 +22,9 @@
 ///是否是点击按钮
 @property(nonatomic, assign) BOOL isClickItem;
 
+///正在滑动到中间的下标
+@property(nonatomic, assign) NSInteger scrollingToCenterIndex;
+
 @end
 
 @implementation GKMenuBar
@@ -351,6 +354,16 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL) flag
 {
+    [self setSelectedIndex:selectedIndex animated:flag scrollToCenter:YES];
+}
+
+- (void)setSelectedIndexAndScrollToCenterIfNeeded:(NSUInteger)selectedIndex animated:(BOOL)flag
+{
+    [self setSelectedIndex:selectedIndex animated:flag scrollToCenter:NO];
+}
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL) flag scrollToCenter:(BOOL) scrollToCenter
+{
     if(selectedIndex >= self.items.count)
         return;
     
@@ -368,7 +381,24 @@
     [self onSelectItemAtIndex:_selectedIndex oldIndex:oldIndex];
     
     [self layoutIndicatorWithAnimate:flag];
-    [self scrollToVisibleRectWithAnimate:flag];
+    
+    if (!scrollToCenter) {
+        UICollectionViewCell *cell = [self cellForIndex:_selectedIndex];
+        if (CGRectEqualToRect(cell.frame, CGRectZero)) {
+            scrollToCenter = YES;
+        } else {
+            CGFloat offset = self.collectionView.contentOffset.x;
+            if (cell.gkLeft < offset + self.contentInset.left) {
+                scrollToCenter = YES;
+            } else if (cell.gkRight > offset + self.collectionView.gkWidth - self.contentInset.right) {
+                scrollToCenter = YES;
+            }
+        }
+    }
+    
+    if (scrollToCenter) {
+        [self scrollToVisibleRectWithAnimate:flag];
+    }
     
     if(oldIndex < self.items.count && ( _isClickItem || _callDelegateWhenSetSelectedIndex)){
         if([self.delegate respondsToSelector:@selector(menuBar:didDeselectItemAtIndex:)]){
@@ -413,6 +443,19 @@
         frame.size.width = width1 + (width2 - width1) * percent;
         
         self.indicator.frame = frame;
+        
+        
+        BOOL scrollToCenter = NO;
+        offset = self.collectionView.contentOffset.x;
+        if (self.indicator.gkLeft < offset + self.contentInset.left) {
+            scrollToCenter = YES;
+        } else if (self.indicator.gkRight > offset + self.collectionView.gkWidth - self.contentInset.right) {
+            scrollToCenter = YES;
+        }
+        
+        if (scrollToCenter) {
+            [self scrollToVisibleRectWithAnimate:YES];
+        }
     }
 }
 
@@ -421,7 +464,19 @@
 {
     if(_selectedIndex >= self.items.count || self.currentStyle != GKMenuBarStyleFit || !self.measureEnabled)
         return;
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:flag];
+    if (_scrollingToCenterIndex != _selectedIndex) {
+        _scrollingToCenterIndex = _selectedIndex;
+        if (flag) {
+            [UIView animateWithDuration:0.25 animations:^{
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+            } completion:^(BOOL finished) {
+                self.scrollingToCenterIndex = NSNotFound;
+            }];
+        } else {
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+            self.scrollingToCenterIndex = NSNotFound;
+        }
+    }
 }
 
 ///通过下标获取按钮
@@ -431,13 +486,7 @@
         return nil;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-    
-    if(cell == nil){
-        cell = [self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-    }
-    
-    return cell;
+    return [self.collectionView cellForItemAtIndexPath:indexPath];
 }
 
 

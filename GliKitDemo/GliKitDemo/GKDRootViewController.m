@@ -235,7 +235,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 @end
 
-@interface GKDRootListCell : UITableViewCell
+@interface GKDRootListCell : GKTableViewSwipeCell
 
 ///
 @property(nonatomic, readonly) UILabel *titleLabel;
@@ -248,19 +248,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _titleLabel = [MYLabel new];
-        
-        UIFont *font = [UIFont fontWithName:@"Pyidaungsu-Bold" size:16];
-        NSLog(@"%@", font);
-        _titleLabel.font = font;
-//        _titleLabel.layer.masksToBounds = NO;
-//        _titleLabel.clipsToBounds = NO;
-//        _titleLabel.baselineAdjustment = UIBaselineAdjustmentNone;
         [self.contentView addSubview:_titleLabel];
         
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(0);
             make.leading.equalTo(15);
-            make.height.equalTo(ceil(font.lineHeight + 3));
         }];
     }
     
@@ -316,10 +308,10 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    })
     
     self.datas = @[
-                   [GKDRowModel modelWithTitle:@"ဧရိယာ(စတုရန်ပေ)Alert" clazz:@"user/photo"],
-                   [GKDRowModel modelWithTitle:@"ပြင်ဆင်ပြီး/မပြီး" clazz:@"skeleton"],
-                   [GKDRowModel modelWithTitle:@"ပါဝင်ပစ္စည်း" clazz:@"GKDTransitionViewController"],
-                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"GKDNestedParentViewController"],
+                   [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
+                   [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
+                   [GKDRowModel modelWithTitle:@"过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"/app/nested"],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
                    [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
                    [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
@@ -425,8 +417,16 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
 //    self.geocoder = [CLGeocoder new];
     
-    Class cls = NSClassFromString(@"");
-    [cls toText];
+
+    NSLog(@"doc %@", NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES));
+    NSLog(@"lib %@", NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES));
+    NSLog(@"doca %@", NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES));
+    NSLog(@"cache %@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
+    NSLog(@"use %@", NSSearchPathForDirectoriesInDomains(NSUserDirectory, NSUserDomainMask, YES));
+    
+    NSLog(@"home %@", NSHomeDirectory());
+    NSLog(@"temp %@", NSTemporaryDirectory());
+    NSLog(@"step %@", NSOpenStepRootDirectory());
 }
 
 + (BOOL)toText
@@ -526,12 +526,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    NSLog(@"velocity %f %f, %f, %f", [scrollView.panGestureRecognizer velocityInView:scrollView].y, velocity.y, scrollView.contentOffset.y, targetContentOffset->y);
+//    NSLog(@"velocity %f %f, %f, %f", [scrollView.panGestureRecognizer velocityInView:scrollView].y, velocity.y, scrollView.contentOffset.y, targetContentOffset->y);
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"%f", scrollView.contentOffset.y);
+//    NSLog(@"%f", scrollView.contentOffset.y);
 }
 
 //MARK: UITableViewDelegate
@@ -551,15 +551,14 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     GKDRootListCell *cell = [tableView dequeueReusableCellWithIdentifier:GKDRootListCell.gkNameOfClass forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    cell.delegate = self;
+    cell.delegate = self;
     
     NSString *title = self.datas[indexPath.row % self.datas.count].title;
     cell.titleLabel.text = title;
     cell.titleLabel.textColor = UIColor.blackColor;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.tintColor = UIColor.redColor;
-    NSLog(@"%@ %f", title, [title gkStringSizeWithFont:cell.titleLabel.font].height);
-//    cell.swipeDirection = GKSwipeDirectionLeft | GKSwipeDirectionRight;
+    cell.swipeDirection = GKSwipeDirectionLeft | GKSwipeDirectionRight;
     
     return cell;
 }

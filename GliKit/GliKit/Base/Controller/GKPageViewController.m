@@ -246,6 +246,7 @@ static char GKVisiblePageKey;
 {
     self.beginOffset = scrollView.contentOffset;
     [self setScrollEnabled:NO];
+    [self scrollToVisibleIndexAndScrollToCenter:NO];
     
     [super scrollViewWillBeginDragging:scrollView];
 }
@@ -285,20 +286,18 @@ static char GKVisiblePageKey;
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if(!decelerate){
-        [self scrollToVisibleIndex];
-        [self setScrollEnabled:YES];
-    }
+    [self scrollToVisibleIndexAndScrollToCenter:NO];
+    [self setScrollEnabled:YES];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self scrollToVisibleIndex];
+    [self scrollToVisibleIndexAndScrollToCenter:YES];
     [self setScrollEnabled:YES];
 }
 
 ///滑动到可见位置
-- (void)scrollToVisibleIndex
+- (void)scrollToVisibleIndexAndScrollToCenter:(BOOL) scrollToCenter
 {
     NSInteger index = floor(self.scrollView.bounds.origin.x / self.scrollView.gkWidth);
     
@@ -307,10 +306,16 @@ static char GKVisiblePageKey;
         _currentPage = index;
         if(self.shouldUseMenuBar){
             if(index != self.menuBar.selectedIndex){
-                [self.menuBar setSelectedIndex:index animated:YES];
+                if (scrollToCenter) {
+                    [self.menuBar setSelectedIndex:index animated:YES];
+                } else {
+                    [self.menuBar setSelectedIndexAndScrollToCenterIfNeeded:index animated:YES];
+                }
             }
         }
         [self _onScrollTopPage:index oldPage:oldPage];
+    } else if (scrollToCenter && self.shouldUseMenuBar) {
+        [self.menuBar scrollToVisibleRectWithAnimate:YES];
     }
 }
 

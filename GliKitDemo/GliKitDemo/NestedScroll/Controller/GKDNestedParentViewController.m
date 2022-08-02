@@ -74,6 +74,13 @@
 
 @implementation GKDNestedParentViewController
 
++ (void)load
+{
+    [GKRouter.sharedRouter registerPath:@"/app/nested" forHandler:^UIViewController * _Nullable(GKRouteConfig * _Nonnull config) {
+        return [GKDNestedParentViewController new];
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

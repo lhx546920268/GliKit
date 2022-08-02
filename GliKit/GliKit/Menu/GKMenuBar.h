@@ -138,12 +138,20 @@ typedef NS_ENUM(NSInteger, GKMenuBarStyle)
 ///设置选中的菜单按钮 可动画
 - (void)setSelectedIndex:(NSUInteger) selectedIndex animated:(BOOL) flag;
 
+/// 设置选中的菜单按钮，只有当按钮完全不可见时才滑动到中心点
+/// @param selectedIndex 菜单按钮下标
+/// @param flag 是否动画
+- (void)setSelectedIndexAndScrollToCenterIfNeeded:(NSUInteger)selectedIndex animated:(BOOL) flag;
+
 /// 设置将要到某个item的偏移量比例
 /// @param percent 比例 0 ~ 1.0
 /// @param index 将要到的下标
 - (void)setPercent:(float) percent forIndex:(NSUInteger) index;
 
-///通过下标获取按钮
+///滚动到可见位置
+- (void)scrollToVisibleRectWithAnimate:(BOOL) flag;
+
+///通过下标获取按钮，只返回可见的
 - (nullable __kindof UICollectionViewCell*)cellForIndex:(NSUInteger) index;
 
 @end

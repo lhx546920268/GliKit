@@ -146,7 +146,9 @@
     if(![NSString isEmpty:path]){
         
         GKRouteHandler handler = _registrations[path];
-        viewController = handler(config);
+        if (handler != nil) {
+            viewController = handler(config);
+        }
         processBySelf = YES;
         
         if(![viewController isKindOfClass:UIViewController.class]){
