@@ -232,7 +232,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
         if(isParent){
             helper.parentScrollView = self;
             objc_setAssociatedObject(self, &GKNestedScrollHelperKey, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }else{
+        }else if (parent) {
             helper.parentScrollView = parent;
             objc_setAssociatedObject(parent, &GKNestedScrollHelperKey, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }

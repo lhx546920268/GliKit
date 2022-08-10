@@ -300,6 +300,10 @@ static char GKVisiblePageKey;
 - (void)scrollToVisibleIndexAndScrollToCenter:(BOOL) scrollToCenter
 {
     NSInteger index = floor(self.scrollView.bounds.origin.x / self.scrollView.gkWidth);
+    if (index < self.numberOfPage - 1
+        && (int)self.scrollView.contentOffset.x % (int)self.scrollView.gkWidth > self.scrollView.gkWidth / 2) {
+        index ++;
+    }
     
     if(index != _currentPage){
         NSInteger oldPage = _currentPage;
