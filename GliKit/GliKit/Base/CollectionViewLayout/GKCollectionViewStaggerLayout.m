@@ -26,6 +26,9 @@
 ///区域背景装饰信息
 @property(nonatomic, strong) NSMutableDictionary<NSNumber*, GKCollectionViewStaggerLayoutDecoratorAttributes*> *sectionBackgroundDecoratorAttributes;
 
+///
+@property(nonatomic, strong) GKCollectionViewLayoutInvalidationContext *staggerInvalidationContext;
+
 @end
 
 @implementation GKCollectionViewStaggerLayout
@@ -454,7 +457,10 @@
 
 - (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds
 {
-    GKCollectionViewLayoutInvalidationContext *context = [GKCollectionViewLayoutInvalidationContext new];
+    if (!self.staggerInvalidationContext) {
+        self.staggerInvalidationContext = [GKCollectionViewLayoutInvalidationContext new];
+    }
+    self.staggerInvalidationContext.invalidSupplementaryIndexPaths = nil;
     
     for(NSInteger i = 0;i < self.attributes.count;i ++){
         GKCollectionViewStaggerLayoutAttributes *attribute = self.attributes[i];
@@ -470,13 +476,13 @@
             CGRect frame = attr.frame;
             //判断还在不在可见区域内
             if(frame.origin.y + frame.size.height > self.collectionView.contentOffset.y){
-                context.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader : @[attr.indexPath]};
+                self.staggerInvalidationContext.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader : @[attr.indexPath]};
                 break;
             }
         }
     }
     
-    return context;
+    return self.staggerInvalidationContext;
 }
 
 ///获取悬浮头部属性
