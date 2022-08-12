@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否可以嵌套滑动 需要手动设置 child和parent都要设置这个
 @property(nonatomic, assign) BOOL gkNestedScrollEnabled;
 
-///是否是嵌套滑动容器 需要手动设置
+///是否是嵌套滑动容器 需要手动设置，给parent 设置 UIScrollViewDecelerationRateFast，防止减速过慢 导致 child上的按钮要点击2次才生效
 @property(nonatomic, assign) BOOL gkNestedParent;
 
 ///滑动到父容器了 在父容器设置
