@@ -115,6 +115,43 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
     }
 }
 
+void runLoopCallbck (CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
+
+    switch (activity) {
+        case kCFRunLoopEntry :
+            NSLog(@"kCFRunLoopEntry");
+            break;
+        case kCFRunLoopBeforeTimers :
+            NSLog(@"kCFRunLoopBeforeTimers");
+            break;
+        case kCFRunLoopBeforeSources :
+            NSLog(@"kCFRunLoopBeforeSources");
+            break;
+        case kCFRunLoopBeforeWaiting :
+            NSLog(@"kCFRunLoopBeforeWaiting");
+            break;
+        case kCFRunLoopAfterWaiting :
+            NSLog(@"kCFRunLoopAfterWaiting");
+            break;
+        case kCFRunLoopExit :
+            NSLog(@"kCFRunLoopExit");
+            break;
+        default:
+            NSLog(@"RunLoop Other");
+            break;
+    }
+}
+
+@interface AppDelegate ()
+
+@end
+
+@interface AppDelegate ()
+
+@property(nonatomic, strong) NSTimer *timer;
+
+@end
+
 @implementation AppDelegate
 
 - (instancetype)init
@@ -129,6 +166,10 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     NSLog(@"did finish");
+//    
+//    CFRunLoopObserverRef ob = CFRunLoopObserverCreate(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, runLoopCallbck, NULL);
+//    CFRunLoopAddObserver(CFRunLoopGetCurrent(), ob, kCFRunLoopCommonModes);
+    
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
@@ -183,37 +224,37 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
 //
 //    TestOne *one1 = CFBridgingRelease(obj1);
 //    [one1 print];
-    
-    dispatch_queue_t queue = dispatch_queue_create("xx", DISPATCH_QUEUE_CONCURRENT);
-    
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < 10000; i ++) {
-            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMd];
-            if (time.length != 10) {
-                NSLog(@"10 diff");
-            }
-        }
-    });
-    
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < 10000; i ++) {
-            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMdHm];
-            if (time.length != 16) {
-                NSLog(@"16 diff");
-            }
-        }
-    });
-
-    NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
-    NSString *scheme = @"((http[s]?)://)?"; //协议 可选
-    NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
-    
-    allCharacter = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
-    NSString *path = [NSString stringWithFormat:@"(%@+)*", allCharacter]; //路径
-    
-    NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
-    
-    NSLog(@"%@", pattern);
+//
+//    dispatch_queue_t queue = dispatch_queue_create("xx", DISPATCH_QUEUE_CONCURRENT);
+//
+//    dispatch_async(queue, ^{
+//        for (NSInteger i = 0; i < 10000; i ++) {
+//            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMd];
+//            if (time.length != 10) {
+//                NSLog(@"10 diff");
+//            }
+//        }
+//    });
+//
+//    dispatch_async(queue, ^{
+//        for (NSInteger i = 0; i < 10000; i ++) {
+//            NSString *time = [NSDate gkCurrentTimeWithFormat:GKDateFormatYMdHm];
+//            if (time.length != 16) {
+//                NSLog(@"16 diff");
+//            }
+//        }
+//    });
+//
+//    NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+//    NSString *scheme = @"((http[s]?)://)?"; //协议 可选
+//    NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
+//
+//    allCharacter = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+//    NSString *path = [NSString stringWithFormat:@"(%@+)*", allCharacter]; //路径
+//
+//    NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
+//
+//    NSLog(@"%@", pattern);
 
 //
 //    [self logCharacterSet:NSCharacterSet.URLUserAllowedCharacterSet];
@@ -233,6 +274,13 @@ void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity ac
     // 0-9a-zA-Z!$&'()*+,-./:=?@_~  URLPathAllowedCharacterSet
     
     // 0-9a-zA-Z!$&'()*+,-./:;=?@_~  URLFragmentAllowedCharacterSet
+    
+//    self.timer = [NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+//        NSLog(@"tick");
+//        
+//        }];
+//    [NSRunLoop.currentRunLoop addTimer:self.timer forMode:NSRunLoopCommonModes];
+//    [self.timer fire];
     return YES;
 }
 

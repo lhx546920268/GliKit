@@ -129,7 +129,7 @@ static UIScrollView* GKFindNestedParentScrollView(UIView *child)
 
 - (void)gkNestedScroll_scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    if(scrollView.gkNestedScrollEnabled && scrollView.gkNestedParent){
+    if(scrollView.gkNestedScrollEnabled){
         [scrollView.gkNestedScrollHelper scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     }
  
