@@ -26,9 +26,6 @@
 ///区域背景装饰信息
 @property(nonatomic, strong) NSMutableDictionary<NSNumber*, GKCollectionViewStaggerLayoutDecoratorAttributes*> *sectionBackgroundDecoratorAttributes;
 
-///
-@property(nonatomic, strong) GKCollectionViewLayoutInvalidationContext *staggerInvalidationContext;
-
 @end
 
 @implementation GKCollectionViewStaggerLayout
@@ -457,10 +454,8 @@
 
 - (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds
 {
-    if (!self.staggerInvalidationContext) {
-        self.staggerInvalidationContext = [GKCollectionViewLayoutInvalidationContext new];
-    }
-    self.staggerInvalidationContext.invalidSupplementaryIndexPaths = nil;
+    GKCollectionViewLayoutInvalidationContext *context = [super invalidationContextForBoundsChange:newBounds];
+    context.invalidSupplementaryIndexPaths = nil;
     
     for(NSInteger i = 0;i < self.attributes.count;i ++){
         GKCollectionViewStaggerLayoutAttributes *attribute = self.attributes[i];
@@ -476,13 +471,13 @@
             CGRect frame = attr.frame;
             //判断还在不在可见区域内
             if(frame.origin.y + frame.size.height > self.collectionView.contentOffset.y){
-                self.staggerInvalidationContext.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader : @[attr.indexPath]};
+                context.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader : @[attr.indexPath]};
                 break;
             }
         }
     }
     
-    return self.staggerInvalidationContext;
+    return context;
 }
 
 ///获取悬浮头部属性

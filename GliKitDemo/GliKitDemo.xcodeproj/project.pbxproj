@@ -63,6 +63,9 @@
 		CEC6AF44245671E0006B22BB /* GKDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC6AF43245671E0006B22BB /* GKDialogViewController.m */; };
 		CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */; };
 		CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */; };
+		CEDD8BAB28DC3F0B005FC383 /* GKDDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8BAA28DC3F0B005FC383 /* GKDDynamicViewController.m */; };
+		CEDD8BAE28DC3FE4005FC383 /* GKDDynamicBannerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8BAD28DC3FE4005FC383 /* GKDDynamicBannerCell.m */; };
+		CEDD8BB128DC3FFB005FC383 /* GKDDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8BB028DC3FFB005FC383 /* GKDDynamicCell.m */; };
 		CEDEC98B24B6A669001B623D /* icon_filled_brand_head_dark.svg in Resources */ = {isa = PBXBuildFile; fileRef = CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */; };
 		CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C893231911E900E7CA75 /* AppDelegate.m */; };
 		CEE8C89C231911EB00E7CA75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE8C89B231911EB00E7CA75 /* Assets.xcassets */; };
@@ -162,6 +165,12 @@
 		CED1B13E2320FAC1009C4D6C /* GKDTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDTransitionViewController.h; sourceTree = "<group>"; };
 		CED1B13F2320FAC1009C4D6C /* GKDTransitionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDTransitionViewController.m; sourceTree = "<group>"; };
 		CED1B1402320FAC1009C4D6C /* GKDTransitionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GKDTransitionViewController.xib; sourceTree = "<group>"; };
+		CEDD8BA928DC3F0B005FC383 /* GKDDynamicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDDynamicViewController.h; sourceTree = "<group>"; };
+		CEDD8BAA28DC3F0B005FC383 /* GKDDynamicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDDynamicViewController.m; sourceTree = "<group>"; };
+		CEDD8BAC28DC3FE4005FC383 /* GKDDynamicBannerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDDynamicBannerCell.h; sourceTree = "<group>"; };
+		CEDD8BAD28DC3FE4005FC383 /* GKDDynamicBannerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDDynamicBannerCell.m; sourceTree = "<group>"; };
+		CEDD8BAF28DC3FFB005FC383 /* GKDDynamicCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDDynamicCell.h; sourceTree = "<group>"; };
+		CEDD8BB028DC3FFB005FC383 /* GKDDynamicCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDDynamicCell.m; sourceTree = "<group>"; };
 		CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = icon_filled_brand_head_dark.svg; sourceTree = "<group>"; };
 		CEE8C88F231911E900E7CA75 /* GliKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GliKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEE8C892231911E900E7CA75 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -442,6 +451,35 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		CEDD8BA628DC3EEC005FC383 /* Dynamic */ = {
+			isa = PBXGroup;
+			children = (
+				CEDD8BA728DC3EEC005FC383 /* View */,
+				CEDD8BA828DC3EEC005FC383 /* Controlelr */,
+			);
+			path = Dynamic;
+			sourceTree = "<group>";
+		};
+		CEDD8BA728DC3EEC005FC383 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEDD8BAC28DC3FE4005FC383 /* GKDDynamicBannerCell.h */,
+				CEDD8BAD28DC3FE4005FC383 /* GKDDynamicBannerCell.m */,
+				CEDD8BAF28DC3FFB005FC383 /* GKDDynamicCell.h */,
+				CEDD8BB028DC3FFB005FC383 /* GKDDynamicCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CEDD8BA828DC3EEC005FC383 /* Controlelr */ = {
+			isa = PBXGroup;
+			children = (
+				CEDD8BA928DC3F0B005FC383 /* GKDDynamicViewController.h */,
+				CEDD8BAA28DC3F0B005FC383 /* GKDDynamicViewController.m */,
+			);
+			path = Controlelr;
+			sourceTree = "<group>";
+		};
 		CEE8C886231911E900E7CA75 = {
 			isa = PBXGroup;
 			children = (
@@ -463,6 +501,7 @@
 		CEE8C891231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEDD8BA628DC3EEC005FC383 /* Dynamic */,
 				CE134D5B24F363A900F34CB4 /* Banner */,
 				CEDEC98A24B6A669001B623D /* icon_filled_brand_head_dark.svg */,
 				CEB37EBB249B6A8D00C15460 /* meat_1.jpg */,
@@ -662,7 +701,9 @@
 			files = (
 				CE0D6B9225F716A500F3459E /* GKDLoadMonitor.m in Sources */,
 				CE37C687233B4AAA00C4F196 /* GKDRowModel.m in Sources */,
+				CEDD8BAE28DC3FE4005FC383 /* GKDDynamicBannerCell.m in Sources */,
 				CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */,
+				CEDD8BAB28DC3F0B005FC383 /* GKDDynamicViewController.m in Sources */,
 				CEC3C84D231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m in Sources */,
 				CEB85F56232630DA0045CB38 /* GKDNestedPageViewController.m in Sources */,
 				CEC3C846231E5971003ADE7A /* GKDNormalSkeletonViewController.m in Sources */,
@@ -682,6 +723,7 @@
 				CE37C684233B4A2700C4F196 /* GKDEmptyViewController.m in Sources */,
 				CEC3C858231E5AEE003ADE7A /* GKDCollectionViewSkeletonCell.m in Sources */,
 				CED1B1412320FAC1009C4D6C /* GKDTransitionViewController.m in Sources */,
+				CEDD8BB128DC3FFB005FC383 /* GKDDynamicCell.m in Sources */,
 				CEC2D976239F8C0900F14210 /* GKDAlertViewController.m in Sources */,
 				CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */,
 				CEC1732F233DE50A00A1ADA8 /* GKDProgressViewController.m in Sources */,

@@ -318,6 +318,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                    [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
                    [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
                    [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
+                   [GKDRowModel modelWithTitle:@"Dynamic" clazz:@"/app/dynimic"],
                    ];
 
     [self initViews];

@@ -8,6 +8,7 @@
 
 #import "GKCollectionViewFlowLayout.h"
 #import "UIScreen+GKUtils.h"
+#import "GKCollectionViewLayoutInvalidationContext.h"
 
 ///装饰key
 static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewBackgroundDecorator";
@@ -166,6 +167,11 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
     return attributes;
 }
 
++ (Class)invalidationContextClass
+{
+    return GKCollectionViewLayoutInvalidationContext.class;
+}
+
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
     if(self.shouldStickHeaderDelegate){
@@ -174,6 +180,35 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
     
     return [super shouldInvalidateLayoutForBoundsChange:newBounds];
 }
+
+- (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds
+{
+    GKCollectionViewLayoutInvalidationContext *context = [super invalidationContextForBoundsChange:newBounds];
+    context.invalidSupplementaryIndexPaths = nil;
+    
+    for(NSInteger i = 0;i < self.attributes.count;i ++){
+        GKCollectionViewStaggerLayoutAttributes *attribute = self.attributes[i];
+        //该区域没有元素
+        if(!attribute.existElement){
+            continue;
+        }
+        
+        if(attribute.headerLayoutAttributes && attribute.shouldStickHeader){
+            //悬浮头部
+            UICollectionViewLayoutAttributes *attr = [self stickHeaderLayoutAttributesFromAttribute:attribute section:i];
+            
+            CGRect frame = attr.frame;
+            //判断还在不在可见区域内
+            if(frame.origin.y + frame.size.height > self.collectionView.contentOffset.y){
+                context.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader : @[attr.indexPath]};
+                break;
+            }
+        }
+    }
+    
+    return context;
+}
+
 
 // MARK: - section 背景颜色
 
