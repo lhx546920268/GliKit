@@ -7,7 +7,6 @@
 //
 
 #import "GKDDynamicBannerCell.h"
-#import <GKCollection>
 
 ///
 @interface GKDDynamicBannerItem : UICollectionViewCell

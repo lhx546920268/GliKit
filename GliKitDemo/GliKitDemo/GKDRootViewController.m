@@ -261,7 +261,15 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 @end
 
+@interface GKDRootViewController ()<NSURLSessionDataDelegate>
 
+///
+@property(nonatomic, strong) NSURLSession *session;
+
+///
+@property(nonatomic, assign) NSTimeInterval startTime;
+
+@end
 
 @implementation GKDRootViewController
 
@@ -322,6 +330,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                    ];
 
     [self initViews];
+    
+    self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithURL:[NSURL URLWithString:@"https://res.zegocity.com/image/special/2022/12/3/1670051585673850.jpg"]];
+    [task resume];
+    
+    self.startTime = NSDate.date.timeIntervalSince1970;
     
 //    self.view.backgroundColor = UIColor.redColor;
 //
@@ -419,15 +433,31 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    self.geocoder = [CLGeocoder new];
     
 
-    NSLog(@"doc %@", NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES));
-    NSLog(@"lib %@", NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES));
-    NSLog(@"doca %@", NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES));
-    NSLog(@"cache %@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
-    NSLog(@"use %@", NSSearchPathForDirectoriesInDomains(NSUserDirectory, NSUserDomainMask, YES));
-    
-    NSLog(@"home %@", NSHomeDirectory());
-    NSLog(@"temp %@", NSTemporaryDirectory());
-    NSLog(@"step %@", NSOpenStepRootDirectory());
+//    NSLog(@"doc %@", NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES));
+//    NSLog(@"lib %@", NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES));
+//    NSLog(@"doca %@", NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES));
+//    NSLog(@"cache %@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
+//    NSLog(@"use %@", NSSearchPathForDirectoriesInDomains(NSUserDirectory, NSUserDomainMask, YES));
+//    
+//    NSLog(@"home %@", NSHomeDirectory());
+//    NSLog(@"temp %@", NSTemporaryDirectory());
+//    NSLog(@"step %@", NSOpenStepRootDirectory());
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
+{
+    NSLog(@"didReceiveResponse %f", NSDate.date.timeIntervalSince1970 - self.startTime);
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data
+{
+    NSLog(@"didReceiveData %ld, %f", data.length, NSDate.date.timeIntervalSince1970 - self.startTime);
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
+{
+    NSLog(@"didCompleteWithError %@, %f", error, NSDate.date.timeIntervalSince1970 - self.startTime);
 }
 
 + (BOOL)toText

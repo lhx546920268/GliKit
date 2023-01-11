@@ -63,6 +63,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///图片间隔 default 15
 @property(nonatomic, assign) CGFloat imageSpacing;
 
+///是否满屏显示 default YES
+@property(nonatomic, assign) BOOL displayInFullScreen;
+
 ///图片信息
 @property(nonatomic, readonly) NSArray<GKPhotosBrowseModel*> *models;
 

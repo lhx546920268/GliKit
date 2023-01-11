@@ -30,6 +30,7 @@
 		CE54445025E49EDE00E69CAE /* GKCollectionViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CE54444F25E49EDE00E69CAE /* GKCollectionViewConfig.m */; };
 		CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B432480E4B400534D91 /* GKTabBarController.m */; };
 		CE549B482480E4B400534D91 /* GKTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE549B452480E4B400534D91 /* GKTabBar.m */; };
+		CE5D357A296CFE6400FBBA88 /* GKPhotosCache.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D3579296CFE6400FBBA88 /* GKPhotosCache.m */; };
 		CE61DD4A235D5A9B00701675 /* GKMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD49235D5A9B00701675 /* GKMenuBar.m */; };
 		CE61DD4D235D5D4E00701675 /* GKMenuBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CE61DD4C235D5D4E00701675 /* GKMenuBarItem.m */; };
 		CE94331725079417001EC5D0 /* GKKVOHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94331625079417001EC5D0 /* GKKVOHelper.m */; };
@@ -230,6 +231,8 @@
 		CE549B422480E4B400534D91 /* GKTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKTabBarButton.h; sourceTree = "<group>"; };
 		CE549B432480E4B400534D91 /* GKTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBarController.m; sourceTree = "<group>"; };
 		CE549B452480E4B400534D91 /* GKTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKTabBar.m; sourceTree = "<group>"; };
+		CE5D3578296CFE6400FBBA88 /* GKPhotosCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKPhotosCache.h; sourceTree = "<group>"; };
+		CE5D3579296CFE6400FBBA88 /* GKPhotosCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKPhotosCache.m; sourceTree = "<group>"; };
 		CE61DD48235D5A9B00701675 /* GKMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBar.h; sourceTree = "<group>"; };
 		CE61DD49235D5A9B00701675 /* GKMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKMenuBar.m; sourceTree = "<group>"; };
 		CE61DD4B235D5D4E00701675 /* GKMenuBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKMenuBarItem.h; sourceTree = "<group>"; };
@@ -605,6 +608,8 @@
 			children = (
 				CEBAB9E9243F1E0A005C0E7D /* GKImagePicker.h */,
 				CEBAB9E8243F1E0A005C0E7D /* GKImagePicker.m */,
+				CE5D3578296CFE6400FBBA88 /* GKPhotosCache.h */,
+				CE5D3579296CFE6400FBBA88 /* GKPhotosCache.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1386,6 +1391,7 @@
 				CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */,
 				CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */,
 				CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */,
+				CE5D357A296CFE6400FBBA88 /* GKPhotosCache.m in Sources */,
 				CE94331725079417001EC5D0 /* GKKVOHelper.m in Sources */,
 				CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */,
 				CED3A810230D45A000C304B3 /* GKRefreshStyle.m in Sources */,

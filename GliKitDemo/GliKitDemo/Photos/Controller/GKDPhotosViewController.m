@@ -47,15 +47,6 @@
     self.results = [NSMutableArray array];
     self.navigationItem.title = @"相册";
     [self initViews];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        __block UIBackgroundTaskIdentifier identifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:^{
-            [UIApplication.sharedApplication endBackgroundTask:identifier];
-            NSLog(@"endBackgroundTaskWithExpirationHandler");
-        }];
-        
-
-    });
 }
 
 - (void)configRoute:(GKRouteConfig *)config

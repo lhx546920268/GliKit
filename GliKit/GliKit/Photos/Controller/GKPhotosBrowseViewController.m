@@ -71,6 +71,9 @@
 ///代理
 @property(nonatomic, weak) id<GKPhotosBrowseCellDelegate> delegate;
 
+///是否满屏显示 default YES
+@property(nonatomic, assign) BOOL displayInFullScreen;
+
 ///平移手势
 @property(nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer;
 
@@ -190,7 +193,7 @@
         BOOL isTop = self.scrollView.contentOffset.y <= 0;
         BOOL isBottom = fabs(self.scrollView.contentOffset.y - self.scrollView.contentSize.height + self.scrollView.gkHeight) < 1.0;
         if (isTop || (scrollEnabled && isBottom)) {
-            CGPoint velocity = [_panGestureRecognizer velocityInView:self];
+            CGPoint velocity = [_panGestureRecognizer velocityInView:self.scrollView];
             if (fabs(velocity.y) > fabs(velocity.x)) {
                 if (scrollEnabled) {
                     return (isTop && velocity.y > 0) || (isBottom && velocity.y < 0);
@@ -199,8 +202,13 @@
                 }
             }
         }
+        
+        return NO;
+    } else if ([self.superclass instancesRespondToSelector:@selector(gestureRecognizerShouldBegin:)]) {
+        return [super gestureRecognizerShouldBegin:gestureRecognizer];
     }
-    return [super gestureRecognizerShouldBegin:gestureRecognizer];
+    
+    return YES;
 }
 
 // MARK: - UIScrollViewDelegate
@@ -236,7 +244,8 @@
         frame = CGRectMake(0, 0, _scrollView.gkWidth, _scrollView.gkHeight);
         _scrollView.contentSize = CGSizeZero;
     }
-    if(animated){
+    
+    if(animated && !self.displayInFullScreen){
         [UIView animateWithDuration:0.25 animations:^{
             self.imageView.frame = frame;
         }];
@@ -248,7 +257,11 @@
 - (CGRect)rectFromImage:(UIImage*) image
 {
     CGSize size = [image gkFitWithSize:CGSizeMake(_scrollView.frame.size.width, 0)];
-    return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
+    if (size.width > 0 && self.displayInFullScreen && size.width < self.gkWidth) {
+        size.height *= self.gkWidth / size.width;
+        size.width = self.gkWidth;
+    }
+    return CGRectMake(MAX(0, (self.gkWidth - size.width) / 2.0), MAX((self.gkHeight - size.height) / 2.0, 0), size.width, size.height);
 }
 
 @end
@@ -306,6 +319,7 @@
         _models = [models copy];
         _visibleIndex = visibleIndex;
         _imageSpacing = 15;
+        _displayInFullScreen = YES;
     }
     
     return self;
@@ -530,6 +544,7 @@
 {
     GKPhotosBrowseCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GKPhotosBrowseCell.gkNameOfClass forIndexPath:indexPath];
     
+    cell.displayInFullScreen = self.displayInFullScreen;
     cell.scrollView.zoomScale = 1.0;
     cell.scrollView.contentSize = cell.bounds.size;
     
@@ -568,6 +583,7 @@
                                    options:options
                                  completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
             if(!selfWeak.shouldShowAnimate){
+                //网络图片才动画
                 [cell layoutImageAfterLoadWithAnimated:cacheType == SDImageCacheTypeNone];
             }
         }];

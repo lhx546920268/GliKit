@@ -19,23 +19,12 @@
 #import "GKBaseDefines.h"
 #import "GKAppUtils.h"
 #import "UIApplication+GKTheme.h"
+#import "GKPhotosCache.h"
 
 @interface GKPhotosViewController ()
 
-///所有图片
-@property(nonatomic, strong) PHFetchResult<PHAsset*> *allPhotos;
-
-///智能相册
-@property(nonatomic, strong) PHFetchResult<PHAssetCollection*> *smartAlbums;
-
-///用户自定义相册
-@property(nonatomic, strong) PHFetchResult<PHCollection*> *userAlbums;
-
 ///列表信息
-@property(nonatomic, strong) NSMutableArray<GKPhotosCollection*> *datas;
-
-///相册资源获取选项
-@property(nonatomic, strong) PHFetchOptions *fetchOptions;
+@property(nonatomic, strong) NSArray<GKPhotosCollection*> *datas;
 
 ///图片管理
 @property(nonatomic, strong) PHCachingImageManager *imageManager;
@@ -46,17 +35,6 @@
 @end
 
 @implementation GKPhotosViewController
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self){
-        _fetchOptions = [PHFetchOptions new];
-        _fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    }
-    
-    return self;
-}
 
 - (GKPhotosOptions *)photosOptions
 {
@@ -69,10 +47,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if(self.datas.count > 0){
-        if(!self.isInit){
-            [self initViews];
-        }
+    if(self.datas.count > 0 && !self.isInit){
+        [self initViews];
     }
 }
 
@@ -146,67 +122,22 @@
 {
     [super gkReloadData];
     self.gkShowPageLoading = YES;
-    
-    WeakObj(self)
-    [GKAppUtils requestPhotosAuthorizationWithCompletion:^(BOOL hasAuth) {
-        if(hasAuth){
-            [selfWeak loadPhotos];
-        }else{
-            [selfWeak initViews];
-        }
-    }];
+    [self loadPhotos];
 }
 
 ///加载相册信息
 - (void)loadPhotos
 {
     WeakObj(self)
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
-        BOOL onlyAllPhotos = NO;
-        if(@available(iOS 14, *)){
-            onlyAllPhotos = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] == PHAuthorizationStatusLimited;
-        }
-        if(onlyAllPhotos){
-            selfWeak.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
-        }else{
-            if(selfWeak.photosOptions.shouldDisplayAllPhotos){
-                selfWeak.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];
-            }
-            selfWeak.smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-            selfWeak.userAlbums = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [selfWeak generateDatas];
-        });
-    });
-    
+    [GKPhotosCache.sharedCache loadPhotosWithOptions:self.photosOptions completionHandler:^(NSArray<GKPhotosCollection *> * _Nullable collections) {
+        selfWeak.datas = collections;
+        [selfWeak onLoadPhotos];
+    }];
 }
 
 ///生成列表数据
-- (void)generateDatas
+- (void)onLoadPhotos
 {
-    NSMutableArray *datas = [NSMutableArray array];
-    if(self.allPhotos.count > 0){
-        GKPhotosCollection *photosCollection = [GKPhotosCollection new];
-        BOOL onlyAllPhotos = NO;
-        if(@available(iOS 14, *)){
-            onlyAllPhotos = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] == PHAuthorizationStatusLimited;
-        }
-        if(onlyAllPhotos){
-            photosCollection.title = @"可访问的图片";
-        }else{
-            photosCollection.title = @"所有图片";
-        }
-        photosCollection.assets = self.allPhotos;
-        [datas addObject:photosCollection];
-    }
-    
-    [self addAssetsFromColletions:self.smartAlbums withDatas:datas];
-    [self addAssetsFromColletions:self.userAlbums withDatas:datas];
-    
-    self.datas = datas;
     if(self.isInit){
         [self.tableView reloadData];
     }
@@ -220,22 +151,6 @@
     }else{
         if(!self.isInit){
             [self initViews];
-        }
-    }
-}
-
-///添加相册资源信息
-- (void)addAssetsFromColletions:(PHFetchResult*) collections withDatas:(NSMutableArray*) datas
-{
-    for(PHAssetCollection *collection in collections){
-        if([collection isKindOfClass:PHAssetCollection.class]){
-            PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:collection options:self.fetchOptions];
-            if(result.count > 0 || self.photosOptions.shouldDisplayEmptyCollection){
-                GKPhotosCollection *photosCollection = [GKPhotosCollection new];
-                photosCollection.title = collection.localizedTitle;
-                photosCollection.assets = result;
-                [datas addObject:photosCollection];
-            }
         }
     }
 }

@@ -131,7 +131,7 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
             
             prevousAttr = attr;
         }else if (self.shouldStickHeaderDelegate && [attr.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]){
-            BOOL should = [self.s_delegate collectionViewFlowLayout:self shouldStickHeaderAtSection:attr.indexPath.section];;
+            BOOL should = [self.s_delegate collectionViewFlowLayout:self shouldStickHeaderAtSection:attr.indexPath.section];
             
             if(should){
                 CGPoint contentOffset = self.collectionView.contentOffset;
@@ -186,23 +186,20 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
     GKCollectionViewLayoutInvalidationContext *context = [super invalidationContextForBoundsChange:newBounds];
     context.invalidSupplementaryIndexPaths = nil;
     
-    for(NSInteger i = 0;i < self.attributes.count;i ++){
-        GKCollectionViewStaggerLayoutAttributes *attribute = self.attributes[i];
-        //该区域没有元素
-        if(!attribute.existElement){
-            continue;
+    if (self.shouldStickHeaderDelegate) {
+        NSArray *attributes = [self layoutAttributesForElementsInRect:newBounds];
+        NSMutableArray *indexPaths = [NSMutableArray array];
+        for (UICollectionViewLayoutAttributes *attr in attributes) {
+            if ([attr.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) {
+                BOOL should = [self.s_delegate collectionViewFlowLayout:self shouldStickHeaderAtSection:attr.indexPath.section];
+                if (should) {
+                    [indexPaths addObject:attr.indexPath];
+                }
+            }
         }
         
-        if(attribute.headerLayoutAttributes && attribute.shouldStickHeader){
-            //悬浮头部
-            UICollectionViewLayoutAttributes *attr = [self stickHeaderLayoutAttributesFromAttribute:attribute section:i];
-            
-            CGRect frame = attr.frame;
-            //判断还在不在可见区域内
-            if(frame.origin.y + frame.size.height > self.collectionView.contentOffset.y){
-                context.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader : @[attr.indexPath]};
-                break;
-            }
+        if (indexPaths.count > 0) {
+            context.invalidSupplementaryIndexPaths = @{UICollectionElementKindSectionHeader: indexPaths};
         }
     }
     
