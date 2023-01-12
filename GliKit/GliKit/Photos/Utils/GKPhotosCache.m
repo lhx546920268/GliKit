@@ -13,6 +13,7 @@
 #import "GKBaseDefines.h"
 #import "GKAppUtils.h"
 #import "GKPhotosOptions.h"
+#import <SDWebImageCompat.h>
 
 @interface GKPhotosCache ()<PHPhotoLibraryChangeObserver>
 
@@ -43,6 +44,9 @@
 ///相册资源获取选项
 @property(nonatomic, strong) PHFetchOptions *fetchOptions;
 
+///是否已监听相册变化
+@property(nonatomic, assign) BOOL hasRegisterChangeObserver;
+
 @end
 
 @implementation GKPhotosCache
@@ -67,7 +71,6 @@
         
         _fetchOptions = [PHFetchOptions new];
         _fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-        [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
@@ -76,7 +79,10 @@
 
 - (void)dealloc
 {
-    [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self];
+    if (GKAppUtils.hasPhotosAuthorization) {
+        //需要相册权限
+        [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self];
+    }
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
@@ -109,6 +115,7 @@
     if (self.allPhotosCollection || self.datas.count > 0) {
         [self onLoadPhotos];
     } else {
+        [self registerChangeObserverIfNeeded];
         self.loading = YES;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             
@@ -197,7 +204,20 @@
 
 - (void)photoLibraryDidChange:(PHChange *)changeInstance
 {
-    [self clear];
+    //可能在异步线程
+    dispatch_main_async_safe(^{
+        [self clear];
+    })
+}
+
+///监听相册变化如果需要的话
+- (void)registerChangeObserverIfNeeded
+{
+    //需要相册权限
+    if (!self.hasRegisterChangeObserver) {
+        self.hasRegisterChangeObserver = YES;
+        [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
+    }
 }
 
 // MARK: - Clear

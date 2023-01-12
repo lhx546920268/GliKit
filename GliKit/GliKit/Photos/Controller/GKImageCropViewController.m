@@ -67,7 +67,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self setNavigatonBarHidden:YES animate:NO];
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor blackColor];

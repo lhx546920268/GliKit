@@ -271,16 +271,8 @@
             NSArray *viewControllers = nav.viewControllers;
             switch (config.style) {
                 case GKRouteStyleReplace : {
-                    if(viewControllers.count > 0){
+                    if(viewControllers.count > 1){
                         [toReplacedViewControlelrs addObject:nav.viewControllers.lastObject];
-                    }
-                }
-                    break;
-                case GKRouteStyleOnlyOne : {
-                    for(UIViewController *vc in viewControllers){
-                        if([vc isKindOfClass:viewController.class]){
-                            [toReplacedViewControlelrs addObject:vc];
-                        }
                     }
                 }
                     break;
@@ -289,6 +281,14 @@
                 case GKRouteStylePresentWithoutNavigationBar :
                 case GKRouteStyleBackIfEnabled :
                     break;
+            }
+            
+            if (config.onlyOne) {
+                for(UIViewController *vc in viewControllers){
+                    if([vc isKindOfClass:viewController.class]){
+                        [toReplacedViewControlelrs addObject:vc];
+                    }
+                }
             }
             
             if(config.routesToClosed.count > 0){

@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, GKRouteStyle){
     ///直接用系统的push
     GKRouteStylePush,
     
-    ///用push替换当前的页面
+    ///用push替换当前的页面，viewControllers.count必须大于1，否则直接push
     GKRouteStyleReplace,
     
     ///present 有导航栏
@@ -24,9 +24,6 @@ typedef NS_ENUM(NSInteger, GKRouteStyle){
     
     ///没导航栏
     GKRouteStylePresentWithoutNavigationBar,
-    
-    ///这个页面只打开一个，用push，校验viewController.class
-    GKRouteStyleOnlyOne,
     
     ///如果前一个是该页面，则返回
     GKRouteStyleBackIfEnabled,
@@ -88,6 +85,9 @@ typedef void(^GKRouteCompletion)(GKRouteResult result);
 
 ///如果不为空，需要从后面开始遍历，直到该路由名称为止，关闭中间的所有界面（包含closeUntilRoute）
 @property(nonatomic, copy, nullable) NSString *closeUntilRoute;
+
+///这个页面只打开一个，用push，校验viewController.class
+@property(nonatomic, assign) BOOL onlyOne;
 
 ///将要打开某个界面
 @property(nonatomic, copy, nullable) void(^willRoute)(__kindof UIViewController *viewController);
