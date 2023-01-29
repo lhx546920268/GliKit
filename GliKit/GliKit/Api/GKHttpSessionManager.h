@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
                                        URLString:(NSString *)URLString 
                                       parameters:(nullable id)parameters
+                                    headerFields:(NSDictionary*) headerFields
                                  timeoutInterval:(NSTimeInterval) timeoutInterval
                                          success:(nullable void (^)(NSURLSessionDataTask *, id))success
                                          failure:(nullable void (^)(NSURLSessionDataTask *, NSError *))failure;
@@ -27,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///http请求 上传文件用的
 - (NSURLSessionDataTask *)uploadTaskWithURLString:(NSString *)URLString
                                        parameters:(nullable id)parameters
+                                     headerFields:(NSDictionary*) headerFields
                                   timeoutInterval:(NSTimeInterval) timeoutInterval
                                             files:(nullable NSMutableDictionary<NSString*, NSString*>*) files
                                           success:(nullable void (^)(NSURLSessionDataTask *task, id responseObject))success

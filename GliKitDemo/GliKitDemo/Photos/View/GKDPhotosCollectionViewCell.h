@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///图片
 @property(nonatomic, readonly) UIImageView *imageView;
 
+@property(nonatomic, readonly) UITextView *subtitleTextView;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, GKButtonImagePosition){
     GKButtonImagePositionBottom,
 };
 
+///点击事件回调
+typedef void(^GKButtonSingleClickHandler)(void);
+
 /**
  自定义按钮  可设置按钮图标位置和间距，图标显示大小
  @warning UIControlContentHorizontalAlignmentFill 和 UIControlContentVerticalAlignmentFill 将忽略
@@ -39,6 +42,15 @@ typedef NS_ENUM(NSInteger, GKButtonImagePosition){
 
 ///图标大小 默认 zero,使用原来的大小
 @property(nonatomic, assign) CGSize imageSize;
+
+///避免重复点击阙值 default 0.2
+@property(nonatomic, assign) NSTimeInterval singleClickTimeInterval;
+
+///添加不可重复的点击事件
+- (void)addSingleClickHandler:(GKButtonSingleClickHandler) handler;
+
+///移除点击事件
+- (void)removeSingleClickHandler:(GKButtonSingleClickHandler) handler;
 
 @end
 

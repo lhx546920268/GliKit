@@ -83,7 +83,12 @@ static NSMutableSet* GKSharedTasks()
         GKHttpFiles *files = [self files];
         if(files.count > 0){
             
-            _URLSessionTask = [manager uploadTaskWithURLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval files:files success:^(NSURLSessionDataTask *task, id responseObject) {
+            _URLSessionTask = [manager uploadTaskWithURLString:URLString
+                                                    parameters:self.params
+                                                  headerFields:self.headerFields
+                                               timeoutInterval:self.timeoutInterval
+                                                         files:files
+                                                       success:^(NSURLSessionDataTask *task, id responseObject) {
                 
                 [selfWeak processSuccessResult:responseObject];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -91,7 +96,12 @@ static NSMutableSet* GKSharedTasks()
                 [selfWeak processError:error];
             }];
         }else{
-            _URLSessionTask = [manager dataTaskWithHTTPMethod:self.httpMethod URLString:URLString parameters:self.params timeoutInterval:self.timeoutInterval success:^(NSURLSessionTask *task, NSDictionary * responseObject) {
+            _URLSessionTask = [manager dataTaskWithHTTPMethod:self.httpMethod
+                                                    URLString:URLString
+                                                   parameters:self.params
+                                                 headerFields:self.headerFields
+                                              timeoutInterval:self.timeoutInterval
+                                                      success:^(NSURLSessionTask *task, NSDictionary * responseObject) {
                 
                 [selfWeak processSuccessResult:responseObject];
                 

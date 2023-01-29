@@ -10,7 +10,42 @@
 #import "NSAttributedString+GKUtils.h"
 #import "UIScreen+GKUtils.h"
 
+@interface GKButton ()
+
+///上一次点击的时间，避免重复点击
+@property(nonatomic, assign) NSTimeInterval lastTouchTimeInterval;
+
+///点击事件回调
+@property(nonatomic, strong) NSMutableSet<GKButtonSingleClickHandler> *singleClickHandlers;
+
+@end
+
 @implementation GKButton
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self){
+        [self initProps];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        [self initProps];
+    }
+    return self;
+}
+
+- (void)initProps
+{
+    self.singleClickTimeInterval = 0.2;
+}
+
+// MARK: - Props
 
 - (void)setImagePosition:(GKButtonImagePosition)imagePosition
 {
@@ -35,6 +70,8 @@
         [self setNeedsLayout];
     }
 }
+
+// MARK: - Image Position
 
 - (CGSize)intrinsicContentSize
 {
@@ -310,6 +347,42 @@
     }
     
     return horizontal;
+}
+
+// MARK: - Single Click
+
+- (NSMutableSet<GKButtonSingleClickHandler> *)singleClickHandlers
+{
+    if (!_singleClickHandlers) {
+        _singleClickHandlers = [NSMutableSet set];
+    }
+    return _singleClickHandlers;
+}
+
+- (void)addSingleClickHandler:(GKButtonSingleClickHandler)handler
+{
+    if ([self actionsForTarget:self forControlEvent:UIControlEventTouchUpInside].count == 0) {
+        [self addTarget:self action:@selector(internalHandleTap) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [self.singleClickHandlers addObject:handler];
+}
+
+- (void)removeSingleClickHandler:(GKButtonSingleClickHandler)handler
+{
+    [_singleClickHandlers removeObject:handler];
+}
+
+- (void)internalHandleTap
+{
+    NSTimeInterval timeInterval = NSDate.date.timeIntervalSince1970;
+    //避免系统时间改了 无法点击
+    if (timeInterval < self.lastTouchTimeInterval
+        || timeInterval - self.lastTouchTimeInterval >= self.singleClickTimeInterval) {
+        self.lastTouchTimeInterval = timeInterval;
+        for (GKButtonSingleClickHandler handler in _singleClickHandlers) {
+            handler();
+        }
+    }
 }
 
 @end

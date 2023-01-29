@@ -170,6 +170,15 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
     }
 }
 
+- (void)removeAllObservers
+{
+    for(NSString *keyPath in _observingKeyPaths){
+        [self.owner removeObserver:self forKeyPath:keyPath context:CAKVOContext];
+    }
+    [_observingKeyPaths removeAllObjects];
+    [_callbacks removeAllObjects];
+}
+
 // MARK: - KVO
 
 - (NSMutableSet<NSString *> *)observingKeyPaths
@@ -265,9 +274,7 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
 
 - (void)dealloc
 {
-    for(NSString *keyPath in _observingKeyPaths){
-        [self.owner removeObserver:self forKeyPath:keyPath context:GKOKVOContext];
-    }
+    [self removeAllObservers];
 }
 
 @end

@@ -13,19 +13,12 @@
 #import <UIImageView+WebCache.h>
 #import <UIImageView+HighlightedWebCache.h>
 
-@interface GKDPhotosViewController ()<CAAnimationDelegate>
+@interface GKDPhotosViewController ()
 
 @property(nonatomic, strong) NSMutableArray<GKPhotosPickResult*> *results;
 @property(nonatomic, strong) NSMutableArray<GKPhotosBrowseModel*> *models;
 
 @property(nonatomic, assign) NSInteger maxCount;
-
-///
-@property(nonatomic, strong) CALayer *animatedLayer;
-@property(nonatomic, strong) UIView *animatedView;
-
-///
-@property(nonatomic, assign) BOOL animating;
 
 @end
 
@@ -54,16 +47,6 @@
     self.results = [NSMutableArray array];
     self.navigationItem.title = @"相册";
     [self initViews];
-    
-    self.animatedLayer = [CALayer layer];
-    self.animatedLayer.frame = CGRectMake(0, 100, 100, 100);
-    self.animatedLayer.backgroundColor = UIColor.redColor.CGColor;
-    [self.view.layer addSublayer:self.animatedLayer];
-    
-    self.animatedView = [UIView new];
-    self.animatedView.frame = CGRectMake(200, 100, 100, 100);
-    self.animatedView.backgroundColor = UIColor.blueColor;
-    [self.view addSubview:self.animatedView];
 }
 
 - (void)configRoute:(GKRouteConfig *)config
@@ -113,65 +96,38 @@
 //    GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 
     //!self.selectHandler ?: self.selectHandler(@"这是一个回调");
+    if(indexPath.item < self.models.count){
 
-    if (self.animating) {
-        CALayer *layer = self.animatedView.layer.presentationLayer;
-        NSLog(@"animating position %@", NSStringFromCGPoint(layer.position));
-    } else {
-        NSLog(@"start position %@", NSStringFromCGPoint(self.animatedView.layer.position));
-        
-        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
-        animation.fromValue = @(150);
-        animation.toValue = @(500);
-        animation.duration = 5;
-        animation.delegate = self;
-        [self.animatedView.layer addAnimation:animation forKey:@"position"];
+        GKPhotosBrowseViewController *controller = [[GKPhotosBrowseViewController alloc] initWithModels:self.models visibleIndex:indexPath.item];
+
+        controller.animatedViewHandler = ^UIView*(NSUInteger index){
+
+            GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+
+            return cell.imageView;
+        };
+
+        [controller showAnimated:YES];
+
+    }else{
+        GKPhotosViewController *album = [GKPhotosViewController new];
+        album.photosOptions.maxCount = self.maxCount - self.results.count;
+        album.photosOptions.thumbnailSize = self.flowLayout.itemSize;
+        album.photosOptions.intention = GKPhotosIntentionMultiSelection;
+//
+//        GKImageCropSettings *settings = [GKImageCropSettings new];
+//        settings.cropSize = CGSizeMake(200, 200);
+//        album.photosOptions.cropSettings = settings;
+        album.photosOptions.needOriginalImage = YES;
+
+        WeakObj(self)
+        album.photosOptions.completion = ^(NSArray<GKPhotosPickResult *> *results) {
+            [selfWeak.results addObjectsFromArray:results];
+            [selfWeak.collectionView reloadData];
+        };
+
+        [self presentViewController:[album gkCreateWithNavigationController] animated:YES completion:nil];
     }
-    
-//    if(indexPath.item < self.models.count){
-//
-//        GKPhotosBrowseViewController *controller = [[GKPhotosBrowseViewController alloc] initWithModels:self.models visibleIndex:indexPath.item];
-//
-//        controller.animatedViewHandler = ^UIView*(NSUInteger index){
-//
-//            GKDPhotosCollectionViewCell *cell = (GKDPhotosCollectionViewCell*)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
-//
-//            return cell.imageView;
-//        };
-//
-//        [controller showAnimated:YES];
-//
-//    }else{
-//        GKPhotosViewController *album = [GKPhotosViewController new];
-//        album.photosOptions.maxCount = self.maxCount - self.results.count;
-//        album.photosOptions.thumbnailSize = self.flowLayout.itemSize;
-//        album.photosOptions.intention = GKPhotosIntentionMultiSelection;
-////
-////        GKImageCropSettings *settings = [GKImageCropSettings new];
-////        settings.cropSize = CGSizeMake(200, 200);
-////        album.photosOptions.cropSettings = settings;
-//        album.photosOptions.needOriginalImage = YES;
-//
-//        WeakObj(self)
-//        album.photosOptions.completion = ^(NSArray<GKPhotosPickResult *> *results) {
-//            [selfWeak.results addObjectsFromArray:results];
-//            [selfWeak.collectionView reloadData];
-//        };
-//
-//        [self presentViewController:[album gkCreateWithNavigationController] animated:YES completion:nil];
-//    }
-//
-    
-}
-
-- (void)animationDidStart:(CAAnimation *)anim
-{
-    self.animating = YES;
-}
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
-    self.animating = NO;
 }
 
 @end

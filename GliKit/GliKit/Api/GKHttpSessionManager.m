@@ -45,6 +45,7 @@
 - (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
                                        URLString:(NSString *)URLString
                                       parameters:(id)parameters
+                                    headerFields:(NSDictionary*) headerFields
                                  timeoutInterval:(NSTimeInterval) timeoutInterval
                                          success:(void (^)(NSURLSessionDataTask *, id))success
                                          failure:(void (^)(NSURLSessionDataTask *, NSError *))failure
@@ -63,6 +64,8 @@
         
         return nil;
     }
+    
+    [self addHeaderFields:headerFields forRequest:request];
     request.timeoutInterval = timeoutInterval;
     
     __block NSURLSessionDataTask *dataTask = nil;
@@ -86,6 +89,7 @@
 
 - (NSURLSessionDataTask *)uploadTaskWithURLString:(NSString *)URLString
                                        parameters:(id)parameters
+                                     headerFields:(NSDictionary*) headerFields
                                   timeoutInterval:(NSTimeInterval) timeoutInterval
                                             files:(NSMutableDictionary<NSString*, NSString*>*)files
                                           success:(void (^)(NSURLSessionDataTask *, id))success
@@ -114,6 +118,7 @@
         return nil;
     }
     
+    [self addHeaderFields:headerFields forRequest:request];
     request.timeoutInterval = timeoutInterval;
     
     __block NSURLSessionDataTask *task = [self uploadTaskWithStreamedRequest:request progress:nil completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
@@ -129,6 +134,22 @@
     }];
     
     return task;
+}
+
+- (void)addHeaderFields:(NSDictionary*) headerFields forRequest:(NSMutableURLRequest*) request
+{
+    //请求头
+    for(NSString *key in headerFields){
+        id value = headerFields[key];
+        if([value isKindOfClass:NSArray.class]){
+            NSArray *array = (NSArray*)value;
+            for(NSString *multiValue in array){
+                [request addValue:multiValue forHTTPHeaderField:key];
+            }
+        } else {
+            [request addValue:value forHTTPHeaderField:key];
+        }
+    }
 }
 
 @end

@@ -18,6 +18,9 @@ typedef NSMutableDictionary<NSString*, id> GKHttpParameters;
 ///http要上传的文件
 typedef NSMutableDictionary<NSString*, NSString*> GKHttpFiles;
 
+///http请求头
+typedef NSMutableDictionary<NSString*, id> GKHttpHeaders;
+
 typedef NSString* GKHttpMethod NS_EXTENSIBLE_STRING_ENUM;
 
 ///get
@@ -56,6 +59,9 @@ static const int GKHttpDataParseError = -1000010;
 
 ///要上传的文件
 @property(nonatomic, readonly, nullable) GKHttpFiles *files;
+
+///请求头 如果同一个字段有多个值，value用数组，否则用字符串
+@property(nonatomic, readonly, nullable) GKHttpHeaders *headerFields;
 
 // MARK: - 状态
 

@@ -331,91 +331,24 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
     [self initViews];
     
-    self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
-    NSURLSessionDataTask *task = [self.session dataTaskWithURL:[NSURL URLWithString:@"https://res.zegocity.com/image/special/2022/12/3/1670051585673850.jpg"]];
-    [task resume];
+//    self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+//    NSURLSessionDataTask *task = [self.session dataTaskWithURL:[NSURL URLWithString:@"https://res.zegocity.com/image/special/2022/12/3/1670051585673850.jpg"]];
+//    [task resume];
+//
+//    self.startTime = NSDate.date.timeIntervalSince1970;
     
-    self.startTime = NSDate.date.timeIntervalSince1970;
-    
-//    self.view.backgroundColor = UIColor.redColor;
-//
-//    UIImage *image = [UIImage imageNamed:@"im_bg_servicebg_white"];
-//
-//    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-//    [self.view addSubview:imageView];
-//
-//    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(120);
-//        make.centerX.equalTo(0);
-//    }];
-//
-//    NSLog(@"%@", NSStringFromCGSize(image.size));
-//    UIImage *image2 = [image resizableImageWithCapInsets:UIEdgeInsetsMake(18, 20, 18, 20) resizingMode:UIImageResizingModeTile];
-//
-//    UIImageView *imageView2 = [[UIImageView alloc] initWithImage:image2];
-//    [self.view addSubview:imageView2];
-//
-//    [imageView2 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(imageView.mas_bottom).offset(20);
-//        make.centerX.equalTo(0);
-//        make.size.equalTo(CGSizeMake(250, 300));
-//    }];
 
-//    NSArray *familyNames = [UIFont familyNames];
-//    for (NSString *familyName in familyNames) {
-//        NSLog(@"%@", [UIFont fontNamesForFamilyName:familyName]);
-//    }
-//    self.countLabel = [UILabel new];
-//    self.countLabel.text = @"0";
-//    self.countLabel.font = [UIFont boldSystemFontOfSize:40];
-//    [self.view addSubview:self.countLabel];
-//
-//    [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.center.equalTo(0);
-//    }];
     
-//    [self gkSetLeftItemWithTitle:@"左边" action:@selector(start)];
-//
-//    NSString *doc = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject;
-//    NSString *dir = [doc stringByAppendingPathComponent:@"车"];
-//    NSString *imageDir = [doc stringByAppendingPathComponent:@"图片"];
-//
-//    NSFileManager *manager = NSFileManager.defaultManager;
-//    self.files = [manager contentsOfDirectoryAtPath:dir error:nil];
-//    self.dir = dir;
-//    self.imageDir = imageDir;
-//    self.doc = doc;
-    
-//    UIImage *image = [UIImage imageNamed:@"tab_cart_s"];
-//    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:@"谢谢惠顾"];
-//
-//    MyTextAttachment *attachment = [MyTextAttachment new];
-//    attachment.image = [image imageWithAlignmentRectInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
-//    attachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
-//
-//    NSString *str1 = @"⁡ㅤ1";
-//    NSLog(@"str1 length %ld", str1.length);
-//    NSMutableAttributedString *imageAttr = [[NSMutableAttributedString alloc] initWithString:str1];
-////    [imageAttr appendAttributedString:[[NSAttributedString alloc] initWithString:str1]];
-//
-//    NSLog(@"%ld", imageAttr.length);
-//
-//    [attr insertAttributedString:imageAttr atIndex:0];
-//
-//    [attr addAttribute:NSKernAttributeName value:@15 range:NSMakeRange(0, attr.length)];
-//
-//    [attr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:20] range:NSMakeRange(0, attr.length)];
-//
-//    NSLayoutManager *layoutManager = [NSLayoutManager new];
 //    UILabel *label = [UILabel new];
-//
 //    label.attributedText = attr;
 //    label.backgroundColor = UIColor.redColor;
+//    label.numberOfLines = 0;
 //    [self.view addSubview:label];
 //
 //    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.center.equalTo(0);
-//        make.size.equalTo(CGSizeMake(200, 80));
+//        make.leading.equalTo(25);
+//        make.trailing.equalTo(-25);
+//        make.top.equalTo(200);
 //    }];
 //
 //    NSLog(@"text length %ld", label.text.length);

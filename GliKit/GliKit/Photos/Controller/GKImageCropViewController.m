@@ -464,8 +464,13 @@
     UIImage *sendImage = [[UIImage alloc] initWithCGImage:imageRefRect];
     CFRelease(imageRefRect);
     
-    if(sendImage.size.width > self.photosOptions.cropSettings.cropSize.width){
-        sendImage = [sendImage gkAspectFillWithSize:self.photosOptions.cropSettings.cropSize];
+    CGSize size = self.photosOptions.cropSettings.cropSize;
+    if(sendImage.size.width > size.width){
+        //缩放图片
+        UIGraphicsBeginImageContextWithOptions(size, NO, self.photosOptions.scale);
+        [sendImage drawInRect:CGRectMake(0.0, 0.0, size.width, size.height)];
+        sendImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
     }
     
     return sendImage;
