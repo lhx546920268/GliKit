@@ -173,7 +173,7 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
 - (void)removeAllObservers
 {
     for(NSString *keyPath in _observingKeyPaths){
-        [self.owner removeObserver:self forKeyPath:keyPath context:CAKVOContext];
+        [self.owner removeObserver:self forKeyPath:keyPath context:GKOKVOContext];
     }
     [_observingKeyPaths removeAllObjects];
     [_callbacks removeAllObjects];

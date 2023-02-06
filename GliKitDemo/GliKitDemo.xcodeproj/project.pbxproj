@@ -13,6 +13,7 @@
 		CE134D5F24F363BE00F34CB4 /* GKDBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */; };
 		CE1641DC274397BA0064B2CE /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE1641DB274397BA0064B2CE /* CoreAudio.framework */; };
 		CE1AFE26272A3E2B0029B42D /* NotoSansMyanmar.ttc in Resources */ = {isa = PBXBuildFile; fileRef = CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */; };
+		CE1F8B272988EF0F00AB1455 /* zoo.MOV in Resources */ = {isa = PBXBuildFile; fileRef = CE1F8B262988EF0F00AB1455 /* zoo.MOV */; };
 		CE2C55212727E3B30047DA92 /* Oxygen-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */; };
 		CE37C67B233B49AF00C4F196 /* GKDNormalEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */; };
 		CE37C67E233B49C000C4F196 /* GKDTableEmptyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C67D233B49C000C4F196 /* GKDTableEmptyViewController.m */; };
@@ -88,6 +89,7 @@
 		CE134D5E24F363BE00F34CB4 /* GKDBannerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDBannerViewController.m; sourceTree = "<group>"; };
 		CE1641DB274397BA0064B2CE /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = NotoSansMyanmar.ttc; sourceTree = "<group>"; };
+		CE1F8B262988EF0F00AB1455 /* zoo.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = zoo.MOV; sourceTree = "<group>"; };
 		CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oxygen-Bold.ttf"; sourceTree = "<group>"; };
 		CE37C679233B49AF00C4F196 /* GKDNormalEmptyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDNormalEmptyViewController.h; sourceTree = "<group>"; };
 		CE37C67A233B49AF00C4F196 /* GKDNormalEmptyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDNormalEmptyViewController.m; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				CE3884F527FD4D830013F1D4 /* Pyidaungsu-Regular.ttf */,
 				CE1AFE25272A3E2B0029B42D /* NotoSansMyanmar.ttc */,
 				CE2C55202727E3B30047DA92 /* Oxygen-Bold.ttf */,
+				CE1F8B262988EF0F00AB1455 /* zoo.MOV */,
 				CE97636223B59F27001A5DD3 /* test.html */,
 				CEE8C89B231911EB00E7CA75 /* Assets.xcassets */,
 				CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */,
@@ -605,7 +608,7 @@
 			attributes = {
 				CLASSPREFIX = GKD;
 				DefaultBuildSystemTypeForWorkspace = Latest;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = luohaixiong;
 				TargetAttributes = {
 					CEE8C88E231911E900E7CA75 = {
@@ -648,6 +651,7 @@
 				CE1AFE26272A3E2B0029B42D /* NotoSansMyanmar.ttc in Resources */,
 				CEC3C847231E5971003ADE7A /* GKDNormalSkeletonViewController.xib in Resources */,
 				CED1B1422320FAC1009C4D6C /* GKDTransitionViewController.xib in Resources */,
+				CE1F8B272988EF0F00AB1455 /* zoo.MOV in Resources */,
 				CEB85F53232630560045CB38 /* GKDNestedTableViewCell.xib in Resources */,
 				CEB37EB6249B42EF00C15460 /* star_pink.png in Resources */,
 				CEB37EB5249B42EF00C15460 /* dust.png in Resources */,
