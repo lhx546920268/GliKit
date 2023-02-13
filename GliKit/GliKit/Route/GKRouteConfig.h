@@ -16,17 +16,27 @@ typedef NS_ENUM(NSInteger, GKRouteStyle){
     ///直接用系统的push
     GKRouteStylePush,
     
-    ///用push替换当前的页面，viewControllers.count必须大于1，否则直接push
-    GKRouteStyleReplace,
-    
     ///present 有导航栏
     GKRouteStylePresent,
     
     ///没导航栏
     GKRouteStylePresentWithoutNavigationBar,
+};
+
+///路由push方式
+typedef NS_ENUM(NSInteger, GKRoutePushStyle){
     
-    ///如果前一个是该页面，则返回
-    GKRouteStyleBackIfEnabled,
+    ///默认
+    GKRoutePushStyleDefault,
+    
+    ///用push替换当前的页面
+    GKRoutePushStyleReplace,
+    
+    ///这个页面只打开一个，用push
+    GKRoutePushStyleOnlyOne,
+    
+    ///关闭中间的
+    GKRoutePushStyleCloseMiddle,
 };
 
 ///路由结果
@@ -71,6 +81,9 @@ typedef void(^GKRouteCompletion)(GKRouteResult result);
 ///打开方式
 @property(nonatomic, assign) GKRouteStyle style;
 
+///路由push方式
+@property(nonatomic, assign) GKRoutePushStyle pushStyle;
+
 ///是否是弹出来
 @property(nonatomic, readonly) BOOL isPresent;
 
@@ -86,8 +99,8 @@ typedef void(^GKRouteCompletion)(GKRouteResult result);
 ///如果不为空，需要从后面开始遍历，直到该路由名称为止，关闭中间的所有界面（包含closeUntilRoute）
 @property(nonatomic, copy, nullable) NSString *closeUntilRoute;
 
-///这个页面只打开一个，用push，校验viewController.class
-@property(nonatomic, assign) BOOL onlyOne;
+///如果前一个是该页面（路由path一致），则返回
+@property(nonatomic, assign) BOOL backIfEnabled;
 
 ///将要打开某个界面
 @property(nonatomic, copy, nullable) void(^willRoute)(__kindof UIViewController *viewController);

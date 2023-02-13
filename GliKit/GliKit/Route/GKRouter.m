@@ -222,7 +222,7 @@
     GKBaseNavigationController *nav = (GKBaseNavigationController*)parentViewControlelr.navigationController;
     NSString *path = config.path;
     
-    if(config.style == GKRouteStyleBackIfEnabled && [nav isKindOfClass:UINavigationController.class]){
+    if(config.style == GKRouteStylePush && config.backIfEnabled && [nav isKindOfClass:UINavigationController.class]){
         NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:nav.viewControllers];
         if(viewControllers.count >= 2){
             UIViewController *vc = viewControllers[viewControllers.count - 2];
@@ -269,26 +269,30 @@
         if(nav){
             NSMutableArray *toReplacedViewControlelrs = self.toClosedViewControllers;
             NSArray *viewControllers = nav.viewControllers;
-            switch (config.style) {
-                case GKRouteStyleReplace : {
+            switch (config.pushStyle) {
+                case GKRoutePushStyleReplace : {
                     if(viewControllers.count > 1){
                         [toReplacedViewControlelrs addObject:nav.viewControllers.lastObject];
                     }
                 }
                     break;
-                case  GKRouteStylePresent :
-                case GKRouteStylePush :
-                case GKRouteStylePresentWithoutNavigationBar :
-                case GKRouteStyleBackIfEnabled :
-                    break;
-            }
-            
-            if (config.onlyOne) {
-                for(UIViewController *vc in viewControllers){
-                    if([vc isKindOfClass:viewController.class]){
-                        [toReplacedViewControlelrs addObject:vc];
+                case GKRoutePushStyleOnlyOne : {
+                    for(NSInteger i = 0;i < viewControllers.count;i ++){
+                        UIViewController *vc = viewControllers[i];
+                        if(i != 0 && [vc isKindOfClass:viewController.class]){
+                            [toReplacedViewControlelrs addObject:vc];
+                        }
                     }
                 }
+                    break;
+                case GKRoutePushStyleCloseMiddle : {
+                    if (viewControllers.count > 1) {
+                        [toReplacedViewControlelrs addObjectsFromArray:[viewControllers subarrayWithRange:NSMakeRange(1, viewControllers.count - 1)]];
+                    }
+                }
+                    break;
+                case GKRoutePushStyleDefault :
+                    break;
             }
             
             if(config.routesToClosed.count > 0){
@@ -308,7 +312,6 @@
                 }
             }
 
-            
             if(![NSString isEmpty:config.closeUntilRoute]){
                 for(NSInteger i = viewControllers.count - 1;i >= 0;i --){
                     UIViewController *vc = viewControllers[i];

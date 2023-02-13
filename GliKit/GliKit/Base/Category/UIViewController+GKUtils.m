@@ -232,7 +232,7 @@ static char GKShowBackItemKey;
         if(root.navigationController.viewControllers.count > 1){
             //dismiss 之后还有 pop,所以dismiss无动画
             [root dismissViewControllerAnimated:NO completion:^{
-                [self gkSetTransitionCompletion:completion];
+                [root gkSetTransitionCompletion:completion];
                 [root.navigationController popToRootViewControllerAnimated:flag];
             }];
         }else{

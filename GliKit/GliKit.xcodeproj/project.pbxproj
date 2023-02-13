@@ -15,6 +15,7 @@
 		CE1B761427B50652004CB1EC /* UIBezierPath+GKUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1B761327B50652004CB1EC /* UIBezierPath+GKUtils.m */; };
 		CE1CAA4125821D8800941773 /* GKSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1CAA4025821D8800941773 /* GKSwipeCell.m */; };
 		CE1CAA4625821E9A00941773 /* GKCollectionViewSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1CAA4525821E9A00941773 /* GKCollectionViewSwipeCell.m */; };
+		CE2321DA2999DA8B00B99CFD /* GKDialogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2321D92999DA8B00B99CFD /* GKDialogManager.m */; };
 		CE2A841826D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2A841726D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.m */; };
 		CE2A841C26D4937200726A42 /* GKCollectionStaggerFlowHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2A841B26D4937200726A42 /* GKCollectionStaggerFlowHelper.m */; };
 		CE37C675233B410100C4F196 /* UIImage+GKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = CE37C671233B410100C4F196 /* UIImage+GKTheme.m */; };
@@ -198,6 +199,8 @@
 		CE1CAA4425821E9A00941773 /* GKCollectionViewSwipeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewSwipeCell.h; sourceTree = "<group>"; };
 		CE1CAA4525821E9A00941773 /* GKCollectionViewSwipeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKCollectionViewSwipeCell.m; sourceTree = "<group>"; };
 		CE21683E2733964E00DADC23 /* GKCancelableTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCancelableTask.h; sourceTree = "<group>"; };
+		CE2321D82999DA8B00B99CFD /* GKDialogManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDialogManager.h; sourceTree = "<group>"; };
+		CE2321D92999DA8B00B99CFD /* GKDialogManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDialogManager.m; sourceTree = "<group>"; };
 		CE27D6DB25BFC6EE0082798D /* GKItemSizeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKItemSizeModel.h; sourceTree = "<group>"; };
 		CE27D6DD25BFC7540082798D /* GKRowHeightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKRowHeightModel.h; sourceTree = "<group>"; };
 		CE2A841626D4927400726A42 /* GKCollectionViewStaggerLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKCollectionViewStaggerLayoutAttributes.h; sourceTree = "<group>"; };
@@ -566,6 +569,17 @@
 			path = Swipe;
 			sourceTree = "<group>";
 		};
+		CE2321D72999D87700B99CFD /* Dialog */ = {
+			isa = PBXGroup;
+			children = (
+				CED0D415230BECF10057D405 /* UIViewController+GKDialog.h */,
+				CED0D40D230BECF00057D405 /* UIViewController+GKDialog.m */,
+				CE2321D82999DA8B00B99CFD /* GKDialogManager.h */,
+				CE2321D92999DA8B00B99CFD /* GKDialogManager.m */,
+			);
+			path = Dialog;
+			sourceTree = "<group>";
+		};
 		CE47C02C2865934D00846C7C /* Route */ = {
 			isa = PBXGroup;
 			children = (
@@ -635,6 +649,7 @@
 		CED0D1DA230BC6250057D405 /* GliKit */ = {
 			isa = PBXGroup;
 			children = (
+				CE2321D72999D87700B99CFD /* Dialog */,
 				CE47C02C2865934D00846C7C /* Route */,
 				CE1CAA3E25821D5B00941773 /* Swipe */,
 				CED0D229230BC6250057D405 /* Alert */,
@@ -1140,8 +1155,6 @@
 				CED0D41E230BECF20057D405 /* UIView+GKUtils.m */,
 				CED0D41A230BECF10057D405 /* UIView+GKXibUtils.h */,
 				CED0D417230BECF10057D405 /* UIView+GKXibUtils.m */,
-				CED0D415230BECF10057D405 /* UIViewController+GKDialog.h */,
-				CED0D40D230BECF00057D405 /* UIViewController+GKDialog.m */,
 				CED0D411230BECF10057D405 /* UIViewController+GKKeyboard.h */,
 				CED0D40E230BECF00057D405 /* UIViewController+GKKeyboard.m */,
 				CED0D40B230BECF00057D405 /* UIViewController+GKSafeAreaCompatible.h */,
@@ -1391,6 +1404,7 @@
 				CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */,
 				CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */,
 				CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */,
+				CE2321DA2999DA8B00B99CFD /* GKDialogManager.m in Sources */,
 				CE5D357A296CFE6400FBBA88 /* GKPhotosCache.m in Sources */,
 				CE94331725079417001EC5D0 /* GKKVOHelper.m in Sources */,
 				CE549B462480E4B400534D91 /* GKTabBarController.m in Sources */,

@@ -37,7 +37,7 @@
 
 - (UIColor *)borderColor
 {
-    return [UIColor colorWithCGColor:self.layer.borderColor];
+    return self.layer.borderColor ? [UIColor colorWithCGColor:self.layer.borderColor] : nil;
 }
 
 - (void)setMaskToBounds:(BOOL)maskToBounds
