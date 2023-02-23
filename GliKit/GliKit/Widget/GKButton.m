@@ -337,13 +337,10 @@
 - (UIControlContentHorizontalAlignment)currentContentHorizontalAlignment
 {
     UIControlContentHorizontalAlignment horizontal = self.contentHorizontalAlignment;
-    
-    if(@available(iOS 11, *)){
-        if(horizontal == UIControlContentHorizontalAlignmentLeading){
-            horizontal = UIControlContentHorizontalAlignmentLeft;
-        }else if (horizontal == UIControlContentHorizontalAlignmentTrailing){
-            horizontal = UIControlContentHorizontalAlignmentRight;
-        }
+    if(horizontal == UIControlContentHorizontalAlignmentLeading){
+        horizontal = UIControlContentHorizontalAlignmentLeft;
+    }else if (horizontal == UIControlContentHorizontalAlignmentTrailing){
+        horizontal = UIControlContentHorizontalAlignmentRight;
     }
     
     return horizontal;

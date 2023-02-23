@@ -65,9 +65,7 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
     //防止挡住滚动条
-    if(@available(iOS 11, *)){
-        view.layer.zPosition = 0;
-    }
+    view.layer.zPosition = 0;
 }
 
 

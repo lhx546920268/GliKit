@@ -57,14 +57,6 @@ static char GKContentEdgeInsetsKey;
             
             UIControlContentHorizontalAlignment contentHorizontalAlignment = self.contentHorizontalAlignment;
             
-            if(@available(iOS 11.0, *)){
-                if(contentHorizontalAlignment == UIControlContentHorizontalAlignmentLeading){
-                    contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                }else if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentTrailing){
-                    contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                }
-            }
-            
             switch (contentHorizontalAlignment) {
                 case UIControlContentHorizontalAlignmentCenter : {
                     titleInsets.left = margin / 2;
@@ -74,17 +66,19 @@ static char GKContentEdgeInsetsKey;
                     imageInsets.right = margin / 2;
                 }
                     break;
-                case UIControlContentHorizontalAlignmentLeft : {
+                case UIControlContentHorizontalAlignmentLeft :
+                case UIControlContentHorizontalAlignmentLeading : {
                     titleInsets.left = margin;
                     titleInsets.right = - margin;
                 }
                     break;
-                case UIControlContentHorizontalAlignmentRight : {
+                case UIControlContentHorizontalAlignmentRight :
+                case UIControlContentHorizontalAlignmentTrailing : {
                     imageInsets.left = - margin;
                     imageInsets.right = margin;
                 }
                     break;
-                default:
+                case UIControlContentHorizontalAlignmentFill :
                     break;
             }
             
@@ -96,15 +90,17 @@ static char GKContentEdgeInsetsKey;
                         contentInsets.right = margin / 2;
                     }
                         break;
-                    case UIControlContentHorizontalAlignmentLeft : {
+                    case UIControlContentHorizontalAlignmentLeft :
+                    case UIControlContentHorizontalAlignmentLeading : {
                         contentInsets.right = margin;
                     }
                         break;
-                    case UIControlContentHorizontalAlignmentRight : {
+                    case UIControlContentHorizontalAlignmentRight :
+                    case UIControlContentHorizontalAlignmentTrailing : {
                         contentInsets.left = margin;
                     }
                         break;
-                    default:
+                    case UIControlContentHorizontalAlignmentFill :
                         break;
                 }
             }
@@ -145,7 +141,7 @@ static char GKContentEdgeInsetsKey;
                     imageInsets.right = - titleWidth / 2;
                 }
                     break;
-                default:
+                case UIControlContentVerticalAlignmentFill :
                     break;
             }
             
@@ -166,7 +162,7 @@ static char GKContentEdgeInsetsKey;
                         contentInsets.top = imageHeight + titleHeight + margin - self.bounds.size.height;
                     }
                         break;
-                    default:
+                    case UIControlContentVerticalAlignmentFill :
                         break;
                 }
             }
@@ -175,14 +171,6 @@ static char GKContentEdgeInsetsKey;
         case GKButtonImagePositionRight : {
             
             UIControlContentHorizontalAlignment contentHorizontalAlignment = self.contentHorizontalAlignment;
-            
-            if(@available(iOS 11.0, *)){
-                if(contentHorizontalAlignment == UIControlContentHorizontalAlignmentLeading){
-                    contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                }else if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentTrailing){
-                    contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-                }
-            }
             
             switch (contentHorizontalAlignment) {
                 case UIControlContentHorizontalAlignmentCenter : {
@@ -193,7 +181,8 @@ static char GKContentEdgeInsetsKey;
                     imageInsets.right = - titleWidth - margin / 2;
                 }
                     break;
-                case UIControlContentHorizontalAlignmentLeft : {
+                case UIControlContentHorizontalAlignmentLeft :
+                case UIControlContentHorizontalAlignmentLeading : {
                     titleInsets.left = - imageWidth;
                     titleInsets.right = imageWidth;
                     
@@ -201,7 +190,8 @@ static char GKContentEdgeInsetsKey;
                     imageInsets.right = - titleWidth - margin;
                 }
                     break;
-                case UIControlContentHorizontalAlignmentRight : {
+                case UIControlContentHorizontalAlignmentRight :
+                case UIControlContentHorizontalAlignmentTrailing : {
                     titleInsets.left = - imageWidth - margin;
                     titleInsets.right = imageWidth + margin;
                     
@@ -209,7 +199,7 @@ static char GKContentEdgeInsetsKey;
                     imageInsets.right = - titleWidth;
                 }
                     break;
-                default:
+                case UIControlContentHorizontalAlignmentFill :
                     break;
             }
             
@@ -221,15 +211,17 @@ static char GKContentEdgeInsetsKey;
                         contentInsets.right = margin / 2;
                     }
                         break;
-                    case UIControlContentHorizontalAlignmentLeft : {
+                    case UIControlContentHorizontalAlignmentLeft :
+                    case UIControlContentHorizontalAlignmentLeading : {
                         contentInsets.right = margin;
                     }
                         break;
-                    case UIControlContentHorizontalAlignmentRight : {
+                    case UIControlContentHorizontalAlignmentRight :
+                    case UIControlContentHorizontalAlignmentTrailing : {
                         contentInsets.left = margin;
                     }
                         break;
-                    default:
+                    case UIControlContentHorizontalAlignmentFill :
                         break;
                 }
             }
@@ -269,7 +261,7 @@ static char GKContentEdgeInsetsKey;
                     imageInsets.right = - titleWidth / 2;
                 }
                     break;
-                default:
+                case UIControlContentVerticalAlignmentFill :
                     break;
             }
             
@@ -290,7 +282,7 @@ static char GKContentEdgeInsetsKey;
                         contentInsets.top = imageHeight + titleHeight + margin - self.bounds.size.height;
                     }
                         break;
-                    default:
+                    case UIControlContentVerticalAlignmentFill :
                         break;
                 }
             }

@@ -132,54 +132,31 @@
 
 - (UIEdgeInsets)gkSafeAreaInsets
 {
-    if(@available(iOS 11, *)){
-        return self.safeAreaInsets;
-    }else{
-        return UIEdgeInsetsZero;
-    }
+    return self.safeAreaInsets;
 }
 
 - (void)gkSetCornerRadius:(CGFloat) cornerRadius corners:(UIRectCorner) corners rect:(CGRect) rect
 {
-    if(@available(iOS 11, *)){
-        
-        CACornerMask maskedCorners = 0;
-        if(corners & UIRectCornerTopLeft){
-            maskedCorners |= kCALayerMinXMinYCorner;
-        }
-        
-        if(corners & UIRectCornerTopRight){
-            maskedCorners |= kCALayerMaxXMinYCorner;
-        }
-        
-        if(corners & UIRectCornerBottomLeft){
-            maskedCorners |= kCALayerMinXMaxYCorner;
-        }
-        
-        if(corners & UIRectCornerBottomRight){
-            maskedCorners |= kCALayerMaxXMaxYCorner;
-        }
-        
-        self.layer.cornerRadius = cornerRadius;
-        self.layer.maskedCorners = maskedCorners;
-        self.layer.masksToBounds = YES;
-        
-    }else{
-        if (cornerRadius == 0) {
-            self.layer.mask = nil;
-        } else {
-            CAShapeLayer *layer = (CAShapeLayer*)self.layer.mask;
-            if(![layer isKindOfClass:[CAShapeLayer class]]){
-                layer = [CAShapeLayer layer];
-            }
-            
-            rect.origin.x = 0;
-            rect.origin.y = 0;
-            UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-            [layer setPath:path.CGPath];
-            self.layer.mask = layer;
-        }
+    CACornerMask maskedCorners = 0;
+    if(corners & UIRectCornerTopLeft){
+        maskedCorners |= kCALayerMinXMinYCorner;
     }
+    
+    if(corners & UIRectCornerTopRight){
+        maskedCorners |= kCALayerMaxXMinYCorner;
+    }
+    
+    if(corners & UIRectCornerBottomLeft){
+        maskedCorners |= kCALayerMinXMaxYCorner;
+    }
+    
+    if(corners & UIRectCornerBottomRight){
+        maskedCorners |= kCALayerMaxXMaxYCorner;
+    }
+    
+    self.layer.cornerRadius = cornerRadius;
+    self.layer.maskedCorners = maskedCorners;
+    self.layer.masksToBounds = YES;
 }
 
 

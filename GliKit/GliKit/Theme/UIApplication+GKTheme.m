@@ -50,11 +50,7 @@ static NSString *appKeychainAccessGroup = nil;
 
 + (CGFloat)gkNavigationBarMarginForScreen
 {
-    if(@available(iOS 11, *)){
-        return 0;
-    }else{
-        return UIScreen.mainScreen.scale >= 3.0 ? 12 : 8;
-    }
+    return 0;
 }
 
 + (UIStatusBarStyle)gkStatusBarStyle

@@ -468,7 +468,7 @@
         _scrollingToCenterIndex = _selectedIndex;
         if (flag) {
             [UIView animateWithDuration:0.25 animations:^{
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self->_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
             } completion:^(BOOL finished) {
                 self.scrollingToCenterIndex = NSNotFound;
             }];

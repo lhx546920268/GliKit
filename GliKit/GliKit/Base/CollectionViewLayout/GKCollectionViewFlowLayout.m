@@ -183,7 +183,14 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
 
 - (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds
 {
-    GKCollectionViewLayoutInvalidationContext *context = [super invalidationContextForBoundsChange:newBounds];
+    UICollectionViewLayoutInvalidationContext *superContext = [super invalidationContextForBoundsChange:newBounds];
+    GKCollectionViewLayoutInvalidationContext *context;
+    if(![superContext isKindOfClass:UICollectionViewLayoutInvalidationContext.class]) {
+        context = [GKCollectionViewLayoutInvalidationContext new];
+    } else {
+        context = (GKCollectionViewLayoutInvalidationContext*)superContext;
+    }
+    
     context.invalidSupplementaryIndexPaths = nil;
     
     if (self.shouldStickHeaderDelegate) {

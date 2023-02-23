@@ -28,10 +28,7 @@
             make.leading.trailing.top.equalTo(0);
         }];
         
-        CGFloat bottom = 0;
-        if(@available(iOS 11, *)){
-            bottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
-        }
+        CGFloat bottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
         
         CGFloat margin = UIApplication.gkNavigationBarMargin;
         _previewButton = [UIButton new];

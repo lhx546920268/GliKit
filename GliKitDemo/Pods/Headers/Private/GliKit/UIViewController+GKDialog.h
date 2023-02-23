@@ -1,1 +1,1 @@
-../../../../../GliKit/GliKit/Base/Category/UIViewController+GKDialog.h
+../../../../../GliKit/GliKit/Dialog/UIViewController+GKDialog.h

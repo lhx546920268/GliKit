@@ -107,9 +107,7 @@
         _scrollView.bouncesZoom = YES;
         _scrollView.alwaysBounceVertical = NO;
         _scrollView.alwaysBounceHorizontal = NO;
-        if (@available(iOS 11, *)) {
-            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        }
+        _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         [self.contentView addSubview:_scrollView];
         
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -350,7 +348,6 @@
 
 - (void)initViews
 {
-    self.automaticallyAdjustsScrollViewInsets = NO;
     _backgroundView = [UIView new];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.userInteractionEnabled = NO;

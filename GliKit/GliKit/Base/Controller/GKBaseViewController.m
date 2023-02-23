@@ -125,7 +125,6 @@
     backBarButtonItem.title = @"";
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.hidesBackButton = YES;
     
     //显示自定义导航栏

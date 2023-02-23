@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "GliKit"
-  spec.version      = "0.0.1"
+  spec.version      = "1.1.0"
   spec.summary      = "A short description of GliKit."
 
   spec.description  = <<-DESC
@@ -21,7 +21,7 @@ Pod::Spec.new do |spec|
 
   spec.author             = "luohaixiong"
 
-  spec.platform     = :ios, "9.0"
+  spec.platform     = :ios, "11.0"
 
   spec.source = { :git => "https://www.github.com/lhx546920268/GliKit"}
   spec.source_files  = "GliKit/**/*.{h,m}"

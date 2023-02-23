@@ -57,10 +57,7 @@
     self.font = [UIFont systemFontOfSize:14];
     self.placeholderOffset = CGPointMake(8.0f, 8.0f);
     self.textLengthAttributes = nil;
-    
-    if(@available(iOS 11.0, *)){
-        self.pasteDelegate = self;
-    }
+    self.pasteDelegate = self;
 }
 
 // MARK: - property

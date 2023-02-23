@@ -161,11 +161,7 @@ static NSString *const GKDataControlContentSize = @"contentSize";
 
 - (CGFloat)realCriticalPoint
 {
-    CGFloat point = self.criticalPoint;
-    if(@available(iOS 11, *)){
-        point += self.scrollView.adjustedContentInset.bottom;
-    }
-    return point;
+    return self.criticalPoint + self.scrollView.adjustedContentInset.bottom;
 }
 
 // MARK: - Super Method

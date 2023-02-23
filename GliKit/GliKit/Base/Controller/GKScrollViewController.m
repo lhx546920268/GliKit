@@ -39,12 +39,10 @@
 {
     if(_scrollView != scrollView){
         _scrollView = scrollView;
-        if (@available(iOS 11.0, *)) {
-            if(self.shouldAdjustContentInsetForSafeArea && ([_scrollView isKindOfClass:UITableView.class] || [_scrollView isKindOfClass:UICollectionView.class])){
-                _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentScrollableAxes;
-            } else {
-                _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-            }
+        if(self.shouldAdjustContentInsetForSafeArea && ([_scrollView isKindOfClass:UITableView.class] || [_scrollView isKindOfClass:UICollectionView.class])){
+            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentScrollableAxes;
+        } else {
+            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
         !self.scrollViewDidChange ?: self.scrollViewDidChange(_scrollView);
     }

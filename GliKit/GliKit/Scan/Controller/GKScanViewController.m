@@ -234,13 +234,9 @@
 //通过摄像头位置，获取可用的摄像头
 - (AVCaptureDevice*)cameraWithPosition:(AVCaptureDevicePosition) position
 {
-    NSArray *devices;
-    if(@available(iOS 10, *)) {
-        AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
-        devices = discoverySession.devices;
-    } else {
-        devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    }
+    AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+    NSArray *devices = discoverySession.devices;
+
     for (AVCaptureDevice *device in devices) {
         if ([device position] == position) {
             return device;

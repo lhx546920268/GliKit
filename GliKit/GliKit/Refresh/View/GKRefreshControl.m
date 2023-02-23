@@ -84,11 +84,7 @@
 
 - (CGFloat)realCriticalPoint
 {
-    CGFloat point = self.criticalPoint;
-    if(@available(iOS 11, *)){
-        point += self.scrollView.adjustedContentInset.top;
-    }
-    return point;
+    return self.criticalPoint + self.scrollView.adjustedContentInset.top;
 }
 
 // MARK: - super method

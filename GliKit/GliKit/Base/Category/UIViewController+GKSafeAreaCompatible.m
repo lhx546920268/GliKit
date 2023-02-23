@@ -13,38 +13,22 @@
 
 - (MASViewAttribute*)gkSafeAreaLayoutGuideTop
 {
-    if(@available(iOS 11.0, *)){
-        return self.view.mas_safeAreaLayoutGuideTop;
-    }else{
-        return self.mas_topLayoutGuideBottom;
-    }
+    return self.view.mas_safeAreaLayoutGuideTop;
 }
 
 - (MASViewAttribute*)gkSafeAreaLayoutGuideBottom
 {
-    if(@available(iOS 11.0, *)){
-        return self.view.mas_safeAreaLayoutGuideBottom;
-    }else{
-        return self.mas_bottomLayoutGuideTop;
-    }
+    return self.view.mas_safeAreaLayoutGuideBottom;
 }
 
 - (MASViewAttribute*)gkSafeAreaLayoutGuideLeft
 {
-    if(@available(iOS 11.0, *)){
-        return self.view.mas_safeAreaLayoutGuideLeft;
-    }else{
-        return self.view.mas_leading;
-    }
+    return self.view.mas_safeAreaLayoutGuideLeft;
 }
 
 - (MASViewAttribute*)gkSafeAreaLayoutGuideRight
 {
-    if(@available(iOS 11.0, *)){
-        return self.view.mas_safeAreaLayoutGuideRight;
-    }else{
-        return self.view.mas_trailing;
-    }
+    return self.view.mas_safeAreaLayoutGuideRight;
 }
 
 @end

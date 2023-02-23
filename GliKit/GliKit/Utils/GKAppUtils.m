@@ -145,11 +145,7 @@ static NSString *sharedUUID = nil;
 
 + (void)openCompatURLDirectly:(NSURL *)URL
 {
-    if(@available(iOS 10, *)){
-        [UIApplication.sharedApplication openURL:URL options:[NSDictionary dictionary] completionHandler:nil];
-    }else{
-        [UIApplication.sharedApplication openURL:URL];
-    }
+    [UIApplication.sharedApplication openURL:URL options:[NSDictionary dictionary] completionHandler:nil];
 }
 
 + (void)openSettings

@@ -85,7 +85,6 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
 
 - (void)checkScrollEnabled
 {
-    UIScrollView *child = self.parentScrollView.gkNestedChildScrollView;
     CGFloat maxOffsetY = floor(self.parentScrollView.contentSize.height - self.parentScrollView.gkHeight);
     self.parentScrollEnabled = self.parentScrollView.contentOffset.y < maxOffsetY;
     self.childScrollEnabled = !self.parentScrollEnabled;

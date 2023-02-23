@@ -97,7 +97,6 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
           }];
           [self setDialogBackgroundView:backgroundView];
           
-          self.automaticallyAdjustsScrollViewInsets = NO;
           self.view.backgroundColor = [UIColor clearColor];
       }
 }

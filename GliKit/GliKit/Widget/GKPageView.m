@@ -168,10 +168,7 @@ static char GKPageIndexKey;
     _scrollView.scrollsToTop = NO;
     _scrollView.clipsToBounds = NO;
     _scrollView.pagingEnabled = YES;
-    
-    if(@available(iOS 11.0, *)){
-        _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
+    _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     [self addSubview:_scrollView];
 }
 

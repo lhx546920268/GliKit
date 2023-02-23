@@ -18,16 +18,13 @@ static NSString *const GKNavigationBarContentViewName = @"_UINavigationBarConten
 
 + (void)load
 {
-    if(@available(iOS 11, *)){
-
-        Method method1 = class_getInstanceMethod(self, @selector(layoutMargins));
-        Method method2 = class_getInstanceMethod(self, @selector(gkLayoutMargins));
-        method_exchangeImplementations(method1, method2);
-        
-        method1 = class_getInstanceMethod(self, @selector(directionalLayoutMargins));
-        method2 = class_getInstanceMethod(self, @selector(gkDirectionalLayoutMargins));
-        method_exchangeImplementations(method1, method2);
-    }
+    Method method1 = class_getInstanceMethod(self, @selector(layoutMargins));
+    Method method2 = class_getInstanceMethod(self, @selector(gkLayoutMargins));
+    method_exchangeImplementations(method1, method2);
+    
+    method1 = class_getInstanceMethod(self, @selector(directionalLayoutMargins));
+    method2 = class_getInstanceMethod(self, @selector(gkDirectionalLayoutMargins));
+    method_exchangeImplementations(method1, method2);
 }
 
 - (UIEdgeInsets)gkLayoutMargins

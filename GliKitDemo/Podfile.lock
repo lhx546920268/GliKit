@@ -12,7 +12,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GliKit (0.0.1):
+  - GliKit (1.1.0):
     - AFNetworking/NSURLSession (~> 4.0.1)
     - AFNetworking/Reachability (~> 4.0.1)
     - AFNetworking/Security (~> 4.0.1)
@@ -67,7 +67,7 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GliKit: 1c57cdc5d5fdd054fbd659bc67f50f592d21982c
+  GliKit: 32b731c28338204c5caaf680293583c2336c5149
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SDWebImage: 0b42b8719ab0c5257177d5894306e8a336b21cbb
@@ -75,6 +75,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
 
-PODFILE CHECKSUM: 3901a6224d823a9ab248c2972789274fa03b97ed
+PODFILE CHECKSUM: d170fc7e939f5c082df321e3f9336f8f2d31319f
 
 COCOAPODS: 1.11.2

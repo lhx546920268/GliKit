@@ -10,4 +10,15 @@
 
 @implementation GKDialogManager
 
++ (GKDialogManager *)sharedManager
+{
+    static GKDialogManager *manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [GKDialogManager new];
+    });
+    
+    return manager;
+}
+
 @end

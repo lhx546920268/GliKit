@@ -93,12 +93,7 @@ static char GKInteractivePopEnabledKey;
 - (CGFloat)gkCompatiableStatusHeight
 {
     CGFloat statusHeight = self.gkStatusBarHeight;
-    CGFloat safeAreaTop = 0;
-    if(@available(iOS 11, *)){
-        safeAreaTop = self.view.gkSafeAreaInsets.top;
-    }else{
-        safeAreaTop = self.topLayoutGuide.length;
-    }
+    CGFloat safeAreaTop = self.view.gkSafeAreaInsets.top;
     if(!self.navigationController.navigationBarHidden && self.navigationController.navigationBar.translucent){
         if(safeAreaTop > self.gkNavigationBarHeight){
             safeAreaTop -= self.gkNavigationBarHeight;

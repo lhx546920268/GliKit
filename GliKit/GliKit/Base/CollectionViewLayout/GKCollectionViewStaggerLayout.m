@@ -454,7 +454,13 @@
 
 - (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds
 {
-    GKCollectionViewLayoutInvalidationContext *context = [super invalidationContextForBoundsChange:newBounds];
+    UICollectionViewLayoutInvalidationContext *superContext = [super invalidationContextForBoundsChange:newBounds];
+    GKCollectionViewLayoutInvalidationContext *context;
+    if(![superContext isKindOfClass:UICollectionViewLayoutInvalidationContext.class]) {
+        context = [GKCollectionViewLayoutInvalidationContext new];
+    } else {
+        context = (GKCollectionViewLayoutInvalidationContext*)superContext;
+    }
     context.invalidSupplementaryIndexPaths = nil;
     
     for(NSInteger i = 0;i < self.attributes.count;i ++){
