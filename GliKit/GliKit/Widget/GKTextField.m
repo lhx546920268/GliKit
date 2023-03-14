@@ -7,8 +7,51 @@
 //
 
 #import "GKTextField.h"
+#import "NSString+GKUtils.h"
+#import "UIColor+GKTheme.h"
 
 @implementation GKTextField
+
+- (void)setPlaceholder:(NSString *)placeholder
+{
+    if ([NSString isNotEmpty:placeholder]) {
+        [self adjusetPlaceholder:placeholder];
+    } else {
+        [super setPlaceholder:placeholder];
+    }
+}
+
+- (void)setPlaceholderFont:(UIFont *)placeholderFont
+{
+    if (_placeholderFont != _placeholderFont) {
+        _placeholderFont = placeholderFont;
+        [self adjusetPlaceholder:self.placeholder];
+    }
+}
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor
+{
+    if (_placeholderColor != placeholderColor) {
+        _placeholderColor = placeholderColor;
+        [self adjusetPlaceholder:self.placeholder];
+    }
+}
+
+- (void)adjusetPlaceholder:(NSString*) placeholder
+{
+    if ([NSString isNotEmpty:placeholder]) {
+        NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:placeholder];
+        
+        UIColor *color = self.placeholderColor ?: UIColor.gkPlaceholderColor;
+        [attr addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, attr.length)];
+        
+        UIFont *font = self.placeholderFont ?: self.font;
+        if (font) {
+            [attr addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, attr.length)];
+        }
+        self.attributedPlaceholder = attr;
+    }
+}
 
 - (CGRect)textRectForBounds:(CGRect)bounds
 {

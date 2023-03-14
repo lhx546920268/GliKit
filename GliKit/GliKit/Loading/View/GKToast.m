@@ -286,6 +286,8 @@ static const CGFloat GKToastLabelSpacing = 8.0f;
 - (void)show
 {
     if(_status != GKToastStatusNone){
+        [self.translucentView.layer removeAllAnimations];
+        
         switch (_status) {
             case GKToastStatusError :
             case GKToastStatusSuccess :

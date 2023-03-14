@@ -37,6 +37,7 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
 
 ///判断字符串是否为空，会去掉 空格 \n \r
 + (BOOL)isEmpty:(nullable NSString*) str;
++ (BOOL)isNotEmpty:(nullable NSString*) str;
 
 ///判断字符串是否为空,字符串可以为空格
 + (BOOL)isNull:(nullable NSString*) str;

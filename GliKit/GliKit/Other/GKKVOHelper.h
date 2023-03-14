@@ -49,7 +49,7 @@ typedef void(^GKKVOCallback)(NSString *keyPath, id _Nullable newValue, id _Nulla
 - (void)removeObserver:(NSObject*) observer forKeyPaths:(NSArray<NSString*>*) keyPaths;
 - (void)removeObserver:(NSObject*) observer;
 
-/// 移除所有观察者 最好在被观察者的dealloc 调用这个，否则在iOS 10.3 会闪退
+/// 移除所有观察者
 - (void)removeAllObservers;
 
 @end

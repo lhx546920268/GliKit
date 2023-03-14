@@ -106,7 +106,6 @@
     self.layer.anchorPoint = anchorPoint;
     self.transform = CGAffineTransformIdentity;
     self.frame = toFrame;
-    self.transform = CGAffineTransformMakeScale(0.1, 0.1);
     
     if(overlay){
         
@@ -124,7 +123,7 @@
     
     _isShowing = YES;
     if(animated){
-        
+        self.transform = CGAffineTransformMakeScale(0.1, 0.1);
         [UIView animateWithDuration:0.25 animations:^(void){
              self->_overlay.alpha = 1.0;
              self.alpha = 1.0;
@@ -137,7 +136,6 @@
     }else{
         self.alpha = 1.0;
         _overlay.alpha = 1.0;
-        self.frame = toFrame;
         if([self.delegate respondsToSelector:@selector(popoverDidShow:)]){
             [self.delegate popoverDidShow:self];
         }
@@ -183,6 +181,10 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tap.delegate = self;
         [_overlay addGestureRecognizer:tap];
+        
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        pan.delegate = self;
+        [_overlay addGestureRecognizer:pan];
     }
     
     return _overlay;
@@ -232,18 +234,18 @@
         _arrowDirection = GKPopoverArrowDirectionTop;
 
         CGFloat x = relateX + relateWidth * 0.5 - contentSize.width * 0.5;
-        x = x < margin ? margin : x;
+        x = x < margin ? margin - 10 : x;
         x = x + margin + contentSize.width > superWidth ? superWidth - contentSize.width - margin : x;
         CGFloat y = relateY + relateHeight + _arrowMargin;
 
         resultRect = CGRectMake(x, y, contentSize.width, contentSize.height + arrowHeight);
         _arrowPoint = CGPointMake(MIN(relateX - x + relateWidth * 0.5, resultRect.origin.x + resultRect.size.width - _cornerRadius - _arrowSize.width), 0);
         self.originalPoint = CGPointMake(x + _arrowPoint.x, y);
-    }else if(relateY * scale < contentSize.height){
+    }else if(relateY * scale > contentSize.height){
         _arrowDirection = GKPopoverArrowDirectionBottom;
 
         CGFloat x = relateX + relateWidth * 0.5 - contentSize.width * 0.5;
-        x = x < margin ? margin : x;
+        x = x < margin ? margin - 10 : x;
         x = x + margin + contentSize.width > superWidth ? superWidth - contentSize.width - margin : x;
         CGFloat y = relateY - _arrowMargin - contentSize.height - arrowHeight;
 
@@ -284,9 +286,16 @@
 // MARK: - Action
 
 //点击透明部位
-- (void)handleTap:(id) sender
+- (void)handleTap:(UITapGestureRecognizer*) sender
 {
     [self dismissAnimated:YES];
+}
+
+- (void)handlePan:(UIPanGestureRecognizer*) sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        [self dismissAnimated:YES];
+    }
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer

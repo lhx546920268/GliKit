@@ -44,6 +44,11 @@
     return NO;
 }
 
++ (BOOL)isNotEmpty:(NSString *)str
+{
+    return ![NSString isEmpty:str];
+}
+
 + (BOOL)isNull:(NSString *)str
 {
     if([str isEqual:[NSNull null]] || str == nil || str == NULL){

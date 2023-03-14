@@ -19,6 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///内容间距 default `zero`
 @property(nonatomic, assign) IBInspectable UIEdgeInsets contentInsets;
 
+///placeholder 字体
+@property(nonatomic, strong, nullable) UIFont *placeholderFont;
+
+///placeholder 字体颜色
+@property(nonatomic, strong, nullable) UIColor *placeholderColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -31,9 +31,6 @@ static NSMutableSet* GKSharedContainers()
 ///任务列表
 @property(nonatomic, strong) NSMutableArray<GKHttpTask*> *tasks;
 
-///是否有请求失败
-@property(nonatomic, assign) BOOL hasFail;
-
 ///是否并发执行
 @property(nonatomic, assign) BOOL concurrent;
 
@@ -128,7 +125,7 @@ static NSMutableSet* GKSharedContainers()
     if(!_isExecuting){
         _isExecuting = YES;
         [GKSharedContainers() addObject:self];
-        self.hasFail = NO;
+        _hasFail = NO;
         
         if(self.concurrent){
             for(GKHttpTask *task in self.tasks){
@@ -166,7 +163,7 @@ static NSMutableSet* GKSharedContainers()
     [self.tasks removeObject:task];
     
     if(!success){
-        self.hasFail = YES;
+        _hasFail = YES;
         if(self.shouldCancelAllTaskWhileOneFail){
             for(GKHttpTask *task in self.tasks){
                 [task cancel];
@@ -186,7 +183,7 @@ static NSMutableSet* GKSharedContainers()
 - (void)onComplete
 {
     _isExecuting = NO;
-    !self.completionHandler ?: self.completionHandler(self, self.hasFail);
+    !self.completionHandler ?: self.completionHandler(self);
     [self.taskDictionary removeAllObjects];
     [GKSharedContainers() removeObject:self];
 }

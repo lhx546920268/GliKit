@@ -26,7 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) BOOL isExecuting;
 
 ///所有任务完成回调 hasFail 是否有任务失败了
-@property(nonatomic, copy, nullable) void(^completionHandler)(GKHttpMultiTasks *tasks, BOOL hasFail);
+@property(nonatomic, copy, nullable) void(^completionHandler)(GKHttpMultiTasks *tasks);
+
+///是否有请求失败
+@property(nonatomic, readonly) BOOL hasFail;
 
 ///获取下一个任务 如果返回nil，则表示没下一个任务，会执行完成回调
 @property(nonatomic, copy, nullable) GKHttpTask* _Nullable (^nextTaskHandler)(GKHttpTask *currentTask);
