@@ -46,7 +46,20 @@
 
 @end
 
-@interface GKDRootViewController ()<NSURLSessionDataDelegate>
+@interface MYView : UIView
+
+@end
+
+@implementation MYView
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    return [super hitTest:point withEvent:event];
+}
+
+@end
+
+@interface GKDRootViewController ()<NSURLSessionDataDelegate, UIGestureRecognizerDelegate>
 
 ///
 @property(nonatomic, strong) NSURLSession *session;
@@ -77,9 +90,29 @@
                    [GKDRowModel modelWithTitle:@"Dynamic" clazz:@"/app/dynimic"],
                    ];
 
-    [self initViews];
+//    [self initViews];
      
 
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 300, 300)];
+    view.backgroundColor = UIColor.redColor;
+    view.tag = 2;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    tap.delegate = self;
+    [view addGestureRecognizer:tap];
+    [self.view addSubview:view];
+    
+    view = [[MYView alloc] initWithFrame:CGRectMake(0, 100, 200, 200)];
+    view.backgroundColor = UIColor.blueColor;
+    view.tag = 3;
+    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    pan.delegate = self;
+
+    [view addGestureRecognizer:pan];
+    [self.view addSubview:view];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    tap.delegate = self;
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)initViews
@@ -89,6 +122,16 @@
     [self registerClass:RootListCell.class];
     [self registerClass:GKDRootListCell.class];
     [super initViews];
+}
+
+- (void)handlePan:(UIPanGestureRecognizer*) pan
+{
+    NSLog(@"%ld", pan.view.tag);
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return gestureRecognizer.view.tag != 3;
 }
 
 //MARK: UITableViewDelegate

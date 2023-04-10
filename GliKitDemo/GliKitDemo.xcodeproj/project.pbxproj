@@ -882,7 +882,7 @@
 				CODE_SIGN_ENTITLEMENTS = GliKitDemo/GliKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = F4797G69ZD;
+				DEVELOPMENT_TEAM = 67ASRT678W;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -937,7 +937,7 @@
 				CODE_SIGN_ENTITLEMENTS = GliKitDemo/GliKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = F4797G69ZD;
+				DEVELOPMENT_TEAM = 67ASRT678W;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

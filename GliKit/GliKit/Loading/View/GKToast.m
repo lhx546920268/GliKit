@@ -199,6 +199,8 @@ static const CGFloat GKToastLabelSpacing = 8.0f;
 {
     if(_status != status){
         _status = status;
+        
+        [_translucentView.layer removeAllAnimations];
         switch (_status) {
             case GKToastStatusError :
             case GKToastStatusSuccess :
@@ -208,6 +210,7 @@ static const CGFloat GKToastLabelSpacing = 8.0f;
                 self.hidden = NO;
                 self.imageView.hidden = NO;
                 _translucentView.hidden = NO;
+                _translucentView.alpha = 1.0;
                 [_activityIndicatorView stopAnimating];
                 self.imageView.image = [self currentImaage];
                 self.imageView.bounds = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
@@ -323,14 +326,17 @@ static const CGFloat GKToastLabelSpacing = 8.0f;
 ///关闭
 - (void)dismiss
 {
+    GKToastStatus status = self.status;
     [self stopTimer];
     [UIView animateWithDuration:0.25 animations:^(void){
         
         self.translucentView.alpha = 0;
         
     }completion:^(BOOL finish){
-        self.hidden = YES;
-        !self.dismissCompletion ?: self.dismissCompletion();
+        if (status == self.status) {
+            self.hidden = YES;
+            !self.dismissCompletion ?: self.dismissCompletion();
+        }
     }];
 }
 

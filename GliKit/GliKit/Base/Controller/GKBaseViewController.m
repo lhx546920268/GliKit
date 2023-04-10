@@ -243,6 +243,14 @@
     return _navigationItemHelper;
 }
 
+- (void)gkBack
+{
+    _isDisplaying = NO;
+    _isBacked = YES;
+    [super gkBack];
+}
+
+
 // MARK: - GKEmptyViewDelegate
 
 - (void)emptyViewWillAppear:(GKEmptyView *)view

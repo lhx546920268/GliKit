@@ -44,10 +44,11 @@
 
 + (__kindof UINavigationController*)gkCurrentNavigationController
 {
-    UIViewController *parentViewControlelr = UIApplication.sharedApplication.delegate.window.rootViewController.gkTopestPresentedViewController;
+    UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *parentViewControlelr = root.gkTopestPresentedViewController;
     //刚开始启动 不一定是tabBar
-    if([UIApplication.sharedApplication.delegate.window.rootViewController conformsToProtocol:@protocol(GKTabBarController)]){
-        UIViewController<GKTabBarController> *tab = (UIViewController<GKTabBarController>*)UIApplication.sharedApplication.delegate.window.rootViewController;
+    if([root conformsToProtocol:@protocol(GKTabBarController)]){
+        UIViewController<GKTabBarController> *tab = (UIViewController<GKTabBarController>*)root;
         if(parentViewControlelr == tab){
             parentViewControlelr = tab.selectedViewController;
         }

@@ -33,7 +33,7 @@
     NSDateFormatter *dateFormatter = [formatters objectForKey:format];
     if(!dateFormatter){
         dateFormatter = NSDateFormatter.new;
-        dateFormatter.locale = NSLocale.currentLocale;
+        dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_MM"]; //避免手机为12制时，格式化返回nil
         dateFormatter.dateFormat = format;
         [formatters setObject:dateFormatter forKey:format];
     }

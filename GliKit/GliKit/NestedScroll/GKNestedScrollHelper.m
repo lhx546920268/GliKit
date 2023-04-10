@@ -190,12 +190,12 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
         }
     } else {
         //子视图向上滑动 到父容器时，会卡在，这里要模拟滑动
-        if (velocity.y >= 0) {
+        BOOL isParentBeyondInsetTop = self.parentScrollView.contentOffset.y <= -self.parentScrollView.contentInset.top; //父容器offset超过顶部inset.top，让scrollView自己回弹
+        if (velocity.y >= 0 || isParentBeyondInsetTop) {
             return;
         }
         
         CGFloat distance = [self distanceFromVelocity:-velocity.y];
-        NSLog(@"distance %f, target %f ", distance, scrollView.contentOffset.y - targetContentOffset->y);
         if (floor(scrollView.contentOffset.y - distance) < 0) {
             self.status = GKNestedScrollContentOffsetStatusBegan;
             self.frames = 0;
@@ -295,6 +295,7 @@ static const CGFloat GKNestedScrollSlowDampingRaito = 0.81f;
             CGPoint contentOffset = self.parentScrollView.contentOffset;
             contentOffset.y += offset;
             if (contentOffset.y <= -self.parentScrollView.contentInset.top) {
+                //已经到顶越界了，停止模拟，让系统自己回弹
                 contentOffset.y = -self.parentScrollView.contentInset.top;
                 [self stopDisplayLink];
             }

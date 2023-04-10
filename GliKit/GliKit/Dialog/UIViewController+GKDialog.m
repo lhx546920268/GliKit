@@ -16,9 +16,9 @@
 #import <objc/runtime.h>
 #import "UIViewController+GKUtils.h"
 #import "UIView+GKUtils.h"
-#import "UIApplication+GKUtils.h"
+#import "GKDialogManager.h"
 
-static char GKisShowAsDialogKey;
+static char GKIsShowAsDialogKey;
 static char GKDialogKey;
 static char GKDialogShouldUseNewWindowKey;
 static char GKShouldDismissDialogOnTapTranslucentKey;
@@ -115,12 +115,12 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 
 - (void)setIsShowAsDialog:(BOOL)isShowAsDialog
 {
-    objc_setAssociatedObject(self, &GKisShowAsDialogKey, @(isShowAsDialog), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &GKIsShowAsDialogKey, @(isShowAsDialog), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)isShowAsDialog
 {
-    return [objc_getAssociatedObject(self, &GKisShowAsDialogKey) boolValue];
+    return [objc_getAssociatedObject(self, &GKIsShowAsDialogKey) boolValue];
 }
 
 - (void)setDialog:(UIView *)dialog
@@ -159,7 +159,7 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 - (UIWindow *)dialogWindow
 {
     if(self.dialogShouldUseNewWindow){
-        return UIApplication.sharedApplication.dialogWindow;
+        return GKDialogManager.sharedManager.dialogWindow;
     }else{
         return UIApplication.sharedApplication.delegate.window;
     }
@@ -300,15 +300,9 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
         if(self.isDialogShowing){
             return;
         }
-        [UIApplication.sharedApplication loadDialogWindowIfNeeded];
         [self setIsShowAsDialog:YES];
         self.dialogShouldAnimate = animated;
-        if(self.dialogWindow.rootViewController){
-            self.modalPresentationStyle = UIModalPresentationCustom;
-            [self.dialogWindow.rootViewController.gkTopestPresentedViewController presentViewController:self animated:NO completion:nil];
-        }else{
-            self.dialogWindow.rootViewController = self;
-        }
+        [GKDialogManager.sharedManager showViewControllerInDialogWindow:self completion:self.dialogShowCompletionHandler];
         
         if (!animated) {
             [self onDialogShowInternal];
@@ -563,14 +557,9 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 - (void)onDialogDismissWithCompletion:(void(^)(void)) completion
 {
     if(self.dialogShouldUseNewWindow){
-        
-        if(self.dialogWindow.rootViewController != self){
-            [self dismissViewControllerAnimated:NO completion:^{
-                [self afterDialogDismissWithCompletion:completion];
-            }];
-        }else{
+        [GKDialogManager.sharedManager removeViewControllerFromDialogWindow:self completion:^{
             [self afterDialogDismissWithCompletion:completion];
-        }
+        }];
     }else{
         if(self.presentingViewController){
             [self dismissViewControllerAnimated:NO completion:^{
@@ -587,13 +576,9 @@ static char GKIsDialogViewDidLayoutSubviewsKey;
 ///弹窗消失
 - (void)afterDialogDismissWithCompletion:(void(^)(void)) completion
 {
-    if(self.dialogShouldUseNewWindow && self.dialogWindow.rootViewController == self){
-        self.dialogWindow.rootViewController = nil;
-    }
     !completion ?: completion();
     !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
     [self onDialogDismiss];
-    [UIApplication.sharedApplication removeDialogWindowIfNeeded];
 }
 
 - (void)onDialogDismiss{}

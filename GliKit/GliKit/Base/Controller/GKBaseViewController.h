@@ -39,6 +39,9 @@ GKNavigationItemHelper;
 ///是否是第一次显示
 @property(nonatomic, readonly) BOOL isFisrtDisplay;
 
+///是否已经点击返回了
+@property(nonatomic, readonly) BOOL isBacked;
+
 ///第一次显示回调
 - (void)viewDidFirstAppear:(BOOL) animate;
 
