@@ -9,6 +9,7 @@
 #import "UINavigationItem+GKUtils.h"
 #import <objc/runtime.h>
 #import "NSObject+GKUtils.h"
+#import "UIScreen+GKUtils.h"
 
 @implementation UINavigationItem (GKUtils)
 
@@ -111,7 +112,7 @@
 - (UIBarButtonItem*)fixedBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    item.width = -(UIScreen.mainScreen.scale == 2 ? 16 : 20);
+    item.width = -(UIScreen.gkMainScreen.scale == 2 ? 16 : 20);
     return item;
 }
 

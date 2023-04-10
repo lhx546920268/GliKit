@@ -11,6 +11,9 @@
 ///屏幕扩展
 @interface UIScreen (GKUtils)
 
+///获取mainScreen
+@property (class, nonatomic, readonly) UIScreen *gkMainScreen;
+
 ///获取屏幕宽度
 @property (class, nonatomic, readonly) CGFloat gkWidth;
 

@@ -7,6 +7,7 @@
 
 #import "UIImage+GKTheme.h"
 #import "UIColor+GKTheme.h"
+#import "UIScreen+GKUtils.h"
 
 static UIImage *appNavigationBarBackIcon = nil;
 static CGFloat appImageScale = 2.0;
@@ -21,7 +22,7 @@ static CGFloat appImageScale = 2.0;
             
             CGSize size = CGSizeMake(12, 20);
             CGFloat lineWidth = 2.0;
-            UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
+            UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.gkMainScreen.scale);
             CGContextRef context = UIGraphicsGetCurrentContext();
             CGContextSetLineWidth(context, lineWidth);
             CGContextSetStrokeColorWithColor(context, UIColor.gkNavigationBarTintColor.CGColor);

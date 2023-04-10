@@ -23,7 +23,7 @@
 
 - (void)setPlaceholderFont:(UIFont *)placeholderFont
 {
-    if (_placeholderFont != _placeholderFont) {
+    if (_placeholderFont != placeholderFont) {
         _placeholderFont = placeholderFont;
         [self adjusetPlaceholder:self.placeholder];
     }

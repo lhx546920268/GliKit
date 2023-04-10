@@ -10,6 +10,19 @@
 
 @implementation UIScreen (GKUtils)
 
++ (UIScreen *)gkMainScreen
+{
+    UIScreen *screen = nil;
+    if (@available(iOS 13, *)) {
+        UIWindowScene *scene = (UIWindowScene*)UIApplication.sharedApplication.connectedScenes.anyObject;
+        if ([scene isKindOfClass:UIWindowScene.class]) {
+            screen = scene.screen;
+        }
+    }
+    
+    return screen ?: UIScreen.mainScreen;
+}
+
 + (CGFloat)gkWidth
 {
     return self.gkSize.width;
@@ -22,7 +35,7 @@
 
 + (CGSize)gkSize
 {
-    return UIScreen.mainScreen.bounds.size;
+    return self.gkMainScreen.bounds.size;
 }
 
 @end

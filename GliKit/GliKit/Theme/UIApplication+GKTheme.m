@@ -7,6 +7,7 @@
 //
 
 #import "UIApplication+GKTheme.h"
+#import "UIScreen+GKUtils.h"
 
 static CGFloat appSeparatorHeight = 0;
 static CGFloat appNavigationBarMargin = 15;
@@ -23,7 +24,7 @@ static NSString *appKeychainAccessGroup = nil;
 + (CGFloat)gkSeparatorHeight
 {
     if(appSeparatorHeight == 0){
-        appSeparatorHeight = 1.0 / UIScreen.mainScreen.scale;
+        appSeparatorHeight = 1.0 / UIScreen.gkMainScreen.scale;
     }
     return appSeparatorHeight;
 }

@@ -19,6 +19,7 @@
 #import <SDImageCache.h>
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "UIApplication+GKTheme.h"
+#import "UIScreen+GKUtils.h"
 
 @implementation GKPhotosBrowseModel
 
@@ -330,7 +331,7 @@
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.flowLayout.minimumLineSpacing = self.imageSpacing;
     self.flowLayout.sectionInset = UIEdgeInsetsMake(0, self.imageSpacing / 2.0, 0, self.imageSpacing / 2.0);
-    self.flowLayout.itemSize = UIScreen.mainScreen.bounds.size;
+    self.flowLayout.itemSize = UIScreen.gkMainScreen.bounds.size;
     
     self.container.safeLayoutGuide = GKSafeLayoutGuideNone;
     self.animateDuration = 0.25;

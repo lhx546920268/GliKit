@@ -8,6 +8,7 @@
 
 #import "GKDialogManager.h"
 #import "UIViewController+GKUtils.h"
+#import "UIScreen+GKUtils.h"
 
 ///等待显示的弹窗信息
 @interface GKPendingDialogModel : NSObject
@@ -100,7 +101,7 @@
 - (void)loadDialogWindowIfNeeded
 {
     if(!self.dialogWindow){
-        self.dialogWindow = [self ca_createWindowWithLevel:UIWindowLevelAlert];
+        self.dialogWindow = [self createWindowWithLevel:UIWindowLevelAlert];
         [self makeWindowKeyAndVisibleIfEnabled:self.dialogWindow];
     }
 }
@@ -177,7 +178,7 @@
     if(!window){
         window = UIWindow.new;
     }
-    window.frame = UIScreen.mainScreen.bounds;
+    window.frame = UIScreen.gkMainScreen.bounds;
     window.windowLevel = level;
     window.backgroundColor = UIColor.clearColor;
     
