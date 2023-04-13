@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 #import "UIView+GKAutoLayout.h"
 #import "GKRowHeightModel.h"
+#import "UIScreen+GKUtils.h"
 
 @implementation UITableView (GKRowHeight)
 
@@ -67,7 +68,7 @@
         
         //如果有分割线 加上1px
         if(self.separatorStyle != UITableViewCellSeparatorStyleNone){
-            height += 1.0 / [UIScreen mainScreen].scale;
+            height += 1.0 / UIScreen.gkMainScreen.scale;
         }
         model.rowHeight = height;
     }
