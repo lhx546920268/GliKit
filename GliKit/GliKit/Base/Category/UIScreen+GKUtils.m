@@ -12,15 +12,17 @@
 
 + (UIScreen *)gkMainScreen
 {
-    UIScreen *screen = nil;
-    if (@available(iOS 13, *)) {
-        UIWindowScene *scene = (UIWindowScene*)UIApplication.sharedApplication.connectedScenes.anyObject;
-        if ([scene isKindOfClass:UIWindowScene.class]) {
-            screen = scene.screen;
-        }
-    }
-    
-    return screen ?: UIScreen.mainScreen;
+    //无法在其他线程使用
+//    UIScreen *screen = nil;
+//    if (@available(iOS 13, *)) {
+//        UIWindowScene *scene = (UIWindowScene*)UIApplication.sharedApplication.connectedScenes.anyObject;
+//        if ([scene isKindOfClass:UIWindowScene.class]) {
+//            screen = scene.screen;
+//        }
+//    }
+//
+//    return screen ?: UIScreen.mainScreen;
+    return UIScreen.mainScreen;
 }
 
 + (CGFloat)gkWidth
