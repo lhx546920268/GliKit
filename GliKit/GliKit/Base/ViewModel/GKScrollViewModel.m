@@ -24,10 +24,7 @@
     [self.viewController startRefresh];
 }
 
-- (void)onRefesh
-{
-    
-}
+- (void)onRefesh{}
 
 - (void)stopRefresh
 {
@@ -39,10 +36,7 @@
     [self.viewController stopRefreshForResult:result];
 }
 
-- (void)onRefeshCancel
-{
-    
-}
+- (void)onRefeshCancel{}
 
 // MARK: - Load More
 
@@ -76,10 +70,7 @@
     [self.viewController startLoadMore];
 }
 
-- (void)onLoadMore
-{
-    
-}
+- (void)onLoadMore{}
 
 - (void)stopLoadMoreWithMore:(BOOL)hasMore
 {
@@ -91,9 +82,6 @@
     [self.viewController stopLoadMoreWithFail];
 }
 
-- (void)onLoadMoreCancel
-{
-    
-}
+- (void)onLoadMoreCancel{}
 
 @end

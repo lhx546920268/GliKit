@@ -26,16 +26,32 @@ static NSMutableSet* GKSharedTasks()
     return sharedTasks;
 }
 
+///http任务状态
+typedef NS_ENUM(NSInteger, GKHttpTaskState) {
+    
+    ///准备中
+    GKHttpTaskStateReady,
+    
+    ///运行中
+    GKHttpTaskStateExecuting,
+    
+    ///已完成
+    GKHttpTaskStateCompleted,
+    
+    ///已取消
+    GKHttpTaskStateCancelled,
+};
+
 @interface GKHttpTask()
 
 ///当前任务
 @property(nonatomic, readonly) NSURLSessionTask *URLSessionTask;
 
-///是否已完成
-@property(nonatomic, assign) BOOL isCompleted;
-
 ///锁
 @property(nonatomic, strong) GKLock *lock;
+
+///状态
+@property(nonatomic, assign) GKHttpTaskState state;
 
 @end
 
@@ -117,15 +133,15 @@ static NSMutableSet* GKSharedTasks()
 ///处理http请求请求成功的结果
 - (void)processSuccessResult:(NSDictionary*) result
 {
-    if([result isKindOfClass:NSDictionary.class]){
+    if ([result isKindOfClass:NSDictionary.class]) {
         _data = result;
         _isApiSuccess = [self onLoadData:_data];
-        if(_isApiSuccess){
+        if (_isApiSuccess) {
             [self requestDidSuccess];
-        }else{
+        } else{
             [self requestDidFail];
         }
-    }else{
+    } else {
         [self requestDidFail];
     }
 }
@@ -134,7 +150,7 @@ static NSMutableSet* GKSharedTasks()
 - (void)processError:(NSError*) error
 {
     //是自己取消的  因为服务端取消的也会被标记成 NSURLErrorCancelled
-    if(self.isCancelled){
+    if (self.isCancelled) {
         return;
     }
     
@@ -159,12 +175,22 @@ static NSMutableSet* GKSharedTasks()
 
 - (BOOL)isExecuting
 {
-    return _URLSessionTask != nil && _URLSessionTask.state == NSURLSessionTaskStateRunning;
+    return self.state == GKHttpTaskStateExecuting;
 }
 
 - (BOOL)isSuspended
 {
     return _URLSessionTask != nil && _URLSessionTask.state == NSURLSessionTaskStateSuspended;
+}
+
+- (BOOL)isCancelled
+{
+    return self.state == GKHttpTaskStateCancelled;
+}
+
+- (BOOL)isCompleted
+{
+    return self.state == GKHttpTaskStateCompleted;
 }
 
 // MARK: - 子类重写 回调
@@ -185,23 +211,17 @@ static NSMutableSet* GKSharedTasks()
     return YES;
 }
 
-- (void)onSuccess
-{
-    
-}
+- (void)onSuccess{}
 
-- (void)onFail
-{
-   
-}
+- (void)onFail{}
 
 - (void)onComplete
 {
-    self.isCompleted = YES;
-    [self.view gkDismissLoadingToast];
-    if(!self.isCancelled && [self.delegate respondsToSelector:@selector(taskDidComplete:)]){
+    if([self.delegate respondsToSelector:@selector(taskDidComplete:)]){
         [self.delegate taskDidComplete:self];
     }
+    
+    [self.view gkDismissLoadingToast];
     _URLSessionTask = nil;
     [GKSharedTasks() removeObject:self];
 }
@@ -211,8 +231,8 @@ static NSMutableSet* GKSharedTasks()
 - (void)start
 {
     [self.lock lock];
-    if(!self.isExecuting && !self.isCancelled && !self.isCompleted) {
-        
+    if(self.state == GKHttpTaskStateReady) {
+        self.state = GKHttpTaskStateExecuting;
         [self onStart];
         [self.URLSessionTask resume];
     }
@@ -223,7 +243,7 @@ static NSMutableSet* GKSharedTasks()
 {
     [self.lock lock];
     if(!self.isCancelled && !self.isCompleted){
-        _isCancelled = YES;
+        self.state = GKHttpTaskStateCancelled;
         if(self.isSuspended || self.isExecuting){
             [_URLSessionTask cancel];
         }
@@ -257,6 +277,7 @@ static NSMutableSet* GKSharedTasks()
     dispatch_main_async_safe(^{
         [self.lock lock];
         if(!self.isCancelled){
+            self.state = GKHttpTaskStateCompleted;
             !self.successHandler ?: self.successHandler(self);
             [self onComplete];
         }
@@ -264,10 +285,7 @@ static NSMutableSet* GKSharedTasks()
     })
 }
 
-- (void)onDataParseFail
-{
-    
-}
+- (void)onDataParseFail{}
 
 ///请求失败
 - (void)requestDidFail
@@ -275,6 +293,7 @@ static NSMutableSet* GKSharedTasks()
     dispatch_main_async_safe(^{
         [self.lock lock];
         if(!self.isCancelled){
+            self.state = GKHttpTaskStateCompleted;
             !self.willFailHandler ?: self.willFailHandler(self);
             [self onFail];
             !self.failHandler ?: self.failHandler(self);

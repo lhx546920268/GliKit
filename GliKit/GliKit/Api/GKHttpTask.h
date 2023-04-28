@@ -74,6 +74,9 @@ static const int GKHttpDataParseError = -1000010;
 ///是否是自己取消
 @property(nonatomic, readonly) BOOL isCancelled;
 
+///是否已完成
+@property(nonatomic, readonly) BOOL isCompleted;
+
 // MARK: - 回调
 
 ///成功回调

@@ -11,7 +11,6 @@
 #import "GKNestedScrollHelper.h"
 #import <objc/runtime.h>
 #import "GKWeakObjectContainer.h"
-#import "GKNestedScrollHelper.h"
 
 static char GKNestedScrollEnabledKey;
 static char GKNestedParentKey;

@@ -38,25 +38,13 @@
     return [[[self class] alloc] initWithController:viewController];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    
-}
+- (void)viewWillAppear:(BOOL)animated{}
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    
-}
+- (void)viewDidAppear:(BOOL)animated{}
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    
-}
+- (void)viewWillDisappear:(BOOL)animated{}
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    
-}
+- (void)viewDidDisappear:(BOOL)animated{}
 
 - (void)addCancelableTask:(id<GKCancelableTask>)task
 {
