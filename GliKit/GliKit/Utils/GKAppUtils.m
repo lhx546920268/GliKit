@@ -27,7 +27,7 @@ static NSString *sharedUUID = nil;
 
 + (NSString*)appVersion
 {
-    return [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleShortVersionString"];
+    return [NSBundle.mainBundle.infoDictionary gkNonnullStringForKey:@"CFBundleShortVersionString"];
 }
 
 + (BOOL)isTestApp
@@ -37,9 +37,9 @@ static NSString *sharedUUID = nil;
 
 + (NSString*)appName
 {
-    NSString *name = [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleDisplayName"];
+    NSString *name = [NSBundle.mainBundle.infoDictionary gkNonnullStringForKey:@"CFBundleDisplayName"];
     if([NSString isEmpty:name]){
-        name = [NSBundle.mainBundle.infoDictionary gkStringForKey:@"CFBundleName"];
+        name = [NSBundle.mainBundle.infoDictionary gkNonnullStringForKey:@"CFBundleName"];
     }
     
     return name;

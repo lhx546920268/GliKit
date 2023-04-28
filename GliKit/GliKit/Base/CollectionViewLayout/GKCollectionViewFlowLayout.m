@@ -106,7 +106,6 @@ static NSString *const GKCollectionViewBackgroundDecorator = @"GKCollectionViewB
                 
                 if([self.s_delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]){
                     insets = [self.s_delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:attr.indexPath.section];
-                    section = attr.indexPath.section;
                 }
                 
                 section = attr.indexPath.section;

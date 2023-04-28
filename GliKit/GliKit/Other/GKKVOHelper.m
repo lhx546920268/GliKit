@@ -279,17 +279,23 @@ static void* const GKOKVOContext = "com.glikit.GKOKVOContext";
 
 @end
 
+static char GKKVOHelperKey;
 
 @implementation NSObject(GKKVOUtils)
 
 - (GKKVOHelper *)kvoHelper
 {
-    GKKVOHelper *helper = objc_getAssociatedObject(self, _cmd);
+    GKKVOHelper *helper = objc_getAssociatedObject(self, &GKKVOHelperKey);
     if(!helper){
         helper = [GKKVOHelper helperWithOwner:self];
-        objc_setAssociatedObject(self, _cmd, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &GKKVOHelperKey, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return helper;
+}
+
+- (GKKVOHelper *)kvoHelperNullable
+{
+    return objc_getAssociatedObject(self, &GKKVOHelperKey);
 }
 
 @end

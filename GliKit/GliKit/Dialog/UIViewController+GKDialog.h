@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
     ///从下进入
     GKDialogAnimateFromBottom,
     
-    ///自定义
+    ///自定义 要重写 didExecuteDialogShowCustomAnimate 和 didExecuteDialogDismissCustomAnimate
     GKDialogAnimateCustom,
 };
 

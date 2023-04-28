@@ -53,6 +53,11 @@
     return timer;
 }
 
++ (instancetype)foreverTimerWithInterval:(NSTimeInterval)timeInterval
+{
+    return [self timerWithTime:GKCountDownInfinite interval:timeInterval];
+}
+
 - (void)dealloc
 {
     [self stopTimer];

@@ -52,6 +52,10 @@ static const NSTimeInterval GKCountDownInfinite = DBL_MAX;
 /// @param timeInterval 倒计时间隔
 + (instancetype)timerWithTime:(NSTimeInterval) timeToCountDown interval:(NSTimeInterval) timeInterval;
 
+/// 永久的倒计时
+/// @param timeInterval 倒计时间隔
++ (instancetype)foreverTimerWithInterval:(NSTimeInterval) timeInterval;
+
 ///开始倒计时
 - (void)start;
 

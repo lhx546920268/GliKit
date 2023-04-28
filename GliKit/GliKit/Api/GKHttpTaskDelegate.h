@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GKHttpTask;
 
-///代理
+///代理 私有类
 @protocol GKHttpTaskDelegate <NSObject>
 
 @optional

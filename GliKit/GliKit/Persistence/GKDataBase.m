@@ -80,7 +80,7 @@
         if(![fileManager createDirectoryAtPath:sqliteDirectory withIntermediateDirectories:YES attributes:nil error:nil]){
             return nil;
         }else{
-            ///防止iCloud备份
+            //防止iCloud备份
             [GKFileManager addSkipBackupAttributeToItemAtURL:[NSURL fileURLWithPath:sqliteDirectory isDirectory:YES]];
         }
     }

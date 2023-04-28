@@ -16,6 +16,7 @@
 #import "GKNavigationItemHelper.h"
 #import "NSString+GKUtils.h"
 #import "GKBaseDefines.h"
+#import "UIViewController+GKLoading.h"
 
 ///当前系统默认的 userAgent
 static NSString *GKSystemUserAgent = nil;
@@ -425,5 +426,29 @@ static WKProcessPool *sharedProcessPool;
     }
 }
 
+// MARK: - Navigation
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    if(error.code != NSURLErrorCancelled){
+        self.gkShowFailPage = YES;
+    }
+}
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    if(error.code != NSURLErrorCancelled){
+        self.gkShowFailPage = YES;
+    }
+}
+
+- (void)gkReloadData
+{
+    [super gkReloadData];
+    if(self.URL){
+        self.gkShowFailPage = NO;
+        [self reload];
+    }
+}
 
 @end

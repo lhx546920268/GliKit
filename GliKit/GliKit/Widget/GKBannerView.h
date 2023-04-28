@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)scrollToIndex:(NSInteger) index animated:(BOOL) flag;
 
 ///通过下标获取 cell 如果cell是在可见范围内
-- (__kindof UICollectionViewCell*)cellForIndex:(NSInteger) index;
+- (nullable __kindof UICollectionViewCell*)cellForIndex:(NSInteger) index;
 
 ///初始化
 - (instancetype)initWithScrollDirection:(UICollectionViewScrollDirection) scrollDirection;

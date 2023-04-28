@@ -121,7 +121,7 @@ static char GKVisiblePageKey;
                 _currentPage = self.menuBar.selectedIndex;
             }
             [self.scrollView setContentOffset:CGPointMake(_currentPage * self.scrollViewSize.width, 0) animated:NO];
-            [self _onScrollTopPage:_currentPage oldPage:oldPage];
+            [self _onScrollTopPage:_currentPage oldPage:oldPage bySliding:NO];
             self.willScrollToPage = NSNotFound;
         }else{
             if(_currentPage < self.numberOfPage){
@@ -194,7 +194,7 @@ static char GKVisiblePageKey;
     [self.menuBar setSelectedIndex:page animated:animate];
     if(!CGSizeEqualToSize(self.scrollViewSize, CGSizeZero)){
         [self.scrollView setContentOffset:CGPointMake(page * self.scrollViewSize.width, 0) animated:animate];
-        [self _onScrollTopPage:_currentPage oldPage:oldPage];
+        [self _onScrollTopPage:_currentPage oldPage:oldPage bySliding:NO];
     }else{
         self.willScrollToPage = _currentPage;
     }
@@ -214,7 +214,7 @@ static char GKVisiblePageKey;
     }
 }
 
-- (void)_onScrollTopPage:(NSInteger)page oldPage:(NSInteger) oldPage
+- (void)_onScrollTopPage:(NSInteger)page oldPage:(NSInteger) oldPage bySliding:(BOOL)sliding
 {
     if(oldPage < self.numberOfPage){
         [self viewControllerForIndex:oldPage].visibleInPage = NO;
@@ -222,10 +222,10 @@ static char GKVisiblePageKey;
     
     [self viewControllerForIndex:page].visibleInPage = YES;
     
-    [self onScrollTopPage:page];
+    [self onScrollTopPage:page bySliding:sliding];
 }
 
-- (void)onScrollTopPage:(NSInteger)page
+- (void)onScrollTopPage:(NSInteger)page bySliding:(BOOL)sliding
 {
     
 }
@@ -237,7 +237,7 @@ static char GKVisiblePageKey;
     [self.scrollView setContentOffset:CGPointMake(index * self.scrollViewSize.width, 0)];
     NSInteger oldPage = _currentPage;
     _currentPage = index;
-    [self _onScrollTopPage:index oldPage:oldPage];
+    [self _onScrollTopPage:index oldPage:oldPage bySliding:NO];
 }
 
 // MARK: - UIScrollViewDelegate
@@ -245,7 +245,7 @@ static char GKVisiblePageKey;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.beginOffset = scrollView.contentOffset;
-    [self setScrollEnabled:NO];
+    [self setPageScrollEnabled:NO];
     [self scrollToVisibleIndexAndScrollToCenter:NO];
     
     [super scrollViewWillBeginDragging:scrollView];
@@ -287,13 +287,13 @@ static char GKVisiblePageKey;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     [self scrollToVisibleIndexAndScrollToCenter:NO];
-    [self setScrollEnabled:YES];
+    [self setPageScrollEnabled:YES];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self scrollToVisibleIndexAndScrollToCenter:YES];
-    [self setScrollEnabled:YES];
+    [self setPageScrollEnabled:YES];
 }
 
 ///滑动到可见位置
@@ -317,14 +317,14 @@ static char GKVisiblePageKey;
                 }
             }
         }
-        [self _onScrollTopPage:index oldPage:oldPage];
+        [self _onScrollTopPage:index oldPage:oldPage bySliding:YES];
     } else if (scrollToCenter && self.shouldUseMenuBar) {
         [self.menuBar scrollToVisibleRectWithAnimate:YES];
     }
 }
 
 ///设置是否可以滑动
-- (void)setScrollEnabled:(BOOL) enabled
+- (void)setPageScrollEnabled:(BOOL) enabled
 {
     for(UIViewController *viewController in _pageViewControllers){
         if([viewController isKindOfClass:[GKScrollViewController class]]){

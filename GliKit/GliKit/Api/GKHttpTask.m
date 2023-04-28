@@ -13,6 +13,7 @@
 #import "UIView+GKLoading.h"
 #import <SDWebImageCompat.h>
 #import "GKLock.h"
+#import "GKHttpTaskDelegate.h"
 
 ///保存请求队列的单例
 static NSMutableSet* GKSharedTasks()
@@ -52,6 +53,9 @@ typedef NS_ENUM(NSInteger, GKHttpTaskState) {
 
 ///状态
 @property(nonatomic, assign) GKHttpTaskState state;
+
+///代理
+@property(nonatomic, weak, nullable) id<GKHttpTaskDelegate> delegate;
 
 @end
 

@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GKHttpTaskDelegate.h"
 #import "GKCancelableTask.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -87,9 +86,6 @@ static const int GKHttpDataParseError = -1000010;
 
 ///失败回调
 @property(nonatomic, copy, nullable) void(^failHandler)(__kindof GKHttpTask *task);
-
-///代理
-@property(nonatomic, weak, nullable) id<GKHttpTaskDelegate> delegate;
 
 // MARK: - 结果
 

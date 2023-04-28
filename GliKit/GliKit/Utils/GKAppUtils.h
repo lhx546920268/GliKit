@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(class, nonatomic, readonly) NSString *appName;
 
 ///app图标
-@property(class, nonatomic, readonly) UIImage *appIcon;
+@property(class, nonatomic, readonly, nullable) UIImage *appIcon;
 
 ///bundle id
 @property(class, nonatomic, readonly) NSString *bundleId;
@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///获取唯一标识符
 @property(class, nonatomic, readonly) NSString *uuid;
 
-///获取ip地址
-@property(class, nonatomic, readonly) NSString *currentIP;
+///获取ip地址，只能获取局域网ip
+@property(class, nonatomic, readonly, nullable) NSString *currentIP;
 
 ///是否有相册权限
 @property(class, nonatomic, readonly) BOOL hasPhotosAuthorization;

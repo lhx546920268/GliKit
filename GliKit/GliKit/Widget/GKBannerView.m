@@ -401,11 +401,7 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self.delegate respondsToSelector:@selector(bannerView:cellForIndexPath:atIndex:)]){
-        return [self.delegate bannerView:self cellForIndexPath:indexPath atIndex:[self getActualIndexFromIndex:indexPath.item]];
-    }
-    
-    return nil;
+    return [self.delegate bannerView:self cellForIndexPath:indexPath atIndex:[self getActualIndexFromIndex:indexPath.item]];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

@@ -81,8 +81,8 @@
         CGSize imageSize = self.currentImageSize;
         CGSize titleSize = self.currentTitleSize;
         
-        CGFloat width = size.width;
-        CGFloat height = size.height;
+        CGFloat width;
+        CGFloat height;
         
         switch (self.imagePosition) {
             case GKButtonImagePositionLeft :

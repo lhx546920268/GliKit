@@ -437,9 +437,6 @@
     CGContextSetLineJoin(context, kCGLineJoinRound);
     
     //设置位置
-    CGPoint arrowPoint;
-    CGPoint arrowPoint1;
-    CGPoint arrowPoint2;
     CGFloat startX, startY, minX, maxX, minY, maxY;
     
     switch(self.arrowDirection){

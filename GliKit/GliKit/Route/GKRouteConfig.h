@@ -32,9 +32,6 @@ typedef NS_ENUM(NSInteger, GKRoutePushStyle){
     ///用push替换当前的页面
     GKRoutePushStyleReplace,
     
-    ///这个页面只打开一个，用push
-    GKRoutePushStyleOnlyOne,
-    
     ///关闭中间的
     GKRoutePushStyleCloseMiddle,
 };
@@ -83,6 +80,9 @@ typedef void(^GKRouteCompletion)(GKRouteResult result);
 
 ///路由push方式
 @property(nonatomic, assign) GKRoutePushStyle pushStyle;
+
+///这个页面只打开一个，用push
+@property(nonatomic, assign) BOOL onlyOne;
 
 ///是否是弹出来
 @property(nonatomic, readonly) BOOL isPresent;

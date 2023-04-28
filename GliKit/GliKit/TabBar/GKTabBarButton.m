@@ -45,7 +45,7 @@
         }];
         
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.imageView.mas_bottom).offset(5);
+            make.top.equalTo(self.imageView.mas_bottom).offset(0);
             make.bottom.centerX.equalTo(0);
         }];
         

@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSInteger)numberOfPage;
 
 ///滑动到某一页，setPage方法 不会触发这个
-- (void)onScrollTopPage:(NSInteger) page;
+- (void)onScrollTopPage:(NSInteger) page bySliding:(BOOL) sliding;;
 
 @end
 

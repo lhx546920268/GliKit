@@ -276,15 +276,6 @@
                     }
                 }
                     break;
-                case GKRoutePushStyleOnlyOne : {
-                    for(NSInteger i = 0;i < viewControllers.count;i ++){
-                        UIViewController *vc = viewControllers[i];
-                        if(i != 0 && [vc isKindOfClass:viewController.class]){
-                            [toReplacedViewControlelrs addObject:vc];
-                        }
-                    }
-                }
-                    break;
                 case GKRoutePushStyleCloseMiddle : {
                     if (viewControllers.count > 1) {
                         [toReplacedViewControlelrs addObjectsFromArray:[viewControllers subarrayWithRange:NSMakeRange(1, viewControllers.count - 1)]];
@@ -293,6 +284,15 @@
                     break;
                 case GKRoutePushStyleDefault :
                     break;
+            }
+            
+            if (config.onlyOne) {
+                for(NSInteger i = 0;i < viewControllers.count;i ++){
+                    UIViewController *vc = viewControllers[i];
+                    if(i != 0 && [vc isKindOfClass:viewController.class]){
+                        [toReplacedViewControlelrs addObject:vc];
+                    }
+                }
             }
             
             if(config.routesToClosed.count > 0){

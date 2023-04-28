@@ -26,6 +26,13 @@ static NSMutableSet* GKSharedContainers()
     return sharedContainers;
 }
 
+@interface GKHttpTask(GKPrivate)
+
+///代理
+@property(nonatomic, weak, nullable) id<GKHttpTaskDelegate> delegate;
+
+@end
+
 @interface GKHttpMultiTasks()<GKHttpTaskDelegate>
 
 ///任务列表

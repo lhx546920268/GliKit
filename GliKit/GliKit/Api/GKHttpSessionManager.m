@@ -35,7 +35,7 @@
     self = [super init];
     if(self){
         self.requestSerializer.timeoutInterval = 15;
-        self.customCompletionQueue = dispatch_queue_create("com.lhx.http.customCompletionQueue", DISPATCH_QUEUE_CONCURRENT);
+        self.customCompletionQueue = dispatch_queue_create("com.glikit.http.customCompletionQueue", DISPATCH_QUEUE_CONCURRENT);
         self.completionQueue = self.customCompletionQueue;
     }
     

@@ -60,6 +60,9 @@ typedef void(^GKKVOCallback)(NSString *keyPath, id _Nullable newValue, id _Nulla
 ///kvo帮助类 懒加载
 @property(nonatomic, readonly) GKKVOHelper *kvoHelper;
 
+///kvo帮助类 为空时不会创建
+@property(nonatomic, readonly, nullable) GKKVOHelper *kvoHelperNullable;
+
 @end
 
 NS_ASSUME_NONNULL_END

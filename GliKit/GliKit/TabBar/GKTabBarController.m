@@ -334,16 +334,23 @@
         return;
     
     self.tabBarHidden = hidden;
+    CGFloat height = self.tabBar.gkHeight;
+    if (height == 0) {
+        [self.tabBar layoutIfNeeded];
+        height = self.tabBar.gkHeight;
+    }
+    
+    void(^animations)(void) = ^{
+        self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, height) : CGAffineTransformIdentity;
+    };
+    
     if(animated){
         self.tabBar.hidden = NO;
-        
-        [UIView animateWithDuration:0.25 animations:^{
-           
-            self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, self.tabBar.gkHeight) : CGAffineTransformIdentity;
-        }completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.25 animations:animations completion:^(BOOL finished) {
             self.tabBar.hidden = hidden;
         }];
     }else{
+        animations();
         self.tabBar.hidden = hidden;
     }
 }
