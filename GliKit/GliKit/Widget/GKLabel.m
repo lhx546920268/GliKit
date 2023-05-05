@@ -23,6 +23,9 @@ static NSRegularExpression *URLRegularExpression = nil;
 ///长按手势
 @property(nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
 
+///点击手势
+@property(nonatomic, strong) UITapGestureRecognizer *tapGesture;
+
 ///可点击的位置 rangeValue
 @property(nonatomic, strong) NSMutableArray<NSValue*> *clickableRanges;
 
@@ -231,13 +234,20 @@ static NSRegularExpression *URLRegularExpression = nil;
     if(_shouldDetectURL != shouldDetectURL){
         _shouldDetectURL = shouldDetectURL;
         if(_shouldDetectURL){
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-            self.userInteractionEnabled = YES;
-            [self addGestureRecognizer:tap];
+            [self addTapGestureRecognizerIfNeeded];
         }else{
             [_clickableRanges removeAllObjects];
         }
     }
+}
+
+- (void)addTapGestureRecognizerIfNeeded
+{
+    if (!self.tapGesture) {
+        self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        [self addGestureRecognizer:self.tapGesture];
+    }
+    self.userInteractionEnabled = YES;
 }
 
 - (NSRegularExpression *)URLRegularExpression
@@ -283,7 +293,7 @@ static NSRegularExpression *URLRegularExpression = nil;
             
             for(NSTextCheckingResult *result in results){
                 [self.clickableRanges addObject:[NSValue valueWithRange:result.range]];
-                [attr addAttributes:self.clickableAttributes range:result.range];
+                [attr addAttributes:self.urlAttributes range:result.range];
             }
             text = attr;
         }
@@ -294,12 +304,12 @@ static NSRegularExpression *URLRegularExpression = nil;
 
 // MARK: - Clickable
 
-- (NSDictionary *)clickableAttributes
+- (NSDictionary *)urlAttributes
 {
-    if(_clickableAttributes.count == 0){
-        _clickableAttributes = @{NSForegroundColorAttributeName: UIColor.systemBlueColor, NSUnderlineStyleAttributeName: @(YES)};
+    if(_urlAttributes.count == 0){
+        _urlAttributes = @{NSForegroundColorAttributeName: UIColor.systemBlueColor, NSUnderlineStyleAttributeName: @(YES)};
     }
-    return _clickableAttributes;
+    return _urlAttributes;
 }
 
 - (NSMutableArray<NSValue *> *)clickableRanges
@@ -313,7 +323,8 @@ static NSRegularExpression *URLRegularExpression = nil;
 - (void)addClickableRange:(NSRange) range
 {
     NSString *text = self.text;
-    if(range.location + range.length < text.length){
+    if(range.location + range.length <= text.length){
+        [self addTapGestureRecognizerIfNeeded];
         [self.clickableRanges addObject:[NSValue valueWithRange:range]];
     }
 }
@@ -321,6 +332,8 @@ static NSRegularExpression *URLRegularExpression = nil;
 ///处理点击
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
+    if (_clickableRanges.count == 0) return;
+    
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeHighlightedRects) object:nil];
     CGPoint point = [tap locationInView:self];
     NSRange range = [self clickableStringAtPoint:point];
@@ -354,8 +367,9 @@ static NSRegularExpression *URLRegularExpression = nil;
         return range;
     }
     
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(ctFrameSetter, CFRangeMake(0, attr.length), NULL, CGSizeMake(self.bounds.size.width, CGFLOAT_MAX), NULL);
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, self.textDrawRect);
+    CGPathAddRect(path, NULL, CGRectMake(0, 0, ceil(MAX(size.width, textRect.size.width)), ceil(MAX(size.height, textRect.size.height))));
     CTFrameRef ctFrame = CTFramesetterCreateFrame(ctFrameSetter, CFRangeMake(0, attr.length), path, NULL);
     CGPathRelease(path);
     

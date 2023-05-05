@@ -56,7 +56,7 @@ static char GKInteractivePopEnabledKey;
 - (BOOL)gkInteractivePopEnabled
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKInteractivePopEnabledKey);
-    return number ? number.boolValue : YES;
+    return number != nil ? number.boolValue : YES;
 }
 
 - (void)setGkInteractivePopEnabled:(BOOL) enabled

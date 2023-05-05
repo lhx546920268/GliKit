@@ -101,7 +101,7 @@
         if([headerFooter isKindOfClass:UITableViewHeaderFooterView.class]){
             contentView = [(UITableViewHeaderFooterView*)headerFooter contentView];
         }
-        model.rowHeight = [headerFooter gkSizeThatFits:CGSizeMake(self.frame.size.width, 0) type:GKAutoLayoutCalcTypeHeight].height;
+        model.rowHeight = [contentView gkSizeThatFits:CGSizeMake(self.frame.size.width, 0) type:GKAutoLayoutCalcTypeHeight].height;
     }
     return model.rowHeight;
 }

@@ -131,7 +131,7 @@ static char GKShouldIgnoreTableHeaderKey;
 - (BOOL)gkShouldIgnoreTableHeader
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreTableHeaderKey);
-    if(number){
+    if(number != nil){
         return [number boolValue];
     }
     
@@ -146,7 +146,7 @@ static char GKShouldIgnoreTableHeaderKey;
 - (BOOL)gkShouldIgnoreTableFooter
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreTableFooterKey);
-    if(number){
+    if(number != nil){
         return [number boolValue];
     }
     
@@ -162,7 +162,7 @@ static char GKShouldIgnoreTableHeaderKey;
 - (BOOL)gkShouldIgnoreSectionHeader
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreSectionHeaderKey);
-    if(number){
+    if(number != nil){
         return [number boolValue];
     }
     
@@ -178,8 +178,7 @@ static char GKShouldIgnoreTableHeaderKey;
 - (BOOL)gkShouldIgnoreSectionFooter
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreTableHeaderKey);
-    if(number)
-    {
+    if(number != nil){
         return [number boolValue];
     }
     

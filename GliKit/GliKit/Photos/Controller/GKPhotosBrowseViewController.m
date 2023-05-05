@@ -40,7 +40,9 @@
 {
     GKPhotosBrowseModel *model = [GKPhotosBrowseModel new];
     model.URL = [NSURL URLWithString:URL];
-    model.thumbnailURL = [NSURL URLWithString:thumbnailURL];
+    if (thumbnailURL != nil) {
+        model.thumbnailURL = [NSURL URLWithString:thumbnailURL];
+    }
     
     return model;
 }

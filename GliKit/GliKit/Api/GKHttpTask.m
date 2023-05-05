@@ -239,6 +239,9 @@ typedef NS_ENUM(NSInteger, GKHttpTaskState) {
         self.state = GKHttpTaskStateExecuting;
         [self onStart];
         [self.URLSessionTask resume];
+        if (!self.URLSessionTask) {
+            [self processError:[NSError errorWithDomain:@"GKHttpURLSesstionError" code:0 userInfo:nil]];
+        }
     }
     [self.lock unlock];
 }

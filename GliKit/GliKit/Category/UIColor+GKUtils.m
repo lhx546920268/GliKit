@@ -90,7 +90,7 @@
         
         return [UIColor gkColorWithRed:R green:G blue:B alpha:alpha];
     }
-    return nil;
+    return self;
 }
 
 + (NSDictionary<NSString*, NSNumber*>*)gkColorARGBFromHex:(NSString*) hex

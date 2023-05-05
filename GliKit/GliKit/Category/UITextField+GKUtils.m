@@ -146,7 +146,7 @@ static char GKExtraStringKey;
 - (NSUInteger)gkMaxLength
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKMaxLengthKey);
-    return number ? [number unsignedIntegerValue] : NSUIntegerMax;
+    return number != nil ? [number unsignedIntegerValue] : NSUIntegerMax;
 }
 
 - (void)setGkTextType:(GKTextType) textType
@@ -158,7 +158,7 @@ static char GKExtraStringKey;
 - (GKTextType)gkTextType
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKTextTypeKey);
-    return number ? [number unsignedIntegerValue] : GKTextTypeAll;
+    return number != nil ? [number unsignedIntegerValue] : GKTextTypeAll;
 }
 
 - (void)setGkTextDidChange:(void (^)(void))gkTextDidChange

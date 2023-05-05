@@ -25,7 +25,7 @@ static char GKKeyboardAnimationDurationKey;
 - (BOOL)keyboardHidden
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKKeyboardHiddenKey);
-    if(number){
+    if(number != nil){
         return [number boolValue];
     }else{
         return YES;

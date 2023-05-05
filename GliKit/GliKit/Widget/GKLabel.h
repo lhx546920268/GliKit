@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///自定义label
+///自定义label，设置富文本时属性要全，包括对其方式，换行方式，字体等
 @interface GKLabel : UILabel
 
 ///文本边距 default `zero`
@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否识别链接，default `NO`
 @property(nonatomic, assign) BOOL shouldDetectURL;
 
-///URL和其他设置可点击的 样式 默认蓝色字体加下划线
-@property(nonatomic, strong, null_resettable) NSDictionary *clickableAttributes;
+///URL 样式 默认蓝色字体加下划线
+@property(nonatomic, strong, null_resettable) NSDictionary *urlAttributes;
 
 ///点击识别的字符串回调
 @property(nonatomic, copy, nullable) void(^clickStringHandler)(NSString *string);

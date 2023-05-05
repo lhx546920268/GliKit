@@ -55,7 +55,7 @@ static char GKSkeletonHideAnimateKey;
 - (BOOL)gkShouldBecomeSkeleton
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldBecomeSkeletonKey);
-    if(number){
+    if(number != nil){
         return number.boolValue;
     }else{
         return [GKSkeletonHelper shouldBecomeSkeleton:self];

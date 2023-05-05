@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedManager;
 
 ///http请求
-- (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
+- (nullable NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
                                        URLString:(NSString *)URLString 
                                       parameters:(nullable id)parameters
                                     headerFields:(NSDictionary*) headerFields
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
                                          failure:(nullable void (^)(NSURLSessionDataTask *, NSError *))failure;
 
 ///http请求 上传文件用的
-- (NSURLSessionDataTask *)uploadTaskWithURLString:(NSString *)URLString
+- (nullable NSURLSessionDataTask *)uploadTaskWithURLString:(NSString *)URLString
                                        parameters:(nullable id)parameters
                                      headerFields:(NSDictionary*) headerFields
                                   timeoutInterval:(NSTimeInterval) timeoutInterval

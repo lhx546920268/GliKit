@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nonnull) NSArray<GKPopoverMenuItem*> *menuItems;
 
 ///标题
-@property(nonatomic, copy) NSArray<NSString*> *titles;
+@property(nonatomic, copy, nullable) NSArray<NSString*> *titles;
 
 ///点击某个按钮回调
 @property(nonatomic, copy, nullable) void(^selectHandler)(NSInteger index);

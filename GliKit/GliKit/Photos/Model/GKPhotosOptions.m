@@ -48,12 +48,13 @@
 
 + (instancetype)resultWithData:(NSData*) data options:(GKPhotosOptions*) options
 {
-    CGImageSourceRef source = CGImageSourceCreateWithData(CFBridgingRetain(data), CFBridgingRetain(@{(NSString*) kCGImageSourceShouldAllowFloat : @YES}));
-    if(!source)
+    NSDictionary *sourceOptions = @{(NSString*)kCGImageSourceShouldAllowFloat : @YES};
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge  CFDataRef)data, (__bridge  CFDictionaryRef)sourceOptions);
+    if(source == NULL)
         return nil;
     
     CFDictionaryRef properties = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
-    if(!properties){
+    if(properties == NULL){
         CFRelease(source);
         return nil;
     }
@@ -96,7 +97,6 @@
 
         if(imageRef != NULL){
             UIImage *compressedImage = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
-            image = compressedImage;
             result.compressedImage = compressedImage;
             result.filePath = [GKFileManager writeImage:compressedImage originalData:data scale:0.9];
             result.compressedImageSize = CGSizeMake(compressedImage.size.width * compressedImage.scale, compressedImage.size.height * compressedImage.scale);
@@ -113,10 +113,6 @@
         CGSize size = options.thumbnailSize;
         size.width *= scale;
         size.height *= scale;
-        
-        if (!image) {
-            image = [UIImage imageWithData:data];
-        }
     }
     
     CFRelease(source);

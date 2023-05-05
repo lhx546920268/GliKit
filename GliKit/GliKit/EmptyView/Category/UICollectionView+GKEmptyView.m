@@ -142,7 +142,7 @@ static char GKShouldIgnoreSectionFooterKey;
 - (BOOL)gkShouldIgnoreSectionHeader
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreSectionHeaderKey);
-    if(number){
+    if(number != nil){
         return [number boolValue];
     }
     
@@ -158,7 +158,7 @@ static char GKShouldIgnoreSectionFooterKey;
 - (BOOL)gkShouldIgnoreSectionFooter
 {
     NSNumber *number = objc_getAssociatedObject(self, &GKShouldIgnoreSectionFooterKey);
-    if(number){
+    if(number != nil){
         return [number boolValue];
     }
     

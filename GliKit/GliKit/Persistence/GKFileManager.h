@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  *@param scale 图片压缩比率
  *@return 成功写入的文件
  */
-+ (NSString*)writeImage:(nullable UIImage*) image originalData:(nullable NSData*) originalData scale:(float) scale;
++ (nullable NSString*)writeImage:(nullable UIImage*) image originalData:(nullable NSData*) originalData scale:(float) scale;
 + (nullable NSString*)writeImage:(UIImage*) image scale:(float) scale;
 
 /**
