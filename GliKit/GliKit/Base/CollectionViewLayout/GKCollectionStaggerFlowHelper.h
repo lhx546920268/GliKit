@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKCollectionViewStaggerLayoutAttributes;
 
 ///布局帮助类
 @interface GKCollectionStaggerFlowHelper : NSObject
 
 ///关联的section 布局信息
-@property(nonatomic, weak) GKCollectionViewStaggerLayoutAttributes *layoutAttributes;
+@property(nonatomic, weak, nullable) GKCollectionViewStaggerLayoutAttributes *layoutAttributes;
 
 ///容器大小
 @property(nonatomic, assign) CGSize containerSize;
@@ -41,3 +43,5 @@
 - (CGPoint)itemOriginFromItemSize:(CGSize) size;
 
 @end
+
+NS_ASSUME_NONNULL_END

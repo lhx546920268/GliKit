@@ -34,7 +34,7 @@ typedef NS_OPTIONS(NSInteger, GKSwipeDirection) {
 @property(nonatomic, readonly) GKSwipeDirection currentDirection;
 
 ///代理
-@property(nonatomic, weak) id<GKSwipeCellDelegate> delegate;
+@property(nonatomic, weak, nullable) id<GKSwipeCellDelegate> delegate;
 
 ///切换按钮状态
 - (void)setSwipeShow:(BOOL) show direction:(GKSwipeDirection) direction animated:(BOOL) animated;

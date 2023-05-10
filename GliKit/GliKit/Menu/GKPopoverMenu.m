@@ -77,21 +77,37 @@
 
 @dynamic delegate;
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithTitles:(NSArray<NSString *> *)titles
 {
-    self = [super initWithFrame:frame];
-    if(self){
-        self.contentInsets = UIEdgeInsetsZero;
-        _cellContentInsets = UIEdgeInsetsMake(0, 15, 0, 15);
-        _textColor = [UIColor blackColor];
-        _font = [UIFont systemFontOfSize:13];
-        _selectedBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-        _rowHeight = 30;
-        _separatorColor = UIColor.gkSeparatorColor;
-        _iconTitleInterval = 0.0;
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+        self.titles = titles;
+        [self initProps];
     }
     
     return self;
+}
+
+- (instancetype)initWithMenuItems:(NSArray<GKPopoverMenuItem *> *)items
+{
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+        self.menuItems = items;
+        [self initProps];
+    }
+    return self;
+}
+
+- (void)initProps
+{
+    self.contentInsets = UIEdgeInsetsZero;
+    _cellContentInsets = UIEdgeInsetsMake(0, 15, 0, 15);
+    _textColor = [UIColor blackColor];
+    _font = [UIFont systemFontOfSize:13];
+    _selectedBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+    _rowHeight = 30;
+    _separatorColor = UIColor.gkSeparatorColor;
+    _iconTitleInterval = 0.0;
 }
 
 - (void)initContentView
@@ -227,9 +243,6 @@
 
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
-    if(titles.count == 0){
-        return;
-    }
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:titles.count];
     for(NSString *title in titles){
         [items addObject:[GKPopoverMenuItem itemWithTitle:title icon:nil]];
@@ -239,9 +252,6 @@
 
 - (NSArray<NSString*>*)titles
 {
-    if(_menuItems.count == 0){
-        return nil;
-    }
     NSMutableArray *titles = [NSMutableArray arrayWithCapacity:_menuItems.count];
     for(GKPopoverMenuItem *item in _menuItems){
         if(item.title == nil){

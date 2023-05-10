@@ -16,7 +16,7 @@
 @interface GKBaseNavigationController ()<UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 ///其他代理
-@property(nonatomic, weak) id<UINavigationControllerDelegate> otherDelegate;
+@property(nonatomic, weak, nullable) id<UINavigationControllerDelegate> otherDelegate;
 
 ///设置是否可以使用滑动返回
 @property(nonatomic, assign) BOOL interactivePodEnabled;

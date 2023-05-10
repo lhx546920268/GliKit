@@ -71,23 +71,34 @@ NS_ASSUME_NONNULL_BEGIN
 ///cell 内容边距 default `(0, 15.0, 0, 15.0)` ，只有left和right生效
 @property(nonatomic, assign) UIEdgeInsets cellContentInsets;
 
-///分割线颜色 default `GKSeparatorColor`
+///分割线颜色 default `UIColor.gkSeparatorColor`
 @property(nonatomic, strong) UIColor *separatorColor;
 
 ///cell 分割线间距 default `(0, 0, 0, 0)` ，只有left和right生效
 @property(nonatomic, assign) UIEdgeInsets separatorInsets;
 
-///按钮信息
-@property(nonatomic, strong, nonnull) NSArray<GKPopoverMenuItem*> *menuItems;
+///按钮信息 
+@property(nonatomic, strong) NSArray<GKPopoverMenuItem*> *menuItems;
 
 ///标题
-@property(nonatomic, copy, nullable) NSArray<NSString*> *titles;
+@property(nonatomic, strong) NSArray<NSString*> *titles;
 
 ///点击某个按钮回调
 @property(nonatomic, copy, nullable) void(^selectHandler)(NSInteger index);
 
 ///代理
 @property(nonatomic, weak, nullable) id<GKPopoverMenuDelegate> delegate;
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+
+///通过标题初始化
+- (instancetype)initWithTitles:(NSArray<NSString*>*) titles;
+
+///通过具体的item属性初始化
+- (instancetype)initWithMenuItems:(NSArray<GKPopoverMenuItem*>*) items;
 
 @end
 

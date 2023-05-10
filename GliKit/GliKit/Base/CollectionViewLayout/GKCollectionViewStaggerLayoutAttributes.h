@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GKCollectionViewStaggerLayout;
 
 ///装饰key
@@ -22,7 +24,7 @@ static NSString *const GKCollectionViewStaggerLayoutDecorator = @"GKCollectionVi
 @interface GKCollectionViewStaggerLayoutDecoratorAttributes : UICollectionViewLayoutAttributes
 
 ///代理
-@property(nonatomic, weak) GKCollectionViewStaggerLayout *layout;
+@property(nonatomic, weak, nullable) GKCollectionViewStaggerLayout *layout;
 
 @end
 
@@ -38,16 +40,16 @@ static NSString *const GKCollectionViewStaggerLayoutDecorator = @"GKCollectionVi
 @interface GKCollectionViewStaggerLayoutAttributes : NSObject
 
 ///头部布局信息
-@property(nonatomic, strong) GKCollectionViewHeaderLayoutAttributes *headerLayoutAttributes;
+@property(nonatomic, strong, nullable) GKCollectionViewHeaderLayoutAttributes *headerLayoutAttributes;
 
 ///悬浮的头部布局信息
-@property(nonatomic, readonly) GKCollectionViewHeaderLayoutAttributes *stickHeaderLayoutAttributes;
+@property(nonatomic, readonly, nullable) GKCollectionViewHeaderLayoutAttributes *stickHeaderLayoutAttributes;
 
 ///底部布局信息
-@property(nonatomic, strong) UICollectionViewLayoutAttributes *footerLayoutAttributes;
+@property(nonatomic, strong, nullable) UICollectionViewLayoutAttributes *footerLayoutAttributes;
 
 ///item布局信息
-@property(nonatomic, strong) NSMutableArray<UICollectionViewLayoutAttributes*> *itemAttrs;
+@property(nonatomic, strong, nullable) NSMutableArray<UICollectionViewLayoutAttributes*> *itemAttrs;
 
 ///是否要悬浮头部
 @property(nonatomic, assign) BOOL shouldStickHeader;
@@ -75,3 +77,4 @@ static NSString *const GKCollectionViewStaggerLayoutDecorator = @"GKCollectionVi
 
 @end
 
+NS_ASSUME_NONNULL_END

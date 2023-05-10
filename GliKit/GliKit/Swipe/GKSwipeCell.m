@@ -29,7 +29,7 @@
 @interface GKSwipeOverlay : UIView
 
 ///关联的cell
-@property(nonatomic, weak) UIView<GKSwipeCell> *cell;
+@property(nonatomic, weak, nullable) UIView<GKSwipeCell> *cell;
 
 @end
 
@@ -109,7 +109,7 @@
 @property(nonatomic, assign) BOOL showing;
 
 ///关联的cell
-@property(nonatomic, weak) UIView<GKSwipeCell> *cell;
+@property(nonatomic, weak, nullable) UIView<GKSwipeCell> *cell;
 
 @end
 

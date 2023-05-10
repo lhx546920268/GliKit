@@ -25,6 +25,7 @@
 @synthesize placeholderFont = _placeholderFont;
 @synthesize placeholderTextColor = _placeholderTextColor;
 @synthesize textLengthAttributes = _textLengthAttributes;
+@dynamic delegate;
 
 // MARK: - init
 
@@ -250,6 +251,10 @@
         textLength = self.emojiAsOne ? text.gkLengthEmojiAsOne : text.length;
         if(range.location < textLength){
             self.selectedRange = range;
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(textViewTextDidExceedsMaxLength:)]) {
+            [self.delegate textViewTextDidExceedsMaxLength:self];
         }
     }
 }

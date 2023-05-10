@@ -10,6 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class GKTextView;
+
+///代理
+@protocol GKTextViewDelegate <UITextViewDelegate>
+
+@optional
+
+///输入内容超过限制了
+- (void)textViewTextDidExceedsMaxLength:(GKTextView*) textView;
+
+@end
+
+
 ///UITextView的子类，支持像UITextField那样的placeholder.
 @interface GKTextView : UITextView
 
@@ -36,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///输入限制文字 属性
 @property(nonatomic, copy, null_resettable) NSDictionary *textLengthAttributes;
+
+///代理
+@property(nonatomic, weak) id<GKTextViewDelegate> delegate;
 
 @end
 

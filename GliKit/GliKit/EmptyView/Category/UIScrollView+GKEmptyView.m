@@ -25,7 +25,7 @@ static char GKEmptyHelperKey;
 ///空视图帮助类
 @interface GKEmptyHelper : NSObject
 
-@property(nonatomic, weak) UIScrollView *scrollView;
+@property(nonatomic, weak, nullable) UIScrollView *scrollView;
 @property(nonatomic, assign) CGSize contentSize;
 
 - (instancetype)initWithScrollView:(UIScrollView*) scrollView;
