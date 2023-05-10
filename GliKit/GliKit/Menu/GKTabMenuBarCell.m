@@ -47,11 +47,11 @@
 {
     _item = item;
     [_button setTitle:_item.title forState:UIControlStateNormal];
-    [_button setImage:_item.icon forState:UIControlStateNormal];
-    [_button setImage:_item.selectedIcon forState:UIControlStateSelected];
+    [_button setImage:_item.image forState:UIControlStateNormal];
+    [_button setImage:_item.selectedImage forState:UIControlStateSelected];
     [_button setBackgroundImage:_item.backgroundImage forState:UIControlStateNormal];
     _button.imagePadding = _item.iconPadding;
-    _button.imagePosition = _item.iconPosition;
+    _button.imagePosition = _item.imagePosition;
     
     _button.titleEdgeInsets = _item.titleInsets;
     

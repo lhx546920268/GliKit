@@ -18,10 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, nullable) NSString *title;
 
 ///按钮图标
-@property(nonatomic, strong, nullable) UIImage *icon;
+@property(nonatomic, strong, nullable) UIImage *image;
 
 ///选中按钮图标
-@property(nonatomic, strong, nullable) UIImage *selectedIcon;
+@property(nonatomic, strong, nullable) UIImage *selectedImage;
 
 ///图标和标题的间隔
 @property(nonatomic, assign) CGFloat iconPadding;
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong, nullable) UIView *customView;
 
 ///图标位置 default `GKButtonImagePositionLeft`
-@property(nonatomic, assign) GKButtonImagePosition iconPosition;
+@property(nonatomic, assign) GKButtonImagePosition imagePosition;
 
 ///按钮背景图片
 @property(nonatomic, strong, nullable) UIImage *backgroundImage;
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) UIEdgeInsets titleInsets;
 
 ///初始化
-+ (instancetype)itemWithTitle:(NSString*) title;
++ (instancetype)itemWithTitle:(nullable NSString*) title;
 
 @end
 

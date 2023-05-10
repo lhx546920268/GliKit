@@ -198,7 +198,7 @@
     // Borrowed from http://stackoverflow.com/questions/2439020/wheres-the-iphone-mime-type-database
     
     CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge  CFStringRef)path.pathExtension, NULL);
-    CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
+    CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType);
     CFRelease(UTI);
     
     if (MIMEType == NULL){

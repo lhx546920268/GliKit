@@ -58,9 +58,9 @@
     for(GKTabMenuBarItem *item in self.items){
         CGSize size = [item.title gkStringSizeWithFont:font];
         
-        if(item.icon != nil){
-            size.width += item.icon.size.width + item.iconPadding;
-            size.height = MAX(size.height, item.icon.size.height);
+        if(item.image != nil){
+            size.width += item.image.size.width + item.iconPadding;
+            size.height = MAX(size.height, item.image.size.height);
         }
         item.contentSize = size;
         item.itemWidth = size.width + self.itemPadding;
@@ -203,7 +203,7 @@
     NSAssert(index < self.items.count, @"GKMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
     
     GKTabMenuBarItem *item = self.items[index];
-    item.icon = icon;
+    item.image = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
@@ -213,7 +213,7 @@
     NSAssert(index < self.items.count, @"GKMenuBar setSelectedIcon: forIndex:，index %ld 已越界", (long)index);
     
     GKTabMenuBarItem *item = self.items[index];
-    item.selectedIcon = icon;
+    item.selectedImage = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
 }
