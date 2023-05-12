@@ -108,6 +108,8 @@
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
 {
     CGRect rect = [super imageRectForContentRect:contentRect];
+    if (rect.size.width == 0 || rect.size.height == 0)
+        return rect;
     
     if(![self shouldChange]){
         return rect;
@@ -150,6 +152,8 @@
 - (CGRect)titleRectForContentRect:(CGRect)contentRect
 {
     CGRect rect = [super titleRectForContentRect:contentRect];
+    if (rect.size.width == 0 || rect.size.height == 0)
+        return rect;
     
     if(![self shouldChange])
         return rect;
@@ -175,7 +179,7 @@
                 }
                     break;
                 case UIControlContentVerticalAlignmentCenter : {
-                    rect.origin.y = (contentRect.size.height - self.contentEdgeInsets.top - self.contentEdgeInsets.bottom - rect.size.height) / 2.0 + self.contentEdgeInsets.top + insets.top - insets.bottom;
+                    rect.origin.y = contentRect.origin.y + (contentRect.size.height - self.contentEdgeInsets.top - self.contentEdgeInsets.bottom - rect.size.height) / 2.0 + self.contentEdgeInsets.top + insets.top - insets.bottom;
                 }
                     break;
                 case UIControlContentVerticalAlignmentBottom : {
