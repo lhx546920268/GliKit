@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		117E998329EE33AF009C563A /* GliKitDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117E998229EE33AF009C563A /* GliKitDemoTests.m */; };
 		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
 		CE0C4C3D27BE583400BF7E19 /* Radio.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C4C3C27BE583400BF7E19 /* Radio.swift */; };
 		CE0D6B9225F716A500F3459E /* GKDLoadMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */; };
@@ -77,7 +78,19 @@
 		CEE8C8B723191CE400E7CA75 /* GKDPhotosCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE8C8B623191CE400E7CA75 /* GKDPhotosCollectionViewCell.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		117E998429EE33AF009C563A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CEE8C887231911E900E7CA75 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CEE8C88E231911E900E7CA75;
+			remoteInfo = GliKitDemo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		117E998029EE33AF009C563A /* GliKitDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GliKitDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		117E998229EE33AF009C563A /* GliKitDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GliKitDemoTests.m; sourceTree = "<group>"; };
 		4FD52519E97361498535A3AF /* libPods-GliKitApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85141611C461B48B8263ABC7 /* Pods-GliKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.release.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.release.xcconfig"; sourceTree = "<group>"; };
 		B183DC3A9632FD62AABE12BD /* Pods-GliKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.debug.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -193,6 +206,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		117E997D29EE33AF009C563A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEE8C88C231911E900E7CA75 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,6 +225,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		117E998129EE33AF009C563A /* GliKitDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				117E998229EE33AF009C563A /* GliKitDemoTests.m */,
+			);
+			path = GliKitDemoTests;
+			sourceTree = "<group>";
+		};
 		6D08CDCE58D62FB58D901258 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,6 +514,7 @@
 			isa = PBXGroup;
 			children = (
 				CEE8C891231911E900E7CA75 /* GliKitDemo */,
+				117E998129EE33AF009C563A /* GliKitDemoTests */,
 				CEE8C890231911E900E7CA75 /* Products */,
 				6D08CDCE58D62FB58D901258 /* Pods */,
 				9BB3C0682925525264F42BDB /* Frameworks */,
@@ -496,6 +525,7 @@
 			isa = PBXGroup;
 			children = (
 				CEE8C88F231911E900E7CA75 /* GliKitDemo.app */,
+				117E998029EE33AF009C563A /* GliKitDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -582,6 +612,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		117E997F29EE33AF009C563A /* GliKitDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 117E998829EE33AF009C563A /* Build configuration list for PBXNativeTarget "GliKitDemoTests" */;
+			buildPhases = (
+				117E997C29EE33AF009C563A /* Sources */,
+				117E997D29EE33AF009C563A /* Frameworks */,
+				117E997E29EE33AF009C563A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				117E998529EE33AF009C563A /* PBXTargetDependency */,
+			);
+			name = GliKitDemoTests;
+			productName = GliKitDemoTests;
+			productReference = 117E998029EE33AF009C563A /* GliKitDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CEE8C88E231911E900E7CA75 /* GliKitDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CEE8C8A5231911EB00E7CA75 /* Build configuration list for PBXNativeTarget "GliKitDemo" */;
@@ -612,6 +660,10 @@
 				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = luohaixiong;
 				TargetAttributes = {
+					117E997F29EE33AF009C563A = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = CEE8C88E231911E900E7CA75;
+					};
 					CEE8C88E231911E900E7CA75 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1220;
@@ -632,11 +684,19 @@
 			projectRoot = "";
 			targets = (
 				CEE8C88E231911E900E7CA75 /* GliKitDemo */,
+				117E997F29EE33AF009C563A /* GliKitDemoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		117E997E29EE33AF009C563A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEE8C88D231911E900E7CA75 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -700,6 +760,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		117E997C29EE33AF009C563A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				117E998329EE33AF009C563A /* GliKitDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEE8C88B231911E900E7CA75 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -747,6 +815,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		117E998529EE33AF009C563A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CEE8C88E231911E900E7CA75 /* GliKitDemo */;
+			targetProxy = 117E998429EE33AF009C563A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		CEE8C89D231911EB00E7CA75 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -759,6 +835,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		117E998629EE33AF009C563A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 67ASRT678W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lhx.GliKitDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GliKitDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GliKitDemo";
+			};
+			name = Debug;
+		};
+		117E998729EE33AF009C563A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 67ASRT678W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lhx.GliKitDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GliKitDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GliKitDemo";
+			};
+			name = Release;
+		};
 		CEE8C8A3231911EB00E7CA75 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -986,6 +1102,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		117E998829EE33AF009C563A /* Build configuration list for PBXNativeTarget "GliKitDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				117E998629EE33AF009C563A /* Debug */,
+				117E998729EE33AF009C563A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CEE8C88A231911E900E7CA75 /* Build configuration list for PBXProject "GliKitDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

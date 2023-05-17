@@ -13,107 +13,52 @@
 #import "GKDialogViewController.h"
 #import <UIImageView+WebCache.h>
 #import <UIImage+GKUtils.h>
-#import <GKKVOHelper.h>
-#import <GKObject.h>
 
-@interface AppearanceView : UIView
-
-@property(nonatomic, strong) UIColor *textColor UI_APPEARANCE_SELECTOR;
-
-@property(readonly, nonatomic) UILabel *label;
-
-@end
-
-@implementation AppearanceView
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = UIColor.redColor;
-        _label = [UILabel new];
-        _label.text = @"文字";
-        _label.textColor = self.textColor;
-        [self addSubview:_label];
-        
-        [_label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(0);
-        }];
-    }
-    return self;
-}
-
-- (void)setTextColor:(UIColor *)textColor
-{
-    _textColor = textColor;
-    _label.textColor = _textColor;
-}
-
-
-@end
-
-@interface KVOTest : GKObject
-{
-    int _value;
-}
-
-///
-@property(nonatomic, strong) NSString *name;
-
-///
-@property(nonatomic, assign) int value;
-
-///
-@property(nonatomic, readonly) NSString *readonlyValue;
-
-@end
-
-@interface KVOTest()
-
-@property(nonatomic, copy) NSString *readonlyValue;
-
-@end
-
-@implementation KVOTest
-
-@end
 
 @interface GKDAlertViewController ()
 
 @property (weak, nonatomic) IBOutlet GKLabel *gkLabel;
 
-///
-@property(nonatomic, strong) KVOTest *test;
-
-///
-@property(nonatomic, strong) NSMutableSet *blocks;
-
-///
-@property(nonatomic, copy) void(^callback)(void);
-
 @end
+
 
 @implementation GKDAlertViewController
 
++ (void)load
+{
+    [GKRouter.sharedRouter registerPath:@"/app/alert" forHandler:^UIViewController * _Nullable(GKRouteConfig * _Nonnull config) {
+        return GKDAlertViewController.new;
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    self.test = [KVOTest new];
-    [self.test.kvoHelper addObserver:self callback:^(NSString * _Nonnull keyPath, id  _Nullable newValue, id  _Nullable oldValue) {
-        NSLog(@"%@, %@, %@", keyPath, newValue, oldValue);
-    } forKeyPath:@"name"];
 
 //    self.gkLabel.contentInsets = UIEdgeInsetsMake(30, 30, 30, 30);
     self.gkLabel.selectable = YES;
+    self.gkLabel.font = [UIFont boldSystemFontOfSize:13];
     self.gkLabel.userInteractionEnabled = YES;
+    self.gkLabel.textAlignment = NSTextAlignmentCenter;
     self.gkLabel.backgroundColor = UIColor.systemYellowColor;
     self.gkLabel.selectedBackgroundColor = UIColor.orangeColor;
-    self.gkLabel.shouldDetectURL = YES;
+    self.gkLabel.shouldDetectURL = NO;
     self.gkLabel.canPerformActionHandler = ^BOOL(SEL  _Nonnull action, id  _Nonnull sender) {
         return YES;
     };
-    self.gkLabel.text = @"这个一个百度链接https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref";
+    //https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref
+
+    NSString *text = @"以上为自动回复，如果想关闭或修改内容，可点击这里修改";
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
+    [attr addAttribute:NSFontAttributeName value:self.gkLabel.font range:NSMakeRange(0, attr.length)];
+    [attr addAttribute:NSForegroundColorAttributeName value:UIColor.blueColor range:[text rangeOfString:@"点击这里"]];
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.alignment = self.gkLabel.textAlignment;
+    style.lineBreakMode = self.gkLabel.lineBreakMode;
+    style.lineSpacing = 5;
+    [attr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
+    
+    self.gkLabel.attributedText = attr;
+    [self.gkLabel addClickableRange:[text rangeOfString:@"点击这里"]];
     
     self.alertButton.imagePosition = GKButtonImagePositionTop;
     
@@ -139,9 +84,7 @@
 }
 
 - (IBAction)handleSystemAlert:(id)sender {
-    
-    self.test.name = @"xx";
-    self.test.value = 1;
+
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"标题" message:@"信息" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
@@ -159,8 +102,6 @@
 
 - (void)handleTapImageView
 {
-    self.test.name = @"11";
-    self.test.value = 2;
     [GKDialogViewController.new showAsDialogInViewController:self layoutHandler:nil];
 }
 

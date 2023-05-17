@@ -1,1 +1,1 @@
-../../../SVGKit/Source/UIKit additions/SVGKFastImageView.h
+../../../SVGKit/Source/ImageViews/SVGKFastImageView.h

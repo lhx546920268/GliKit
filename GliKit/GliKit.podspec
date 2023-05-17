@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "GliKit"
-  spec.version      = "1.1.0"
+  spec.version      = "1.2.0"
   spec.summary      = "A short description of GliKit."
 
   spec.description  = <<-DESC
@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
 
   spec.source = { :git => "https://www.github.com/lhx546920268/GliKit"}
   spec.source_files  = "GliKit/**/*.{h,m}"
-  spec.dependency 'SDWebImage', '~> 5.9.2'
+  spec.dependency 'SDWebImage', '~> 5.15.8'
   spec.dependency 'Masonry', '~> 1.1.0'
   spec.dependency 'AFNetworking/NSURLSession', '~> 4.0.1'
   spec.dependency 'AFNetworking/Reachability', '~> 4.0.1'

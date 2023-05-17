@@ -25,7 +25,6 @@ class RootListCell: GKTableViewSwipeCell {
             make?.leading.equalTo()(15)
             make?.centerY.equalTo()
         }
-        
     }
 
     required init?(coder: NSCoder) {

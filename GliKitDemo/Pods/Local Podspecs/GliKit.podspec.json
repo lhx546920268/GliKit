@@ -1,6 +1,6 @@
 {
   "name": "GliKit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "summary": "A short description of GliKit.",
   "description": "这是一个描述",
   "homepage": "http://EXAMPLE/GliKit",
@@ -15,7 +15,7 @@
   "source_files": "GliKit/**/*.{h,m}",
   "dependencies": {
     "SDWebImage": [
-      "~> 5.9.2"
+      "~> 5.15.8"
     ],
     "Masonry": [
       "~> 1.1.0"

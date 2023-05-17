@@ -166,6 +166,15 @@ void runLoopCallbck (CFRunLoopObserverRef observer, CFRunLoopActivity activity, 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     NSLog(@"did finish");
+
+    //1159029889
+    NSUInteger h = @"niho".hash;
+    NSUInteger hash = h ^ (h >> 16);
+    NSLog(@"hash %ld", hash);
+    
+    NSLog(@"%ld", hash & 15);
+    NSLog(@"%ld", hash % 16);
+  
 //    
 //    CFRunLoopObserverRef ob = CFRunLoopObserverCreate(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, runLoopCallbck, NULL);
 //    CFRunLoopAddObserver(CFRunLoopGetCurrent(), ob, kCFRunLoopCommonModes);
@@ -178,6 +187,7 @@ void runLoopCallbck (CFRunLoopObserverRef observer, CFRunLoopActivity activity, 
     
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
     [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
+    
 
     [UIView animateWithDuration:0 delay:0 options:0 animations:^{
             

@@ -29,6 +29,17 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "117E997F29EE33AF009C563A"
+               BuildableName = "GliKitDemoTests.xctest"
+               BlueprintName = "GliKitDemoTests"
+               ReferencedContainer = "container:GliKitDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

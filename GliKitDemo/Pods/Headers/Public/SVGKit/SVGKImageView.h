@@ -1,1 +1,1 @@
-../../../SVGKit/Source/UIKit additions/SVGKImageView.h
+../../../SVGKit/Source/ImageViews/SVGKImageView.h

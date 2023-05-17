@@ -13,6 +13,97 @@
 #import <NSJSONSerialization+GKUtils.h>
 #import <SDWebImageDownloader.h>
 #import <objc/runtime.h>
+#import <GKPopoverMenu.h>
+
+@interface SRRunLoopThread : NSThread
+
+@property (nonatomic, strong, readonly) NSRunLoop *runLoop;
+
++ (instancetype)sharedThread;
+
+@end
+
+@interface SRRunLoopThread ()
+{
+    dispatch_group_t _waitGroup;
+}
+
+@property (nonatomic, strong, readwrite) NSRunLoop *runLoop;
+
+@end
+
+@implementation SRRunLoopThread
+
++ (instancetype)sharedThread
+{
+    static SRRunLoopThread *thread;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        thread = [[SRRunLoopThread alloc] init];
+        thread.qualityOfService = NSQualityOfServiceUserInitiated;
+        thread.name = @"com.facebook.SocketRocket.NetworkThread";
+        [thread start];
+    });
+    return thread;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _waitGroup = dispatch_group_create();
+        dispatch_group_enter(_waitGroup);
+    }
+    return self;
+}
+
+- (void)main
+{
+    @autoreleasepool {
+        NSLog(@"Thread main");
+        _runLoop = [NSRunLoop currentRunLoop];
+        dispatch_group_leave(_waitGroup);
+        
+        // Add an empty run loop source to prevent runloop from spinning.
+        CFRunLoopSourceContext sourceCtx = {
+            .version = 0,
+            .info = NULL,
+            .retain = NULL,
+            .release = NULL,
+            .copyDescription = NULL,
+            .equal = NULL,
+            .hash = NULL,
+            .schedule = NULL,
+            .cancel = NULL,
+            .perform = NULL
+        };
+        CFRunLoopSourceRef source = CFRunLoopSourceCreate(NULL, 0, &sourceCtx);
+        CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode);
+        CFRelease(source);
+        
+        [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+            NSLog(@"count down %@", NSThread.currentThread.name);
+        }];
+
+        while ([_runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
+            NSLog(@"while runMode");
+        }
+
+//        [_runLoop run];
+        NSLog(@"run end");
+        assert(NO);
+    }
+}
+
+- (NSRunLoop *)runLoop;
+{
+    NSLog(@"get runloop");
+    dispatch_group_wait(_waitGroup, DISPATCH_TIME_FOREVER);
+    NSLog(@"x runloop");
+    return _runLoop;
+}
+
+@end
 
 @interface GKDRootViewController ()<CAAnimationDelegate, UITabBarControllerDelegate, GKSwipeCellDelegate>
 
@@ -46,15 +137,64 @@
 
 @end
 
-@interface MYView : UIView
+@interface CircleView : UIView
 
 @end
 
-@implementation MYView
+@implementation CircleView
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    return [super hitTest:point withEvent:event];
+    self = [super initWithFrame:frame];
+    if(self){
+        [self initProps];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        [self initProps];
+    }
+    return self;
+}
+
+- (void)initProps
+{
+    self.opaque = NO;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(ctx, UIColor.redColor.CGColor);
+    CGContextSetStrokeColorWithColor(ctx, UIColor.blackColor.CGColor);
+    CGContextSetLineWidth(ctx, 2);
+    CGContextSetLineCap(ctx, kCGLineCapRound);
+    CGContextSetLineJoin(ctx, kCGLineJoinRound);
+    
+    CGFloat radius = 10;
+    CGFloat arrowSize = 10;
+    CGFloat minX = 0;
+    CGFloat minY = 0;
+    CGFloat maxX = rect.size.width;
+    CGFloat maxY = rect.size.height - arrowSize;
+    CGFloat midX = rect.size.width / 2;
+    
+    CGContextMoveToPoint(ctx, midX + arrowSize, maxY);
+    CGContextAddLineToPoint(ctx, midX, maxY + arrowSize);
+    CGContextAddLineToPoint(ctx, midX - arrowSize, maxY);
+    
+    CGContextAddArcToPoint(ctx, minX, maxY, minX, minY, radius);
+    CGContextAddArcToPoint(ctx, minX, minY, maxX, minY, radius);
+    CGContextAddArcToPoint(ctx, maxX, minY, maxX, maxY, radius);
+    CGContextAddArcToPoint(ctx, maxX, maxY, midX, maxY, radius);
+    
+    CGContextClosePath(ctx);
+//    CGContextStrokePath(ctx);
+    CGContextDrawPath(ctx, kCGPathFillStroke);
 }
 
 @end
@@ -84,35 +224,13 @@
                    [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
                    [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
                    [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
-                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"GKDAlertViewController"],
+                   [GKDRowModel modelWithTitle:@"Alert" clazz:@"/app/alert"],
                    [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
                    [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
                    [GKDRowModel modelWithTitle:@"Dynamic" clazz:@"/app/dynimic"],
                    ];
 
-//    [self initViews];
-     
-
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 300, 300)];
-    view.backgroundColor = UIColor.redColor;
-    view.tag = 2;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    tap.delegate = self;
-    [view addGestureRecognizer:tap];
-    [self.view addSubview:view];
-    
-    view = [[MYView alloc] initWithFrame:CGRectMake(0, 100, 200, 200)];
-    view.backgroundColor = UIColor.blueColor;
-    view.tag = 3;
-    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    pan.delegate = self;
-
-    [view addGestureRecognizer:pan];
-    [self.view addSubview:view];
-    
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    tap.delegate = self;
-    [self.view addGestureRecognizer:tap];
+    [self initViews];
 }
 
 - (void)initViews
@@ -124,14 +242,12 @@
     [super initViews];
 }
 
-- (void)handlePan:(UIPanGestureRecognizer*) pan
+- (void)handlePopover:(UITapGestureRecognizer*) tap
 {
-    NSLog(@"%ld", pan.view.tag);
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    return gestureRecognizer.view.tag != 3;
+    GKPopoverMenu *menu = [[GKPopoverMenu alloc] initWithTitles:@[@"首页", @"购物车"]];
+    menu.strokeColor = UIColor.redColor;
+    menu.strokeWidth = 2;
+    [menu showInView:self.view relatedRect:tap.view.frame animated:YES];
 }
 
 //MARK: UITableViewDelegate
