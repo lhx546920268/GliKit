@@ -438,7 +438,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIApplication.gkDarkStatusBarStyle;
+    return UIStatusBarStyleLightContent;
 }
 
 ///显示完成
@@ -562,29 +562,34 @@
         BOOL hasThumbnail = model.thumbnailURL && [SDImageCache.sharedImageCache diskImageDataExistsWithKey:model.thumbnailURL.absoluteString];
         BOOL hasImage = [SDImageCache.sharedImageCache diskImageDataExistsWithKey:model.URL.absoluteString];
         
-        SDWebImageOptions options = 0;
+        __block UIImage *placeholderImage = nil;
         //加载缩率图
         if(!hasImage && hasThumbnail){
+            //同步加载
             [cell.imageView sd_setImageWithURL:model.thumbnailURL
                               placeholderImage:nil
                                        options:SDWebImageQueryDiskDataSync | SDWebImageQueryMemoryDataSync
                                      completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                placeholderImage = image;
                 if(!selfWeak.shouldShowAnimate){
                     [cell layoutImageAfterLoadWithAnimated:NO];
                 }
             }];
-            //有缩率图，加载原图时不要把缩率图清空
-            options = SDWebImageDelayPlaceholder;
         }
         
         //加载原图
         [cell.imageView sd_setImageWithURL:model.URL
-                          placeholderImage:nil
-                                   options:options
+                          placeholderImage:placeholderImage
+                                   options:SDWebImageAvoidAutoSetImage
                                  completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            if(!selfWeak.shouldShowAnimate){
-                //网络图片才动画
-                [cell layoutImageAfterLoadWithAnimated:cacheType == SDImageCacheTypeNone];
+            if(image){
+                if ([imageURL.absoluteString isEqualToString:cell.imageView.sd_imageURL.absoluteString]) {
+                    cell.imageView.image = image;
+                    //网络图片才动画
+                    if (!selfWeak.shouldShowAnimate) {
+                        [cell layoutImageAfterLoadWithAnimated:cacheType == SDImageCacheTypeNone];
+                    }
+                }
             }
         }];
     }

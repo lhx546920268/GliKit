@@ -13,7 +13,7 @@
 #import "GKDialogViewController.h"
 #import <UIImageView+WebCache.h>
 #import <UIImage+GKUtils.h>
-
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 @interface GKDAlertViewController ()
 

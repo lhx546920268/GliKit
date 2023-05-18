@@ -239,15 +239,17 @@
     self.separatorEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     [self registerClass:RootListCell.class];
     [self registerClass:GKDRootListCell.class];
+    [self gkSetRightItemWithTitle:@"Popover" action:@selector(handlePopover)];
+    
     [super initViews];
 }
 
-- (void)handlePopover:(UITapGestureRecognizer*) tap
+- (void)handlePopover
 {
     GKPopoverMenu *menu = [[GKPopoverMenu alloc] initWithTitles:@[@"首页", @"购物车"]];
     menu.strokeColor = UIColor.redColor;
     menu.strokeWidth = 2;
-    [menu showInView:self.view relatedRect:tap.view.frame animated:YES];
+    [menu showInView:self.navigationController.view anchorView:self.navigationItem.rightBarButtonItem.customView animated:YES];
 }
 
 //MARK: UITableViewDelegate

@@ -60,6 +60,17 @@
     return self;
 }
 
+- (void)showInView:(UIView *)view anchorView:(UIView *)anchorView animated:(BOOL)animated
+{
+    [self showInView:view anchorView:anchorView animated:animated overlay:YES];
+}
+
+- (void)showInView:(UIView *)view anchorView:(UIView *)anchorView animated:(BOOL)animated overlay:(BOOL)overlay
+{
+    CGRect rect = [anchorView.superview convertRect:anchorView.frame toView:view];
+    [self showInView:view relatedRect:rect animated:animated overlay:overlay];
+}
+
 - (void)showInView:(UIView*) view relatedRect:(CGRect) rect animated:(BOOL) animated
 {
     [self showInView:view relatedRect:rect animated:animated overlay:YES];

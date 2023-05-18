@@ -100,6 +100,10 @@ typedef NS_ENUM(NSInteger, GKPopoverArrowDirection){
 ///代理
 @property(nonatomic, weak, nullable) id<GKPopoverDelegate> delegate;
 
+///显示在某个view上面
+- (void)showInView:(UIView*) view anchorView:(UIView*) anchorView animated:(BOOL) animated;
+- (void)showInView:(UIView*) view anchorView:(UIView*) anchorView animated:(BOOL) animated overlay:(BOOL) overlay;
+
 ///[self showInView:view relatedRect:rect animated:animated overlay:YES]
 - (void)showInView:(UIView*) view relatedRect:(CGRect) rect animated:(BOOL) animated;
 
