@@ -135,7 +135,7 @@
     return self.safeAreaInsets;
 }
 
-- (void)gkSetCornerRadius:(CGFloat) cornerRadius corners:(UIRectCorner) corners rect:(CGRect) rect
+- (void)gkSetCornerRadius:(CGFloat) cornerRadius corners:(UIRectCorner) corners
 {
     CACornerMask maskedCorners = 0;
     if(corners & UIRectCornerTopLeft){

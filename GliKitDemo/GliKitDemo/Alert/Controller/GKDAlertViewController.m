@@ -33,6 +33,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    GKAlertProps *props = [GKAlertProps defaultActionSheetProps];
+    props.contentInsets = UIEdgeInsetsZero;
+//    props.cornerRadius = 0;
+    props.buttonHeight = 45;
+    props.cancelButtonVerticalSpacing = 8;
 
 //    self.gkLabel.contentInsets = UIEdgeInsetsMake(30, 30, 30, 30);
     self.gkLabel.selectable = YES;

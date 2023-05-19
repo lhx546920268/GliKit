@@ -75,7 +75,7 @@ static char GKPartialPresentPropsKey;
 
     if(props.cornerRadius > 0){
         CGRect frame = props.frame;
-        [viewController.view gkSetCornerRadius:props.cornerRadius corners:props.corners rect:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [viewController.view gkSetCornerRadius:props.cornerRadius corners:props.corners];
     }
     
     GKPartialPresentTransitionDelegate *delegate = [GKPartialPresentTransitionDelegate new];

@@ -98,7 +98,7 @@
     self.textField2.delegate = self;
     self.textField3.delegate = self;
     [UIStackView new];
-    [self.imageView gkSetCornerRadius:20 corners:UIRectCornerTopRight rect:self.imageView.frame];
+    [self.imageView gkSetCornerRadius:20 corners:UIRectCornerTopRight];
     self.imageView.userInteractionEnabled = YES;
     [self.imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)]];
     self.textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;

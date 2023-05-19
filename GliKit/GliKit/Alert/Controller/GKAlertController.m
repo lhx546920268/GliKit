@@ -260,8 +260,17 @@
                 self.container.frame = CGRectMake(props.contentInsets.left, margin, width, 0);
                 
                 if(![NSString isEmpty:self.cancelTitle]){
-                    self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin, width, props.buttonHeight)];
+                    CGFloat height = props.buttonHeight;
+                    CGFloat bottom = UIApplication.sharedApplication.delegate.window.gkSafeAreaInsets.bottom;
+                    if (props.contentInsets.bottom == 0 && bottom > 0) {
+                        height += bottom;
+                    } else {
+                        bottom = 0;
+                    }
+                    
+                    self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin, width, height)];
                     self.cancelButton.layer.cornerRadius = props.cornerRadius;
+                    self.cancelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, bottom, 0);
                     [self.cancelButton gkSetBackgroundColor:props.mainColor forState:UIControlStateNormal];
                     [self.cancelButton setTitle:self.cancelTitle forState:UIControlStateNormal];
                     [self.cancelButton setTitleColor:props.cancelButtonTextColor forState:UIControlStateNormal];
@@ -278,6 +287,15 @@
                     }
                     
                     [self.view addSubview:self.cancelButton];
+                }
+                
+                if (props.cancelButtonVerticalSpacing == 0) {
+                    self.container.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner;
+                    if (props.contentInsets.bottom == 0) {
+                        self.cancelButton.layer.cornerRadius = 0;
+                    } else {
+                        self.cancelButton.layer.maskedCorners = kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
+                    }
                 }
             }
                 break;
@@ -462,7 +480,7 @@
                 
                 CGFloat spacing = self.cancelButton ? props.cancelButtonVerticalSpacing : 0;
                 self.dialogBackgroundView.alpha = 1.0;
-                self.container.gkTop = self.view.gkHeight - self.container.gkHeight - MAX(props.contentInsets.bottom, self.view.gkSafeAreaInsets.bottom) - self.cancelButton.gkHeight - spacing;
+                self.container.gkTop = self.view.gkHeight - self.container.gkHeight - props.contentInsets.bottom - self.cancelButton.gkHeight - spacing;
                 self.cancelButton.gkTop = self.container.gkBottom + props.cancelButtonVerticalSpacing;
             }completion:completion];
         }

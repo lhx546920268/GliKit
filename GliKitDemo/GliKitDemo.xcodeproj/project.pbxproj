@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		117E998329EE33AF009C563A /* GliKitDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117E998229EE33AF009C563A /* GliKitDemoTests.m */; };
+		11A9CD902A17731300810723 /* GKDStretchBackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A9CD8F2A17731300810723 /* GKDStretchBackgroundViewController.m */; };
 		1E85CB6F0BDD993E961570A1 /* libPods-GliKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF366D86309791F17B91FF0 /* libPods-GliKitDemo.a */; };
 		CE0C4C3D27BE583400BF7E19 /* Radio.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C4C3C27BE583400BF7E19 /* Radio.swift */; };
 		CE0D6B9225F716A500F3459E /* GKDLoadMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0D6B9125F716A500F3459E /* GKDLoadMonitor.m */; };
@@ -91,6 +92,8 @@
 /* Begin PBXFileReference section */
 		117E998029EE33AF009C563A /* GliKitDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GliKitDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		117E998229EE33AF009C563A /* GliKitDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GliKitDemoTests.m; sourceTree = "<group>"; };
+		11A9CD8E2A17731300810723 /* GKDStretchBackgroundViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDStretchBackgroundViewController.h; sourceTree = "<group>"; };
+		11A9CD8F2A17731300810723 /* GKDStretchBackgroundViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDStretchBackgroundViewController.m; sourceTree = "<group>"; };
 		4FD52519E97361498535A3AF /* libPods-GliKitApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKitApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85141611C461B48B8263ABC7 /* Pods-GliKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.release.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.release.xcconfig"; sourceTree = "<group>"; };
 		B183DC3A9632FD62AABE12BD /* Pods-GliKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKitApp.debug.xcconfig"; path = "Target Support Files/Pods-GliKitApp/Pods-GliKitApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -596,6 +599,8 @@
 			children = (
 				CEE8C8AE231917AB00E7CA75 /* GKDPhotosViewController.h */,
 				CEE8C8AF231917AB00E7CA75 /* GKDPhotosViewController.m */,
+				11A9CD8E2A17731300810723 /* GKDStretchBackgroundViewController.h */,
+				11A9CD8F2A17731300810723 /* GKDStretchBackgroundViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -778,6 +783,7 @@
 				CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */,
 				CEDD8BAB28DC3F0B005FC383 /* GKDDynamicViewController.m in Sources */,
 				CEC3C84D231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m in Sources */,
+				11A9CD902A17731300810723 /* GKDStretchBackgroundViewController.m in Sources */,
 				CEB85F56232630DA0045CB38 /* GKDNestedPageViewController.m in Sources */,
 				CEC3C846231E5971003ADE7A /* GKDNormalSkeletonViewController.m in Sources */,
 				CEB85F59232630FA0045CB38 /* GKDChildPageViewController.m in Sources */,
