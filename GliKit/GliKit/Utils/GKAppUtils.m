@@ -153,6 +153,15 @@ static NSString *sharedUUID = nil;
     [GKAppUtils openCompatURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
++ (void)openNotificationSettings
+{
+    if (@available(iOS 15.4, *)) {
+        [self openCompatURL:[NSURL URLWithString:UIApplicationOpenNotificationSettingsURLString]];
+    } else {
+        [self openSettings];
+    }
+}
+
 + (BOOL)hasPhotosAuthorization
 {
     if(@available(iOS 14, *)){

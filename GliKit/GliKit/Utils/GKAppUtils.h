@@ -49,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///打开设置
 + (void)openSettings;
 
+///打开通知设置 iOS 15.4之后才行，否则只是打开设置
++ (void)openNotificationSettings;
+
 ///请求相册权限 如果已授权 则回调，否则在授权完成后才回调 保证在主线程回调
 + (void)requestPhotosAuthorizationWithCompletion:(void(^)(BOOL hasAuth)) completion;
 
