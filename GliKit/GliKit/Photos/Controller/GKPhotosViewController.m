@@ -59,7 +59,7 @@
     self.requestOptions = [PHImageRequestOptions new];
     self.requestOptions.networkAccessAllowed = YES;
     
-    if(self.navigationController.presentingViewController){
+    if(self.navigationController.presentingViewController || self.navigationController.viewControllers.firstObject == self){
         [self gkSetRightItemWithTitle:@"取消" action:@selector(handleCancel)];
     }
     

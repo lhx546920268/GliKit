@@ -99,7 +99,6 @@
     [self.imageManager stopCachingImagesForAllAssets];
 }
 
-
 - (void)initViews
 {
     UIView *bottomView = nil;
@@ -168,6 +167,15 @@
     self.collectionView.gkShouldShowEmptyView = YES;
     
     [super initViews];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (self.shouldScrollToBottom) {
+        self.shouldScrollToBottom = NO;
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.collection.assets.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+    }
 }
 
 // MARK: - action
@@ -443,14 +451,6 @@
     }];
     
     return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.shouldScrollToBottom) {
-        self.shouldScrollToBottom = NO;
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.collection.assets.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
-    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

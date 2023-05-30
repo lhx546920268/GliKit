@@ -64,8 +64,8 @@ typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
 /// 截取图片
 - (UIImage*)gkSubImageWithRect:(CGRect) rect;
 
-////修复图片方向错误，比如拍照的时候，有时图片方向不对
-+ (UIImage*)gkFixOrientation:(UIImage *)aImage;
+/// 修复图片方向错误，比如拍照的时候，有时图片方向不对
++ (UIImage*)gkFixOrientation:(UIImage*)aImage;
 
 // MARK: - 二维码
 
@@ -85,6 +85,23 @@ typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
                   backgroundColor:(nullable UIColor*) backgroundColor
                              logo:(nullable UIImage*) logo
                             logoSize:(CGSize) logoSize;
+
+@end
+
+///在实例方法中获取bundle中的图片
+#ifndef GKBundleImageNamed
+#define GKBundleImageNamed(name)\
+        [UIImage gkImageNamed:name target:self];
+#endif
+
+@interface UIImage (GKBundleFetcher)
+
+
+/// 获取framework中的图片
+/// - Parameters:
+///   - name: 图片名称
+///   - target: framework 中的任意类
++ (UIImage*)gkImageNamed:(NSString *)name target:(id) target;
 
 @end
 

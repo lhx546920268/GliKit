@@ -407,3 +407,12 @@
 }
 
 @end
+
+@implementation UIImage (GKBundleFetcher)
+
++ (UIImage *)gkImageNamed:(NSString *)name target:(id)target
+{
+    return [UIImage imageNamed:name inBundle:[NSBundle bundleForClass:[target class]] compatibleWithTraitCollection:nil];
+}
+
+@end

@@ -47,7 +47,7 @@
     //必须串行队列
     self.videoQueue = dispatch_queue_create("com.lhx.video.compress", DISPATCH_QUEUE_SERIAL);
     self.audioQueue = dispatch_queue_create("com.lhx.audio.compress", DISPATCH_QUEUE_SERIAL);
-    
+   
     self.models = [NSMutableArray array];
     [self.models addObject:[GKPhotosBrowseModel modelWithURL:@"https://image.zegobird.com:10002/newupload/image/4c/e4/4ce4f167c552279be58ae86cdd86909207cec150efe34ebeae4bc686c4926d7f.jpg" thumnbailURL:@"https://image.zegobird.com:10002/newupload/image/4c/e4/4ce4f167c552279be58ae86cdd86909207cec150efe34ebeae4bc686c4926d7f.jpg@200w_200h"]];
     [self.models addObject:[GKPhotosBrowseModel modelWithURL:@"https://image.zegobird.com:10002/newupload/image/b0/30/b030dcb340d2985d7fe458e4626485abeb64ed3e996d4848a6a39533a80bf5bc.jpg" thumnbailURL:@"https://image.zegobird.com:10002/newupload/image/b0/30/b030dcb340d2985d7fe458e4626485abeb64ed3e996d4848a6a39533a80bf5bc.jpg@200w_200h"]];

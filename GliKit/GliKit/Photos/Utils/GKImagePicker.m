@@ -170,7 +170,10 @@
     //点击添加图片
     GKPhotosViewController *vc = [GKPhotosViewController new];
     vc.photosOptions = self.options;
-    [self.viewController presentViewController:vc.gkCreateWithNavigationController animated:YES completion:nil];
+    //避免有缓存时，在present过程中setViewControllers 导致导航栏的按钮和标题没有刷新的问题
+    UINavigationController *nav = [vc gkCreateWithNavigationController];
+    [vc loadViewIfNeeded];
+    [self.viewController presentViewController:nav animated:YES completion:nil];
 }
 
 @end
