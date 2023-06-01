@@ -66,6 +66,9 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 ///消失动画 default `GKDialogAnimateNone`
 @property(nonatomic, assign) GKDialogAnimate dialogDismissAnimate;
 
+///是否可以滑动关闭 default `YES`, only support `GKDialogAnimateFromBottom`
+@property(nonatomic, assign) BOOL dialogInteractiveDismissible;
+
 ///弹窗是否已显示
 @property(nonatomic, readonly) BOOL isDialogShowing;
 

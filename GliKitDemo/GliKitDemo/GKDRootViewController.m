@@ -220,7 +220,7 @@
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
                    [GKDRowModel modelWithTitle:@"拉伸背景" clazz:@"/photos/stretch"],
                    [GKDRowModel modelWithTitle:@"骨架" clazz:@"skeleton"],
-                   [GKDRowModel modelWithTitle:@"过渡" clazz:@"GKDTransitionViewController"],
+                   [GKDRowModel modelWithTitle:@"过渡" clazz:@"/app/transition"],
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"/app/nested"],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
                    [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],

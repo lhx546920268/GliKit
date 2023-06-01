@@ -9,6 +9,8 @@
 #import "GKDTransitionViewController.h"
 #import "GKDRootViewController.h"
 #import "GKDRowModel.h"
+#import <GKTableViewController.h>
+#import <GKNavigationBar.h>
 
 @interface GKDLabel : UILabel
 
@@ -36,6 +38,54 @@
 
 @end
 
+@interface GKDListViewController : GKTableViewController
+
+@end
+
+@implementation GKDListViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.dialogShowAnimate = GKDialogAnimateFromBottom;
+    self.dialogDismissAnimate = GKDialogAnimateFromBottom;
+    [self.dialog mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.trailing.bottom.equalTo(0);
+        make.height.equalTo(300);
+    }];
+    [self initViews];
+}
+
+- (void)initViews
+{
+    [self registerClass:[UITableViewCell class]];
+    [super initViews];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 100;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UITableViewCell.gkNameOfClass forIndexPath:indexPath];
+    cell.textLabel.text = [NSString stringWithFormat:@"第 %ld 个", indexPath.row];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [GKRouter.sharedRouter open:^(GKRouteConfig * _Nonnull config) {
+        config.path = @"/app/transition";
+    }];
+}
+
+@end
+
 @interface GKDTransitionViewController ()
 
 @property(nonatomic, strong) GKDLabel *label;
@@ -44,10 +94,18 @@
 
 @implementation GKDTransitionViewController
 
++ (void)load
+{
+    [GKRouter.sharedRouter registerPath:@"/app/transition" forHandler:^UIViewController * _Nullable(GKRouteConfig * _Nonnull config) {
+        return [GKDTransitionViewController new];
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
 
+    self.navigatonBar.backgroundColor = UIColor.clearColor;
     // Do any additional setup after loading the view from its nib.
 //    myStaticTest = @"xxx";
     GKDLabel *label = [GKDLabel new];
@@ -73,32 +131,40 @@
 
 - (IBAction)handleFromBottom:(UIButton*)sender
 {
-    UIViewController *vc = [UIViewController new];
-    vc.navigationItem.title = sender.currentTitle;
-    vc.view.backgroundColor = UIColor.whiteColor;
-
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//    UIViewController *vc = [UIViewController new];
+//    vc.navigationItem.title = sender.currentTitle;
+//    vc.view.backgroundColor = UIColor.whiteColor;
+//
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//
+//    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
+//    nav.partialPresentProps.cornerRadius = 10;
+//    nav.partialPresentProps.dismissCallback = ^{
+//        NSLog(@"dialogDismissCompletionHandler");
+//    };
+//    [nav partialPresentFromBottom];
     
-    nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
-    nav.partialPresentProps.cornerRadius = 10;
-    nav.partialPresentProps.dismissCallback = ^{
-        NSLog(@"dialogDismissCompletionHandler");
-    };
-    [nav partialPresentFromBottom];
+    [self handleTap:nil];
 }
 
 - (void)handleTap:(UIButton*) sender
 {
-    GKDRootViewController *vc = [GKDRootViewController new];
-    vc.navigationItem.title = sender.currentTitle;
-    vc.view.backgroundColor = UIColor.whiteColor;
-    vc.gkShowBackItem = YES;
-    UINavigationController *nav = vc.gkCreateWithNavigationController;
-    if(@available(iOS 13, *)){
-        nav.modalPresentationStyle = UIModalPresentationAutomatic;
-    }
+//    GKDRootViewController *vc = [GKDRootViewController new];
+//    vc.navigationItem.title = sender.currentTitle;
+//    vc.view.backgroundColor = UIColor.whiteColor;
+//    vc.gkShowBackItem = YES;
+//
+//    UINavigationController *nav = vc.gkCreateWithNavigationController;
+//
+//        nav.partialPresentProps.contentSize = CGSizeMake(UIScreen.gkWidth, 400);
+//        nav.partialPresentProps.cornerRadius = 10;
+//        nav.partialPresentProps.dismissCallback = ^{
+//            NSLog(@"dialogDismissCompletionHandler");
+//        };
+//    [nav partialPresentFromBottom];
     
-    [self.gkTopestPresentedViewController presentViewController:nav animated:YES completion:nil];
+    GKDListViewController *vc = [GKDListViewController new];
+    [vc showAsDialogInViewController:self layoutHandler:nil];
 }
 
 @end

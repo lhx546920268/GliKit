@@ -47,13 +47,14 @@
     self.gkLabel.textAlignment = NSTextAlignmentCenter;
     self.gkLabel.backgroundColor = UIColor.systemYellowColor;
     self.gkLabel.selectedBackgroundColor = UIColor.orangeColor;
-    self.gkLabel.shouldDetectURL = NO;
+    self.gkLabel.shouldDetectURL = YES;
+    self.gkLabel.numberOfLines = 2;
     self.gkLabel.canPerformActionHandler = ^BOOL(SEL  _Nonnull action, id  _Nonnull sender) {
         return YES;
     };
     //https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref
 
-    NSString *text = @"以上为自动回复，如果想关闭或修改内容，可点击这里修改";
+    NSString *text = @"以上为自动回复，如果想关闭或修改内容 https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref，可点击这里修改";
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
     [attr addAttribute:NSFontAttributeName value:self.gkLabel.font range:NSMakeRange(0, attr.length)];
     [attr addAttribute:NSForegroundColorAttributeName value:UIColor.blueColor range:[text rangeOfString:@"点击这里"]];
