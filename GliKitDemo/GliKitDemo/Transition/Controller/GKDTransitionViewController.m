@@ -11,6 +11,7 @@
 #import "GKDRowModel.h"
 #import <GKTableViewController.h>
 #import <GKNavigationBar.h>
+#import <GKHttpSessionManager.h>
 
 @interface GKDLabel : UILabel
 
@@ -103,9 +104,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+ 
+    self.navigationItem.title = @"过渡";
+    self.gkTintColor = UIColor.whiteColor;
 
-    self.navigatonBar.backgroundColor = UIColor.clearColor;
+    self.navigatonBar.backgroundColor = UIColor.redColor;
     // Do any additional setup after loading the view from its nib.
 //    myStaticTest = @"xxx";
     GKDLabel *label = [GKDLabel new];
@@ -144,6 +147,36 @@
 //    };
 //    [nav partialPresentFromBottom];
     
+//    NSDictionary *params = @{
+//        @"sn" : @"33A20EF4-FEDC-498E-A32A-3FCA01B394AD_iPhone12,1",
+//        @"clientType" : @2,
+//        @"timestamp" : @1686275207954,
+//        @"language" : @"zh-Hans",
+//        @"sign" : @"QA420n+IoutPC4Ah+XhVb7eP9Cc="
+//    };
+//
+//
+//    NSDictionary *headers = @{
+//        @"response-language": @"zh-Hans",
+//        @"sn": @"33A20EF4-FEDC-498E-A32A-3FCA01B394AD_iPhone12,1"
+//    };
+//
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.50.172:9180/api/center/member/login/getAuthorizationUrl"]];
+//    request.HTTPMethod = @"POST";
+//    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
+//    for (NSString *key in headers) {
+//        [request addValue:headers[key] forHTTPHeaderField:key];
+//    }
+//    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//    [[NSURLSession.sharedSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//            NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
+//    }] resume];
+
+//    [[GKHttpSessionManager.sharedManager dataTaskWithHTTPMethod:@"POST" URLString: parameters:params headerFields:headers timeoutInterval:30 success:^(NSURLSessionDataTask * _Nonnull task, id _Nonnull res) {
+//            NSLog(@"成功 %@", res);
+//        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+//            NSLog(@"失败 %@", error);
+//        }] resume];
     [self handleTap:nil];
 }
 
@@ -168,3 +201,38 @@
 }
 
 @end
+
+#ifdef DEBUG
+
+@interface NSDictionary (CALog)
+
+@end
+
+@implementation NSDictionary (CALog)
+
+// NSLog字典对象时会调用此方法，将里面的中文在控制台打印出来
+- (NSString *)descriptionWithLocale:(nullable id)locale indent:(NSUInteger)level
+{
+    // 以下为两种方式结合处理
+    if ([NSJSONSerialization isValidJSONObject:self]) {
+        NSString *logString;
+        @try {
+            logString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
+        } @catch (NSException *exception) {
+            logString = [NSString stringWithFormat:@"打印字典时转换失败：%@",exception.reason];
+        } @finally {
+            return logString;
+        }
+    }
+    
+    NSMutableString *string = [NSMutableString stringWithString:@"{\n"];
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [string appendFormat:@"\t%@ = %@;\n", key, obj];
+    }];
+    [string appendString:@"}\n"];
+    return string;
+}
+
+@end
+
+#endif

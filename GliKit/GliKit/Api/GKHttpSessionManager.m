@@ -15,6 +15,9 @@
 ///异步线程返回 有些解析可能比较耗时
 @property(nonatomic, strong) dispatch_queue_t customCompletionQueue;
 
+///json 请求body
+@property(nonatomic, strong) AFJSONRequestSerializer *JSONRequestSerializer;
+
 @end
 
 @implementation GKHttpSessionManager
@@ -42,6 +45,16 @@
     return self;
 }
 
+- (AFJSONRequestSerializer *)JSONRequestSerializer
+{
+    if(!_JSONRequestSerializer){
+        _JSONRequestSerializer = AFJSONRequestSerializer.new;
+        _JSONRequestSerializer.timeoutInterval = 15;
+    }
+    
+    return _JSONRequestSerializer;
+}
+
 - (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
                                        URLString:(NSString *)URLString
                                       parameters:(id)parameters
@@ -51,7 +64,7 @@
                                          failure:(void (^)(NSURLSessionDataTask *, NSError *))failure
 {
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [self.JSONRequestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&serializationError];
     if (serializationError) {
         if (failure) {
 #pragma clang diagnostic push
@@ -68,6 +81,7 @@
     [self addHeaderFields:headerFields forRequest:request];
     request.timeoutInterval = timeoutInterval;
     
+    NSLog(@"请求参数 %@", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
     __block NSURLSessionDataTask *dataTask = nil;
     dataTask = [self dataTaskWithRequest:request
                           uploadProgress:nil

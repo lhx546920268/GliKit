@@ -176,6 +176,14 @@
     _isViewDidLayoutSubviews = YES;
     if(self.navigatonBar){
         [self.view bringSubviewToFront:self.navigatonBar];
+        //不要挡住弹窗的
+        if (self.childViewControllers.count > 0) {
+            for (UIViewController *vc in self.childViewControllers) {
+                if (vc.isShowAsDialog && vc.dialogShowAnimate == GKDialogAnimateFromBottom) {
+                    [self.view bringSubviewToFront:vc.view];
+                }
+            }
+        }
     }
 }
 

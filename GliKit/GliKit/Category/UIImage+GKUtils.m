@@ -328,13 +328,19 @@
     if(![contentColor isEqualToColor:[UIColor blackColor]]
        || ![backgroundColor isEqualToColor:[UIColor whiteColor]]){
         ///获取颜色的rgba值
-        NSDictionary *dic = [contentColor gkColorARGB];
+        NSDictionary *dic = contentColor.gkColorARGB;
         int c_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
         int c_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
         int c_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
         int c_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
         
-        dic = [backgroundColor gkColorARGB];
+        dic = UIColor.purpleColor.gkColorARGB;
+        int c1_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+        int c1_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+        int c1_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+        int c1_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+        
+        dic = backgroundColor.gkColorARGB;
         int b_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
         int b_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
         int b_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
@@ -348,10 +354,12 @@
                 uint8_t *ptr = (uint8_t*)tmpData;
                 if(ptr[3] < 255){ ///判断是否是背景像素，白色是背景
                     ///改变二维码颜色
-                    ptr[3] = c_red;
-                    ptr[2] = c_green;
-                    ptr[1] = c_blue;
-                    ptr[0] = c_alpha;
+                    float value1 = (i + j) / (float)(width + height);
+                    float value = 1.0f - value1;
+                    ptr[3] = c_red * value + c1_red * value1;
+                    ptr[2] = c_green * value + c1_green * value1;
+                    ptr[1] = c_blue * value + c1_blue * value1;
+                    ptr[0] = c_alpha * value + c1_alpha * value1;
                 }else{
                     ///改变背景颜色
                     ptr[3] = b_red;

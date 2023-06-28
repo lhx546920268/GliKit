@@ -14,12 +14,66 @@
 #import <UIImageView+WebCache.h>
 #import <UIImage+GKUtils.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import "TTTAttributedLabel.h"
+#import <NSAttributedString+GKUtils.h>
 
 @interface GKDAlertViewController ()
 
 @property (weak, nonatomic) IBOutlet GKLabel *gkLabel;
 
 @end
+
+//NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeZero];
+//textContainer.lineFragmentPadding = 0;
+//textContainer.lineBreakMode = self.lineBreakMode;
+//textContainer.maximumNumberOfLines = self.numberOfLines;
+//
+//NSLayoutManager *layoutManager = [NSLayoutManager new];
+//[layoutManager addTextContainer:textContainer];
+//
+//NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithAttributedString:self.attributedText];
+//[attr addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, attr.length)];
+//NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//style.alignment = self.textAlignment;
+//style.lineBreakMode = self.lineBreakMode;
+//style.lineSpacing = 5;
+//[attr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, attr.length)];
+//NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:attr];
+//[textStorage addLayoutManager:layoutManager];
+//textContainer.size = self.textDrawRect.size;
+//
+//CGRect rect = [layoutManager usedRectForTextContainer:textContainer];
+//CGFloat offset = 0;
+//switch (self.textAlignment) {
+//    case NSTextAlignmentLeft :
+//    case NSTextAlignmentNatural :
+//    case NSTextAlignmentJustified :
+//        offset = 0;
+//        break;
+//    case NSTextAlignmentCenter :
+//        offset = 0.5;
+//        break;
+//    case NSTextAlignmentRight :
+//        offset = 1.0;
+//        break;
+//}
+//
+//CGFloat offsetX = (self.textDrawRect.size.width - rect.size.width) * offset - rect.origin.x;
+//CGFloat offsetY = (self.textDrawRect.size.height - rect.size.height) * offset - rect.origin.y;
+//CGPoint location = CGPointMake(point.x - offsetX, point.y - offsetY);
+//
+//CGFloat value;
+//NSUInteger characterIndex = [layoutManager characterIndexForPoint:point inTextContainer:textContainer fractionOfDistanceBetweenInsertionPoints:&value];
+//if (value > 0) {
+//                    //获取对应的可点信息
+//                    for(NSValue *result in self.clickableRanges){
+//                        NSRange rangeValue = result.rangeValue;
+//                        if(NSLocationInRange(characterIndex, rangeValue)){
+//                            range = rangeValue;
+//                            break;
+//                        }
+//                    }
+//}
 
 
 @implementation GKDAlertViewController
@@ -41,31 +95,37 @@
     props.cancelButtonVerticalSpacing = 8;
 
 //    self.gkLabel.contentInsets = UIEdgeInsetsMake(30, 30, 30, 30);
-    self.gkLabel.selectable = YES;
+
     self.gkLabel.font = [UIFont boldSystemFontOfSize:13];
     self.gkLabel.userInteractionEnabled = YES;
-    self.gkLabel.textAlignment = NSTextAlignmentCenter;
+//    self.gkLabel.textAlignment = NSTextAlignmentCenter;
     self.gkLabel.backgroundColor = UIColor.systemYellowColor;
-    self.gkLabel.selectedBackgroundColor = UIColor.orangeColor;
-    self.gkLabel.shouldDetectURL = YES;
     self.gkLabel.numberOfLines = 2;
-    self.gkLabel.canPerformActionHandler = ^BOOL(SEL  _Nonnull action, id  _Nonnull sender) {
-        return YES;
-    };
+
+        self.gkLabel.selectable = YES;
+    self.gkLabel.selectedBackgroundColor = UIColor.orangeColor;
+    self.gkLabel.textDetector = GKURLDetector.sharedDetector;
+    self.gkLabel.shouldAddTruncation = YES;
+    self.gkLabel.lineBreakMode = NSLineBreakByWordWrapping;
     //https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref
 
-    NSString *text = @"以上为自动回复，如果想关闭或修改内容 https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref，可点击这里修改";
+    NSString *text = @"这是一个超链接https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref，click here to modify";
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
     [attr addAttribute:NSFontAttributeName value:self.gkLabel.font range:NSMakeRange(0, attr.length)];
-    [attr addAttribute:NSForegroundColorAttributeName value:UIColor.blueColor range:[text rangeOfString:@"点击这里"]];
-    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    [attr addAttribute:NSForegroundColorAttributeName value:UIColor.blueColor range:[text rangeOfString:@"click here"]];
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     style.alignment = self.gkLabel.textAlignment;
     style.lineBreakMode = self.gkLabel.lineBreakMode;
     style.lineSpacing = 5;
     [attr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
+
+    NSLog(@"size = %@", NSStringFromCGSize([attr gkBoundsWithConstraintWidth:UIScreen.gkWidth - 30]));
+//    self.gkLabel.lineSpacing = 5;
+        self.gkLabel.attributedText = attr;
+//    [self.gkLabel addLinkToURL:[NSURL URLWithString:@"www.baidu.com"] withRange:NSMakeRange(30, 10)];
     
-    self.gkLabel.attributedText = attr;
-    [self.gkLabel addClickableRange:[text rangeOfString:@"点击这里"]];
+//    self.gkLabel.attributedText = attr;
+    [self.gkLabel addClickableRange:[text rangeOfString:@"click here"]];
     
     self.alertButton.imagePosition = GKButtonImagePositionTop;
     
@@ -87,6 +147,14 @@
     
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
             
+    }];
+
+    image = [UIImage gkQRCodeImageWithString:@"好东西" correctionLevel:GKQRCodeImageCorrectionLevelPercent30 size:CGSizeMake(200, 200) contentColor:UIColor.blueColor backgroundColor:UIColor.whiteColor logo:nil logoSize:CGSizeZero];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [self.view addSubview:imageView];
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(0);
+        make.size.equalTo(200);
     }];
 }
 

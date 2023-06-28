@@ -14,9 +14,64 @@
 #import <CoreText/CoreText.h>
 #import "UIColor+GKUtils.h"
 #import "UIViewController+GKPush.h"
+#import <NSAttributedString+GKUtils.h>
 
 ///URL 正则表达式识别器
 static NSRegularExpression *URLRegularExpression = nil;
+
+@interface GKURLDetector ()
+
+///URL 正则表达式识别器
+@property(nonatomic, strong) NSRegularExpression *regularExpression;
+
+@end
+
+@implementation GKURLDetector
+
+@synthesize attributes = _attributes;
+
++ (GKURLDetector *)sharedDetector
+{
+    static GKURLDetector *detector = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        detector = [GKURLDetector new];
+    });
+    
+    return detector;
+}
+
+- (NSDictionary<NSAttributedStringKey,id> *)attributes
+{
+    if(!_attributes){
+        _attributes = @{NSForegroundColorAttributeName: UIColor.systemBlueColor, NSUnderlineStyleAttributeName: @(YES)};
+    }
+    return _attributes;
+}
+
+- (NSRegularExpression *)regularExpression
+{
+    if(!_regularExpression){
+        
+        NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
+        NSString *scheme = @"((http[s]?)://)?"; //协议 可选
+        NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
+
+        NSString *path = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]*"; //路径
+        
+        NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
+        _regularExpression = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
+    }
+    return _regularExpression;
+}
+
+- (NSArray<NSTextCheckingResult *> *)matchesInString:(NSString *)string range:(NSRange)range
+{
+    if ([NSString isEmpty:string]) return nil;
+    return [self.regularExpression matchesInString:string options:0 range:range];
+}
+
+@end
 
 @interface GKLabel ()
 
@@ -32,15 +87,48 @@ static NSRegularExpression *URLRegularExpression = nil;
 ///文字绘制区域
 @property(nonatomic, assign) CGRect textDrawRect;
 
-///URL 正则表达式识别器
-@property(nonatomic, readonly) NSRegularExpression *URLRegularExpression;
-
 ///点击时高亮区域 CGRectValue
 @property(nonatomic, strong) NSArray<NSValue*> *highlightedRects;
+
+///coreText
+@property(nonatomic, assign) CTFramesetterRef framesetter;
+
+///省略号宽度
+@property(nonatomic, assign) CGFloat truncationWidth;
 
 @end
 
 @implementation GKLabel
+
+@synthesize framesetter = _framesetter;
+
+// MARK: - CoreText
+
+- (CTFramesetterRef)framesetter
+{
+    if (!_framesetter) {
+        NSAttributedString *attr = self.attributedText;
+        if (attr) {
+            //富文本没有字体，加上字体
+            if ([attr attribute:NSFontAttributeName atIndex:0 effectiveRange:nil] == nil) {
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:attr];
+                [attributedString addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, attributedString.length)];
+                attr = attributedString;
+            }
+            _framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attr);
+        }
+    }
+    return _framesetter;
+}
+
+- (void)setFramesetter:(CTFramesetterRef)framesetter
+{
+    if (_framesetter != framesetter) {
+        if (_framesetter != NULL)
+            CFRelease(_framesetter);
+        _framesetter = framesetter;
+    }
+}
 
 // MARK: - Insets
 
@@ -68,9 +156,93 @@ static NSRegularExpression *URLRegularExpression = nil;
 
 - (void)drawTextInRect:(CGRect)rect
 {
+    self.truncationWidth = 0;
     CGRect drawRect = UIEdgeInsetsInsetRect(rect, _contentInsets);
     self.textDrawRect = drawRect;
     [super drawTextInRect:drawRect];
+    
+    //绘制省略号
+    if (!self.shouldAddTruncation || self.lineBreakMode != NSLineBreakByWordWrapping || self.framesetter == NULL || [NSString isEmpty:self.text]) {
+        return;
+    }
+    
+    NSAttributedString *attr = self.attributedText;
+
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, CFRangeMake(0, attr.length), NULL, drawRect.size, NULL);
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectMake(0, 0, ceil(MAX(size.width, drawRect.size.width)), ceil(MAX(size.height, drawRect.size.height))));
+    CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, attr.length), path, NULL);
+    CGPathRelease(path);
+
+    if (ctFrame == NULL)
+        return;
+    
+    CFArrayRef lines = CTFrameGetLines(ctFrame);
+    CFIndex numberOfLines = CFArrayGetCount(lines);
+    
+    if (numberOfLines > 0) {
+        CTLineRef line = CFArrayGetValueAtIndex(lines, numberOfLines - 1);
+        CFRange range = CTLineGetStringRange(line);
+        
+        CTLineTruncationType truncationType = kCTLineTruncationEnd;
+        CFIndex position = range.location + range.length - 1;
+
+        NSAttributedString *attributedTruncationString = self.attributedTruncationString;
+        if (!attributedTruncationString) {
+            NSString *truncationTokenString = @"\u2026"; // Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026)
+            NSMutableDictionary *attributes = [attr attributesAtIndex:(NSUInteger)position effectiveRange:NULL];
+            if (![attributes isKindOfClass:NSMutableDictionary.class]) {
+                attributes = [NSMutableDictionary dictionaryWithDictionary:attributes];
+            }
+            if (attributes[NSFontAttributeName] == nil) {
+                attributes[NSFontAttributeName] = self.font;
+            }
+            if (attributes[NSForegroundColorAttributeName] == nil) {
+                attributes[NSForegroundColorAttributeName] = self.textColor;
+            }
+            
+            attributedTruncationString = [[NSAttributedString alloc] initWithString:truncationTokenString attributes:attributes];
+        }
+        self.truncationWidth = [attributedTruncationString gkBoundsWithConstraintWidth:drawRect.size.width].width;
+        CTLineRef truncationLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)attributedTruncationString);
+        
+        //最后一行和省略号拼接起来 计算是否需要显示省略号
+        NSMutableAttributedString *lastLineAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:
+                                                       [attr attributedSubstringFromRange:
+                                                        NSMakeRange((NSUInteger)range.location,
+                                                                    (NSUInteger)range.length)]];
+        [lastLineAttributedString appendAttributedString:attributedTruncationString];
+        CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttributedString);
+
+        //如果内容较少，这个会返回NULL，不需要绘制省略号
+        CTLineRef truncatedLine = CTLineCreateTruncatedLine(lastLine, rect.size.width, truncationType, truncationLine);
+        if (truncatedLine != NULL) {
+            CGContextRef c = UIGraphicsGetCurrentContext();
+            CGContextSaveGState(c);
+            {
+                //翻转context，因为coreText的坐标系和UIKit的坐标系不一样
+                CGContextSetTextMatrix(c, CGAffineTransformIdentity);
+                CGContextTranslateCTM(c, 0.0f, drawRect.size.height);
+                CGContextScaleCTM(c, 1.0f, -1.0f);
+
+                CGPoint lineOrigins[numberOfLines];
+                CTFrameGetLineOrigins(ctFrame, CFRangeMake(0, numberOfLines), lineOrigins);
+                
+                CGFloat descent = 0.0f;
+                CTLineGetTypographicBounds((CTLineRef)line, NULL, &descent, NULL);
+                CGPoint lineOrigin = lineOrigins[numberOfLines - 1];
+                
+                CGFloat endX = CTLineGetOffsetForStringIndex(line, range.location + range.length, NULL);
+                CGContextSetTextPosition(c, endX, lineOrigin.y - descent - self.font.descender);
+
+                CTLineDraw(truncationLine, c);
+            }
+            CGContextRestoreGState(c);
+            CFRelease(truncatedLine);
+        }
+    }
+
+    CFRelease(ctFrame);
 }
 
 // MARK: - Select
@@ -113,6 +285,9 @@ static NSRegularExpression *URLRegularExpression = nil;
 {
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (_framesetter != NULL)
+        CFRelease(_framesetter);
 }
 
 - (void)drawRect:(CGRect)rect
@@ -191,8 +366,8 @@ static NSRegularExpression *URLRegularExpression = nil;
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    if(self.canPerformActionHandler){
-        return self.canPerformActionHandler(action, sender);
+    if([self.delegate respondsToSelector:@selector(label:canPerformAction:withSender:)]){
+        return [self.delegate label:self canPerformAction:action withSender:sender];
     }
     
     //只显示自己的
@@ -224,16 +399,17 @@ static NSRegularExpression *URLRegularExpression = nil;
 ///文字改变
 - (id)handleTextChange:(id) text
 {
-    return [self detectURLForText:text];
+    self.framesetter = nil;
+    return [self detectText:text];
 }
 
 // MARK: - URL Detect
 
-- (void)setShouldDetectURL:(BOOL)shouldDetectURL
+- (void)setTextDetector:(id<GKTextDetector>)textDetector
 {
-    if(_shouldDetectURL != shouldDetectURL){
-        _shouldDetectURL = shouldDetectURL;
-        if(_shouldDetectURL){
+    if(_textDetector != textDetector){
+        _textDetector = textDetector;
+        if(_textDetector){
             [self addTapGestureRecognizerIfNeeded];
         }else{
             [_clickableRanges removeAllObjects];
@@ -250,36 +426,17 @@ static NSRegularExpression *URLRegularExpression = nil;
     self.userInteractionEnabled = YES;
 }
 
-- (NSRegularExpression *)URLRegularExpression
+///识别文字
+- (id)detectText:(id) text
 {
-    if(!URLRegularExpression){
-        
-        NSString *allCharacter = @"[0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]";
-        NSString *scheme = @"((http[s]?)://)?"; //协议 可选
-        NSString *host = [NSString stringWithFormat:@"((%@+\\.){2,}[a-zA-Z]{2,6}\\b)", allCharacter]; //主机
-
-        NSString *path = @"[#%/0-9a-zA-Z!\\$&'\\(\\)\\*\\+,\\-\\.:;=\\?@\\[\\]_~]*"; //路径
-        
-        NSString *pattern = [NSString stringWithFormat:@"%@%@%@", scheme, host, path];
-        URLRegularExpression = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
-    }
-    return URLRegularExpression;
-}
-
-///识别链接
-- (id)detectURLForText:(id) text
-{
-    if(self.shouldDetectURL){
+    if(self.textDetector){
         [_clickableRanges removeAllObjects];
         NSString *str = text;
         if([text isKindOfClass:NSAttributedString.class]){
             str = [(NSAttributedString*)text string];
         }
         
-        NSArray *results = nil;
-        if(![NSString isEmpty:str]){
-            results = [self.URLRegularExpression matchesInString:str options:0 range:NSMakeRange(0, str.length)];
-        }
+        NSArray *results = [self.textDetector matchesInString:str range:NSMakeRange(0, str.length)];;
         
         if(results.count > 0){
             NSMutableAttributedString *attr = nil;
@@ -293,7 +450,7 @@ static NSRegularExpression *URLRegularExpression = nil;
             
             for(NSTextCheckingResult *result in results){
                 [self.clickableRanges addObject:[NSValue valueWithRange:result.range]];
-                [attr addAttributes:self.urlAttributes range:result.range];
+                [attr addAttributes:self.textDetector.attributes range:result.range];
             }
             text = attr;
         }
@@ -303,14 +460,6 @@ static NSRegularExpression *URLRegularExpression = nil;
 }
 
 // MARK: - Clickable
-
-- (NSDictionary *)urlAttributes
-{
-    if(_urlAttributes.count == 0){
-        _urlAttributes = @{NSForegroundColorAttributeName: UIColor.systemBlueColor, NSUnderlineStyleAttributeName: @(YES)};
-    }
-    return _urlAttributes;
-}
 
 - (NSMutableArray<NSValue *> *)clickableRanges
 {
@@ -332,13 +481,15 @@ static NSRegularExpression *URLRegularExpression = nil;
 ///处理点击
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    if (_clickableRanges.count == 0) return;
+    if (_clickableRanges.count == 0 || self.framesetter == NULL) return;
     
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeHighlightedRects) object:nil];
     CGPoint point = [tap locationInView:self];
     NSRange range = [self clickableStringAtPoint:point];
-    if(range.location != NSNotFound){
-        !self.clickStringHandler ?: self.clickStringHandler([self.text substringWithRange:range]);
+    if(range.location != NSNotFound && range.length > 0){
+        if ([self.delegate respondsToSelector:@selector(label:didClickTextAtRange:)]) {
+            [self.delegate label:self didClickTextAtRange:range];
+        }
         [self performSelector:@selector(removeHighlightedRects) withObject:nil afterDelay:0.3];
     }
 }
@@ -362,25 +513,19 @@ static NSRegularExpression *URLRegularExpression = nil;
 
     //行数为0
     NSAttributedString *attr = self.attributedText;
-    CTFramesetterRef ctFrameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attr);
-    if(ctFrameSetter == NULL){
-        return range;
-    }
-    
-    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(ctFrameSetter, CFRangeMake(0, attr.length), NULL, CGSizeMake(self.bounds.size.width, CGFLOAT_MAX), NULL);
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, CFRangeMake(0, attr.length), NULL, textRect.size, NULL);
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRect(path, NULL, CGRectMake(0, 0, ceil(MAX(size.width, textRect.size.width)), ceil(MAX(size.height, textRect.size.height))));
-    CTFrameRef ctFrame = CTFramesetterCreateFrame(ctFrameSetter, CFRangeMake(0, attr.length), path, NULL);
+    CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, attr.length), path, NULL);
     CGPathRelease(path);
-    
+
     if(ctFrame == NULL){
-        CFRelease(ctFrameSetter);
         return range;
     }
-    
+
     CFArrayRef lines = CTFrameGetLines(ctFrame);
     CFIndex numberOfLines = CFArrayGetCount(lines);
-    
+
     if (numberOfLines > 0){
         //行起点
         CGPoint lineOrigins[numberOfLines];
@@ -406,22 +551,22 @@ static NSRegularExpression *URLRegularExpression = nil;
 
             //把坐标转成行对应的坐标
             CGPoint position = CGPointMake(point.x - lineOrigin.x - self.contentInsets.left, point.y - lineOrigin.y);
-            
+
             //获取该点的字符位置，返回下一个输入的位置，比如点击的文字下标是0时，返回1
             CFIndex index = CTLineGetStringIndexForPosition(line, position);
-            
+
             //检测字符位置是否超出该行字符的范围，有时候行的末尾不够现实一个字符了，点击该空旷位置时无效
             CFRange stringRange = CTLineGetStringRange(line);
-            
+
             //获取整段文字中charIndex位置的字符相对line的原点的x值
             CGFloat offset = CTLineGetOffsetForStringIndex(line, index, NULL);
-            
+
             if(position.x <= offset){
                 index --;
             }
 
             if(index < stringRange.location + stringRange.length){
-                
+
                 //获取对应的可点信息
                 for(NSValue *result in self.clickableRanges){
                     NSRange rangeValue = result.rangeValue;
@@ -433,12 +578,11 @@ static NSRegularExpression *URLRegularExpression = nil;
             }
         }
     }
-    
+
     [self detectHighlightedRectsForRange:range ctFrame:ctFrame];
 
-    CFRelease(ctFrameSetter);
     CFRelease(ctFrame);
-    
+
     return range;
 }
 
@@ -468,7 +612,8 @@ static NSRegularExpression *URLRegularExpression = nil;
                 //获取文字排版
                 CTLineGetTypographicBounds(line, &lineAscent, &lineDescent, &lineLeading);
                 CGFloat startX = CTLineGetOffsetForStringIndex(line, innerRange.location, NULL);
-                CGFloat endX = CTLineGetOffsetForStringIndex(line, innerRange.location + innerRange.length, NULL);
+                CFIndex end = innerRange.location + innerRange.length;
+                CGFloat endX = CTLineGetOffsetForStringIndex(line, end, NULL);
                 
                 CGPoint lineOrigin = lineOrigins[i];
                 
@@ -476,6 +621,10 @@ static NSRegularExpression *URLRegularExpression = nil;
                 
                 //转成UIKit坐标
                 rect.origin.y = self.textDrawRect.size.height - rect.origin.y - rect.size.height;
+                //最后一行加上省略号
+                if (i == count - 1 && end == lineRange.location + lineRange.length) {
+                    rect.size.width += self.truncationWidth;
+                }
                 
                 [rects addObject:@(rect)];
             }else if(lineRange.location > range.location + range.length){

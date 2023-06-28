@@ -58,7 +58,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="AV6-Ie-S2X">
-                    <rect key="frame" x="175.5" y="667" width="63.5" height="63.5"/>
+                    <rect key="frame" x="175.5" y="667" width="63" height="63.5"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amQ-z0-O7h" customClass="GKButton">
                     <rect key="frame" x="132" y="293" width="150" height="50"/>
