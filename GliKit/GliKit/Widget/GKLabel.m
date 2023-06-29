@@ -154,10 +154,34 @@ static NSRegularExpression *URLRegularExpression = nil;
     return size;
 }
 
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
+{
+    //计算间距和垂直对齐
+    bounds.origin.x = _contentInsets.left;
+    bounds.size.width -= _contentInsets.left + _contentInsets.right;
+    CGRect rect = [super textRectForBounds:bounds limitedToNumberOfLines:numberOfLines];
+    switch (self.verticalAligment) {
+        case GKLabelVerticalAligmentTop :
+            rect.origin.y = MAX(bounds.origin.y, _contentInsets.top);
+            break;
+        case GKLabelVerticalAligmentCenter :
+            rect.origin.y = MAX(bounds.origin.y, bounds.origin.y + (bounds.size.height - rect.size.height) / 2);
+            break;
+        case GKLabelVerticalAligmentBottom :
+            rect.origin.y = CGRectGetMaxY(bounds) - rect.size.height - _contentInsets.bottom;
+            break;
+    }
+    
+    rect.origin.x = bounds.origin.x;
+    rect.size.width = bounds.size.width;
+    
+    return rect;
+}
+
 - (void)drawTextInRect:(CGRect)rect
 {
     self.truncationWidth = 0;
-    CGRect drawRect = UIEdgeInsetsInsetRect(rect, _contentInsets);
+    CGRect drawRect = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];
     self.textDrawRect = drawRect;
     [super drawTextInRect:drawRect];
     
@@ -278,7 +302,7 @@ static NSRegularExpression *URLRegularExpression = nil;
 
 - (NSArray<UIMenuItem *> *)menuItems
 {
-    return _menuItems ? _menuItems : @[[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copy:)]];
+    return _menuItems ? _menuItems : @[[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(handleCopy:)]];
 }
 
 - (void)dealloc
@@ -336,7 +360,7 @@ static NSRegularExpression *URLRegularExpression = nil;
 }
 
 ///复制
-- (void)copy:(id)sender
+- (void)handleCopy:(id)sender
 {
     if(![NSString isEmpty:self.text]){
         UIPasteboard.generalPasteboard.string = self.text;
@@ -371,7 +395,7 @@ static NSRegularExpression *URLRegularExpression = nil;
     }
     
     //只显示自己的
-    return action == @selector(copy:);
+    return action == @selector(handleCopy:);
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -509,7 +533,7 @@ static NSRegularExpression *URLRegularExpression = nil;
     }
 
     //转换成coreText 坐标
-    point = CGPointMake(point.x, textRect.size.height - point.y);
+    point = CGPointMake(point.x - textRect.origin.x, textRect.size.height - (point.y - textRect.origin.y));
 
     //行数为0
     NSAttributedString *attr = self.attributedText;
@@ -539,7 +563,7 @@ static NSRegularExpression *URLRegularExpression = nil;
             CGFloat lineDescent;
             CTLineGetTypographicBounds(line, NULL, &lineDescent, NULL);
 
-            if (lineOrigin.y - lineDescent - self.contentInsets.top < point.y){
+            if (lineOrigin.y - lineDescent < point.y){
                 break;
             }
         }
@@ -550,7 +574,7 @@ static NSRegularExpression *URLRegularExpression = nil;
             CTLineRef line = CFArrayGetValueAtIndex(lines, lineIndex);
 
             //把坐标转成行对应的坐标
-            CGPoint position = CGPointMake(point.x - lineOrigin.x - self.contentInsets.left, point.y - lineOrigin.y);
+            CGPoint position = CGPointMake(point.x - lineOrigin.x, point.y - lineOrigin.y);
 
             //获取该点的字符位置，返回下一个输入的位置，比如点击的文字下标是0时，返回1
             CFIndex index = CTLineGetStringIndexForPosition(line, position);
@@ -566,7 +590,7 @@ static NSRegularExpression *URLRegularExpression = nil;
             }
 
             if(index < stringRange.location + stringRange.length){
-
+                NSLog(@"%ld, %ld, %ld", index, stringRange.location, stringRange.length);
                 //获取对应的可点信息
                 for(NSValue *result in self.clickableRanges){
                     NSRange rangeValue = result.rangeValue;
@@ -590,7 +614,7 @@ static NSRegularExpression *URLRegularExpression = nil;
 - (void)detectHighlightedRectsForRange:(NSRange) range ctFrame:(CTFrameRef) ctFrame;
 {
     NSMutableArray *rects = nil;
-    if(range.location != NSNotFound){
+    if(range.location != NSNotFound && ![self.selectedBackgroundColor isEqualToColor:UIColor.clearColor]){
         rects = [NSMutableArray array];
         CFArrayRef lines = CTFrameGetLines(ctFrame);
         
@@ -598,6 +622,7 @@ static NSRegularExpression *URLRegularExpression = nil;
         CGPoint lineOrigins[count];
         CTFrameGetLineOrigins(ctFrame, CFRangeMake(0, 0), lineOrigins);
         
+        CGFloat preY = 0;
         for(NSInteger i = 0;i < count;i ++){
             CTLineRef line = CFArrayGetValueAtIndex(lines, i);
             CFRange lineRange = CTLineGetStringRange(line);
@@ -608,7 +633,7 @@ static NSRegularExpression *URLRegularExpression = nil;
                 CGFloat lineAscent;
                 CGFloat lineDescent;
                 CGFloat lineLeading;
-                
+
                 //获取文字排版
                 CTLineGetTypographicBounds(line, &lineAscent, &lineDescent, &lineLeading);
                 CGFloat startX = CTLineGetOffsetForStringIndex(line, innerRange.location, NULL);
@@ -617,21 +642,29 @@ static NSRegularExpression *URLRegularExpression = nil;
                 
                 CGPoint lineOrigin = lineOrigins[i];
                 
-                CGRect rect = CGRectMake(lineOrigin.x + startX + self.contentInsets.left, lineOrigin.y - lineDescent + self.contentInsets.top, endX - startX, lineAscent + lineDescent + lineLeading);
+                CGRect rect = CGRectMake(lineOrigin.x + startX, lineOrigin.y - lineDescent, endX - startX, lineAscent + lineDescent + lineLeading);
                 
                 //转成UIKit坐标
-                rect.origin.y = self.textDrawRect.size.height - rect.origin.y - rect.size.height;
+                rect.origin.y = CGRectGetMaxY(self.textDrawRect) - CGRectGetMaxY(rect);
+                if (preY > 0 && preY < rect.origin.y) {
+                    rect.size.height += rect.origin.y - preY;
+                    rect.origin.y = preY;
+                }
+                rect.origin.x += self.textDrawRect.origin.x;
+                
                 //最后一行加上省略号
                 if (i == count - 1 && end == lineRange.location + lineRange.length) {
                     rect.size.width += self.truncationWidth;
                 }
                 
+                preY = CGRectGetMaxY(rect);
                 [rects addObject:@(rect)];
             }else if(lineRange.location > range.location + range.length){
                 break;
             }
         }
     }
+    
     self.highlightedRects = rects;
 }
 

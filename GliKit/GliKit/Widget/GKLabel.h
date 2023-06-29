@@ -31,11 +31,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GKLabel;
 
+///垂直对齐方式
+typedef NS_ENUM(NSInteger, GKLabelVerticalAligment) {
+    
+    GKLabelVerticalAligmentCenter,
+    GKLabelVerticalAligmentTop,
+    GKLabelVerticalAligmentBottom
+};
+
+///代理
 @protocol GKLabelDelegate <NSObject>
 
 @optional
 
-///长按的时候是否可以执行某个方法
+///长按的时候是否可以执行某个方法，默认只有 handleCopy
 - (BOOL)label:(GKLabel*) label canPerformAction:(SEL) action withSender:(id) sender;
 
 ///点击某段文字了
@@ -70,6 +79,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///省略号
 @property(nonatomic, copy) NSAttributedString *attributedTruncationString;
+
+///垂直对齐方式
+@property(nonatomic, assign) GKLabelVerticalAligment verticalAligment;
 
 /// 添加可点击的位置，重新设置text会忽略以前添加的
 /// @param range 可点击的位置，如果该范围不在text中，则忽略
