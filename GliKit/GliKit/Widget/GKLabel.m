@@ -155,6 +155,11 @@ CF_INLINE NSRange GKGetInnerRange(NSRange range1, NSRange range2) {
     return range;
 }
 
+///转换CF和NS
+CF_INLINE NSRange GKTranslateCFRange(CFRange range) {
+    return NSMakeRange(range.location == kCFNotFound ? NSNotFound : range.location, range.length);
+}
+
 @interface GKLabel ()
 
 ///长按手势
@@ -842,8 +847,7 @@ CF_INLINE NSRange GKGetInnerRange(NSRange range1, NSRange range2) {
             CTLineRef line = CFArrayGetValueAtIndex(lines, i);
             CFRange lineRange = CTLineGetStringRange(line);
             
-            NSRange range2 = NSMakeRange(lineRange.location == kCFNotFound ? NSNotFound : lineRange.location, lineRange.length);
-            NSRange innerRange = GKGetInnerRange(range, range2);
+            NSRange innerRange = GKGetInnerRange(range, GKTranslateCFRange(lineRange));
             
             if(innerRange.location != NSNotFound && innerRange.length > 0){
                 CGFloat lineAscent;
