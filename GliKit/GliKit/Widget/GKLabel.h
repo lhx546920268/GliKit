@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy, null_resettable) NSDictionary<NSAttributedStringKey, id> *attributes;
 
 ///匹配字符串
-- (NSArray<NSTextCheckingResult*>*)matchesInString:(NSString*) string range:(NSRange) range;
+- (nullable NSArray<NSTextCheckingResult*>*)matchesInString:(nullable NSString*) string range:(NSRange) range;
 
 @end
 
@@ -53,11 +53,48 @@ typedef NS_ENUM(NSInteger, GKLabelVerticalAligment) {
 @end
 
 ///自定义label，设置富文本时属性要全，包括对其方式，换行方式，字体等
-///@warning 当有段落样式`NSParagraphStyle`时，换行模式必须设置成 `NSLineBreakByWordWrapping`，否则会导致计算错误
-@interface GKLabel : UILabel
+///@warning 当有使用富文本有段落样式`NSParagraphStyle`时，换行模式必须设置成 `NSLineBreakByWordWrapping`，否则会导致计算错误
+@interface GKLabel : UIView
 
 ///文本边距 default `zero`
-@property(nonatomic, assign) IBInspectable UIEdgeInsets contentInsets;
+@property(nonatomic, assign) UIEdgeInsets contentInsets;
+
+///没有设置宽高约束的时候 要设置这个，用来自适应高度的
+@property(nonatomic) CGFloat preferredMaxLayoutWidth;
+
+// MARK: - 文字属性
+
+///
+@property(nonatomic, copy, nullable) NSString *text;
+
+//富文本，必须使用CoreText的属性，比如用 kCTFontAttributeName，value可以用TextKit的
+@property(nonatomic, copy, nullable) NSAttributedString *attributedText;
+
+///default `appFontSize:15`
+@property(nonatomic, strong, null_resettable) UIFont *font;
+
+///default `blackColor`
+@property(nonatomic, strong, null_resettable) UIColor *textColor;
+
+///水平对齐方式 default `NSTextAlignmentNatural`
+@property(nonatomic, assign) NSTextAlignment textAlignment;
+
+///垂直对齐方式 default `GKLabelVerticalAligmentCenter`
+@property(nonatomic, assign) GKLabelVerticalAligment verticalAligment;
+
+///换行方式 default `NSLineBreakByTruncatingTail`
+@property(nonatomic, assign) NSLineBreakMode lineBreakMode;
+
+///省略号
+@property(nonatomic, copy, nullable) NSAttributedString *attributedTruncationString;
+
+///行数，类似UILabel default `0`
+@property(nonatomic, assign) NSInteger numberOfLines;
+
+// MARK: - 段落样式
+
+///行距 default `0.0
+@property(nonatomic, assign) CGFloat lineSpacing;
 
 ///识别器
 @property(nonatomic, strong, nullable) id<GKTextDetector> textDetector;
@@ -73,15 +110,6 @@ typedef NS_ENUM(NSInteger, GKLabelVerticalAligment) {
 
 ///代理
 @property(nonatomic, weak) id<GKLabelDelegate> delegate;
-
-///当内容太多不够显示的时候，是否需要自动添加省略号，default `NO`，NSLineBreakByWordWrapping才生效
-@property(nonatomic, assign) BOOL shouldAddTruncation;
-
-///省略号
-@property(nonatomic, copy) NSAttributedString *attributedTruncationString;
-
-///垂直对齐方式
-@property(nonatomic, assign) GKLabelVerticalAligment verticalAligment;
 
 /// 添加可点击的位置，重新设置text会忽略以前添加的
 /// @param range 可点击的位置，如果该范围不在text中，则忽略

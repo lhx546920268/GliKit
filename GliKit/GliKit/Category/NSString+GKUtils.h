@@ -28,6 +28,12 @@ typedef NS_OPTIONS(NSUInteger, GKTextType){
     GKTextTypeDecimal = 1 << 4,
 };
 
+///判断两个字符串是否相等
+CF_INLINE BOOL GKStringEqual(NSString *str1, NSString *str2) {
+    if (str1 == nil && str2 == nil) return YES;
+    return [str1 isEqualToString:str2];
+}
+
 @interface NSString (GKUtils)
 
 ///获取唯一字符串

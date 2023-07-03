@@ -17,6 +17,16 @@
 #import "TTTAttributedLabel.h"
 #import <NSAttributedString+GKUtils.h>
 
+@implementation GKDTextContainer
+
+- (void)layoutSubviews
+{
+    NSLog(@"GKDTextContainer");
+    [super layoutSubviews];
+}
+
+@end
+
 @interface GKDAlertViewController ()
 
 @property (weak, nonatomic) IBOutlet GKLabel *gkLabel;
@@ -100,32 +110,36 @@
     self.gkLabel.userInteractionEnabled = YES;
 //    self.gkLabel.textAlignment = NSTextAlignmentCenter;
     self.gkLabel.backgroundColor = UIColor.systemYellowColor;
-    self.gkLabel.numberOfLines = 2;
+    self.gkLabel.numberOfLines = 3;
 
-        self.gkLabel.selectable = YES;
+        self.gkLabel.selectable = NO;
     self.gkLabel.selectedBackgroundColor = UIColor.orangeColor;
     self.gkLabel.textDetector = GKURLDetector.sharedDetector;
-    self.gkLabel.shouldAddTruncation = YES;
-    self.gkLabel.lineBreakMode = NSLineBreakByWordWrapping;
+   
+    self.gkLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    self.gkLabel.verticalAligment = GKLabelVerticalAligmentCenter;
+    self.gkLabel.preferredMaxLayoutWidth = 340;
+    self.gkLabel.contentInsets = UIEdgeInsetsMake(10, 10, 10, 10);
     //https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref
 
-    NSString *text = @"这是一个超链接https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref，click here to modify";
+    NSString *text = @"这是一个超链接https://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref，点击这里修改";
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
     [attr addAttribute:NSFontAttributeName value:self.gkLabel.font range:NSMakeRange(0, attr.length)];
-    [attr addAttribute:NSForegroundColorAttributeName value:UIColor.blueColor range:[text rangeOfString:@"click here"]];
+    [attr addAttribute:NSForegroundColorAttributeName value:UIColor.blueColor range:[text rangeOfString:@"点击这里"]];
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     style.alignment = self.gkLabel.textAlignment;
-    style.lineBreakMode = self.gkLabel.lineBreakMode;
+    style.lineBreakMode = NSLineBreakByWordWrapping;
     style.lineSpacing = 5;
     [attr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
 
     NSLog(@"size = %@", NSStringFromCGSize([attr gkBoundsWithConstraintWidth:UIScreen.gkWidth - 30]));
 //    self.gkLabel.lineSpacing = 5;
-        self.gkLabel.attributedText = attr;
+//    self.gkLabel.text = text;
 //    [self.gkLabel addLinkToURL:[NSURL URLWithString:@"www.baidu.com"] withRange:NSMakeRange(30, 10)];
     
-//    self.gkLabel.attributedText = attr;
-    [self.gkLabel addClickableRange:[text rangeOfString:@"click here"]];
+    self.gkLabel.attributedText = attr;
+    self.gkLabel.attributedTruncationString = [[NSAttributedString alloc] initWithString:@"...展开"];
+    [self.gkLabel addClickableRange:[text rangeOfString:@"点击这里"]];
     
     self.alertButton.imagePosition = GKButtonImagePositionTop;
     
@@ -207,6 +221,12 @@
         [selfWeak gkShowSuccessWithText:[NSString stringWithFormat:@"点击%@了", title]];
     };
     [alert show];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    NSLog(@"viewDidLayoutSubviews");
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "UIImage+GKUtils.h"
 #import "UIColor+GKUtils.h"
 #import "UIImage+GKTheme.h"
+#import <CoreImage/CIFilterBuiltins.h>
 
 @implementation UIImage (GKUtils)
 
@@ -276,9 +277,9 @@
     }
     
     ///通过coreImage生成默认的二维码图片
-    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
-    [filter setValue:[string dataUsingEncoding:NSUTF8StringEncoding] forKey:@"inputMessage"];
-    [filter setValue:level forKey:@"inputCorrectionLevel"];
+    CIFilter<CIQRCodeGenerator> *filter = [CIFilter QRCodeGenerator];
+    filter.message = [string dataUsingEncoding:NSUTF8StringEncoding];
+    filter.correctionLevel = level;
     
     CIImage *ciImage = filter.outputImage;
     

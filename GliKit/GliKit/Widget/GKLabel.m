@@ -15,9 +15,7 @@
 #import "UIColor+GKUtils.h"
 #import "UIViewController+GKPush.h"
 #import <NSAttributedString+GKUtils.h>
-
-///URL 正则表达式识别器
-static NSRegularExpression *URLRegularExpression = nil;
+#import "UIFont+GKUtils.h"
 
 @interface GKURLDetector ()
 
@@ -73,6 +71,90 @@ static NSRegularExpression *URLRegularExpression = nil;
 
 @end
 
+static CGFloat GKFloatMax = 10000000.0;
+
+///获取文字绘制flushFactor
+CF_INLINE CGFloat GKGetFlushFactor(NSTextAlignment textAligment) {
+    CGFloat flushFactor;
+    switch (textAligment) {
+        case NSTextAlignmentRight :
+            flushFactor = 1.0;
+            break;
+        case NSTextAlignmentCenter :
+            flushFactor = 0.5;
+            break;
+        case NSTextAlignmentLeft :
+        case NSTextAlignmentJustified :
+        case NSTextAlignmentNatural :
+        default :
+            flushFactor = 0.0;
+            break;
+    }
+    return flushFactor;
+}
+
+///获取省略号位置
+CF_INLINE CTLineTruncationType GKGetLineTruncationType(NSLineBreakMode lineBreakMode) {
+    CTLineTruncationType truncationType;
+    switch (lineBreakMode) {
+        case NSLineBreakByTruncatingHead :
+            truncationType = kCTLineTruncationStart;
+            break;
+        case NSLineBreakByTruncatingMiddle :
+            truncationType = kCTLineTruncationMiddle;
+            break;
+        case NSLineBreakByTruncatingTail :
+        default :
+            truncationType = kCTLineTruncationEnd;
+            break;
+    }
+    return truncationType;
+}
+
+///获取行高
+CF_INLINE CGFloat GKGetLineHeight(CTLineRef line) {
+    CGFloat lineAscent;
+    CGFloat lineDescent;
+    CGFloat lineLeading;
+    
+    //获取行高
+    CTLineGetTypographicBounds(line, &lineAscent, &lineDescent, &lineLeading);
+    return lineAscent + lineDescent + lineLeading;
+}
+
+///是否需要省略号
+CF_INLINE BOOL GKNeedTruncation(NSLineBreakMode lineBreakMode) {
+    switch (lineBreakMode) {
+        case NSLineBreakByTruncatingTail :
+        case NSLineBreakByTruncatingMiddle :
+        case NSLineBreakByTruncatingHead :
+            return YES;
+        default:
+            return NO;
+    }
+}
+
+///获取内部的range
+CF_INLINE NSRange GKGetInnerRange(NSRange range1, NSRange range2) {
+    NSRange range = NSMakeRange(NSNotFound, 0);
+    
+    //交换
+    if(range1.location > range2.location){
+        NSRange tmp = range1;
+        range1 = range2;
+        range2 = tmp;
+    }
+    
+    if(range2.location < range1.location + range1.length){
+        range.location = range2.location;
+        
+        NSInteger end = MIN(range1.location + range1.length, range2.location + range2.length);
+        range.length = end - range.location;
+    }
+    
+    return range;
+}
+
 @interface GKLabel ()
 
 ///长按手势
@@ -102,6 +184,58 @@ static NSRegularExpression *URLRegularExpression = nil;
 
 @synthesize framesetter = _framesetter;
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self){
+        [self initProps];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        [self initProps];
+    }
+    return self;
+}
+
+- (void)initProps
+{
+    self.lineBreakMode = NSLineBreakByTruncatingTail;
+    self.verticalAligment = GKLabelVerticalAligmentCenter;
+    self.textAlignment = NSTextAlignmentNatural;
+}
+
+- (void)dealloc
+{
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (_framesetter != NULL)
+        CFRelease(_framesetter);
+}
+
+// MARK: - Props
+
+- (UIFont *)font
+{
+    if (!_font) {
+        _font = [UIFont appFontWithSize:15];
+    }
+    return _font;
+}
+
+- (UIColor *)textColor
+{
+    if (!_textColor) {
+        _textColor = UIColor.blackColor;
+    }
+    return _textColor;
+}
+
 // MARK: - CoreText
 
 - (CTFramesetterRef)framesetter
@@ -130,72 +264,186 @@ static NSRegularExpression *URLRegularExpression = nil;
     }
 }
 
-// MARK: - Insets
+// MARK: - Text
 
-- (void)setContentInsets:(UIEdgeInsets)contentInsets
+- (void)setText:(NSString *)text
 {
-    if(!UIEdgeInsetsEqualToEdgeInsets(_contentInsets, contentInsets)){
-        _contentInsets = contentInsets;
-        [self setNeedsDisplay];
+    if (!GKStringEqual(_text, text)) {
+        _text = text;
+        if (_text) {
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:_text];
+            NSDictionary *attrs = @{
+                (id)kCTFontAttributeName: self.font,
+                (id)kCTForegroundColorAttributeName: self.textColor,
+                (id)kCTParagraphStyleAttributeName: [self paragraphStyle]
+            };
+  
+            [attr addAttributes:attrs range:NSMakeRange(0, attr.length)];
+            _attributedText = [self detectText:attr];
+        } else {
+            self.attributedText = nil;
+        }
+        self.framesetter = nil;
     }
 }
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    if (_attributedText != attributedText) {
+        NSMutableAttributedString *attr = (NSMutableAttributedString*)attributedText;
+        if (attributedText) {
+            if (![attributedText isKindOfClass:NSMutableAttributedString.class]) {
+                attr = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
+            }
+            NSMutableDictionary *attrs = [attr attributesAtIndex:0 effectiveRange:nil];
+            if (![attrs isKindOfClass:NSMutableDictionary.class]) {
+                attrs = [NSMutableDictionary dictionaryWithDictionary:attrs];
+            }
+            
+            if (!attrs[(id)kCTFontAttributeName]) {
+                attrs[(id)kCTFontAttributeName] = self.font;
+            }
+            
+            if (!attrs[(id)kCTForegroundColorAttributeName]) {
+                attrs[(id)kCTForegroundColorAttributeName] = self.textColor;
+            }
+            
+            if (!attrs[(id)kCTParagraphStyleAttributeName]) {
+                attrs[(id)kCTParagraphStyleAttributeName] = [self paragraphStyle];
+            }
+            [attr addAttributes:attrs range:NSMakeRange(0, attr.length)];
+        }
+        
+        _attributedText = [self detectText:attr];;
+        _text = _attributedText.string;
+        self.framesetter = nil;
+    }
+}
+
+///段落样式
+- (NSMutableParagraphStyle*)paragraphStyle
+{
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.lineSpacing = self.lineSpacing;
+    //多行模式Truncating大小会计算错误，只有一行大小
+    style.lineBreakMode = self.numberOfLines == 1 ? self.lineBreakMode : NSLineBreakByWordWrapping;
+    style.alignment = self.textAlignment;
+    
+    return style;
+}
+
+// MARK: - Size
 
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
-    if(size.width != UIViewNoIntrinsicMetric && size.width < 2777777){
-        size.width += _contentInsets.left + _contentInsets.right;
-    }
-    
-    if(size.width != UIViewNoIntrinsicMetric && size.height < 2777777){
+    if (self.framesetter) {
+        CFRange range;
+        CGSize constraintSize;
+        if (self.preferredMaxLayoutWidth > 0 && self.numberOfLines != 1) {
+            constraintSize = CGSizeMake(self.preferredMaxLayoutWidth - _contentInsets.left - _contentInsets.right, GKFloatMax);
+            range = [self textRangeForSize:constraintSize];
+        } else {
+            range = CFRangeMake(0, 0);
+            constraintSize = CGSizeMake(65354, GKFloatMax);
+        }
+        CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, range, NULL, constraintSize, NULL);
         size.height += _contentInsets.top + _contentInsets.bottom;
+        size.width += _contentInsets.left + _contentInsets.right;
+        
+        return size;
     }
     
-    return size;
+    return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);
 }
 
-- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
+///计算文字范围
+- (CFRange)textRangeForSize:(CGSize) size
 {
-    //计算间距和垂直对齐
+    CFRange range = CFRangeMake(0, 0);
+    if (self.numberOfLines != 0) {
+        //根据行数计算高度
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathAddRect(path, NULL, CGRectMake(0, 0, size.width, size.height));
+        CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, 0), path, NULL);
+        CGPathRelease(path);
+        
+        if (ctFrame != NULL) {
+            //获取最后一行的位置
+            CFArrayRef lines = CTFrameGetLines(ctFrame);
+            CFIndex numberOfLines = CFArrayGetCount(lines);
+            if (numberOfLines > self.numberOfLines) {
+                CTLineRef line = CFArrayGetValueAtIndex(lines, self.numberOfLines - 1);
+                CFRange stringRange = CTLineGetStringRange(line);
+                range.length = stringRange.location + stringRange.length;
+            }
+        }
+    }
+    return range;
+}
+
+///计算限制的文字范围内的文字绘制区域
+- (CGRect)textRectForBounds:(CGRect)bounds
+{
     bounds.origin.x = _contentInsets.left;
     bounds.size.width -= _contentInsets.left + _contentInsets.right;
-    CGRect rect = [super textRectForBounds:bounds limitedToNumberOfLines:numberOfLines];
+    
+    //限制行数
+    CFRange textRange = [self textRangeForSize:bounds.size];
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, textRange, NULL, bounds.size, NULL);
+    CGRect drawRect = CGRectMake(0, 0, MIN(bounds.size.width, ceil(size.width)), MIN(ceil(size.height), bounds.size.height));
+    
     switch (self.verticalAligment) {
         case GKLabelVerticalAligmentTop :
-            rect.origin.y = MAX(bounds.origin.y, _contentInsets.top);
+            drawRect.origin.y = MAX(bounds.origin.y, _contentInsets.top);
             break;
         case GKLabelVerticalAligmentCenter :
-            rect.origin.y = MAX(bounds.origin.y, bounds.origin.y + (bounds.size.height - rect.size.height) / 2);
+            drawRect.origin.y = MAX(bounds.origin.y, bounds.origin.y + (bounds.size.height - drawRect.size.height) / 2);
             break;
         case GKLabelVerticalAligmentBottom :
-            rect.origin.y = CGRectGetMaxY(bounds) - rect.size.height - _contentInsets.bottom;
+            drawRect.origin.y = CGRectGetMaxY(bounds) - drawRect.size.height - _contentInsets.bottom;
             break;
     }
     
-    rect.origin.x = bounds.origin.x;
-    rect.size.width = bounds.size.width;
+    drawRect.origin.x = bounds.origin.x;
+    drawRect.size.width = bounds.size.width;
     
-    return rect;
+    return drawRect;
 }
 
-- (void)drawTextInRect:(CGRect)rect
+// MARK: - Draw
+
+- (void)drawRect:(CGRect)rect
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+    if(self.highlightedRects.count > 0){
+        //绘制高亮状态
+        CGContextSetFillColorWithColor(context, self.selectedBackgroundColor.CGColor);
+        for(NSValue *value in self.highlightedRects){
+            CGContextAddRect(context, value.CGRectValue);
+        }
+        CGContextFillPath(context);
+    }
+    [self drawTextInRect:rect context:context];
+    CGContextRestoreGState(context);
+    
+    [super drawRect:rect];
+}
+
+///绘制文字
+- (void)drawTextInRect:(CGRect)rect context:(CGContextRef) context
 {
     self.truncationWidth = 0;
-    CGRect drawRect = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];
-    self.textDrawRect = drawRect;
-    [super drawTextInRect:drawRect];
-    
-    //绘制省略号
-    if (!self.shouldAddTruncation || self.lineBreakMode != NSLineBreakByWordWrapping || self.framesetter == NULL || [NSString isEmpty:self.text]) {
+    if (self.framesetter == NULL)
         return;
-    }
     
-    NSAttributedString *attr = self.attributedText;
-
-    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, CFRangeMake(0, attr.length), NULL, drawRect.size, NULL);
+    CGRect drawRect = [self textRectForBounds:rect];
+    self.textDrawRect = drawRect;
+    
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, CGRectMake(0, 0, ceil(MAX(size.width, drawRect.size.width)), ceil(MAX(size.height, drawRect.size.height))));
-    CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, attr.length), path, NULL);
+    CGPathAddRect(path, NULL, CGRectMake(0, 0, drawRect.size.width, drawRect.size.height));
+    CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, 0), path, NULL);
     CGPathRelease(path);
 
     if (ctFrame == NULL)
@@ -203,70 +451,85 @@ static NSRegularExpression *URLRegularExpression = nil;
     
     CFArrayRef lines = CTFrameGetLines(ctFrame);
     CFIndex numberOfLines = CFArrayGetCount(lines);
+    if (numberOfLines == 0) {
+        CFRelease(ctFrame);
+        return;
+    }
+
+    //翻转context，因为coreText的坐标系和UIKit的坐标系不一样
+    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+    CGContextTranslateCTM(context, 0.0f, rect.size.height);
+    CGContextScaleCTM(context, 1.0f, -1.0f);
     
-    if (numberOfLines > 0) {
-        CTLineRef line = CFArrayGetValueAtIndex(lines, numberOfLines - 1);
-        CFRange range = CTLineGetStringRange(line);
+    //根据文字绘制区域偏移
+    CGContextTranslateCTM(context, drawRect.origin.x, CGRectGetMaxY(rect) - CGRectGetMaxY(drawRect));
+    
+    CGFloat flushFactor = GKGetFlushFactor(self.textAlignment);
+    CGPoint lineOrigins[numberOfLines];
+    CTFrameGetLineOrigins(ctFrame, CFRangeMake(0, numberOfLines), lineOrigins);
+    
+    for (CFIndex i = 0; i < numberOfLines; i ++) {
+        CTLineRef line = CFArrayGetValueAtIndex(lines, i);
+        CGFloat penOffset = CTLineGetPenOffsetForFlush(line, flushFactor, CGRectGetWidth(drawRect));
+        CGPoint lineOrigin = lineOrigins[i];
+        CGContextSetTextPosition(context, penOffset, lineOrigin.y);
         
-        CTLineTruncationType truncationType = kCTLineTruncationEnd;
-        CFIndex position = range.location + range.length - 1;
-
-        NSAttributedString *attributedTruncationString = self.attributedTruncationString;
-        if (!attributedTruncationString) {
-            NSString *truncationTokenString = @"\u2026"; // Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026)
-            NSMutableDictionary *attributes = [attr attributesAtIndex:(NSUInteger)position effectiveRange:NULL];
-            if (![attributes isKindOfClass:NSMutableDictionary.class]) {
-                attributes = [NSMutableDictionary dictionaryWithDictionary:attributes];
+        if (i == numberOfLines - 1 && GKNeedTruncation(self.lineBreakMode)) {
+            //绘制省略号
+            CTLineRef truncatedLine = [self translateTruncatedLineFromLine:line];
+            if (truncatedLine != NULL) {
+                CTLineDraw(truncatedLine, context);
+            } else {
+                CTLineDraw(line, context);
             }
-            if (attributes[NSFontAttributeName] == nil) {
-                attributes[NSFontAttributeName] = self.font;
-            }
-            if (attributes[NSForegroundColorAttributeName] == nil) {
-                attributes[NSForegroundColorAttributeName] = self.textColor;
-            }
-            
-            attributedTruncationString = [[NSAttributedString alloc] initWithString:truncationTokenString attributes:attributes];
-        }
-        self.truncationWidth = [attributedTruncationString gkBoundsWithConstraintWidth:drawRect.size.width].width;
-        CTLineRef truncationLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)attributedTruncationString);
-        
-        //最后一行和省略号拼接起来 计算是否需要显示省略号
-        NSMutableAttributedString *lastLineAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:
-                                                       [attr attributedSubstringFromRange:
-                                                        NSMakeRange((NSUInteger)range.location,
-                                                                    (NSUInteger)range.length)]];
-        [lastLineAttributedString appendAttributedString:attributedTruncationString];
-        CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttributedString);
-
-        //如果内容较少，这个会返回NULL，不需要绘制省略号
-        CTLineRef truncatedLine = CTLineCreateTruncatedLine(lastLine, rect.size.width, truncationType, truncationLine);
-        if (truncatedLine != NULL) {
-            CGContextRef c = UIGraphicsGetCurrentContext();
-            CGContextSaveGState(c);
-            {
-                //翻转context，因为coreText的坐标系和UIKit的坐标系不一样
-                CGContextSetTextMatrix(c, CGAffineTransformIdentity);
-                CGContextTranslateCTM(c, 0.0f, drawRect.size.height);
-                CGContextScaleCTM(c, 1.0f, -1.0f);
-
-                CGPoint lineOrigins[numberOfLines];
-                CTFrameGetLineOrigins(ctFrame, CFRangeMake(0, numberOfLines), lineOrigins);
-                
-                CGFloat descent = 0.0f;
-                CTLineGetTypographicBounds((CTLineRef)line, NULL, &descent, NULL);
-                CGPoint lineOrigin = lineOrigins[numberOfLines - 1];
-                
-                CGFloat endX = CTLineGetOffsetForStringIndex(line, range.location + range.length, NULL);
-                CGContextSetTextPosition(c, endX, lineOrigin.y - descent - self.font.descender);
-
-                CTLineDraw(truncationLine, c);
-            }
-            CGContextRestoreGState(c);
-            CFRelease(truncatedLine);
+        } else {
+            CTLineDraw(line, context);
         }
     }
 
     CFRelease(ctFrame);
+}
+
+///转换最后一行为省略号的
+- (CTLineRef)translateTruncatedLineFromLine:(CTLineRef) line
+{
+    CFRange range = CTLineGetStringRange(line);
+    NSAttributedString *attr = self.attributedText;
+    if (range.location == kCFNotFound || range.length == 0 || range.location + range.length >= attr.length)
+        return NULL;
+ 
+    CFIndex position = range.location + range.length - 1;
+    NSAttributedString *attributedTruncationString = self.attributedTruncationString;
+    if (!attributedTruncationString) {
+        NSString *truncationTokenString = @"\u2026"; // Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026)
+        NSMutableDictionary *attributes = [attr attributesAtIndex:(NSUInteger)position effectiveRange:nil];
+        attributedTruncationString = [[NSAttributedString alloc] initWithString:truncationTokenString attributes:attributes];
+    }
+    self.truncationWidth = [attributedTruncationString gkBoundsWithConstraintWidth:CGRectGetWidth(self.textDrawRect)].width;
+    CTLineRef truncationToken = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)attributedTruncationString);
+
+    //最后一行和省略号拼接起来 计算是否需要显示省略号
+    NSMutableAttributedString *lastLineAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:
+                                                   [attr attributedSubstringFromRange:
+                                                    NSMakeRange((NSUInteger)range.location,
+                                                                (NSUInteger)range.length)]];
+    if (range.length > 0) {
+        //移除换行符
+        unichar lastCharacter = [lastLineAttributedString.string characterAtIndex:range.length - 1];
+        if ([[NSCharacterSet newlineCharacterSet] characterIsMember:lastCharacter]) {
+            [lastLineAttributedString deleteCharactersInRange:NSMakeRange(range.length - 1, 1)];
+        }
+    }
+    [lastLineAttributedString appendAttributedString:attributedTruncationString];
+    CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttributedString);
+
+    //如果内容较少，这个会返回NULL，不需要绘制省略号
+    CTLineTruncationType truncationType = GKGetLineTruncationType(self.lineBreakMode);
+    CTLineRef truncatedLine = CTLineCreateTruncatedLine(lastLine, CGRectGetWidth(self.textDrawRect), truncationType, truncationToken);
+    CFRelease(truncationToken);
+    CFRelease(lastLine);
+
+    return truncatedLine != NULL ? CFAutorelease(truncatedLine) : NULL;
 }
 
 // MARK: - Select
@@ -305,40 +568,18 @@ static NSRegularExpression *URLRegularExpression = nil;
     return _menuItems ? _menuItems : @[[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(handleCopy:)]];
 }
 
-- (void)dealloc
-{
-    [[self class] cancelPreviousPerformRequestsWithTarget:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    if (_framesetter != NULL)
-        CFRelease(_framesetter);
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    if(self.highlightedRects.count > 0){
-        //绘制高亮状态
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSaveGState(context);
-        
-        CGContextSetFillColorWithColor(context, self.selectedBackgroundColor.CGColor);
-        for(NSValue *value in self.highlightedRects){
-            CGContextAddRect(context, value.CGRectValue);
-        }
-        CGContextFillPath(context);
-        
-        CGContextRestoreGState(context);
-    }
-    
-    [super drawRect:rect];
-}
-
 - (void)setHighlightedRects:(NSArray<NSValue *> *)highlightedRects
 {
     if(_highlightedRects != highlightedRects){
         _highlightedRects = highlightedRects;
         [self setNeedsDisplay];
     }
+}
+
+///取消高亮
+- (void)removeHighlightedRects
+{
+    self.highlightedRects = nil;
 }
 
 // MARK: - 通知
@@ -403,31 +644,7 @@ static NSRegularExpression *URLRegularExpression = nil;
     return YES;
 }
 
-// MARK: - Text
-
-- (void)setText:(NSString *)text
-{
-    id result = [self handleTextChange:text];
-    if([result isKindOfClass:NSString.class]){
-        [super setText:result];
-    }else{
-        [super setAttributedText:result];
-    }
-}
-
-- (void)setAttributedText:(NSAttributedString *)attributedText
-{
-    [super setAttributedText:[self handleTextChange:attributedText]];
-}
-
-///文字改变
-- (id)handleTextChange:(id) text
-{
-    self.framesetter = nil;
-    return [self detectText:text];
-}
-
-// MARK: - URL Detect
+// MARK: - Text Detect
 
 - (void)setTextDetector:(id<GKTextDetector>)textDetector
 {
@@ -537,10 +754,9 @@ static NSRegularExpression *URLRegularExpression = nil;
 
     //行数为0
     NSAttributedString *attr = self.attributedText;
-    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, CFRangeMake(0, attr.length), NULL, textRect.size, NULL);
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, CGRectMake(0, 0, ceil(MAX(size.width, textRect.size.width)), ceil(MAX(size.height, textRect.size.height))));
-    CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, attr.length), path, NULL);
+    CGPathAddRect(path, NULL, self.textDrawRect);
+    CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, 0), path, NULL);
     CGPathRelease(path);
 
     if(ctFrame == NULL){
@@ -590,7 +806,6 @@ static NSRegularExpression *URLRegularExpression = nil;
             }
 
             if(index < stringRange.location + stringRange.length){
-                NSLog(@"%ld, %ld, %ld", index, stringRange.location, stringRange.length);
                 //获取对应的可点信息
                 for(NSValue *result in self.clickableRanges){
                     NSRange rangeValue = result.rangeValue;
@@ -627,7 +842,8 @@ static NSRegularExpression *URLRegularExpression = nil;
             CTLineRef line = CFArrayGetValueAtIndex(lines, i);
             CFRange lineRange = CTLineGetStringRange(line);
             
-            NSRange innerRange = [self innerRangeBetweenOne:range andSecond:NSMakeRange(lineRange.location == kCFNotFound ? NSNotFound : lineRange.location, lineRange.length)];
+            NSRange range2 = NSMakeRange(lineRange.location == kCFNotFound ? NSNotFound : lineRange.location, lineRange.length);
+            NSRange innerRange = GKGetInnerRange(range, range2);
             
             if(innerRange.location != NSNotFound && innerRange.length > 0){
                 CGFloat lineAscent;
@@ -655,6 +871,9 @@ static NSRegularExpression *URLRegularExpression = nil;
                 //最后一行加上省略号
                 if (i == count - 1 && end == lineRange.location + lineRange.length) {
                     rect.size.width += self.truncationWidth;
+                    if (CGRectGetMaxX(rect) > CGRectGetMaxX(self.textDrawRect)) {
+                        rect.size.width = CGRectGetMaxX(self.textDrawRect) - rect.origin.x;
+                    }
                 }
                 
                 preY = CGRectGetMaxY(rect);
@@ -666,34 +885,6 @@ static NSRegularExpression *URLRegularExpression = nil;
     }
     
     self.highlightedRects = rects;
-}
-
-///获取内部的range
-- (NSRange)innerRangeBetweenOne:(NSRange) one andSecond:(NSRange) second
-{
-    NSRange range = NSMakeRange(NSNotFound, 0);
-    
-    //交换
-    if(one.location > second.location){
-        NSRange tmp = one;
-        one = second;
-        second = tmp;
-    }
-    
-    if(second.location < one.location + one.length){
-        range.location = second.location;
-        
-        NSInteger end = MIN(one.location + one.length, second.location + second.length);
-        range.length = end - range.location;
-    }
-    
-    return range;
-}
-
-///取消高亮
-- (void)removeHighlightedRects
-{
-    self.highlightedRects = nil;
 }
 
 @end
