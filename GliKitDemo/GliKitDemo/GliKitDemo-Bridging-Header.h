@@ -4,3 +4,4 @@
 #import <GliKit.h>
 #import <GKTableViewSwipeCell.h>
 #import <UIScrollView+GKNestedScroll.h>
+#import "GKDTabBarController.h"

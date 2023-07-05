@@ -154,7 +154,7 @@
     [self.imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapImageView)]];
     
     [self.label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapLabel)]];
-    
+
     
     UIImage *image = [UIImage gkQRCodeImageWithString:@"xxx" correctionLevel:GKQRCodeImageCorrectionLevelPercent7 size:CGSizeMake(100, 100) contentColor:UIColor.redColor backgroundColor:nil logo:nil logoSize:CGSizeZero];
     self.imageView.image = image;
@@ -163,7 +163,7 @@
             
     }];
 
-    image = [UIImage gkQRCodeImageWithString:@"好东西" correctionLevel:GKQRCodeImageCorrectionLevelPercent30 size:CGSizeMake(200, 200) contentColor:UIColor.blueColor backgroundColor:UIColor.whiteColor logo:nil logoSize:CGSizeZero];
+    image = [UIImage gkQRCodeImageWithString:@"好东西" correctionLevel:GKQRCodeImageCorrectionLevelPercent30 size:CGSizeMake(200, 200) contentColor:UIColor.blueColor backgroundColor:UIColor.whiteColor logo:[UIImage imageNamed:@"swift"] logoSize:CGSizeMake(54, 54)];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [self.view addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {

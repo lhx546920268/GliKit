@@ -246,15 +246,21 @@
                              logo:(UIImage*) logo
                             logoSize:(CGSize)logoSize
 {
+    id contentColors = contentColor ? @[contentColor] : nil;
+    return [self gkQRCodeImageWithString:string correctionLevel:correctionLevel size:size contentColors:contentColors backgroundColor:backgroundColor logo:logo logoSize:logoSize];
+}
+
++ (UIImage*)gkQRCodeImageWithString:(NSString*) string
+                  correctionLevel:(GKQRCodeImageCorrectionLevel) correctionLevel
+                             size:(CGSize) size
+                     contentColors:(NSArray<UIColor*>*) contentColors
+                  backgroundColor:(UIColor*) backgroundColor
+                             logo:(UIImage*) logo
+                            logoSize:(CGSize)logoSize
+{
     
     if(string == nil)
         return nil;
-    
-    ///设置默认属性
-    if(contentColor == nil)
-        contentColor = [UIColor blackColor];
-    if(backgroundColor == nil)
-        backgroundColor = [UIColor whiteColor];
     
     if(CGSizeEqualToSize(size, CGSizeZero)){
         size = CGSizeMake(240.0, 240.0);
@@ -276,14 +282,14 @@
             break;
     }
     
-    ///通过coreImage生成默认的二维码图片
+    //通过coreImage生成默认的二维码图片
     CIFilter<CIQRCodeGenerator> *filter = [CIFilter QRCodeGenerator];
     filter.message = [string dataUsingEncoding:NSUTF8StringEncoding];
     filter.correctionLevel = level;
     
     CIImage *ciImage = filter.outputImage;
     
-    ///把它生成给定大小的图片
+    //把它生成给定大小的图片
     CGRect rect = CGRectIntegral(ciImage.extent);
     
     CIContext *context = [CIContext contextWithOptions:nil];
@@ -292,22 +298,22 @@
     if(imageRef == NULL)
         return nil;
     
-    ///创建位图
+    //创建位图
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     
-    ///获取实际生成的图片宽高
+    //获取实际生成的图片宽高
     size_t width = CGImageGetWidth(imageRef);
     size_t height = CGImageGetHeight(imageRef);
     
-    ///计算需要的二维码图片宽高比例
+    //计算需要的二维码图片宽高比例
     CGFloat w_scale = size.width / (CGFloat)width;
     CGFloat h_scale = size.height / (CGFloat)height;
     
     width *= w_scale;
     height *= h_scale;
     
-    size_t bytesPerRow = width * 4; ///每行字节数
-    uint32_t *data = malloc(bytesPerRow * height); ///创建像素存储空间
+    size_t bytesPerRow = width * 4; //每行字节数
+    uint32_t *data = malloc(bytesPerRow * height); //创建像素存储空间
     CGContextRef cx = CGBitmapContextCreate(data, width, height, 8, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Little);
     CGColorSpaceRelease(colorSpace);
     
@@ -317,64 +323,25 @@
         return nil;
     }
     
-    CGContextSetInterpolationQuality(cx, kCGInterpolationNone); ///设置二维码质量，否则二维码图片会变模糊，可无损放大
-    CGContextScaleCTM(cx, w_scale, h_scale); ///调整坐标系比例
+    CGContextSetInterpolationQuality(cx, kCGInterpolationNone); //设置二维码质量，否则二维码图片会变模糊，可无损放大
+    CGContextScaleCTM(cx, w_scale, h_scale); //调整坐标系比例
     CGContextDrawImage(cx, rect, imageRef);
     
     CGImageRelease(imageRef);
     
-    ///也可以使用 CIFalseColor 类型的滤镜来改变二维码背景颜色和二维码颜色
+    //也可以使用 CIFalseColor 类型的滤镜来改变二维码背景颜色和二维码颜色
     
-    ///如果二维码颜色不是黑色 并且背景不是白色 ，改变它的颜色
-    if(![contentColor isEqualToColor:[UIColor blackColor]]
-       || ![backgroundColor isEqualToColor:[UIColor whiteColor]]){
-        ///获取颜色的rgba值
-        NSDictionary *dic = contentColor.gkColorARGB;
-        int c_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
-        int c_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
-        int c_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
-        int c_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
-        
-        dic = UIColor.purpleColor.gkColorARGB;
-        int c1_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
-        int c1_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
-        int c1_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
-        int c1_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
-        
-        dic = backgroundColor.gkColorARGB;
-        int b_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
-        int b_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
-        int b_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
-        int b_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
-        
-        
-        ///遍历图片的像素并改变值，像素是一个二维数组， 每个像素由RGBA的数组组成，在数组中的排列顺序是从右到左即 array[0] 是 A阿尔法通道
-        uint32_t *tmpData = data; ///创建临时的数组指针，保持data的指针指向为起始位置
-        for(size_t i = 0;i < height; i ++){
-            for(size_t j = 0;j < width; j ++){
-                uint8_t *ptr = (uint8_t*)tmpData;
-                if(ptr[3] < 255){ ///判断是否是背景像素，白色是背景
-                    ///改变二维码颜色
-                    float value1 = (i + j) / (float)(width + height);
-                    float value = 1.0f - value1;
-                    ptr[3] = c_red * value + c1_red * value1;
-                    ptr[2] = c_green * value + c1_green * value1;
-                    ptr[1] = c_blue * value + c1_blue * value1;
-                    ptr[0] = c_alpha * value + c1_alpha * value1;
-                }else{
-                    ///改变背景颜色
-                    ptr[3] = b_red;
-                    ptr[2] = b_green;
-                    ptr[1] = b_blue;
-                    ptr[0] = b_alpha;
-                }
-                
-                tmpData ++; ///指针指向下一个像素
-            }
+    //如果二维码颜色不是黑色 并且背景不是白色 ，改变它的颜色
+    if(contentColors.count > 0
+       || ![backgroundColor isEqualToColor:UIColor.whiteColor]){
+        if(contentColors.count >= 2) {
+            [self changeQRCode:data width:width height:height withStartColor:contentColors[0] endColor:contentColors[1] backgroundColor:backgroundColor];
+        } else {
+            [self changeQRCode:data width:width height:height withContentColor:contentColors[0] backgroundColor:backgroundColor];
         }
     }
     
-    ///绘制logo 圆角有锯齿，暂无解决方案
+    //绘制logo 圆角有锯齿，暂无解决方案
     //    if(logo)
     //    {
     //        ///因为前面 画板已缩放过了，这里的坐标系要调整比例
@@ -385,7 +352,7 @@
     //        CGContextDrawImage(cx, rect, logoRef);
     //    }
     
-    ///从画板中获取二维码图片
+    //从画板中获取二维码图片
     CGImageRef qrImageRef = CGBitmapContextCreateImage(cx);
     CGContextRelease(cx);
     free(data);
@@ -396,7 +363,7 @@
     UIImage *image = [UIImage imageWithCGImage:qrImageRef];
     CGImageRelease(qrImageRef);
     
-    ///绘制logo 没有锯齿
+    //绘制logo 没有锯齿
     if(logo){
         if(logoSize.width == 0 || logoSize.height == 0){
             logoSize = logo.size;
@@ -413,6 +380,100 @@
     }
     
     return image;
+}
+
++ (void)changeQRCode:(uint32_t*) data width:(size_t) width height:(size_t) height withContentColor:(UIColor*) contentColor backgroundColor:(UIColor*) backgroundColor
+{
+    contentColor = contentColor ?: UIColor.blackColor;
+    backgroundColor = backgroundColor ?: UIColor.whiteColor;
+    
+    //获取颜色的rgba值
+    NSDictionary *dic = contentColor.gkColorARGB;
+    int c_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+    int c_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+    int c_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+    int c_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+    
+    dic = backgroundColor.gkColorARGB;
+    int b_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+    int b_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+    int b_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+    int b_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+
+    //遍历图片的像素并改变值，像素是一个二维数组， 每个像素由RGBA的数组组成，在数组中的排列顺序是从右到左即 array[0] 是 A阿尔法通道
+    uint32_t *tmpData = data; //创建临时的数组指针，保持data的指针指向为起始位置
+    for(size_t i = 0;i < height; i ++){
+        for(size_t j = 0;j < width; j ++){
+            if((*tmpData & 0xFFFFFF) < 0x999999){ //判断是否是背景像素，白色是背景
+                //改变二维码颜色
+                uint8_t *ptr = (uint8_t*)tmpData;
+                ptr[3] = c_red;
+                ptr[2] = c_green;
+                ptr[1] = c_blue;
+                ptr[0] = c_alpha;
+            }else{
+                //改变背景颜色
+                uint8_t *ptr = (uint8_t*)tmpData;
+                ptr[3] = b_red;
+                ptr[2] = b_green;
+                ptr[1] = b_blue;
+                ptr[0] = b_alpha;
+            }
+            
+            tmpData ++; //指针指向下一个像素
+        }
+    }
+
+}
+
++ (void)changeQRCode:(uint32_t*) data width:(size_t) width height:(size_t) height withStartColor:(UIColor*) startColor endColor:(UIColor*) endColor backgroundColor:(UIColor*) backgroundColor
+{
+    backgroundColor = backgroundColor ?: UIColor.whiteColor;
+    
+    //获取颜色的rgba值
+    NSDictionary *dic = startColor.gkColorARGB;
+    int s_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+    int s_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+    int s_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+    int s_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+    
+    dic = endColor.gkColorARGB;
+    int e_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+    int e_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+    int e_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+    int e_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+    
+    dic = backgroundColor.gkColorARGB;
+    int b_red = [[dic objectForKey:GKColorRed] floatValue] * 255;
+    int b_green = [[dic objectForKey:GKColorGreen] floatValue] * 255;
+    int b_blue = [[dic objectForKey:GKColorBlue] floatValue] * 255;
+    int b_alpha = [[dic objectForKey:GKColorAlpha] floatValue] * 255;
+    
+    
+    //遍历图片的像素并改变值，像素是一个二维数组， 每个像素由RGBA的数组组成，在数组中的排列顺序是从右到左即 array[0] 是 A阿尔法通道
+    uint32_t *tmpData = data; //创建临时的数组指针，保持data的指针指向为起始位置
+    for(size_t i = 0;i < height; i ++){
+        for(size_t j = 0;j < width; j ++){
+            uint8_t *ptr = (uint8_t*)tmpData;
+            if(ptr[3] < 255){ ///判断是否是背景像素，白色是背景
+                //改变二维码颜色
+                float e_value = (i + j) / (float)(width + height);
+                float s_value = 1.0f - e_value;
+                ptr[3] = s_red * s_value + e_red * e_value;
+                ptr[2] = s_green * s_value + e_green * e_value;
+                ptr[1] = s_blue * s_value + e_blue * e_value;
+                ptr[0] = s_alpha * s_value + e_alpha * e_value;
+            }else{
+                ///改变背景颜色
+                ptr[3] = b_red;
+                ptr[2] = b_green;
+                ptr[1] = b_blue;
+                ptr[0] = b_alpha;
+            }
+            
+            tmpData ++; //指针指向下一个像素
+        }
+    }
 }
 
 @end

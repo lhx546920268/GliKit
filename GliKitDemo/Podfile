@@ -10,7 +10,6 @@ target 'GliKitDemo' do
   pod 'GliKit', :path => '../GliKit'
   pod 'SDWebImageWebPCoder'
   pod 'SDWebImageSVGCoder'
-  
 end
 
 post_install do |installer|
