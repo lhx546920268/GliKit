@@ -14,7 +14,7 @@
 #import <CoreText/CoreText.h>
 #import "UIColor+GKUtils.h"
 #import "UIViewController+GKPush.h"
-#import <NSAttributedString+GKUtils.h>
+#import "NSAttributedString+GKUtils.h"
 #import "UIFont+GKUtils.h"
 
 @interface GKURLDetector ()
@@ -300,7 +300,7 @@ CF_INLINE NSRange GKTranslateCFRange(CFRange range) {
             if (![attributedText isKindOfClass:NSMutableAttributedString.class]) {
                 attr = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
             }
-            NSMutableDictionary *attrs = [attr attributesAtIndex:0 effectiveRange:nil];
+            NSMutableDictionary *attrs = (NSMutableDictionary*)[attr attributesAtIndex:0 effectiveRange:nil];
             if (![attrs isKindOfClass:NSMutableDictionary.class]) {
                 attrs = [NSMutableDictionary dictionaryWithDictionary:attrs];
             }
@@ -341,7 +341,6 @@ CF_INLINE NSRange GKTranslateCFRange(CFRange range) {
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize size = [super intrinsicContentSize];
     if (self.framesetter) {
         CFRange range;
         CGSize constraintSize;
@@ -507,7 +506,7 @@ CF_INLINE NSRange GKTranslateCFRange(CFRange range) {
     NSAttributedString *attributedTruncationString = self.attributedTruncationString;
     if (!attributedTruncationString) {
         NSString *truncationTokenString = @"\u2026"; // Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026)
-        NSMutableDictionary *attributes = [attr attributesAtIndex:(NSUInteger)position effectiveRange:nil];
+        NSDictionary *attributes = [attr attributesAtIndex:(NSUInteger)position effectiveRange:nil];
         attributedTruncationString = [[NSAttributedString alloc] initWithString:truncationTokenString attributes:attributes];
     }
     self.truncationWidth = [attributedTruncationString gkBoundsWithConstraintWidth:CGRectGetWidth(self.textDrawRect)].width;
@@ -758,7 +757,6 @@ CF_INLINE NSRange GKTranslateCFRange(CFRange range) {
     point = CGPointMake(point.x - textRect.origin.x, textRect.size.height - (point.y - textRect.origin.y));
 
     //行数为0
-    NSAttributedString *attr = self.attributedText;
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRect(path, NULL, self.textDrawRect);
     CTFrameRef ctFrame = CTFramesetterCreateFrame(self.framesetter, CFRangeMake(0, 0), path, NULL);

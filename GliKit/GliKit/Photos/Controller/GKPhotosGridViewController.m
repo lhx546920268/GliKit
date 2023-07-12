@@ -81,7 +81,7 @@
     self.requestOptions.networkAccessAllowed = YES;
     
     if(self.navigationController.presentingViewController){
-        [self gkSetRightItemWithTitle:@"取消" action:@selector(handleCancel)];
+        [self setRightItemWithTitle:@"取消" action:@selector(handleCancel)];
     }
     
     //多选
@@ -89,7 +89,7 @@
         self.selectedAssets = [NSMutableArray arrayWithCapacity:self.photosOptions.maxCount];
     }
     
-    self.navigationItem.title = self.collection.title;
+    self.navigatonBar.title = self.collection.title;
     
     [self initViews];
 }
@@ -211,8 +211,6 @@
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
     [self gkShowLoadingToastWithText:nil];
-    self.gkBackBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)
     __block NSInteger totalCount = assets.count;
@@ -261,16 +259,12 @@
 - (void)cropImageWithAsset:(PHAsset*) asset
 {
     [self gkShowLoadingToastWithText:nil];
-    self.gkBackBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)
     [self.imageManager requestImageDataForAsset:asset options:self.requestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         
         StrongObj(self)
         if(self){
-            self.gkBackBarButtonItem.enabled = YES;
-            self.navigationItem.rightBarButtonItem.enabled = YES;
             
             if(imageData){
                 [self gkDismissLoadingToast];

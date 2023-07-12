@@ -9,14 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "UIView+GKEmptyView.h"
 #import "GKCancelableTask.h"
+#import "GKNavigationBar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GKContainer,
-GKBaseViewModel,
-GKNavigationBar,
-GKSystemNavigationBar,
-GKNavigationItemHelper;
+@class GKContainer, GKBaseViewModel;
 
 ///控制视图的基类
 @interface GKBaseViewController : UIViewController<GKEmptyViewDelegate>
@@ -39,6 +36,9 @@ GKNavigationItemHelper;
 ///是否是第一次显示
 @property(nonatomic, readonly) BOOL isFisrtDisplay;
 
+///显示返回按钮
+@property(nonatomic, assign) BOOL showBackItem;
+
 ///是否已经点击返回了
 @property(nonatomic, readonly) BOOL isBacked;
 
@@ -54,12 +54,6 @@ GKNavigationItemHelper;
 
 ///导航栏
 @property(nonatomic, readonly, nullable) GKNavigationBar *navigatonBar;
-
-///item帮助类
-@property(nonatomic, readonly) GKNavigationItemHelper *navigationItemHelper;
-
-///系统导航栏
-@property(nonatomic, readonly, nullable) GKSystemNavigationBar *systemNavigationBar;
 
 ///是否要创建自定义导航栏 default YES
 @property(nonatomic, assign) BOOL shouldCreateNavigationBar;
@@ -116,6 +110,18 @@ GKNavigationItemHelper;
 /// @param bottomView 底部视图
 /// @param height 视图高度，GKWrapContent 为自适应
 - (void)setBottomView:(nullable UIView *)bottomView height:(CGFloat) height;
+
+@end
+
+@interface GKBaseViewController (GKNavigationBarItemExtension)
+
+///设置导航栏左边按钮
+- (UIButton*)setLeftItemWithTitle:(NSString*) title action:(nullable SEL) action;
+- (UIButton*)setLeftItemWithImage:(UIImage*) image action:(nullable SEL) action;
+
+///设置导航栏右边按钮
+- (UIButton*)setRightItemWithTitle:(NSString*) title action:(nullable SEL) action;
+- (UIButton*)setRightItemWithImage:(UIImage*) image action:(nullable SEL) action;
 
 @end
 

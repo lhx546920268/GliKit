@@ -20,17 +20,17 @@
 ///导航栏中的标题和按钮间距
 @property(class, nonatomic, readonly) CGFloat gkNavigationBarMarginForItem;
 
-///导航栏中的标题和屏幕间距
-@property(class, nonatomic, readonly) CGFloat gkNavigationBarMarginForScreen;
+///导航栏高度
+@property(class, nonatomic, assign) CGFloat gkNavigationBarHeight;
 
 ///状态栏样式
-@property (class, nonatomic, assign) UIStatusBarStyle gkStatusBarStyle;
+@property(class, nonatomic, assign) UIStatusBarStyle gkStatusBarStyle;
 
 ///兼容的dark 样式
 @property(class, nonatomic, readonly) UIStatusBarStyle gkDarkStatusBarStyle;
 
 ///状态栏高度
-@property (class, nonatomic, readonly) CGFloat gkStatusBarHeight;
+@property(class, nonatomic, readonly) CGFloat gkStatusBarHeight;
 
 ///钥匙串群组
 @property(class, nonatomic) NSString *gkKeychainAcessGroup;

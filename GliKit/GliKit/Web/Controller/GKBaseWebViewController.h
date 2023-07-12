@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否关闭系统的长按手势 default `NO`
 @property(nonatomic, assign) BOOL shouldCloseSystemLongPressGesture;
 
-///是否使用 web里面的标题，使用会self.navigationItem.title 替换成web的标题，default `YES`
+///是否使用 web里面的标题，使用会self.navigationBar.title 替换成web的标题，default `YES`
 @property(nonatomic, assign) BOOL useWebTitle;
 
 ///载入htmlString 是否根据屏幕适配 default `NO`

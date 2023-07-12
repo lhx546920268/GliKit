@@ -53,7 +53,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        self.navigationItem.title = @"扫码";
+        self.navigatonBar.title = @"扫码";
         self.shouldRectOfInterest = YES;
         self.supportedTypes = @[AVMetadataObjectTypeQRCode];
     }

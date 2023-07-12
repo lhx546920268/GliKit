@@ -106,7 +106,7 @@
     [super viewDidLoad];
  
     self.navigationItem.title = @"过渡";
-    self.gkTintColor = UIColor.whiteColor;
+    self.navigatonBar.tintColor = UIColor.whiteColor;
 
     self.navigatonBar.backgroundColor = UIColor.redColor;
     // Do any additional setup after loading the view from its nib.

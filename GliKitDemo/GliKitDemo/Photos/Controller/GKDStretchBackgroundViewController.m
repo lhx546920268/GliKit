@@ -8,7 +8,6 @@
 
 #import "GKDStretchBackgroundViewController.h"
 #import <GKContainer.h>
-#import <GKNavigationBar.h>
 #import <GKBannerView.h>
 
 @interface GKDStretchBackgroundCell : UICollectionViewCell
@@ -63,22 +62,13 @@
     
     self.colors = @[UIColor.redColor, UIColor.orangeColor, UIColor.blueColor];
     
-    self.bannerView = [GKBannerView new];
+    self.bannerView = [[GKBannerView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.gkWidth, 200)];
     self.bannerView.delegate = self;
     self.bannerView.enableScrollCircularly = YES;
     [self.bannerView registerClass:GKDStretchBackgroundCell.class];
     self.bannerView.layer.anchorPoint = CGPointMake(0.5, 1.0);
     [scrollView addSubview:self.bannerView];
     
-    id top = [[MASViewAttribute alloc] initWithView:scrollView item:scrollView.frameLayoutGuide layoutAttribute:NSLayoutAttributeTop];
-    id leading = [[MASViewAttribute alloc] initWithView:scrollView item:scrollView.frameLayoutGuide layoutAttribute:NSLayoutAttributeLeading];
-    id trailing = [[MASViewAttribute alloc] initWithView:scrollView item:scrollView.frameLayoutGuide layoutAttribute:NSLayoutAttributeTrailing];
-    [self.bannerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(leading);
-        make.trailing.equalTo(trailing);
-        make.top.equalTo(top);
-        make.height.equalTo(200);
-    }];
     
 //    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[NSBundle.mainBundle pathForResource:@"512x384" ofType:@"webp"]]];
 //    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -97,6 +87,7 @@
     
     if (width > UIScreen.gkWidth) {
         CGFloat scale = width / UIScreen.gkWidth;
+        NSLog(@"%f", scale);
         self.bannerView.transform = CGAffineTransformMakeScale(scale, scale);
     } else {
         self.bannerView.transform = CGAffineTransformIdentity;

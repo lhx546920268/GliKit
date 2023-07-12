@@ -471,7 +471,7 @@ static char GKDialogInteractiveDismisHelperKey;
                         
                         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
                         animation.fromValue = @(self.view.gkHeight + self.dialog.gkHeight / 2);
-                        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                         animation.toValue = @(self.dialog.layer.position.y);
                         animation.duration = 0.25;
                         [self.dialog.layer addAnimation:animation forKey:@"position"];
@@ -574,7 +574,7 @@ static char GKDialogInteractiveDismisHelperKey;
                     
                     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
                     animation.fromValue = @(self.dialog.layer.position.y);
-                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                     animation.toValue = @(self.view.gkHeight + self.dialog.gkHeight / 2);
                     animation.duration = 0.25;
                     animation.fillMode = kCAFillModeForwards;
@@ -758,7 +758,6 @@ static char GKDialogInteractiveDismisHelperKey;
 {
     self.interacting = NO;
     UIView *dialog = self.viewController.dialog;
-    CGPoint translation = [pan translationInView:dialog];
     
     //快速滑动也算完成
     CGPoint velocity = [pan velocityInView:dialog];
@@ -769,7 +768,6 @@ static char GKDialogInteractiveDismisHelperKey;
     
     BOOL complete = self.transitionY / dialog.gkHeight  >= 0.4;
     NSTimeInterval duration = 0.25;
-    CGPoint center;
     
     CGAffineTransform transform;
     if(complete){

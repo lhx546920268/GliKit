@@ -31,9 +31,6 @@
 ///选中
 @property(nonatomic, readonly) GKPhotosCheckBox *checkBox;
 
-///标题
-@property(nonatomic, strong) UILabel *titleLabel;
-
 ///图片加载选项
 @property(nonatomic, strong) PHImageRequestOptions *requestOptions;
 
@@ -64,7 +61,8 @@
     self.requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
     self.requestOptions.networkAccessAllowed = YES;
     
-    self.gkBackBarButtonItem.customView.tintColor = UIColor.whiteColor;
+    self.navigatonBar.tintColor = UIColor.whiteColor;
+    self.navigatonBar.titleLabel.textColor = UIColor.whiteColor;
     self.navigatonBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
     self.view.backgroundColor = UIColor.blackColor;
     
@@ -94,13 +92,7 @@
     _checkBox = [[GKPhotosCheckBox alloc] initWithFrame:CGRectMake(0, 0, size - UIApplication.gkNavigationBarMargin * 2 + 6, size)];
     [_checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
     _checkBox.contentInsets = UIEdgeInsetsMake(10, UIApplication.gkNavigationBarMargin, 10, UIApplication.gkNavigationBarMargin);
-    [self gkSetRightItemWithCustomView:_checkBox];
-    
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, self.gkNavigationBarHeight)];
-    _titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    _titleLabel.textColor = UIColor.whiteColor;
-    _titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.navigationItem.titleView = _titleLabel;
+    self.navigatonBar.rightItemView = _checkBox;
     
     self.photosToolBar = [GKPhotosToolBar new];
     self.photosToolBar.backgroundColor = self.navigatonBar.backgroundView.backgroundColor;
@@ -180,8 +172,6 @@
 - (void)useAssets:(NSArray<PHAsset*>*) assets
 {
     [self gkShowLoadingToastWithText:nil];
-    self.gkBackBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakObj(self)
     __block NSInteger totalCount = assets.count;
@@ -274,7 +264,7 @@
 ///更新标题
 - (void)updateTitle
 {
-    self.titleLabel.text = [NSString stringWithFormat:@"%d/%d", (int)(self.selectedIndex + 1), (int)self.assets.count];
+    self.navigatonBar.titleLabel.text = [NSString stringWithFormat:@"%d/%d", (int)(self.selectedIndex + 1), (int)self.assets.count];
     PHAsset *asset = self.assets[self.selectedIndex];
     if([self containAsset:asset]){
         self.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self indexOfAsset:asset] + 1];

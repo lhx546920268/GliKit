@@ -188,6 +188,41 @@ void runLoopCallbck (CFRunLoopObserverRef observer, CFRunLoopActivity activity, 
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
     [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
     
+    NSString *str = @"我是加<b></b>好多东西啊<b>加大的</b>啊啊啊";
+   
+    NSRegularExpression *expre = [[NSRegularExpression alloc] initWithPattern:@"<b>[\\s\\S]*?</b>" options:NSRegularExpressionCaseInsensitive error:nil];
+    
+    NSMutableArray *ranges = [NSMutableArray array];
+    NSMutableString *string = [NSMutableString string];
+    __block NSInteger start = 0;
+    [expre enumerateMatchesInString:str options:0 range:NSMakeRange(0, str.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        
+        [string appendString:[str substringWithRange:NSMakeRange(start, result.range.location - start)]];
+        NSRange range = result.range;
+        start = range.location + range.length;
+        
+        range.location += @"<b>".length;
+        range.length -= @"<b>".length + @"</b>".length;
+        if (range.length > 0) {
+            NSString *subString = [str substringWithRange:range];
+            [ranges addObject:[NSValue valueWithRange:NSMakeRange(string.length, range.length)]];
+            [string appendString:subString];
+        }
+
+        
+        NSLog(@"%@", [str substringWithRange:result.range]);
+    }];
+    
+    if (start < str.length) {
+        [string appendString:[str substringWithRange:NSMakeRange(start, str.length - start)]];
+    }
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:string];
+    for (NSValue *value in ranges) {
+        NSRange range = value.rangeValue;
+        [attr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:12] range:range];
+    }
+    
+    NSLog(@"str = %@", string);
 
     [UIView animateWithDuration:0 delay:0 options:0 animations:^{
             

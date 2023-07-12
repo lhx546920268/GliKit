@@ -13,7 +13,6 @@
 #import "GKPageViewController.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "GKNavigationBar.h"
-#import "GKNavigationItemHelper.h"
 #import "NSString+GKUtils.h"
 #import "GKBaseDefines.h"
 #import "UIViewController+GKLoading.h"
@@ -353,11 +352,7 @@ static WKProcessPool *sharedProcessPool;
     }else if ([keyPath isEqualToString:@"title"]){
         
         if(self.useWebTitle){
-            if(self.navigatonBar.hidden){
-                self.navigationItemHelper.title = _webView.title;
-            }else{
-                self.navigationItem.title = _webView.title;
-            }
+            self.navigatonBar.title = _webView.title;
         }
     }
 }

@@ -74,7 +74,6 @@ static char GKPartialPresentPropsKey;
     GKPartialPresentProps *props = self.partialPresentProps;
 
     if(props.cornerRadius > 0){
-        CGRect frame = props.frame;
         [viewController.view gkSetCornerRadius:props.cornerRadius corners:props.corners];
     }
     

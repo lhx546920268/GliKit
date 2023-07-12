@@ -14,6 +14,7 @@
 #import <SDWebImageDownloader.h>
 #import <objc/runtime.h>
 #import <GKPopoverMenu.h>
+#import <GKNavigationBar.h>
 
 @interface SRRunLoopThread : NSThread
 
@@ -214,7 +215,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.title = GKAppUtils.appName;
+    self.navigatonBar.title = GKAppUtils.appName;
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.gkWidth, 30)];
+    view.layer.cornerRadius = 15;
+    view.backgroundColor = UIColor.redColor;
+    
+    self.navigatonBar.titleView = view;
     
     self.datas = @[
                    [GKDRowModel modelWithTitle:@"相册" clazz:@"user/photo"],
@@ -240,7 +247,8 @@
     self.separatorEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     [self registerClass:RootListCell.class];
     [self registerClass:GKDRootListCell.class];
-    [self gkSetRightItemWithTitle:@"Popover" action:@selector(handlePopover)];
+    [self.navigatonBar setLeftItemWithTitle:@"左边" target:nil action:nil];
+    [self.navigatonBar setRightItemWithTitle:@"Popover" target:self action:@selector(handlePopover)];
     
     [super initViews];
 }
@@ -250,7 +258,7 @@
     GKPopoverMenu *menu = [[GKPopoverMenu alloc] initWithTitles:@[@"首页", @"购物车"]];
     menu.strokeColor = UIColor.redColor;
     menu.strokeWidth = 2;
-    [menu showInView:self.navigationController.view anchorView:self.navigationItem.rightBarButtonItem.customView animated:YES];
+    [menu showInView:self.navigationController.view anchorView:self.navigatonBar.rightItemView animated:YES];
 }
 
 //MARK: UITableViewDelegate

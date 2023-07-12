@@ -84,7 +84,11 @@
     }
     
     if(self.safeLayoutGuide & GKSafeLayoutGuideTop && self.viewController){
-        return self.viewController.gkSafeAreaLayoutGuideTop;
+        if (self.viewController.navigatonBar) {
+            return self.viewController.navigatonBar.mas_bottom;
+        } else {
+            return self.viewController.gkSafeAreaLayoutGuideTop;
+        }
     }else{
         return self.mas_top;
     }

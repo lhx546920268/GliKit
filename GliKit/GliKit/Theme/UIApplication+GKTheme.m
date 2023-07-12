@@ -11,6 +11,7 @@
 
 static CGFloat appSeparatorHeight = 0;
 static CGFloat appNavigationBarMargin = 15;
+static CGFloat appNavigationBarHeight = 44;
 static UIStatusBarStyle appStatusBarStyle;
 static NSString *appKeychainAccessGroup = nil;
 
@@ -49,9 +50,14 @@ static NSString *appKeychainAccessGroup = nil;
     return 6;
 }
 
-+ (CGFloat)gkNavigationBarMarginForScreen
++ (void)setGkNavigationBarHeight:(CGFloat)gkNavigationBarHeight
 {
-    return 0;
+    appNavigationBarHeight = gkNavigationBarHeight;
+}
+
++ (CGFloat)gkNavigationBarHeight
+{
+    return appNavigationBarHeight;
 }
 
 + (UIStatusBarStyle)gkStatusBarStyle

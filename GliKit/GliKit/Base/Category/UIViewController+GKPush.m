@@ -152,7 +152,10 @@
             }
         }
         [viewControllers removeObjectsInArray:removedViewControlelrs];
-        viewController.gkShowBackItem = YES;
+        if ([viewController isKindOfClass:GKBaseViewController.class]) {
+            GKBaseViewController *vc = (GKBaseViewController*)viewController;
+            vc.showBackItem = YES;
+        }
         [viewControllers addObject:viewController];
         
         [nav setViewControllers:viewControllers animated:YES];

@@ -36,7 +36,7 @@
 
 - (CGFloat)marginForScreen
 {
-    return UIApplication.gkNavigationBarMarginForScreen;
+    return 0;
 }
 
 - (CGSize)intrinsicContentSize

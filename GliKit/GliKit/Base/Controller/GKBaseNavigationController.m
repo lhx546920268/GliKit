@@ -7,7 +7,6 @@
 //
 
 #import "GKBaseNavigationController.h"
-#import "GKSystemNavigationBar.h"
 #import "UIApplication+GKTheme.h"
 #import "UIViewController+GKUtils.h"
 #import "GKNavigationTransitionAnimator.h"
@@ -29,7 +28,7 @@
 
 - (instancetype)init
 {
-    self = [super initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
+    self = [super init];
     if (self) {
         [self initParams];
     }
@@ -38,7 +37,7 @@
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
-    self = [super initWithNavigationBarClass:GKSystemNavigationBar.class toolbarClass:nil];
+    self = [super initWithRootViewController:rootViewController];
     if(self){
         [self initParams];
         self.viewControllers = @[rootViewController];
@@ -51,6 +50,7 @@
 {
     self.customTransitionDuration = 0.25;
     self.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self setNavigationBarHidden:YES animated:NO];
 }
 
 - (UIScreenEdgePanGestureRecognizer *)customInteractivePopGestureRecognizer

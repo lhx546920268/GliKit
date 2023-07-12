@@ -9,6 +9,7 @@
 #import "GKPresentTransitionDelegate.h"
 #import "UIViewController+GKTransition.h"
 #import "UIViewController+GKUtils.h"
+#import "GKBaseViewController.h"
 
 @class GKPresentTransitionDelegate;
 
@@ -140,7 +141,11 @@
         
         UINavigationController *nav = [vc gkCreateWithNavigationController];
         nav.gkTransitioningDelegate = delegate;
-        vc.gkShowBackItem = YES;
+        if ([vc isKindOfClass:GKBaseViewController.class]) {
+            GKBaseViewController *viewController = (GKBaseViewController*)vc;
+            viewController.showBackItem = YES;
+        }
+        
         [parentedViewConttroller.gkTopestPresentedViewController presentViewController:nav animated:YES completion:^(void){
 
             if(vc.navigationController){

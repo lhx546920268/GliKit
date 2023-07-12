@@ -223,10 +223,4 @@
     [alert show];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    NSLog(@"viewDidLayoutSubviews");
-}
-
 @end

@@ -89,7 +89,7 @@
     if(self.showImageView)
         return;
     
-    self.gkShowBackItem = NO;
+    self.showBackItem = NO;
     //显示图片
     UIImage *image = self.photosOptions.cropSettings.image;
     

@@ -10,16 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///导航条按钮位置
-typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
-{
-    ///左边
-    GKNavigationItemPositionLeft = 0,
-    
-    ///右边
-    GKNavigationItemPositionRight = 1
-};
-
 ///UIViewController 扩展
 @interface UIViewController (GKUtils)
 
@@ -57,13 +47,6 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 
 @interface UIViewController (GKNavigationBarBackItem)
 
-///显示返回按钮
-@property(nonatomic, assign) BOOL gkShowBackItem;
-
-///返回按钮
-@property(nonatomic, readonly, nullable) UIBarButtonItem *gkBackBarButtonItem;
-
-
 ///返回 动画
 - (void)gkBack;
 
@@ -85,39 +68,6 @@ typedef NS_ENUM(NSInteger, GKNavigationItemPosition)
 - (void)gkBackToPath:(NSString*) path;
 - (void)gkBackToPath:(NSString*) path animated:(BOOL) flag;
 - (void)gkBackToPath:(NSString*) path animated:(BOOL) flag completion:(void (^_Nullable)(void))completion;
-
-@end
-
-@interface UIViewController (GKNavigationBarItemUtils)
-
-///导航栏按钮tintColor，默认是 导航栏上的tintColor
-@property(null_resettable, nonatomic, strong) UIColor *gkTintColor;
-
-///设置item tintColor
-- (void)gkSetTintColorForItem:(UIBarButtonItem*) item;
-
-///设置导航栏按钮
-- (void)gkSetNavigationBarItem:(nullable UIBarButtonItem*) item posiiton:(GKNavigationItemPosition) position;
-
-///设置导航栏左边按钮
-- (UIBarButtonItem*)gkSetLeftItemWithTitle:(NSString*) title action:(nullable SEL) action;
-- (UIBarButtonItem*)gkSetLeftItemWithImage:(UIImage*) image action:(nullable SEL) action;
-- (UIBarButtonItem*)gkSetLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(nullable SEL) action;
-- (UIBarButtonItem*)gkSetLeftItemWithCustomView:(UIView*) customView;
-
-///设置导航栏右边按钮
-- (UIBarButtonItem*)gkSetRightItemWithTitle:(NSString*) title action:(nullable SEL) action;
-- (UIBarButtonItem*)gkSetRightItemWithImage:(UIImage*) image action:(nullable SEL) action;
-- (UIBarButtonItem*)gkSetRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(nullable SEL) action;
-- (UIBarButtonItem*)gkSetRightItemWithCustomView:(UIView*) customView;
-
-// MARK: - Class Method
-
-///创建导航栏按钮
-+ (UIBarButtonItem*)gkBarItemWithImage:(UIImage*) image target:(nullable id) target action:(nullable SEL) action;
-+ (UIBarButtonItem*)gkBarItemWithTitle:(NSString*) title target:(nullable id) target action:(nullable SEL) action;
-+ (UIBarButtonItem*)gkBarItemWithCustomView:(UIView*) customView;
-+ (UIBarButtonItem*)gkBarItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(nullable id) target action:(nullable SEL) action;
 
 @end
 

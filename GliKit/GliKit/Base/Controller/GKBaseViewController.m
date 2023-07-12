@@ -13,13 +13,12 @@
 #import "GKBaseViewModel.h"
 #import "GKNavigationBar.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
-#import "GKSystemNavigationBar.h"
-#import "GKNavigationItemHelper.h"
 #import "UIViewController+GKUtils.h"
 #import "UIView+GKUtils.h"
 #import "UIViewController+GKDialog.h"
 #import "GKBaseDefines.h"
 #import "UIApplication+GKTheme.h"
+#import "UIImage+GKTheme.h"
 
 @interface GKBaseViewController ()<UIGestureRecognizerDelegate>
 
@@ -35,8 +34,6 @@
 @end
 
 @implementation GKBaseViewController
-
-@synthesize navigationItemHelper = _navigationItemHelper;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -78,7 +75,6 @@
     if(self.viewModel){
         [self.viewModel viewWillAppear:animated];
     }
-    self.systemNavigationBar.enabled = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -120,21 +116,15 @@
 {
     [super viewDidLoad];
     
-    //防止侧滑返回 取消时 导航栏出现3个小点
-    UIBarButtonItem *backBarButtonItem = [UIBarButtonItem new];
-    backBarButtonItem.title = @"";
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-    self.navigationItem.hidesBackButton = YES;
-    
     //显示自定义导航栏
     if(self.shouldCreateNavigationBar && [self.parentViewController isKindOfClass:[UINavigationController class]]){
         _navigatonBar = [self.navigationBarClass new];
+        _navigatonBar.title = self.title;
         [self.view addSubview:_navigatonBar];
         
         [_navigatonBar mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.top.equalTo(self.view);
-            make.bottom.equalTo(self.gkSafeAreaLayoutGuideTop);
+            make.height.equalTo(self.gkStatusBarHeight + self.gkNavigationBarHeight);
         }];
     }
     
@@ -152,10 +142,16 @@
     }else{
         
         self.view.backgroundColor = [UIColor whiteColor];
-        if(!self.gkShowBackItem && (self.navigationController.viewControllers.count > 1 || self.navigationController.presentingViewController)){
-            self.gkShowBackItem = YES;
+        if(!self.showBackItem && (self.navigationController.viewControllers.count > 1 || self.navigationController.presentingViewController)){
+            self.showBackItem = YES;
         }
     }
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    _navigatonBar.title = title;
 }
 
 - (BOOL)isFisrtDisplay
@@ -199,11 +195,6 @@
     if(animate){
         if(!hidden){
             self.navigatonBar.hidden = hidden;
-            GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
-            if(navigationBar){
-                navigationBar.enabled = !hidden;
-                self.navigationItemHelper.hiddenItem = hidden;
-            }
         }
         
         CGFloat height = self.gkStatusBarHeight + self.gkNavigationBarHeight;
@@ -219,36 +210,24 @@
         animation.removedOnCompletion = NO;
         animation.fillMode = kCAFillModeForwards;
         [self.navigatonBar.layer addAnimation:animation forKey:@"position"];
-        [self.navigationController setNavigationBarHidden:hidden animated:animate];
     }else{
         self.navigatonBar.hidden = hidden;
         [self.navigatonBar.layer removeAnimationForKey:@"position"];
-        GKSystemNavigationBar *navigationBar = self.systemNavigationBar;
-        if(navigationBar){
-            navigationBar.enabled = !hidden;
-            self.navigationItemHelper.hiddenItem = hidden;
-        }else{
-            [self.navigationController setNavigationBarHidden:hidden animated:animate];
+    }
+}
+
+- (void)setShowBackItem:(BOOL)showBackItem
+{
+    if (_showBackItem != showBackItem) {
+        _showBackItem = showBackItem;
+        if (_showBackItem) {
+            UIImage *image = UIImage.gkNavigationBarBackIcon;
+            NSAssert(image != nil, @"you must set UIImage.gkNavigationBarBackIcon");
+            [self.navigatonBar setLeftItemWithImage:image target:self action:@selector(gkBack)];
+        } else {
+            self.navigatonBar.leftItemView = nil;
         }
     }
-}
-
-- (GKSystemNavigationBar*)systemNavigationBar
-{
-    if([self.navigationController.navigationBar isKindOfClass:GKSystemNavigationBar.class]){
-        return (GKSystemNavigationBar*)self.navigationController.navigationBar;
-    }
-    
-    return nil;
-}
-
-- (GKNavigationItemHelper*)navigationItemHelper
-{
-    if(!_navigationItemHelper){
-        _navigationItemHelper = [[GKNavigationItemHelper alloc] initWithViewController:self];
-    }
-    
-    return _navigationItemHelper;
 }
 
 - (void)gkBack
@@ -257,7 +236,6 @@
     _isBacked = YES;
     [super gkBack];
 }
-
 
 // MARK: - GKEmptyViewDelegate
 
@@ -423,6 +401,30 @@
 - (UIView*)contentView
 {
     return _container.contentView;
+}
+
+@end
+
+@implementation GKBaseViewController (GKNavigationBarItemExtension)
+
+- (UIButton *)setLeftItemWithImage:(UIImage *)image action:(SEL)action
+{
+    return [self.navigatonBar setLeftItemWithImage:image target:self action:action];
+}
+
+- (UIButton *)setLeftItemWithTitle:(NSString *)title action:(SEL)action
+{
+    return [self.navigatonBar setLeftItemWithTitle:title target:self action:action];
+}
+
+- (UIButton *)setRightItemWithImage:(UIImage *)image action:(SEL)action
+{
+    return [self.navigatonBar setRightItemWithImage:image target:self action:action];
+}
+
+- (UIButton *)setRightItemWithTitle:(NSString *)title action:(SEL)action
+{
+    return [self.navigatonBar setRightItemWithTitle:title target:self action:action];
 }
 
 @end
