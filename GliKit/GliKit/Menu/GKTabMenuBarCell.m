@@ -37,7 +37,7 @@
         [_divider mas_makeConstraints:^(MASConstraintMaker *make) {
             make.trailing.equalTo(self);
             make.centerY.equalTo(self);
-            make.height.equalTo(15);
+            make.height.mas_equalTo(15);
         }];
     }
     return self;

@@ -48,6 +48,8 @@
 #ifdef DEBUG
                 NSLog(@"不能打开数据库");
 #endif
+            } else {
+                [self onDataBaseOpen:db];
             }
         }];
     }
@@ -63,6 +65,11 @@
 - (FMDatabaseQueue*)dbQueue
 {
     return _dbQueue;
+}
+
+- (void)onDataBaseOpen:(FMDatabase *)db
+{
+    
 }
 
 ///获取数据库地址

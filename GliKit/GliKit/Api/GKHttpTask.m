@@ -11,7 +11,7 @@
 #import "GKHttpSessionManager.h"
 #import "NSDictionary+GKUtils.h"
 #import "UIView+GKLoading.h"
-#import <SDWebImageCompat.h>
+#import "SDWebImageCompat.h"
 #import "GKLock.h"
 #import "GKHttpTaskDelegate.h"
 

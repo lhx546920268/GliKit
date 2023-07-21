@@ -30,8 +30,8 @@
         [self addSubview:_separator];
         
         [_separator mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.top.trailing.equalTo(0);
-            make.height.equalTo(UIApplication.gkSeparatorHeight);
+            make.leading.top.trailing.equalTo(@0);
+            make.height.mas_equalTo(UIApplication.gkSeparatorHeight);
         }];
     }
     
@@ -59,16 +59,16 @@
             [self insertSubview:btn belowSubview:self.separator];
             
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(0);
-                make.bottom.equalTo(-bottom);
+                make.top.equalTo(@0);
+                make.bottom.mas_equalTo(-bottom);
                 if(beforeBtn){
                     make.leading.equalTo(beforeBtn.mas_trailing);
                     make.width.equalTo(beforeBtn);
                 }else{
-                    make.leading.equalTo(0);
+                    make.leading.mas_equalTo(0);
                 }
                 if(i == _buttons.count - 1){
-                    make.trailing.equalTo(0);
+                    make.trailing.mas_equalTo(0);
                 }
             }];
 
@@ -131,7 +131,7 @@
         if(_backgroundView != nil){
             [self insertSubview:_backgroundView atIndex:0];
             [_backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(0);
+                make.edges.mas_equalTo(0);
             }];
         }
     }

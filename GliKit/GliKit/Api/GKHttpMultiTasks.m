@@ -11,7 +11,7 @@
 #import "GKHttpTaskDelegate.h"
 #import "GKHttpSessionManager.h"
 #import "NSObject+GKUtils.h"
-#import <SDWebImageCompat.h>
+#import "SDWebImageCompat.h"
 #import "GKLock.h"
 
 ///保存请求队列的单例

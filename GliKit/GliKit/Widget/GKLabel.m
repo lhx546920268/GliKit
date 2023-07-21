@@ -111,17 +111,6 @@ CF_INLINE CTLineTruncationType GKGetLineTruncationType(NSLineBreakMode lineBreak
     return truncationType;
 }
 
-///获取行高
-CF_INLINE CGFloat GKGetLineHeight(CTLineRef line) {
-    CGFloat lineAscent;
-    CGFloat lineDescent;
-    CGFloat lineLeading;
-    
-    //获取行高
-    CTLineGetTypographicBounds(line, &lineAscent, &lineDescent, &lineLeading);
-    return lineAscent + lineDescent + lineLeading;
-}
-
 ///是否需要省略号
 CF_INLINE BOOL GKNeedTruncation(NSLineBreakMode lineBreakMode) {
     switch (lineBreakMode) {

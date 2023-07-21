@@ -124,7 +124,7 @@
         
         [_navigatonBar mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.top.equalTo(self.view);
-            make.height.equalTo(self.gkStatusBarHeight + self.gkNavigationBarHeight);
+            make.height.mas_equalTo(self.gkStatusBarHeight + self.gkNavigationBarHeight);
         }];
     }
     

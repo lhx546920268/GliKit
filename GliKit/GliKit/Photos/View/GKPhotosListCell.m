@@ -25,10 +25,10 @@
         [self.contentView addSubview:_thumbnailImageView];
         
         [_thumbnailImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(15);
-            make.top.equalTo(10);
-            make.bottom.equalTo(-10);
-            make.width.equalTo(self.thumbnailImageView.mas_height);
+            make.leading.equalTo(@15);
+            make.top.equalTo(@10);
+            make.bottom.mas_equalTo(-10);
+            make.width.mas_equalTo(self.thumbnailImageView.mas_height);
         }];
         
         _titleLabel = [UILabel new];
@@ -39,7 +39,7 @@
         
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(self.thumbnailImageView.mas_trailing).offset(15);
-            make.centerY.equalTo(0);
+            make.centerY.equalTo(@0);
         }];
         
         _countLabel = [UILabel new];
@@ -51,8 +51,8 @@
         
         [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(self.titleLabel.mas_trailing).offset(5);
-            make.centerY.equalTo(0);
-            make.trailing.equalTo(-15);
+            make.centerY.equalTo(@0);
+            make.trailing.mas_equalTo(-15);
         }];
         
         
@@ -61,7 +61,7 @@
         
         [divider mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(self.titleLabel);
-            make.trailing.bottom.equalTo(0);
+            make.trailing.bottom.equalTo(@0);
         }];
     }
     return self;

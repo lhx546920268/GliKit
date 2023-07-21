@@ -50,13 +50,13 @@
         [self.contentView addSubview:_button];
         
         [_button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(0);
+            make.edges.mas_equalTo(0);
         }];
         
         _divider = [GKDivider new];
         [self.contentView addSubview:_divider];
         [_divider mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.bottom.trailing.equalTo(0);
+            make.leading.bottom.trailing.mas_equalTo(0);
         }];
     }
     

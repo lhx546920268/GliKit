@@ -9,12 +9,20 @@
 #import "GKDWebViewController.h"
 #import <GliKitDemo-Swift.h>
 
+
 @interface GKDWebViewController ()
 
 @end
 
 
 @implementation GKDWebViewController
+
++ (void)load
+{
+    [GKRouter.sharedRouter registerPath:@"app/web" forHandler:^UIViewController * _Nullable(GKRouteConfig * _Nonnull config) {
+        return [GKDWebViewController new];
+    }];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

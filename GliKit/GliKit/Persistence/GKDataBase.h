@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class FMDatabaseQueue;
+@class FMDatabaseQueue, FMDatabase;
 
 ///数据库
 @interface GKDataBase : NSObject
@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///数据库地址
 @property(nonatomic, readonly) NSString *sqlitePath;
 
-///数据库单例
-+ (instancetype)sharedInstance;
+///数据库初始化
+- (void)onDataBaseOpen:(FMDatabase*)db;
 
 @end
 

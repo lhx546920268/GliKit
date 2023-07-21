@@ -123,7 +123,7 @@
                 bottomView = [UIView new];
                 [bottomView addSubview:tipButton];
                 [tipButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.leading.top.trailing.equalTo(0);
+                    make.leading.top.trailing.mas_equalTo(0);
                 }];
             }
             tipButton.contentEdgeInsets = insets;
@@ -138,7 +138,7 @@
         if(bottomView != nil){
             [bottomView addSubview:self.photosToolBar];
             [self.photosToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.leading.trailing.bottom.equalTo(0);
+                make.leading.trailing.bottom.mas_equalTo(0);
                 make.top.equalTo(tipButton.mas_bottom);
             }];
             

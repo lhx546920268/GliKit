@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */; };
+		4C0CFB3061FB9BE38BAC4629 /* Pods_GliKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */; };
 		CE01C515243EC7DD000D0268 /* GKScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C514243EC7DD000D0268 /* GKScanViewController.m */; };
 		CE01C518243EC88D000D0268 /* GKScanBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C517243EC88D000D0268 /* GKScanBoxView.m */; };
 		CE01C51B243ECA7C000D0268 /* GKScanBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C51A243ECA7C000D0268 /* GKScanBackgroundView.m */; };
@@ -179,8 +179,8 @@
 
 /* Begin PBXFileReference section */
 		0BEDB41C20325014EA1F86BB /* Pods-GliKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.release.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.release.xcconfig"; sourceTree = "<group>"; };
-		13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GliKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
+		AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE01C513243EC7DD000D0268 /* GKScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanViewController.h; sourceTree = "<group>"; };
 		CE01C514243EC7DD000D0268 /* GKScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKScanViewController.m; sourceTree = "<group>"; };
 		CE01C516243EC88D000D0268 /* GKScanBoxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanBoxView.h; sourceTree = "<group>"; };
@@ -505,7 +505,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				882EA509396C1F9AF5ED9451 /* libPods-GliKit.a in Frameworks */,
+				4C0CFB3061FB9BE38BAC4629 /* Pods_GliKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1281,7 +1281,7 @@
 		D677ACD19C589C9CF0CE9081 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				13649AFD711A9D3CB1A501E3 /* libPods-GliKit.a */,
+				AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

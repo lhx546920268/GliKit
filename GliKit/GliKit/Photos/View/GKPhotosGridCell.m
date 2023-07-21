@@ -41,8 +41,8 @@
         [self.contentView addSubview:_checkBox];
         
         [_checkBox mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.trailing.equalTo(0);
-            make.size.equalTo(CGSizeMake(30, 30));
+            make.top.trailing.equalTo(@0);
+            make.size.mas_equalTo(CGSizeMake(30, 30));
         }];
     }
     return self;

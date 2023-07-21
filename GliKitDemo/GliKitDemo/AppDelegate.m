@@ -12,7 +12,6 @@
 #import <GKHttpTask.h>
 #import <SDImageWebPCoder.h>
 #import <SDImageCodersManager.h>
-#import <SDWebImageSVGCoder.h>
 #import "GKDRootViewController.h"
 #import <NSDate+GKUtils.h>
 #import "GKDLoadMonitor.h"
@@ -186,7 +185,6 @@ void runLoopCallbck (CFRunLoopObserverRef observer, CFRunLoopActivity activity, 
     [self.window makeKeyAndVisible];
     
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
-    [SDImageCodersManager.sharedManager addCoder:SDImageSVGCoder.sharedCoder];
     
     NSString *str = @"我是加<b></b>好多东西啊<b>加大的</b>啊啊啊";
    

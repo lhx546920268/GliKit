@@ -37,16 +37,16 @@
         [contentView addSubview:_textLabel];
         
         [contentView mas_makeConstraints:^(MASConstraintMaker *make) {;
-            make.leading.trailing.centerY.equalTo(0);
+            make.leading.trailing.centerY.mas_equalTo(0);
         }];
         
         [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.top.equalTo(0);
+            make.centerX.top.mas_equalTo(0);
         }];
         
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.imageView.mas_bottom).offset(0);
-            make.bottom.centerX.equalTo(0);
+            make.bottom.centerX.mas_equalTo(0);
         }];
         
         self.contentView = contentView;
@@ -83,7 +83,7 @@
         
         [_badge mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.imageView.mas_trailing);
-            make.top.equalTo(5);
+            make.top.equalTo(@5);
         }];
     }
 }

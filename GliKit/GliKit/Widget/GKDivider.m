@@ -66,7 +66,7 @@
         NSLayoutConstraint *constraint = self.gkWidthLayoutConstraint;
         if(!constraint){
             [self mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(UIApplication.gkSeparatorHeight);
+                make.width.mas_equalTo(UIApplication.gkSeparatorHeight);
             }];
             
         }else{
@@ -76,7 +76,7 @@
         NSLayoutConstraint *constraint = self.gkHeightLayoutConstraint;
         if(!constraint){
             [self mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(UIApplication.gkSeparatorHeight);
+                make.height.mas_equalTo(UIApplication.gkSeparatorHeight);
             }];
         }else{
             constraint.constant = UIApplication.gkSeparatorHeight;

@@ -64,8 +64,8 @@
         [self addSubview:_contentView];
         
         [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(self).offset(@(10));
-            make.trailing.equalTo(self).offset(@(-10));
+            make.leading.equalTo(self).valueOffset(@(10));
+            make.trailing.equalTo(self).valueOffset(@(-10));
             make.centerY.equalTo(self);
         }];
     }
@@ -88,7 +88,7 @@
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             if(exist){
                 [self.contentView removeConstraint:self.iconImageView.gkBottomLayoutConstraint];
-                make.top.equalTo(self.iconImageView.mas_bottom).offset(@(10));
+                make.top.equalTo(self.iconImageView.mas_bottom).valueOffset(@(10));
             }else{
                 make.top.equalTo(self.contentView);
             }
@@ -117,7 +117,7 @@
         if(_textLabel){
             [self.contentView removeConstraint:_textLabel.gkTopLayoutConstraint];
             [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.iconImageView.mas_bottom).offset(@(10));
+                make.top.equalTo(self.iconImageView.mas_bottom).valueOffset(@(10));
             }];
         }else{
             [_iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {

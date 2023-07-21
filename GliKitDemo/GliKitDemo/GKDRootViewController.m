@@ -231,11 +231,12 @@
                    [GKDRowModel modelWithTitle:@"嵌套滑动" clazz:@"/app/nested"],
                    [GKDRowModel modelWithTitle:@"空视图" clazz:@"GKDEmptyViewController"],
                    [GKDRowModel modelWithTitle:@"进度条" clazz:@"GKDProgressViewController"],
-                   [GKDRowModel modelWithTitle:@"Web" clazz:@"GKDWebViewController"],
+                   [GKDRowModel modelWithTitle:@"Web" clazz:@"app/web"],
                    [GKDRowModel modelWithTitle:@"Alert" clazz:@"/app/alert"],
                    [GKDRowModel modelWithTitle:@"扫码" clazz:@"GKScanViewController"],
                    [GKDRowModel modelWithTitle:@"Banner" clazz:@"GKDBannerViewController"],
                    [GKDRowModel modelWithTitle:@"Dynamic" clazz:@"/app/dynimic"],
+                   [GKDRowModel modelWithTitle:@"数据库" clazz:@"app/db"],
                    ];
 
     [self initViews];

@@ -134,8 +134,12 @@ static WKProcessPool *sharedProcessPool;
     
     [_progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.equalTo(contentView);
-        make.height.equalTo(2.5);
-        make.top.equalTo(self.gkSafeAreaLayoutGuideTop);
+        make.height.equalTo(@2.5);
+        if (self.navigatonBar) {
+            make.top.equalTo(self.navigatonBar.mas_bottom);
+        } else {
+            make.top.equalTo(self.gkSafeAreaLayoutGuideTop);
+        }
     }];
     
     [_webView mas_makeConstraints:^(MASConstraintMaker *make) {

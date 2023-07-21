@@ -68,7 +68,7 @@
         [self.contentView addSubview:_indicatorView];
         
         [_indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
+            make.center.equalTo(@0);
         }];
     }
     

@@ -16,7 +16,7 @@
 #import "GKKeyChainStore.h"
 #import "NSString+GKUtils.h"
 #import <Photos/Photos.h>
-#import <SDWebImageDefine.h>
+#import "SDWebImageDefine.h"
 #import "UIApplication+GKTheme.h"
 #import "NSDictionary+GKUtils.h"
 

@@ -13,7 +13,7 @@
 #import "GKBaseDefines.h"
 #import "GKAppUtils.h"
 #import "GKPhotosOptions.h"
-#import <SDWebImageCompat.h>
+#import "SDWebImageCompat.h"
 
 @interface GKPhotosCache ()<PHPhotoLibraryChangeObserver>
 

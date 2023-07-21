@@ -1,4 +1,4 @@
-module Pods_GliKitDemo {
+framework module Pods_GliKitDemo {
   umbrella header "Pods-GliKitDemo-umbrella.h"
 
   export *

@@ -9,6 +9,12 @@
   "platforms": {
     "ios": "11.0"
   },
+  "pod_target_xcconfig": {
+    "GCC_PREPROCESSOR_DEFINITIONS": "MAS_SHORTHAND_GLOBALS=1"
+  },
+  "user_target_xcconfig": {
+    "GCC_PREPROCESSOR_DEFINITIONS": "MAS_SHORTHAND_GLOBALS=1"
+  },
   "source": {
     "git": "https://www.github.com/lhx546920268/GliKit"
   },

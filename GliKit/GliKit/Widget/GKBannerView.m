@@ -307,8 +307,8 @@
                 [self addSubview:_pageControl];
                 
                 [_pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.centerX.equalTo(0);
-                    make.bottom.equalTo(0);
+                    make.centerX.equalTo(@0);
+                    make.bottom.equalTo(@0);
                 }];
             }
         }

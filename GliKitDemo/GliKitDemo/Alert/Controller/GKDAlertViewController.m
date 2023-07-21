@@ -13,7 +13,6 @@
 #import "GKDialogViewController.h"
 #import <UIImageView+WebCache.h>
 #import <UIImage+GKUtils.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "TTTAttributedLabel.h"
 #import <NSAttributedString+GKUtils.h>
 

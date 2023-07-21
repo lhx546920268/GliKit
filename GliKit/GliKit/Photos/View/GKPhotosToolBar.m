@@ -25,7 +25,7 @@
         [self addSubview:_divider];
         
         [_divider mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.trailing.top.equalTo(0);
+            make.leading.trailing.top.equalTo(@0);
         }];
         
         CGFloat bottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
@@ -42,8 +42,8 @@
         [self addSubview:_previewButton];
         
         [_previewButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.top.equalTo(0);
-            make.bottom.equalTo(-bottom);
+            make.leading.top.equalTo(@0);
+            make.bottom.mas_equalTo(-bottom);
         }];
         
         _useButton = [UIButton new];
@@ -57,8 +57,8 @@
         [self addSubview:_useButton];
         
         [_useButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.trailing.top.equalTo(0);
-            make.bottom.equalTo(-bottom);
+            make.trailing.top.equalTo(@0);
+            make.bottom.mas_equalTo(-bottom);
         }];
         
         _countLabel = [UILabel new];
@@ -67,12 +67,12 @@
         [self addSubview:_countLabel];
         
         [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.centerX.equalTo(0);
-            make.bottom.equalTo(-bottom);
+            make.top.centerX.equalTo(@0);
+            make.bottom.mas_equalTo(-bottom);
         }];
         
         [self mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(45 + bottom);
+            make.height.mas_equalTo(45 + bottom);
         }];
     }
     return self;

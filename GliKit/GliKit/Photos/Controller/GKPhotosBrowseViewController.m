@@ -13,10 +13,10 @@
 #import "GKBaseDefines.h"
 #import "UIViewController+GKUtils.h"
 #import "NSObject+GKUtils.h"
-#import <UIImageView+WebCache.h>
-#import <UIView+WebCache.h>
+#import "UIImageView+WebCache.h"
+#import "UIView+WebCache.h"
 #import "SDWebImagePrefetcher.h"
-#import <SDImageCache.h>
+#import "SDImageCache.h"
 #import "UIViewController+GKSafeAreaCompatible.h"
 #import "UIApplication+GKTheme.h"
 #import "UIScreen+GKUtils.h"
@@ -357,7 +357,7 @@
     [self.view addSubview:_backgroundView];
     
     [_backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(0);
+        make.edges.equalTo(@0);
     }];
     
     [self registerClass:GKPhotosBrowseCell.class];
@@ -370,9 +370,9 @@
     [self.view addSubview:self.collectionView];
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(-self.imageSpacing / 2.0);
-        make.trailing.equalTo(self.imageSpacing / 2.0);
-        make.top.bottom.equalTo(0);
+        make.leading.mas_equalTo(-self.imageSpacing / 2.0);
+        make.trailing.mas_equalTo(self.imageSpacing / 2.0);
+        make.top.bottom.mas_equalTo(0);
     }];
     
     _pageLabel = [UILabel new];
@@ -385,7 +385,7 @@
     [self.view addSubview:_pageLabel];
     
     [_pageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.equalTo(0);
+        make.leading.trailing.mas_equalTo(0);
         make.bottom.equalTo(self.gkSafeAreaLayoutGuideBottom).offset(-20);
     }];
     

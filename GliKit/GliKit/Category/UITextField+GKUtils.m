@@ -69,7 +69,7 @@ static char GKExtraStringKey;
         
         [separator mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.bottom.equalTo(self);
-            make.height.equalTo(UIApplication.gkSeparatorHeight);
+            make.height.mas_equalTo(UIApplication.gkSeparatorHeight);
         }];
         
         objc_setAssociatedObject(self, _cmd, separator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

@@ -46,7 +46,7 @@
         self.overlayView.opaque = NO;
         [self addSubview:self.overlayView];
         [self.overlayView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(0);
+            make.edges.equalTo(@0);
         }];
         
         //扫描框大小
@@ -58,8 +58,8 @@
         self.boxView.cornerLineWidth = self.cornerLineWidth;
         [self addSubview:self.boxView];
         [self.boxView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
-            make.size.equalTo(CGSizeMake(width + self.cornerLineWidth * 2, width + self.cornerLineWidth * 2));
+            make.center.equalTo(@0);
+            make.size.mas_equalTo(CGSizeMake(width + self.cornerLineWidth * 2, width + self.cornerLineWidth * 2));
         }];
         
         CGFloat margin = 10;
@@ -69,9 +69,9 @@
         [self.boxView addSubview:_animationView];
         
         [_animationView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.top.equalTo(margin);
-            make.trailing.equalTo(-margin);
-            make.height.equalTo(2);
+            make.leading.top.mas_equalTo(margin);
+            make.trailing.mas_equalTo(-margin);
+            make.height.equalTo(@2);
         }];
     }
     
@@ -97,7 +97,7 @@
         self.boxView.cornerLineWidth = cornerLineWidth;
         [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(0);
-            make.size.equalTo(CGSizeMake(self.scanBoxSize.width + self.cornerLineWidth * 2, self.scanBoxSize.height + self.cornerLineWidth * 2));
+            make.size.mas_equalTo(CGSizeMake(self.scanBoxSize.width + self.cornerLineWidth * 2, self.scanBoxSize.height + self.cornerLineWidth * 2));
         }];
     }
 }
@@ -110,7 +110,7 @@
         
         [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(0);
-            make.size.equalTo(CGSizeMake(self.scanBoxSize.width + self.cornerLineWidth * 2, self.scanBoxSize.height + self.cornerLineWidth * 2));
+            make.size.mas_equalTo(CGSizeMake(self.scanBoxSize.width + self.cornerLineWidth * 2, self.scanBoxSize.height + self.cornerLineWidth * 2));
         }];
         [self overlayClipping];
         !self.scanBoxRectDidChange ?: self.scanBoxRectDidChange(_scanBoxRect);

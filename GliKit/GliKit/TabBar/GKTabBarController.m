@@ -132,8 +132,8 @@
         _tabBar = [[GKTabBar alloc] initWithButtons:self.buttons];
         _tabBar.delegate = self;
         [_tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.trailing.bottom.equalTo(0);
-            make.height.equalTo(self.gkTabBarHeight);
+            make.leading.trailing.bottom.mas_equalTo(0);
+            make.height.mas_equalTo(self.gkTabBarHeight);
         }];
     }
     return _tabBar;

@@ -105,7 +105,7 @@
     [self.view addSubview:self.photosToolBar];
     
     [self.photosToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.bottom.equalTo(0);
+        make.leading.trailing.bottom.equalTo(@0);
     }];
     
     [self updateTitle];
