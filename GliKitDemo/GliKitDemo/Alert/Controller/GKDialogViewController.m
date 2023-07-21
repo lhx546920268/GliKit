@@ -26,12 +26,12 @@
     self.container.layer.cornerRadius = 10;
     
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(0);
+        make.center.equalTo(@0);
     }];
     
     [self.container mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(0);
-        make.size.equalTo(CGSizeMake(240, 100));
+        make.center.equalTo(@0);
+        make.size.mas_equalTo(CGSizeMake(240, 100));
     }];
 }
 

@@ -25,7 +25,7 @@
         [self addSubview:label];
         
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
+            make.center.equalTo(@0);
         }];
     }
     return self;
@@ -48,7 +48,7 @@
         [self.contentView addSubview:btn];
         
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
+            make.center.equalTo(@0);
         }];
     }
     return self;
@@ -191,7 +191,7 @@
         [self.parentViewController addChildViewController:_viewController];
         
         [_viewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(0);
+            make.edges.equalTo(@0);
         }];
     }
 }

@@ -23,7 +23,7 @@
         _textLabel = [UILabel new];
         [self.contentView addSubview:_textLabel];
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
+            make.center.equalTo(@0);
         }];
         
         self.contentView.backgroundColor = UIColor.whiteColor;

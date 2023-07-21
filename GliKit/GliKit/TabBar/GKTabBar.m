@@ -65,10 +65,10 @@
                     make.leading.equalTo(beforeBtn.mas_trailing);
                     make.width.equalTo(beforeBtn);
                 }else{
-                    make.leading.mas_equalTo(0);
+                    make.leading.equalTo(@0);
                 }
                 if(i == _buttons.count - 1){
-                    make.trailing.mas_equalTo(0);
+                    make.trailing.equalTo(@0);
                 }
             }];
 
@@ -131,7 +131,7 @@
         if(_backgroundView != nil){
             [self insertSubview:_backgroundView atIndex:0];
             [_backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.mas_equalTo(0);
+                make.edges.equalTo(@0);
             }];
         }
     }

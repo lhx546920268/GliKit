@@ -372,7 +372,7 @@
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.mas_equalTo(-self.imageSpacing / 2.0);
         make.trailing.mas_equalTo(self.imageSpacing / 2.0);
-        make.top.bottom.mas_equalTo(0);
+        make.top.bottom.equalTo(@0);
     }];
     
     _pageLabel = [UILabel new];
@@ -385,7 +385,7 @@
     [self.view addSubview:_pageLabel];
     
     [_pageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.mas_equalTo(0);
+        make.leading.trailing.equalTo(@0);
         make.bottom.equalTo(self.gkSafeAreaLayoutGuideBottom).offset(-20);
     }];
     

@@ -128,8 +128,8 @@
         [self.contentView addSubview:_titleLabel];
         
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(0);
-            make.leading.equalTo(15);
+            make.centerY.equalTo(@0);
+            make.leading.equalTo(@15);
         }];
     }
     

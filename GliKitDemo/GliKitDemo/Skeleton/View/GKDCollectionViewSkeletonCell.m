@@ -28,7 +28,7 @@
 //
 //        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.size.equalTo(CGSizeMake(size - 10, size - 10));
-//            make.centerX.equalTo(0);
+//            make.centerX.equalTo(@0);
 //            make.top.equalTo(5);
 //        }];
 //

@@ -34,7 +34,7 @@
     [btn addTarget:self action:@selector(handleStart) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(0);
+        make.center.equalTo(@0);
     }];
 
     NSCharacterSet *set = [[NSCharacterSet alloc] init];

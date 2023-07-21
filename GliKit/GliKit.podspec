@@ -23,9 +23,9 @@ Pod::Spec.new do |spec|
 
   spec.platform     = :ios, "11.0"
   #pod中的macro
-  spec.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'MAS_SHORTHAND_GLOBALS=1'}
+  #spec.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'MAS_SHORTHAND_GLOBALS=1'}
   #项目中的macro
-  spec.user_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'MAS_SHORTHAND_GLOBALS=1'}
+  #spec.user_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'MAS_SHORTHAND_GLOBALS=1'}
   spec.source = { :git => "https://www.github.com/lhx546920268/GliKit"}
   spec.source_files  = "GliKit/**/*.{h,m}"
   spec.dependency 'SDWebImage', '~> 5.15.8'

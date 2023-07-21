@@ -32,9 +32,9 @@
         [self addSubview:_indicatorView];
         
         [_indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.mas_equalTo(0);
-            make.top.mas_greaterThanOrEqualTo(0);
-            make.bottom.mas_lessThanOrEqualTo(0);
+            make.leading.equalTo(@0);
+            make.top.greaterThanOrEqualTo(@0);
+            make.bottom.lessThanOrEqualTo(@0);
         }];
         
         _textLabel = [UILabel new];
@@ -44,7 +44,7 @@
         
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(self.indicatorView.mas_trailing).offset(5);
-            make.trailing.top.bottom.mas_equalTo(0);
+            make.trailing.top.bottom.equalTo(@0);
         }];
     }
     
@@ -77,7 +77,7 @@
         [self addSubview:_imageView];
         
         [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.top.mas_equalTo(0);
+            make.centerX.top.equalTo(@0);
         }];
         
         _textLabel = [UILabel new];
@@ -89,7 +89,7 @@
         [self addSubview:_textLabel];
         
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.trailing.bottom.mas_equalTo(0);
+            make.leading.trailing.bottom.equalTo(@0);
             make.top.equalTo(self.imageView.mas_bottom).offset(25);
         }];
     }

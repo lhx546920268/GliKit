@@ -132,7 +132,7 @@
         _tabBar = [[GKTabBar alloc] initWithButtons:self.buttons];
         _tabBar.delegate = self;
         [_tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.trailing.bottom.mas_equalTo(0);
+            make.leading.trailing.bottom.equalTo(@0);
             make.height.mas_equalTo(self.gkTabBarHeight);
         }];
     }
@@ -364,7 +364,7 @@
         if (self.tabBar.superview != self.view) {
             [self.view addSubview:self.tabBar];
             [_tabBar mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.leading.trailing.bottom.equalTo(0);
+                make.leading.trailing.bottom.equalTo(@0);
             }];
         }
     }
@@ -377,7 +377,7 @@
         if (self.tabBar.superview != superview) {
             [superview addSubview:self.tabBar];
             [_tabBar mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.leading.trailing.bottom.equalTo(0);
+                make.leading.trailing.bottom.equalTo(@0);
             }];
         }
     }

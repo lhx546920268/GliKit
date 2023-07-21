@@ -166,8 +166,8 @@
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [self.view addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(0);
-        make.size.equalTo(200);
+        make.center.equalTo(@0);
+        make.size.equalTo(@200);
     }];
 }
 

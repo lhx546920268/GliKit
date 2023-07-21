@@ -239,7 +239,7 @@
     self.cancelButton = cancelBtn;
     
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.mas_equalTo(0);
+        make.leading.equalTo(@0);
         make.bottom.equalTo(self.gkSafeAreaLayoutGuideBottom);
     }];
     
@@ -254,7 +254,7 @@
     self.confirmButton = confirmBtn;
     
     [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(0);
+        make.trailing.equalTo(@0);
         make.bottom.equalTo(cancelBtn.mas_bottom);
     }];
 }

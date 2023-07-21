@@ -60,9 +60,9 @@
     self.verticalPageView = view;
     
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.equalTo(0);
+        make.leading.trailing.equalTo(@0);
         make.top.equalTo(self.topView.mas_bottom).offset(30);
-        make.height.equalTo(200);
+        make.height.equalTo(@200);
     }];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -71,7 +71,7 @@
     [self.view addSubview:btn];
     
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(0);
+        make.centerX.equalTo(@0);
         make.top.equalTo(view.mas_bottom).offset(30);
     }];
 
@@ -97,8 +97,8 @@
     [self.view addSubview:scrollView];
     
     [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.equalTo(0);
-        make.height.equalTo(height);
+        make.leading.trailing.equalTo(@0);
+        make.height.mas_equalTo(height);
         make.top.equalTo(btn.mas_bottom).offset(20);
     }];
     self.scrollView = scrollView;

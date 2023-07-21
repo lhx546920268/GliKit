@@ -52,8 +52,8 @@
     self.dialogShowAnimate = GKDialogAnimateFromBottom;
     self.dialogDismissAnimate = GKDialogAnimateFromBottom;
     [self.dialog mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.bottom.equalTo(0);
-        make.height.equalTo(300);
+        make.leading.trailing.bottom.equalTo(@0);
+        make.height.equalTo(@300);
     }];
     [self initViews];
 }
@@ -118,8 +118,8 @@
     [self.view addSubview:label];
     
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(0);
-            make.top.equalTo(200);
+            make.centerX.equalTo(@0);
+            make.top.equalTo(@200);
     }];
     self.label = label;
 }

@@ -39,9 +39,9 @@
         _titleLabel = [UILabel new];
         [self.contentView addSubview:_titleLabel];
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(25);
-            make.top.equalTo(15);
-            make.bottom.equalTo(-15);
+            make.leading.equalTo(@25);
+            make.top.equalTo(@15);
+            make.bottom.mas_equalTo(-15);
         }];
     
         self.backgroundColor = UIColor.whiteColor;

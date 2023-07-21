@@ -44,10 +44,10 @@
     GKProgressView *view = [[GKStraightLineProgressView alloc] init];
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(15);
+        make.leading.equalTo(@15);
         make.top.equalTo(self.gkSafeAreaLayoutGuideTop).offset(15);
-        make.trailing.equalTo(-15);
-        make.height.equalTo(3);
+        make.trailing.mas_equalTo(-15);
+        make.height.equalTo(@3);
     }];
     self.straightLineProgressView = view;
     
@@ -59,9 +59,9 @@
     view = progressView;
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(15);
+        make.leading.equalTo(@15);
         make.top.equalTo(self.straightLineProgressView.mas_bottom).offset(20);
-        make.size.equalTo(CGSizeMake(width, width));
+        make.size.mas_equalTo(CGSizeMake(width, width));
     }];
     self.circleProgressView = view;
     
@@ -70,7 +70,7 @@
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.circleProgressView.mas_trailing).offset(margin);
         make.top.equalTo(self.circleProgressView);
-        make.size.equalTo(CGSizeMake(width, width));
+        make.size.mas_equalTo(CGSizeMake(width, width));
     }];
     self.roundCakesFromEmptyProgressView = view;
     
@@ -86,7 +86,7 @@
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.roundCakesFromEmptyProgressView.mas_trailing).offset(margin);
         make.top.equalTo(self.roundCakesFromEmptyProgressView);
-        make.size.equalTo(CGSizeMake(width, width));
+        make.size.mas_equalTo(CGSizeMake(width, width));
     }];
     self.roundCakesFromFullProgressView = view;
     
@@ -98,7 +98,7 @@
     [self.view addSubview:btn];
     
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(0);
+        make.centerX.equalTo(@0);
         make.top.equalTo(self.roundCakesFromFullProgressView.mas_bottom).offset(30);
     }];
     self.startButton = btn;

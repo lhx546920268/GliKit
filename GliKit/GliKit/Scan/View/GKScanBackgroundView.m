@@ -96,7 +96,7 @@
         _cornerLineWidth = cornerLineWidth;
         self.boxView.cornerLineWidth = cornerLineWidth;
         [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
+            make.center.equalTo(@0);
             make.size.mas_equalTo(CGSizeMake(self.scanBoxSize.width + self.cornerLineWidth * 2, self.scanBoxSize.height + self.cornerLineWidth * 2));
         }];
     }
@@ -109,7 +109,7 @@
         _scanBoxRect = CGRectMake((self.gkWidth - self.scanBoxSize.width) / 2, (self.gkHeight - self.scanBoxSize.height) / 2, self.scanBoxSize.width, self.scanBoxSize.height);
         
         [self.boxView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(0);
+            make.center.equalTo(@0);
             make.size.mas_equalTo(CGSizeMake(self.scanBoxSize.width + self.cornerLineWidth * 2, self.scanBoxSize.height + self.cornerLineWidth * 2));
         }];
         [self overlayClipping];
