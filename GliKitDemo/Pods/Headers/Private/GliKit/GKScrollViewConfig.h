@@ -1,1 +1,0 @@
-../../../../../GliKit/GliKit/Base/Utils/GKScrollViewConfig.h

@@ -1,1 +1,0 @@
-../../../SVGKit/Source/Utils/SVGKInlineResource.h

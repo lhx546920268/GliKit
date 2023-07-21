@@ -1,1 +1,0 @@
-../../../SVGKit/Source/Utils/SVGKPattern.h

@@ -1,1 +1,0 @@
-../../../SVGKit/Source/AppKit additions/SVGKImageRep.h
