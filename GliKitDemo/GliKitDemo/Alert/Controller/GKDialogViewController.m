@@ -17,24 +17,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
+
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     [btn addTarget:self action:@selector(dismissDialog) forControlEvents:UIControlEventTouchUpInside];
-    [btn setTitle:@"取消" forState:UIControlStateNormal];
-    [self.container addSubview:btn];
-    self.container.layer.cornerRadius = 10;
+    [btn setTitle:@"广告弹窗" forState:UIControlStateNormal];
+    [self.dialog addSubview:btn];
+    self.dialog.layer.cornerRadius = 10;
     
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(@0);
     }];
     
-    [self.container mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.dialog mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(@0);
         make.size.mas_equalTo(CGSizeMake(240, 100));
     }];
 }
 
-
+- (void)onDialogInitialize
+{
+    self.dialogShouldUseNewWindow = YES;
+    self.dialogShowAnimate = GKDialogAnimateScale;
+    self.dialogDismissAnimate = GKDialogAnimateScale;
+}
 
 @end

@@ -20,11 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 ///滚动视图 default `nil`
 @property(nonatomic, strong, nullable) UIScrollView *scrollView;
 
+///获取不为空的scrollView，如果为空，会创建
+@property(nonatomic, readonly) UIScrollView *nonnullScrollView;
+
 ///配置
 @property(nonatomic, strong, nullable) __kindof GKScrollViewConfig *config;
 
 ///scrollView 改变了
 @property(nonatomic, copy) void(^scrollViewDidChange)(UIScrollView * _Nullable scrollView);
+
+///是否可以滑动 default is `YES`
+@property(nonatomic, assign) BOOL scrollEnabled;
 
 ///滑动时是否隐藏键盘 default `YES`
 @property(nonatomic, assign) BOOL shouldDismissKeyboardWhileScroll;
@@ -50,6 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///刷新列表数据 子类重写，只有isInit 后才生效
 - (void)reloadListData;
+
+///初始化
+- (void)initScrollViewIfNeeded;
 
 //MARK: - Refresh
 

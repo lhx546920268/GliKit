@@ -29,6 +29,7 @@
 {
     [super viewDidLoad];
     
+    self.dataBase = [GKDDataBase new];
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     [btn setTitle:@"开始" forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(handleStart) forControlEvents:UIControlEventTouchUpInside];
@@ -36,9 +37,6 @@
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(@0);
     }];
-
-    NSCharacterSet *set = [[NSCharacterSet alloc] init];
-    NSLog(@"%@", [self replaceUnicode:@"\u4f60"]);
 }
 
 - (void)handleStart
@@ -49,13 +47,12 @@
     history.status = 1;
     history.type = @"text";
     
-    GKDDataBase *dataBase = [GKDDataBase new];
 //    for (NSInteger i = 0; i < 10000000; i ++) {
-//        history.sessionId = @(random() % 10000).stringValue;
-//        history.receiverId = @(random() % 10000).stringValue;
-//        history.uuid = NSUUID.UUID.UUIDString;
-//        history.time = NSDate.date.timeIntervalSince1970;
-//        [dataBase insertHistory:history];
+        history.sessionId = @(random() % 10000).stringValue;
+        history.receiverId = @(random() % 10000).stringValue;
+        history.uuid = NSUUID.UUID.UUIDString;
+        history.time = NSDate.date.timeIntervalSince1970;
+        [self.dataBase insertHistory:history];
 //    }
 //    NSLog(@"插入完成");
     

@@ -22,6 +22,8 @@
 
 @implementation GKScrollViewController
 
+@synthesize scrollView = _scrollView;
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,6 +31,7 @@
         self.curPage = GKHttpFirstPage;
         self.shouldDismissKeyboardWhileScroll = YES;
         self.shouldAdjustContentInsetsForKeyboard = YES;
+        self.scrollEnabled = YES;
     }
     return self;
 }
@@ -39,6 +42,7 @@
 {
     if(_scrollView != scrollView){
         _scrollView = scrollView;
+        _scrollView.scrollEnabled = self.scrollEnabled;
         if(self.shouldAdjustContentInsetForSafeArea && ([_scrollView isKindOfClass:UITableView.class] || [_scrollView isKindOfClass:UICollectionView.class])){
             _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentScrollableAxes;
         } else {
@@ -51,6 +55,25 @@
 - (BOOL)shouldAdjustContentInsetForSafeArea
 {
     return YES;
+}
+
+- (UIScrollView *)nonnullScrollView
+{
+    [self initScrollViewIfNeeded];
+    return _scrollView;
+}
+
+- (void)setScrollEnabled:(BOOL)scrollEnabled
+{
+    if (_scrollEnabled != scrollEnabled) {
+        _scrollEnabled = scrollEnabled;
+        _scrollView.scrollEnabled = _scrollEnabled;
+    }
+}
+
+- (void)initScrollViewIfNeeded
+{
+    
 }
 
 // MARK: - 加载视图
@@ -265,7 +288,7 @@
         [self.loadMoreControl scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
         if([self.parentViewController isKindOfClass:[GKPageViewController class]]){
             GKPageViewController *page = (GKPageViewController*)self.parentViewController;
-            page.scrollView.scrollEnabled = YES;
+            page.scrollView.scrollEnabled = page.scrollEnabled;
         }
     }
 }

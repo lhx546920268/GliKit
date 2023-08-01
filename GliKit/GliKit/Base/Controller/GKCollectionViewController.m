@@ -67,6 +67,11 @@
     return _collectionView;
 }
 
+- (void)initScrollViewIfNeeded
+{
+    [self initCollectionView];
+}
+
 - (void)initCollectionView
 {
     if(_collectionView == nil){

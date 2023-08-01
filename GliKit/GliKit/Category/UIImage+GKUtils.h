@@ -86,6 +86,16 @@ typedef NS_ENUM(NSInteger, GKQRCodeImageCorrectionLevel)
                              logo:(nullable UIImage*) logo
                             logoSize:(CGSize) logoSize;
 
+/// 通过给定信息生成二维码
+/// @param contentColors 二维码内容颜色，支持2中颜色渐变
++ (UIImage*)gkQRCodeImageWithString:(NSString*) string
+                  correctionLevel:(GKQRCodeImageCorrectionLevel) correctionLevel
+                             size:(CGSize) size
+                     contentColors:(NSArray<UIColor*>*) contentColors
+                  backgroundColor:(UIColor*) backgroundColor
+                             logo:(UIImage*) logo
+                           logoSize:(CGSize)logoSize;
+
 @end
 
 ///在实例方法中获取bundle中的图片

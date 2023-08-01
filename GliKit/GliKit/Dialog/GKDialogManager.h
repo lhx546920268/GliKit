@@ -10,17 +10,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///弹窗管理
+///弹窗window
+@interface GKDialogWindow : UIWindow
+
+@end
+
+///弹窗管理，使用新的UIWindow来显示
+///不负责动画，只有添加和移除dialog
 @interface GKDialogManager : NSObject
 
 ///单例
 @property(nonatomic, class, readonly) GKDialogManager *sharedManager;
 
 ///共享的弹窗
-@property(nonatomic, readonly, nullable) UIWindow *dialogWindow;
-
-///是否有可见的窗口
-@property(nonatomic, readonly) BOOL hasVisibleWindow;
+@property(nonatomic, readonly, nullable) GKDialogWindow *dialogWindow;
 
 ///是否有多个弹窗
 @property(nonatomic, readonly) BOOL hasMultiDialog;
@@ -28,29 +31,18 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否有等待显示的弹窗
 @property(nonatomic, readonly) BOOL hasPendingDialog;
 
-///当前可见的window
-@property(nonatomic, readonly, nullable) UIWindow *visibleWindow;
+///添加界面 会调用loadDialogWindowIfNeeded，只显示一个，如果已存在有的 要排队，如果优先级是NSNotFound，则会叠加在已有的弹窗上面
+- (void)showDialogController:(UIViewController*) dialogController inViewController:(nullable UIViewController*) viewController priority:(NSInteger) priority completion:(void(^ _Nullable)(void)) completion;
 
-///添加界面 会调用loadDialogWindowIfNeeded，只显示一个，如果已存在有的 要排队
-- (void)showViewControllerInDialogWindow:(UIViewController*) vc completion:(void(^ _Nullable)(void)) completion;
-
-///添加一个叠加显示的界面
-- (void)showTopViewControllerInDialogWindow:(UIViewController*) vc completion:(void(^ _Nullable)(void)) completion;
+- (void)showDialog:(UIView*) dialog inViewController:(nullable UIViewController*) viewController priority:(NSInteger) priority completion:(void(^ _Nullable)(void)) completion;
 
 ///移除界面
-- (void)removeViewControllerFromDialogWindow:(UIViewController*) vc completion:(void(^ _Nullable)(void)) completion;
-
-///创建window
-- (UIWindow*)createWindowWithLevel:(UIWindowLevel) level;
-
-///让window可见，如果可能的话
-- (void)makeWindowKeyAndVisibleIfEnabled:(UIWindow*) window;
-
-///让window消失
-- (void)resignKeyWindow:(UIWindow*) window;
+- (void)removeDialogController:(UIViewController*) dialogController;
+- (void)removeDialog:(UIView*) dialog;
 
 ///标记不可用
 - (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

@@ -298,3 +298,19 @@ static char GKHasTabBarKey;
 }
 
 @end
+
+@implementation UIViewController (CADataProvider)
+
+- (id)dataForClsss:(Class) cls
+{
+    if (!self.parentViewController)
+        return nil;
+    id data = [self.parentViewController dataForClsss:cls];
+    if (data == nil) {
+        return [self.parentViewController.parentViewController dataForClsss:cls];
+    } else {
+        return data;
+    }
+}
+
+@end

@@ -181,7 +181,7 @@ void runLoopCallbck (CFRunLoopObserverRef observer, CFRunLoopActivity activity, 
     [[UITableView appearance] setSeparatorColor:UIColor.gkSeparatorColor];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-    self.window.rootViewController = GKDRootViewController.new.gkCreateWithNavigationController;
+    self.window.rootViewController = GKDTabBarController.new;
     [self.window makeKeyAndVisible];
     
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];

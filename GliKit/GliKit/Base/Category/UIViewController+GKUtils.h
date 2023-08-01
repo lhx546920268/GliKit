@@ -84,5 +84,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+///获取顶层视图的数据，避免层层传递
+@interface UIViewController (CADataProvider)
+
+///获取顶层视图的数据
+- (id)dataForClsss:(Class) cls;
+
+@end
+
+
 NS_ASSUME_NONNULL_END
 

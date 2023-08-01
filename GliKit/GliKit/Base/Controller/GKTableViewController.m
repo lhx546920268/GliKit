@@ -67,6 +67,11 @@
     self.contentView = _tableView;
 }
 
+- (void)initScrollViewIfNeeded
+{
+    [self initTableView];
+}
+
 - (void)initTableView
 {
     if(!_tableView){

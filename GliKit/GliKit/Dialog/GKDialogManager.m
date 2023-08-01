@@ -9,35 +9,197 @@
 #import "GKDialogManager.h"
 #import "UIViewController+GKUtils.h"
 #import "UIScreen+GKUtils.h"
+#import "GKBaseDefines.h"
+#import "GKBaseViewController.h"
+#import "UIViewController+GKPush.h"
 
-///等待显示的弹窗信息
-@interface GKPendingDialogModel : NSObject
+///等于vc自身或者其parent
+BOOL GKViewControllerEqualOrParent(UIViewController *vc, UIViewController *comparedVC) {
+    if (vc == nil || comparedVC == nil) return NO;
+    if (vc == comparedVC) return YES;
+    UIViewController *parent = comparedVC.parentViewController;
+    while (parent) {
+        if (vc == parent) return YES;
+        parent = parent.parentViewController;
+    }
+    return NO;
+}
+
+///弹窗信息
+@interface GKDialogModel : NSObject
 
 ///
 @property(nonatomic, strong) UIViewController *viewController;
 
+///当前必须是某个viewController才显示
+@property(nonatomic, weak) UIViewController *requiredParentViewController;
+
 ///显示完成回调
 @property(nonatomic, copy) void(^completion)(void);
 
+///
+@property(nonatomic, strong) UIView *view;
+
+///优先级
+@property(nonatomic, assign) NSInteger priority;
+
+///是否可以显示
+@property(nonatomic, readonly) BOOL displayEnabled;
+
 @end
 
-@implementation GKPendingDialogModel
+@implementation GKDialogModel
+
+- (UIView *)view
+{
+    return _view ?: self.viewController.view;
+}
+
+- (BOOL)displayEnabled
+{
+    return self.requiredParentViewController == nil || GKViewControllerEqualOrParent(self.requiredParentViewController, self.gkCurrentViewController);
+}
+
+@end
+
+@interface GKDialogWindow()
+
+///当前显示的
+@property(nonatomic, strong) NSMutableArray<GKDialogModel*> *models;
+
+@end
+
+@implementation GKDialogWindow
+
+- (void)loadRootViewControllerIfNeeded
+{
+    if (!self.rootViewController) {
+        UIViewController *root = [UIViewController new];
+        root.view.backgroundColor = UIColor.clearColor;
+        self.rootViewController = root;
+    }
+}
+
+- (NSMutableArray<GKDialogModel *> *)models
+{
+    if (!_models) {
+        _models = [NSMutableArray array];
+    }
+    return _models;
+}
+
+- (void)addDialogModel:(GKDialogModel*) model
+{
+    [self loadRootViewControllerIfNeeded];
+    if (self.models.count > 0) {
+        for (NSInteger i = self.models.count - 1; i >= 0; i --) {
+            if (model.priority < self.models[i].priority) {
+                [self.models insertObject:model atIndex:i];
+                [self.rootViewController.view insertSubview:model.view atIndex:i];
+                break;
+            }
+        }
+    }
+    
+    if (!model.view.superview) {
+        [self.models addObject:model];
+        [self.rootViewController.view addSubview:model.view];
+    }
+    
+    [model.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(@0);
+    }];
+}
+
+- (void)removeDialogModel:(GKDialogModel*) model
+{
+    [_models removeObject:model];
+    [model.view removeFromSuperview];
+}
+
+- (void)removeDialog:(UIView*) dialog
+{
+    for (NSInteger i = 0; i < self.models.count; i ++) {
+        GKDialogModel *model = self.models[i];
+        if (model.view == dialog) {
+            [self.models removeObjectAtIndex:i];
+            [model.view removeFromSuperview];
+        }
+    }
+}
+
+@end
+
+///栈
+@interface GKDialogStack : NSObject
+
+///
+@property(nonatomic, strong) NSMutableArray<GKDialogModel*> *models;
+
+///是否为空
+@property(nonatomic, readonly) BOOL isEmpty;
+
+///
+@property(nonatomic, readonly) BOOL isNotEmpty;
+
+@end
+
+@implementation GKDialogStack
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.models = [NSMutableArray array];
+    }
+    return self;
+}
+
+- (BOOL)isEmpty
+{
+    return self.models.count == 0;
+}
+
+- (BOOL)isNotEmpty
+{
+    return self.models.count > 0;
+}
+
+- (void)put:(GKDialogModel*) model
+{
+    if (self.isEmpty) {
+        [self.models addObject:model];
+    } else {
+        for (NSInteger i = 0; i < self.models.count; i ++) {
+            if (self.models[i].priority >= model.priority) {
+                [self.models insertObject:model atIndex:i];
+                break;
+            }
+        }
+    }
+}
+
+- (GKDialogModel*)popForViewController:(UIViewController*) vc
+{
+    if (self.isNotEmpty) {
+        GKDialogModel *model = self.models.lastObject;
+        if (model.requiredParentViewController == nil || GKViewControllerEqualOrParent(model.requiredParentViewController, vc)) {
+            [self.models removeLastObject];
+            return model;
+        }
+    }
+    return nil;
+}
 
 @end
 
 @interface GKDialogManager ()
 
 ///等待显示的弹窗
-@property (nonatomic, strong) NSMutableArray<GKPendingDialogModel*> *pendingDialogs;
-
-///等待的window
-@property (nonatomic, strong) NSMutableArray<UIWindow*> *pendingWindows;
-
-///可见的window
-@property (nonatomic, strong) NSMutableArray<UIWindow*> *visibleWindows;
+@property (nonatomic, strong) GKDialogStack *pendingDialogs;
 
 ///共享的弹窗
-@property(nonatomic, strong) UIWindow *dialogWindow;
+@property (nonatomic, strong) GKDialogWindow *dialogWindow;
 
 @end
 
@@ -53,116 +215,156 @@
     return manager;
 }
 
-- (NSMutableArray<GKPendingDialogModel *> *)pendingDialogs
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(viewControllerDidShow:) name:GKBaseViewControllerDidShowNotification object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
+// MARK: - 通知
+
+- (void)viewControllerDidShow:(NSNotification*) notification
+{
+    UIViewController *vc = notification.userInfo[GKShowingViewControllerKey];
+    //移除弹窗，有些弹窗只在部分界面显示
+    if (self.dialogWindow.models.count > 0) {
+        NSMutableArray *models = [NSMutableArray array];
+        for (NSInteger i = 0; i < self.dialogWindow.models.count; i ++) {
+            GKDialogModel *model = self.dialogWindow.models[i];
+            if (model.requiredParentViewController != nil && !GKViewControllerEqualOrParent(model.requiredParentViewController, vc)) {
+                [models addObject:model];
+            }
+        }
+        for (GKDialogModel *model in models) {
+            [self.dialogWindow removeDialogModel:model];
+        }
+    }
+    
+    //显示需要的弹窗
+    GKDialogModel *model = [_pendingDialogs popForViewController:vc];
+    if (model) {
+        [self loadDialogWindowIfNeeded];
+        [self.dialogWindow addDialogModel:model];
+        !model.completion ?: model.completion();
+    }
+}
+
+// MARK: - Props
+
+- (GKDialogStack *)pendingDialogs
 {
     if (!_pendingDialogs) {
-        _pendingDialogs = [NSMutableArray array];
+        _pendingDialogs = [GKDialogStack new];
     }
     return _pendingDialogs;
 }
 
-- (NSMutableArray<UIWindow *> *)pendingWindows
-{
-    if (!_pendingWindows) {
-        _pendingWindows = [NSMutableArray array];
-    }
-    return _pendingWindows;
-}
-
-- (NSMutableArray<UIWindow *> *)visibleWindows
-{
-    if (!_visibleWindows) {
-        _visibleWindows = [NSMutableArray array];
-    }
-    return _visibleWindows;
-}
-
-- (BOOL)hasVisibleWindow
-{
-    return _visibleWindows.count > 0;
-}
-
 - (BOOL)hasPendingDialog
 {
-    return _pendingDialogs.count > 0;
+    return _pendingDialogs.isNotEmpty;
 }
 
 - (BOOL)hasMultiDialog
 {
-    return self.visibleWindow.rootViewController.presentedViewController != nil;
+    return self.dialogWindow.models.count > 0;
 }
 
-- (UIWindow *)visibleWindow
-{
-    return _visibleWindows.lastObject;
-}
+// MARK: - Dialog
 
 ///创建弹窗 如果为空的时候
 - (void)loadDialogWindowIfNeeded
 {
     if(!self.dialogWindow){
         self.dialogWindow = [self createWindowWithLevel:UIWindowLevelAlert];
-        [self makeWindowKeyAndVisibleIfEnabled:self.dialogWindow];
+        [self.dialogWindow makeKeyAndVisible];
     }
 }
 
 ///当没有弹窗的时候 移除窗口
 - (void)removeDialogWindowIfNeeded
 {
-    if(self.dialogWindow){
-        if(!self.dialogWindow.rootViewController){
-            [self resignKeyWindow:self.dialogWindow];
-            self.dialogWindow = nil;
-        }
+    if(self.dialogWindow && self.dialogWindow.models.count == 0){
+        [self.dialogWindow resignKeyWindow];
+        self.dialogWindow = nil;
     }
 }
 
-- (void)showViewControllerInDialogWindow:(UIViewController *)vc completion:(void (^)(void))completion
+- (void)showDialogController:(UIViewController *)dialogController inViewController:(UIViewController *)viewController priority:(NSInteger)priority completion:(void (^)(void))completion
 {
-    [self loadDialogWindowIfNeeded];
-    if(self.dialogWindow.rootViewController){
-        GKPendingDialogModel *model = [GKPendingDialogModel new];
-        model.viewController = vc;
+    GKDialogModel *model = [GKDialogModel new];
+    model.viewController = dialogController;
+    model.requiredParentViewController = viewController;
+    model.priority = priority;
+    if (priority == NSNotFound) {
+        [self showTopDialogWithModel:model completion:completion];
+    } else {
+        [self showDialogWithModel:model completion:completion];
+    }
+}
+
+- (void)showDialog:(UIView *)dialog inViewController:(UIViewController *)viewController priority:(NSInteger)priority completion:(void (^)(void))completion
+{
+    GKDialogModel *model = [GKDialogModel new];
+    model.view = dialog;
+    model.requiredParentViewController = viewController;
+    model.priority = priority;
+    if (priority == NSNotFound) {
+        [self showTopDialogWithModel:model completion:completion];
+    } else {
+        [self showDialogWithModel:model completion:completion];
+    }
+}
+
+- (void)showDialogWithModel:(GKDialogModel*) model completion:(void (^)(void))completion
+{
+    if(self.dialogWindow.models.count > 0 || !model.displayEnabled){
         model.completion = completion;
-        [self.pendingDialogs addObject:model];
+        [self.pendingDialogs put:model];
     }else{
-        self.dialogWindow.rootViewController = vc;
+        [self loadDialogWindowIfNeeded];
+        [self.dialogWindow addDialogModel:model];
         !completion ?: completion();
     }
 }
 
-- (void)showTopViewControllerInDialogWindow:(UIViewController *)vc completion:(void (^)(void))completion
+- (void)showTopDialogWithModel:(GKDialogModel*) model completion:(void (^)(void))completion
 {
     [self loadDialogWindowIfNeeded];
-    if(self.dialogWindow.rootViewController){
-        [self.dialogWindow.rootViewController.gkTopestPresentedViewController presentViewController:vc animated:NO completion:completion];
-    }else{
-        self.dialogWindow.rootViewController = vc;
-        !completion ?: completion();
-    }
+    model.priority = NSNotFound;
+    [self.dialogWindow addDialogModel:model];
+    !completion ?: completion();
 }
 
-- (void)removeViewControllerFromDialogWindow:(UIViewController *)vc completion:(void (^)(void))completion
+- (void)removeDialogController:(UIViewController *)dialogController
 {
-    if (self.dialogWindow.rootViewController == vc) {
-        NSMutableArray *dialogs = [self pendingDialogs];
-        if(dialogs.count > 0){
-            GKPendingDialogModel *model = dialogs.lastObject;
-            self.dialogWindow.rootViewController = model.viewController;
-            [dialogs removeLastObject];
+    [self removeDialog:dialogController.view];
+}
+
+- (void)removeDialog:(UIView *)dialog
+{
+    [self.dialogWindow removeDialog:dialog];
+    if (self.dialogWindow.models.count == 0) {
+        GKDialogModel *model = [_pendingDialogs popForViewController:self.gkCurrentViewController];
+        if(model){
+            [self.dialogWindow addDialogModel:model];
+            !model.completion ?: model.completion();
         }else{
-            self.dialogWindow.rootViewController = nil;
             [self removeDialogWindowIfNeeded];
         }
-        !completion ?: completion();
-    } else {
-        [vc dismissViewControllerAnimated:NO completion:completion];
     }
 }
 
-- (UIWindow*)createWindowWithLevel:(UIWindowLevel)level
+- (GKDialogWindow*)createWindowWithLevel:(UIWindowLevel)level
 {
-    UIWindow *window = nil;
+    GKDialogWindow *window = nil;
     if(@available(iOS 13, *)){
         UIWindowScene *scene = nil;
           for(UIWindowScene *s in UIApplication.sharedApplication.connectedScenes){
@@ -172,41 +374,17 @@
               }
           }
         if(scene){
-            window = [[UIWindow alloc] initWithWindowScene:scene];
+            window = [[GKDialogWindow alloc] initWithWindowScene:scene];
         }
     }
     if(!window){
-        window = UIWindow.new;
+        window = GKDialogWindow.new;
     }
     window.frame = UIScreen.gkMainScreen.bounds;
     window.windowLevel = level;
     window.backgroundColor = UIColor.clearColor;
     
     return window;
-}
-
-- (void)makeWindowKeyAndVisibleIfEnabled:(UIWindow *)window
-{
-    if (_visibleWindows.count > 0){
-        [self.pendingWindows addObject:window];
-    } else {
-        [self.visibleWindows addObject:window];
-        [window makeKeyAndVisible];
-    }
-}
-
-- (void)resignKeyWindow:(UIWindow *)window
-{
-    [_visibleWindows removeObject:window];
-    [window resignKeyWindow];
-    
-    if (_pendingWindows.count > 0) {
-        UIWindow *window = _pendingWindows.lastObject;
-        [self.visibleWindows addObject:window];
-        
-        [_pendingWindows removeLastObject];
-        [window makeKeyAndVisible];
-    }
 }
 
 @end

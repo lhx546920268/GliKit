@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1123ACA92A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */; };
+		1123ACB22A790DE6006AF990 /* GKBaseScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */; };
 		4C0CFB3061FB9BE38BAC4629 /* Pods_GliKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */; };
 		CE01C515243EC7DD000D0268 /* GKScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C514243EC7DD000D0268 /* GKScanViewController.m */; };
 		CE01C518243EC88D000D0268 /* GKScanBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C517243EC88D000D0268 /* GKScanBoxView.m */; };
@@ -179,6 +181,10 @@
 
 /* Begin PBXFileReference section */
 		0BEDB41C20325014EA1F86BB /* Pods-GliKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.release.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.release.xcconfig"; sourceTree = "<group>"; };
+		1123ACA72A789F1A006AF990 /* GKDialogInteractiveDismisHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDialogInteractiveDismisHelper.h; sourceTree = "<group>"; };
+		1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDialogInteractiveDismisHelper.m; sourceTree = "<group>"; };
+		1123ACB02A790DE6006AF990 /* GKBaseScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseScanViewController.h; sourceTree = "<group>"; };
+		1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseScanViewController.m; sourceTree = "<group>"; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
 		AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE01C513243EC7DD000D0268 /* GKScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanViewController.h; sourceTree = "<group>"; };
@@ -526,6 +532,8 @@
 			children = (
 				CE01C513243EC7DD000D0268 /* GKScanViewController.h */,
 				CE01C514243EC7DD000D0268 /* GKScanViewController.m */,
+				1123ACB02A790DE6006AF990 /* GKBaseScanViewController.h */,
+				1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -561,6 +569,8 @@
 				CED0D40D230BECF00057D405 /* UIViewController+GKDialog.m */,
 				CE2321D82999DA8B00B99CFD /* GKDialogManager.h */,
 				CE2321D92999DA8B00B99CFD /* GKDialogManager.m */,
+				1123ACA72A789F1A006AF990 /* GKDialogInteractiveDismisHelper.h */,
+				1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */,
 			);
 			path = Dialog;
 			sourceTree = "<group>";
@@ -1377,6 +1387,7 @@
 				CED3A80B230D45A000C304B3 /* GKDataControl.m in Sources */,
 				CED3A80C230D45A000C304B3 /* GKDefaultLoadMoreControl.m in Sources */,
 				CED3A80D230D45A000C304B3 /* GKDefaultRefreshControl.m in Sources */,
+				1123ACA92A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m in Sources */,
 				CED3A80E230D45A000C304B3 /* GKLoadMoreControl.m in Sources */,
 				CED3A80F230D45A000C304B3 /* GKRefreshControl.m in Sources */,
 				CE2321DA2999DA8B00B99CFD /* GKDialogManager.m in Sources */,
@@ -1464,6 +1475,7 @@
 				CE37C676233B410100C4F196 /* UIFont+GKTheme.m in Sources */,
 				CE525DA723C704EA00EB082E /* GKLabel.m in Sources */,
 				CED0D387230BC8790057D405 /* GKPhotosPreviewViewController.m in Sources */,
+				1123ACB22A790DE6006AF990 /* GKBaseScanViewController.m in Sources */,
 				CED0D388230BC8790057D405 /* GKPhotosGridViewController.m in Sources */,
 				CED0D38D230BC8790057D405 /* GKPhotosCollection.m in Sources */,
 				CE9B66D72484F30400825F90 /* GKNavigationInteractiveTransition.m in Sources */,

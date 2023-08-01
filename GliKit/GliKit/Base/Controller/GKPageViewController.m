@@ -26,6 +26,9 @@ static char GKVisiblePageKey;
 - (void)setVisibleInPage:(BOOL)visibleInPage
 {
     objc_setAssociatedObject(self, &GKVisiblePageKey, @(visibleInPage), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (visibleInPage && [self isKindOfClass:GKBaseViewController.class] && [(GKBaseViewController*)self shouldNotifyAfterDisplay]) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerDidShowNotification object:self userInfo:@{GKShowingViewControllerKey: self}];
+    }
 }
 
 @end
@@ -329,7 +332,7 @@ static char GKVisiblePageKey;
     for(UIViewController *viewController in _pageViewControllers){
         if([viewController isKindOfClass:[GKScrollViewController class]]){
             GKScrollViewController *vc = (GKScrollViewController*)viewController;
-            vc.scrollView.scrollEnabled = enabled;
+            vc.scrollView.scrollEnabled = enabled && vc.scrollEnabled;
         }else if ([viewController isKindOfClass:[GKBaseWebViewController class]]){
             GKBaseWebViewController *web = (GKBaseWebViewController*)viewController;
             web.webView.scrollView.scrollEnabled = enabled;

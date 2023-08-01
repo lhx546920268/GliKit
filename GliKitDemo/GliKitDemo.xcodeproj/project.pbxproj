@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1119B0242A653FB300B414BD /* GKDSqliteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1119B0232A653FB300B414BD /* GKDSqliteViewController.m */; };
 		1119B0272A65402700B414BD /* GKDDataBase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1119B0262A65402700B414BD /* GKDDataBase.mm */; };
+		1123ACAC2A78A1C1006AF990 /* GKDSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACAB2A78A1C1006AF990 /* GKDSplashViewController.m */; };
+		1123ACAF2A78A39F006AF990 /* GKDGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACAE2A78A39F006AF990 /* GKDGuideViewController.m */; };
 		117E998329EE33AF009C563A /* GliKitDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117E998229EE33AF009C563A /* GliKitDemoTests.m */; };
 		11A9CD902A17731300810723 /* GKDStretchBackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A9CD8F2A17731300810723 /* GKDStretchBackgroundViewController.m */; };
 		11CCFA242A4AB35E005BFF91 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CCFA222A4AB35D005BFF91 /* TTTAttributedLabel.m */; };
@@ -97,6 +99,10 @@
 		1119B0232A653FB300B414BD /* GKDSqliteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDSqliteViewController.m; sourceTree = "<group>"; };
 		1119B0252A65402700B414BD /* GKDDataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDDataBase.h; sourceTree = "<group>"; };
 		1119B0262A65402700B414BD /* GKDDataBase.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GKDDataBase.mm; sourceTree = "<group>"; };
+		1123ACAA2A78A1C1006AF990 /* GKDSplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDSplashViewController.h; sourceTree = "<group>"; };
+		1123ACAB2A78A1C1006AF990 /* GKDSplashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDSplashViewController.m; sourceTree = "<group>"; };
+		1123ACAD2A78A39F006AF990 /* GKDGuideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDGuideViewController.h; sourceTree = "<group>"; };
+		1123ACAE2A78A39F006AF990 /* GKDGuideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDGuideViewController.m; sourceTree = "<group>"; };
 		117E998029EE33AF009C563A /* GliKitDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GliKitDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		117E998229EE33AF009C563A /* GliKitDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GliKitDemoTests.m; sourceTree = "<group>"; };
 		11A9CD8E2A17731300810723 /* GKDStretchBackgroundViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDStretchBackgroundViewController.h; sourceTree = "<group>"; };
@@ -442,6 +448,10 @@
 				CEC2D975239F8C0900F14210 /* GKDAlertViewController.xib */,
 				CEC6AF42245671E0006B22BB /* GKDialogViewController.h */,
 				CEC6AF43245671E0006B22BB /* GKDialogViewController.m */,
+				1123ACAA2A78A1C1006AF990 /* GKDSplashViewController.h */,
+				1123ACAB2A78A1C1006AF990 /* GKDSplashViewController.m */,
+				1123ACAD2A78A39F006AF990 /* GKDGuideViewController.h */,
+				1123ACAE2A78A39F006AF990 /* GKDGuideViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -824,6 +834,7 @@
 				CEDD8BAE28DC3FE4005FC383 /* GKDDynamicBannerCell.m in Sources */,
 				CEAB0530236FB17600D2A4CF /* GKDWebViewController.m in Sources */,
 				CEDD8BAB28DC3F0B005FC383 /* GKDDynamicViewController.m in Sources */,
+				1123ACAF2A78A39F006AF990 /* GKDGuideViewController.m in Sources */,
 				CEC3C84D231E59AE003ADE7A /* GKDCollectionViewSkeletonViewController.m in Sources */,
 				11A9CD902A17731300810723 /* GKDStretchBackgroundViewController.m in Sources */,
 				CEB85F56232630DA0045CB38 /* GKDNestedPageViewController.m in Sources */,
@@ -857,6 +868,7 @@
 				CEC3C842231E5612003ADE7A /* GKDSkeletonViewController.m in Sources */,
 				CE37C681233B49D500C4F196 /* GKDCollectionEmptyViewController.m in Sources */,
 				CEBBC8042499BE2400F334CC /* GKDEmitterView.m in Sources */,
+				1123ACAC2A78A1C1006AF990 /* GKDSplashViewController.m in Sources */,
 				CEE8C894231911E900E7CA75 /* AppDelegate.m in Sources */,
 				CE549B4B2481027900534D91 /* GKDTabBarController.m in Sources */,
 				CEB85F52232630560045CB38 /* GKDNestedTableViewCell.m in Sources */,

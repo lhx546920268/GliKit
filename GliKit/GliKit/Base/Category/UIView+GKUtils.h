@@ -42,6 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///get and set center.y
 @property(nonatomic, assign) CGFloat gkCenterY;
 
+///是否有透明
+@property(nonatomic, readonly) BOOL gkHasAlpha;
+
 ///通过xib加载 xib的名称必须和类的名称一致
 + (nullable instancetype)loadFromNib;
 

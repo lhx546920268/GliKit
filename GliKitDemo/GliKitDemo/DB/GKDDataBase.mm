@@ -7,33 +7,64 @@
 //
 
 #import "GKDDataBase.h"
-
 #import <GKFileManager.h>
 #import <GKAppUtils.h>
 #import <WCDBObjc/StringView.hpp>
+#import <WCDBObjc/WCDBObjc.h>
+
+NSString* const TModuleFTS3 = [NSString stringWithUTF8String:"xx"];
+NSArray *const array = @[@"", @""];
 
 @implementation GKDChatHistory
 
-//WCDB_IMPLEMENTATION(GKDChatHistory)
-//
-//WCDB_SYNTHESIZE_COLUMN(sessionId, "session_id")
-//WCDB_SYNTHESIZE_COLUMN(receiverId, "to_user_id")
-//WCDB_SYNTHESIZE_COLUMN(type, "message_type")
-//WCDB_SYNTHESIZE(content)
-//WCDB_SYNTHESIZE(uuid)
-//WCDB_SYNTHESIZE_COLUMN(time, "send_time")
-//WCDB_SYNTHESIZE_COLUMN(status, "send_status")
-//
-//WCDB_PRIMARY_AUTO_INCREMENT(sessionId)
+WCDB_IMPLEMENTATION(GKDChatHistory)
+
+WCDB_SYNTHESIZE_COLUMN(historyId, "id")
+WCDB_SYNTHESIZE_COLUMN(sessionId, "session_id")
+WCDB_SYNTHESIZE_COLUMN(receiverId, "to_user_id")
+WCDB_SYNTHESIZE_COLUMN(type, "message_type")
+WCDB_SYNTHESIZE(content)
+WCDB_SYNTHESIZE(uuid)
+WCDB_SYNTHESIZE_COLUMN(time, "send_time")
+WCDB_SYNTHESIZE_COLUMN(status, "send_status")
+
+WCDB_PRIMARY_AUTO_INCREMENT(historyId)
+WCDB_INDEX("_session_id_index", sessionId)
+WCDB_INDEX("_to_user_id_id_index", receiverId)
+WCDB_INDEX("_send_time_index", time)
+WCDB_INDEX("_send_status_index", status)
 
 @end
 
-static NSString *const GKDTableName = @"demo";
+static NSString *const GKDTableName = @"chat_history";
+
+@interface SampleFTS : NSObject<WCTTableCoding>
+@property(nonatomic, assign) int identifier;
+@property(nonatomic, strong) NSString* content;
+@property(nonatomic, strong) NSString* summary;
+WCDB_PROPERTY(identifier)
+WCDB_PROPERTY(content);
+WCDB_PROPERTY(summary)
+@end
+
+@implementation SampleFTS
+
+WCDB_IMPLEMENTATION(SampleFTS)
+
+WCDB_SYNTHESIZE(identifier)
+WCDB_SYNTHESIZE(content)
+WCDB_SYNTHESIZE(summary)
+
+WCDB_UNINDEXED(identifier) //设置identifier列不建立fts索引
+WCDB_VIRTUAL_TABLE_MODULE(WCTModuleFTS5) //设置fts版本
+WCDB_VIRTUAL_TABLE_TOKENIZE(WCTTokenizerVerbatim) //设置分词器
+
+@end
 
 @interface GKDDataBase ()
 
 ///GKDDataBase
-//@property(nonatomic, strong) WCTDatabase *db;
+@property(nonatomic, strong) WCTDatabase *db;
 
 @end
 
@@ -59,7 +90,7 @@ static NSString *const GKDTableName = @"demo";
         }
     }
     
-    return [sqliteDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sqlite", GKAppUtils.appName]];
+    return [sqliteDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sqlite.db", GKAppUtils.appName]];
 }
 
 - (instancetype)init
@@ -67,12 +98,23 @@ static NSString *const GKDTableName = @"demo";
     self = [super init];
     if (self) {
         NSString *path = [self sqlitePath];
-//        WCTDatabase *dataBase = [[WCTDatabase alloc] initWithPath:path];
-//        [dataBase createTable:GKDTableName withClass:GKDChatHistory.class];
-//
+        NSLog(@"%@", path);
+        WCTDatabase *dataBase = [[WCTDatabase alloc] initWithPath:path];
+        [dataBase traceError:^(WCTError * _Nonnull error) {
+            NSLog(@"数据库出错了");
+            NSLog(@"%@", error.message);
+        }];
+        [dataBase addTokenizer:WCTTokenizerVerbatim];
+        
+        BOOL result = [dataBase createTable:GKDTableName withClass:GKDChatHistory.class];
+        if (!result) {
+            NSLog(@"创建表失败 %@", dataBase.error);
+        }
+        [dataBase createVirtualTable:@"sampleVirtualTable" withClass:SampleFTS.class];
+
 //        WCDB::StatementCreateIndex index = WCDB::StatementCreateIndex();
 //        [dataBase execute:index.createIndex(WCDB::StringView("index_session_id")).ifNotExists().table(GKDTableName)];
-//        self.db = dataBase;
+        self.db = dataBase;
     }
     return self;
 }
@@ -89,8 +131,30 @@ static NSString *const GKDTableName = @"demo";
 
 - (BOOL)insertHistory:(GKDChatHistory*) history
 {
+//    history.isAutoIncrement = YES;
+//    BOOL result = [self.db insertObject:history intoTable:GKDTableName];
+//    if (!result) {
+//        NSLog(@"插入失败 %@", self.db.error);
+//    }
+//
+//    SampleFTS* english = [[SampleFTS alloc] init];
+//    english.identifier = 1;
+//    english.content = @"WCDB is a cross-platform database framework developed by WeChat.";
+//    english.summary = @"WCDB is an efficient, complete, easy-to-use mobile database framework used in the WeChat application. It can be a replacement for Core Data, SQLite & FMDB.";
+//
+//    SampleFTS* chinese = [[SampleFTS alloc] init];
+//    chinese.identifier = 2;
+//    chinese.content = @"WCDB 是微信开发的跨平台数据库框架";
+//    chinese.summary = @"WCDB 是微信中使用的高效、完整、易用的移动数据库框架。它可以作为 CoreData、SQLite 和 FMDB 的替代。";
+//
+//    [self.db insertObjects:@[english, chinese] intoTable:@"sampleVirtualTable"];
+//        return result;
+//    WCDB::Column tableColumn = WCDB::Column("sampleVirtualTable");
+//
+    NSArray<SampleFTS*>* objects = [self.db getObjectsOfClass:SampleFTS.class fromTable:@"sampleVirtualTable" where:SampleFTS.content.match(@"Core")];
+
     return YES;
-//    return [self.db insertObject:history intoTable:GKDTableName];
+
 //    __block BOOL result = NO;
 //    [self.dbQueue inDatabase:^(FMDatabase *db){
 //        NSString *sql = @"insert into chat_history_list(session_id,to_user_id,message_type,content,uuid,send_time,send_status) values(?,?,?,?,?,?,?)";
@@ -105,6 +169,14 @@ static NSString *const GKDTableName = @"demo";
 //    }];
 //
 //    return result;
+}
+
+- (void)dealloc
+{
+    [self.db traceError:nil];
+    [self.db close:^{
+        NSLog(@"关闭数据库");
+    }];
 }
 
 @end

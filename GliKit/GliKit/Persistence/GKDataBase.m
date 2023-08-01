@@ -75,7 +75,7 @@
 ///获取数据库地址
 - (NSString*)sqlitePath
 {
-    NSString *docDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *docDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     
     NSString *sqliteDirectory = [docDirectory stringByAppendingPathComponent:@"sqlite"];
     BOOL isDir = NO;
@@ -92,7 +92,7 @@
         }
     }
     
-    return [sqliteDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sqlite", GKAppUtils.appName]];
+    return [sqliteDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sqlite.db", GKAppUtils.appName]];
 }
 
 

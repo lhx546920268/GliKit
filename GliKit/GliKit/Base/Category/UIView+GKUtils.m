@@ -117,6 +117,14 @@
     self.center = CGPointMake(self.center.x, centerY);
 }
 
+- (BOOL)gkHasAlpha
+{
+    if (self.alpha < 1.0) return YES;
+    CGFloat alpha;
+    [self.backgroundColor getRed:nil green:nil blue:nil alpha:&alpha];
+    return alpha < 1.0;
+}
+
 + (instancetype)loadFromNib
 {
     return [[NSBundle.mainBundle loadNibNamed:[self gkNameOfClass] owner:nil options:nil] lastObject];

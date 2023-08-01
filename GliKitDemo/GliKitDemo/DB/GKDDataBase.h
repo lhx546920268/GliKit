@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GKDChatHistory : NSObject<WCTTableCoding>
 
+@property(nonatomic, assign) NSInteger historyId;
+
 ///
 @property(nonatomic, copy) NSString *sessionId;
 
@@ -35,13 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 @property(nonatomic, assign) NSInteger status;
 
-//WCDB_PROPERTY(sessionId)
-//WCDB_PROPERTY(receiverId)
-//WCDB_PROPERTY(type)
-//WCDB_PROPERTY(content)
-//WCDB_PROPERTY(uuid)
-//WCDB_PROPERTY(time)
-//WCDB_PROPERTY(status)
+WCDB_PROPERTY(historyId)
+WCDB_PROPERTY(sessionId)
+WCDB_PROPERTY(receiverId)
+WCDB_PROPERTY(type)
+WCDB_PROPERTY(content)
+WCDB_PROPERTY(uuid)
+WCDB_PROPERTY(time)
+WCDB_PROPERTY(status)
 
 @end
 

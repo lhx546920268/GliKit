@@ -48,6 +48,9 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 ///是否使用新窗口显示 使用新窗口显示可以保证 弹窗始终显示在最前面 必须在 showAsDialog 前设置
 @property(nonatomic, assign) BOOL dialogShouldUseNewWindow;
 
+///优先级 dialogShouldUseNewWindow = YES时生效 default `0`
+@property(nonatomic, assign) NSInteger dialogPriority;
+
 ///关联的窗口
 @property(nonatomic, readonly, nullable) UIWindow *dialogWindow;
 
@@ -85,16 +88,16 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 - (void)showAsDialog;
 - (void)showAsDialogAnimated:(BOOL) animated;
 
-///在指定viewController 上显示
-- (void)showAsDialogInViewController:(UIViewController *)viewController;
-- (void)showAsDialogInViewController:(UIViewController *)viewController animated:(BOOL) animated;
+///在指定viewController 上显示，当使用dialogShouldUseNewWindow时，可设置只在某个viewController上显示
+- (void)showAsDialogInViewController:(nullable UIViewController *)viewController;
+- (void)showAsDialogInViewController:(nullable UIViewController *)viewController animated:(BOOL) animated;
 
 
 /// 显示在指定viewControlelr
 /// @param viewController parent
 /// @param layoutHandler 布局回调 如果为空，则在viewController 上铺满
-- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
-- (void)showAsDialogInViewController:(UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler animated:(BOOL) animated;
+- (void)showAsDialogInViewController:(nullable UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler;
+- (void)showAsDialogInViewController:(nullable UIViewController *)viewController layoutHandler:(void(NS_NOESCAPE ^ __nullable)(UIView *view, UIView *superview)) layoutHandler animated:(BOOL) animated;
 
 ///隐藏
 - (void)dismissDialog;
@@ -107,6 +110,14 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 ///执行自定义消失动画 子类重写
 - (void)didExecuteDialogDismissCustomAnimate:(void(^ _Nullable)(BOOL finish)) completion;
 
+///一起执行的动画 子类可重写
+- (void)showAnimateAlongsideWithDialog;
+- (void)dismissAnimateAlongsideWithDialog;
+
+///弹窗动画时长 default `0.25`
+- (NSTimeInterval)showDurationForDialogAnimate:(GKDialogAnimate) animate;
+- (NSTimeInterval)dismissDurationForDialogAnimate:(GKDialogAnimate) animate;
+
 ///键盘弹出来，调整弹窗位置，子类可重写
 - (void)adjustDialogPosition;
 
@@ -116,6 +127,9 @@ typedef NS_ENUM(NSInteger, GKDialogAnimate)
 
 ///点击弹窗背景
 - (void)handleTapDialogBackground;
+
+///弹窗初始化，在这里配置参数
+- (void)onDialogInitialize;
 
 @end
 

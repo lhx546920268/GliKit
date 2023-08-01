@@ -75,6 +75,10 @@
     if(self.viewModel){
         [self.viewModel viewWillAppear:animated];
     }
+    
+    if (self.shouldNotifyAfterDisplay) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerWillShowNotification object:self userInfo:@{GKShowingViewControllerKey: self}];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -87,6 +91,10 @@
     self.displayTimes ++;
     if(self.isFisrtDisplay){
         [self viewDidFirstAppear:animated];
+    }
+    
+    if (self.shouldNotifyAfterDisplay) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerDidShowNotification object:self userInfo:@{GKShowingViewControllerKey: self}];
     }
 }
 

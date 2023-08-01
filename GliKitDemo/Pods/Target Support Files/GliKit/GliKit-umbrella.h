@@ -73,6 +73,7 @@
 #import "UIView+GKStateUtils.h"
 #import "GKBaseDefines.h"
 #import "GliKit.h"
+#import "GKDialogInteractiveDismisHelper.h"
 #import "GKDialogManager.h"
 #import "UIViewController+GKDialog.h"
 #import "UICollectionView+GKEmptyView.h"

@@ -190,7 +190,7 @@
 
 - (void)handleTapImageView
 {
-    [GKDialogViewController.new showAsDialogInViewController:self layoutHandler:nil];
+    [GKDialogViewController.new showAsDialog];
 }
 
 - (void)handleTapLabel

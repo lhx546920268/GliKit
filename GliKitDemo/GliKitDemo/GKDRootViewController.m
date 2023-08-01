@@ -15,6 +15,8 @@
 #import <objc/runtime.h>
 #import <GKPopoverMenu.h>
 #import <GKNavigationBar.h>
+#import "GKDialogViewController.h"
+#import "GKDGuideViewController.h"
 
 @interface SRRunLoopThread : NSThread
 
@@ -252,6 +254,18 @@
     [self.navigatonBar setRightItemWithTitle:@"Popover" target:self action:@selector(handlePopover)];
     
     [super initViews];
+    
+    self.shouldNotifyAfterDisplay = YES;
+    [[GKDGuideViewController new] showAsDialogInViewController:self];
+    
+    dispatch_main_after(1, ^{
+        [[GKDialogViewController new] showAsDialogInViewController:self];
+        NSLog(@"显示弹窗");
+    })
+    
+    dispatch_main_after(8, ^{
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    })
 }
 
 - (void)handlePopover
