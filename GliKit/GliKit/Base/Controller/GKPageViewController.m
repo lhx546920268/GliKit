@@ -33,6 +33,31 @@ static char GKVisiblePageKey;
 
 @end
 
+///主要是否为了平移手势是否触发，为了不影响外部嵌套的scrollView左右滑动
+@interface GKPagerScrollView : UIScrollView
+
+@end
+
+@implementation GKPagerScrollView
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer == self.panGestureRecognizer) {
+        if (self.contentOffset.x == 0) {
+            UIPanGestureRecognizer *pan = self.panGestureRecognizer;
+            CGPoint point = [pan velocityInView:self];
+            return point.x < 0;
+        } else if (self.contentSize.width > self.gkWidth && self.contentOffset.x >= self.contentSize.width - self.gkWidth) {
+            UIPanGestureRecognizer *pan = self.panGestureRecognizer;
+            CGPoint point = [pan velocityInView:self];
+            return point.x > 0;
+        }
+    }
+    return [super gestureRecognizerShouldBegin:gestureRecognizer];
+}
+
+@end
+
 @interface GKPageViewController ()<UIScrollViewDelegate>
 
 ///起始滑动位置
@@ -87,7 +112,7 @@ static char GKVisiblePageKey;
 - (void)initScrollViewIfNeeded
 {
     if (!self.scrollView) {
-        UIScrollView *scrollView = [CAPagerScrollView new];
+        UIScrollView *scrollView = [GKPagerScrollView new];
         scrollView.pagingEnabled = YES;
         scrollView.showsVerticalScrollIndicator = NO;
         scrollView.showsHorizontalScrollIndicator = NO;

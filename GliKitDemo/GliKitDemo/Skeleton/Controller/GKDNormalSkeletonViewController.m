@@ -112,12 +112,6 @@
     [self.view gkHideSkeletonWithAnimate:YES completion:nil];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    UIView *view = UIScreen.mainScreen.focusedView;
-    NSLog(@"%@", view);
-}
-
 - (void)handleTap
 {
     [UIView animateWithDuration:0.25 animations:^{
