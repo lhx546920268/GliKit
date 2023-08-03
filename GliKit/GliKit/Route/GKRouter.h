@@ -51,27 +51,21 @@ typedef UIViewController* _Nullable (^GKRouteHandler)(GKRouteConfig *config);
 ///移除拦截器
 - (void)removeInterceptor:(id<GKRouteInterceptor>) interceptor;
 
-/**
-注册一个页面
-
-@param path 页面路径
-@param handler 页面初始化回调
-*/
+/// 注册一个页面
+/// @param path 页面路径
+/// @param handler 页面初始化回调
 - (void)registerPath:(NSString*) path forHandler:(GKRouteHandler) handler;
 
-/**
- 取消注册一个页面
- 
- @param path 页面路径
- */
+/// 取消注册一个页面
+/// @param path 页面路径
 - (void)unregisterPath:(NSString*) path;
 
-/**
- 打开一个链接
- 
- @param block 用来配置的
- */
+/// 打开一个路由
+/// @param block 路由配置
 - (void)open:(void(NS_NOESCAPE ^)(GKRouteConfig* config)) block;
+
+///获取某个页面
+- (nullable UIViewController*)getViewController:(void(NS_NOESCAPE ^)(GKRouteConfig* config)) block;
 
 @end
 

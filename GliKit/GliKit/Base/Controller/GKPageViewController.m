@@ -84,22 +84,29 @@ static char GKVisiblePageKey;
     return _pageViewControllers;
 }
 
+- (void)initScrollViewIfNeeded
+{
+    if (!self.scrollView) {
+        UIScrollView *scrollView = [CAPagerScrollView new];
+        scrollView.pagingEnabled = YES;
+        scrollView.showsVerticalScrollIndicator = NO;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.alwaysBounceVertical = NO;
+        scrollView.scrollsToTop = NO;
+        scrollView.bounces = NO;
+        scrollView.delegate = self;
+        self.scrollView = scrollView;
+    }
+}
+
 - (void)initViews
 {
     if(self.shouldUseMenuBar && self.shouldSetMenuBarTopView){
-        [self.container setTopView:self.menuBar height:self.menuBarHeight];
+        [self setTopView:self.menuBar height:self.menuBarHeight];
     }
     
-    UIScrollView *scrollView = [UIScrollView new];
-    scrollView.pagingEnabled = YES;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.alwaysBounceVertical = NO;
-    scrollView.scrollsToTop = NO;
-    scrollView.bounces = NO;
-    scrollView.delegate = self;
-    self.scrollView = scrollView;
-    self.contentView = scrollView;
+    [self initScrollViewIfNeeded];
+    self.contentView = self.scrollView;
     
     [super initViews];
     

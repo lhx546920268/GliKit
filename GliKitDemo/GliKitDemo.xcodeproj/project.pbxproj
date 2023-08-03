@@ -1068,6 +1068,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1141,6 +1142,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GliKitDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = GliKitDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

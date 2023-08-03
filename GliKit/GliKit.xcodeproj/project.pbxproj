@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1123ACA92A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */; };
 		1123ACB22A790DE6006AF990 /* GKBaseScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */; };
+		11D9FC612A79E964005D5496 /* GKLRUCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D9FC602A79E964005D5496 /* GKLRUCache.m */; };
 		4C0CFB3061FB9BE38BAC4629 /* Pods_GliKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */; };
 		CE01C515243EC7DD000D0268 /* GKScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C514243EC7DD000D0268 /* GKScanViewController.m */; };
 		CE01C518243EC88D000D0268 /* GKScanBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C517243EC88D000D0268 /* GKScanBoxView.m */; };
@@ -185,6 +186,8 @@
 		1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDialogInteractiveDismisHelper.m; sourceTree = "<group>"; };
 		1123ACB02A790DE6006AF990 /* GKBaseScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseScanViewController.h; sourceTree = "<group>"; };
 		1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseScanViewController.m; sourceTree = "<group>"; };
+		11D9FC5F2A79E964005D5496 /* GKLRUCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLRUCache.h; sourceTree = "<group>"; };
+		11D9FC602A79E964005D5496 /* GKLRUCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLRUCache.m; sourceTree = "<group>"; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
 		AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE01C513243EC7DD000D0268 /* GKScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKScanViewController.h; sourceTree = "<group>"; };
@@ -923,6 +926,8 @@
 				CED0D259230BC6250057D405 /* GKWeakObjectContainer.m */,
 				CE53A3C8259B1C2D00F3EBE8 /* GKLock.h */,
 				CE53A3C9259B1C2D00F3EBE8 /* GKLock.m */,
+				11D9FC5F2A79E964005D5496 /* GKLRUCache.h */,
+				11D9FC602A79E964005D5496 /* GKLRUCache.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1444,6 +1449,7 @@
 				CED0D408230BECD00057D405 /* UITableViewCell+GKUtils.m in Sources */,
 				CEC9C327242B4A420082E631 /* GKKeyChainStore.m in Sources */,
 				CED0D440230BED690057D405 /* UITableView+GKSkeleton.m in Sources */,
+				11D9FC612A79E964005D5496 /* GKLRUCache.m in Sources */,
 				CED0D367230BC8790057D405 /* GKEmptyView.m in Sources */,
 				CED0D426230BECF20057D405 /* UIViewController+GKDialog.m in Sources */,
 				CED0D36E230BC8790057D405 /* GKPageLoadingContainer.m in Sources */,

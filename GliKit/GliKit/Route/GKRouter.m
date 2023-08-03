@@ -133,10 +133,32 @@
     }
 }
 
+- (UIViewController *)getViewController:(void (NS_NOESCAPE ^)(GKRouteConfig *config)) block
+{
+    NSParameterAssert(block != nil);
+    
+    GKRouteConfig *config = [GKRouteConfig new];
+    @try {
+        block(config);
+        if(!config.URLComponents){
+            if(config.URLString){
+                config.URLComponents = [NSURLComponents componentsWithString:config.URLString];
+            }else if(config.path){
+                config.URLComponents = [NSURLComponents componentsWithString:config.path];
+            }
+        }
+        
+        return [self viewControllerForConfig:config ignoreEmpty:YES];
+    } @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+        return nil;
+    }
+}
+
 // MARK: - ViewController
 
 
-- (UIViewController *)viewControllerForConfig:(GKRouteConfig*) config
+- (UIViewController *)viewControllerForConfig:(GKRouteConfig*) config ignoreEmpty:(BOOL) ignoreEmpty
 {
     UIViewController *viewController = nil;
     
@@ -157,7 +179,7 @@
     }
     
     if(!viewController){
-        if(!processBySelf){
+        if(!processBySelf && !ignoreEmpty){
             [self cannotFoundWithConfig:config];
         }
     }else{
@@ -233,7 +255,7 @@
         }
     }
     
-    UIViewController *viewController = [self viewControllerForConfig:config];
+    UIViewController *viewController = [self viewControllerForConfig:config ignoreEmpty:NO];
     if(!viewController){
         
         //重定向
