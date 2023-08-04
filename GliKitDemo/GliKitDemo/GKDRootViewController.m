@@ -66,7 +66,7 @@
         NSLog(@"Thread main");
         _runLoop = [NSRunLoop currentRunLoop];
         dispatch_group_leave(_waitGroup);
-        
+  
         // Add an empty run loop source to prevent runloop from spinning.
         CFRunLoopSourceContext sourceCtx = {
             .version = 0,
@@ -255,7 +255,7 @@
     
     [super initViews];
     
-    self.shouldNotifyAfterDisplay = YES;
+    self.shouldNotifyAfterVisibleChange = YES;
     [[GKDGuideViewController new] showAsDialogInViewController:self];
     
     dispatch_main_after(1, ^{

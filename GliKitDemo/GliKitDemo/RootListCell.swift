@@ -31,3 +31,9 @@ class RootListCell: GKTableViewSwipeCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+@objc enum UserType: Int {
+    
+    case member
+    case normal
+}

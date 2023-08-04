@@ -76,8 +76,8 @@
         [self.viewModel viewWillAppear:animated];
     }
     
-    if (self.shouldNotifyAfterDisplay) {
-        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerWillShowNotification object:self userInfo:@{GKShowingViewControllerKey: self}];
+    if (self.shouldNotifyAfterVisibleChange) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerVisibleWillChangeNotification object:self userInfo:@{GKVisibleViewControllerKey: self, GKVisibleKey: @YES}];
     }
 }
 
@@ -93,8 +93,8 @@
         [self viewDidFirstAppear:animated];
     }
     
-    if (self.shouldNotifyAfterDisplay) {
-        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerDidShowNotification object:self userInfo:@{GKShowingViewControllerKey: self}];
+    if (self.shouldNotifyAfterVisibleChange) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerVisibleDidChangeNotification object:self userInfo:@{GKVisibleViewControllerKey: self, GKVisibleKey: @YES}];
     }
 }
 
@@ -103,6 +103,10 @@
     [super viewWillDisappear:animated];
     if(self.viewModel){
         [self.viewModel viewWillDisappear:animated];
+    }
+    
+    if (self.shouldNotifyAfterVisibleChange) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerVisibleWillChangeNotification object:self userInfo:@{GKVisibleViewControllerKey: self, GKVisibleKey: @NO}];
     }
 }
 
@@ -113,6 +117,9 @@
         [self.viewModel viewDidDisappear:animated];
     }
     _isDisplaying = NO;
+    if (self.shouldNotifyAfterVisibleChange) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerVisibleDidChangeNotification object:self userInfo:@{GKVisibleViewControllerKey: self, GKVisibleKey: @NO}];
+    }
 }
 
 - (void)viewDidFirstAppear:(BOOL) animated

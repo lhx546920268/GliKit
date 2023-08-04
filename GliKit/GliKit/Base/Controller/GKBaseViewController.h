@@ -14,9 +14,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 ///viewController切换通知
-static NSString *const GKBaseViewControllerWillShowNotification = @"com.glikit.GKBaseViewControllerWillShowNotification";
-static NSString *const GKBaseViewControllerDidShowNotification = @"com.glikit.GKBaseViewControllerDidShowNotification";
-static NSString *const GKShowingViewControllerKey = @"showingViewController";
+static NSString *const GKBaseViewControllerVisibleWillChangeNotification = @"com.glikit.GKBaseViewControllerVisibleWillChangeNotification";
+static NSString *const GKBaseViewControllerVisibleDidChangeNotification = @"com.glikit.GKBaseViewControllerVisibleDidChangeNotification";
+static NSString *const GKVisibleViewControllerKey = @"viewController";
+static NSString *const GKVisibleKey = @"visible";
 
 @class GKContainer, GKBaseViewModel;
 
@@ -41,8 +42,8 @@ static NSString *const GKShowingViewControllerKey = @"showingViewController";
 ///是否是第一次显示
 @property(nonatomic, readonly) BOOL isFisrtDisplay;
 
-///是否需要发通知 显示的时候 default `NO`
-@property(nonatomic, assign) BOOL shouldNotifyAfterDisplay;
+///是否需要发通知 可见性改变的时候 default `NO`
+@property(nonatomic, assign) BOOL shouldNotifyAfterVisibleChange;
 
 ///显示返回按钮
 @property(nonatomic, assign) BOOL showBackItem;

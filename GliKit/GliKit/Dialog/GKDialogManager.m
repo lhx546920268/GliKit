@@ -219,7 +219,8 @@ BOOL GKViewControllerEqualOrParent(UIViewController *vc, UIViewController *compa
 {
     self = [super init];
     if (self) {
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(viewControllerDidShow:) name:GKBaseViewControllerDidShowNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(viewControllerVisibleDidChange:) name:GKBaseViewControllerVisibleDidChangeNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(viewControllerVisibleWillChange:) name:GKBaseViewControllerVisibleWillChangeNotification object:nil];
     }
     return self;
 }
@@ -231,29 +232,41 @@ BOOL GKViewControllerEqualOrParent(UIViewController *vc, UIViewController *compa
 
 // MARK: - 通知
 
-- (void)viewControllerDidShow:(NSNotification*) notification
+- (void)viewControllerVisibleDidChange:(NSNotification*) notification
 {
-    UIViewController *vc = notification.userInfo[GKShowingViewControllerKey];
-    //移除弹窗，有些弹窗只在部分界面显示
-    if (self.dialogWindow.models.count > 0) {
-        NSMutableArray *models = [NSMutableArray array];
-        for (NSInteger i = 0; i < self.dialogWindow.models.count; i ++) {
-            GKDialogModel *model = self.dialogWindow.models[i];
-            if (model.requiredParentViewController != nil && !GKViewControllerEqualOrParent(model.requiredParentViewController, vc)) {
-                [models addObject:model];
-            }
-        }
-        for (GKDialogModel *model in models) {
-            [self.dialogWindow removeDialogModel:model];
+    if ([notification.userInfo[GKVisibleKey] boolValue]) {
+        UIViewController *vc = notification.userInfo[GKVisibleViewControllerKey];
+        //显示需要的弹窗
+        GKDialogModel *model = [_pendingDialogs popForViewController:vc];
+        if (model) {
+            [self loadDialogWindowIfNeeded];
+            [self.dialogWindow addDialogModel:model];
+            !model.completion ?: model.completion();
         }
     }
-    
-    //显示需要的弹窗
-    GKDialogModel *model = [_pendingDialogs popForViewController:vc];
-    if (model) {
-        [self loadDialogWindowIfNeeded];
-        [self.dialogWindow addDialogModel:model];
-        !model.completion ?: model.completion();
+}
+
+- (void)viewControllerVisibleWillChange:(NSNotification*) notification
+{
+    if (![notification.userInfo[GKVisibleKey] boolValue]) {
+        UIViewController *vc = notification.userInfo[GKVisibleViewControllerKey];
+        //移除弹窗，有些弹窗只在部分界面显示
+        if (self.dialogWindow.models.count > 0) {
+            NSMutableArray *models = [NSMutableArray array];
+            for (NSInteger i = 0; i < self.dialogWindow.models.count; i ++) {
+                GKDialogModel *model = self.dialogWindow.models[i];
+                if (model.requiredParentViewController != nil && GKViewControllerEqualOrParent(model.requiredParentViewController, vc)) {
+                    [models addObject:model];
+                }
+            }
+            
+            if (models.count > 0) {
+                for (GKDialogModel *model in models) {
+                    [self.dialogWindow removeDialogModel:model];
+                }
+                [self removeDialogWindowIfNeeded];
+            }
+        }
     }
 }
 

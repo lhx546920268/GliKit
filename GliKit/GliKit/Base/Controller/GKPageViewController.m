@@ -26,8 +26,8 @@ static char GKVisiblePageKey;
 - (void)setVisibleInPage:(BOOL)visibleInPage
 {
     objc_setAssociatedObject(self, &GKVisiblePageKey, @(visibleInPage), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    if (visibleInPage && [self isKindOfClass:GKBaseViewController.class] && [(GKBaseViewController*)self shouldNotifyAfterDisplay]) {
-        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerDidShowNotification object:self userInfo:@{GKShowingViewControllerKey: self}];
+    if ([self isKindOfClass:GKBaseViewController.class] && [(GKBaseViewController*)self shouldNotifyAfterVisibleChange]) {
+        [NSNotificationCenter.defaultCenter postNotificationName:GKBaseViewControllerVisibleDidChangeNotification object:self userInfo:@{GKVisibleViewControllerKey: self, GKVisibleKey: @(visibleInPage)}];
     }
 }
 
