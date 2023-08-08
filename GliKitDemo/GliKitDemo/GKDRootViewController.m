@@ -262,10 +262,6 @@
         [[GKDialogViewController new] showAsDialogInViewController:self];
         NSLog(@"显示弹窗");
     })
-    
-    dispatch_main_after(8, ^{
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    })
 }
 
 - (void)handlePopover
