@@ -7,7 +7,7 @@
 //
 
 #import "GKHttpSessionManager.h"
-#import "GKHttpTaskDelegate.h"
+#import "GKTaskDelegate.h"
 #import "GKFileManager.h"
 
 @interface GKHttpSessionManager()

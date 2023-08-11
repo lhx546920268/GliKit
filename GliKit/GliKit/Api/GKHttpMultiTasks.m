@@ -8,7 +8,7 @@
 
 #import "GKHttpMultiTasks.h"
 #import "GKHttpTask.h"
-#import "GKHttpTaskDelegate.h"
+#import "GKTaskDelegate.h"
 #import "GKHttpSessionManager.h"
 #import "NSObject+GKUtils.h"
 #import "SDWebImageCompat.h"
@@ -29,11 +29,11 @@ static NSMutableSet* GKSharedContainers()
 @interface GKHttpTask(GKPrivate)
 
 ///代理
-@property(nonatomic, weak, nullable) id<GKHttpTaskDelegate> delegate;
+@property(nonatomic, weak, nullable) id<GKTaskDelegate> delegate;
 
 @end
 
-@interface GKHttpMultiTasks()<GKHttpTaskDelegate>
+@interface GKHttpMultiTasks()<GKTaskDelegate>
 
 ///任务列表
 @property(nonatomic, strong) NSMutableArray<GKHttpTask*> *tasks;
@@ -195,7 +195,7 @@ static NSMutableSet* GKSharedContainers()
     [GKSharedContainers() removeObject:self];
 }
 
-// MARK: - GKHttpTaskDelegate
+// MARK: - GKTaskDelegate
 
 - (void)taskDidComplete:(__kindof GKHttpTask *)task
 {

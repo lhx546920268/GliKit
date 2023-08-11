@@ -13,7 +13,7 @@
 #import "UIView+GKLoading.h"
 #import "SDWebImageCompat.h"
 #import "GKLock.h"
-#import "GKHttpTaskDelegate.h"
+#import "GKTaskDelegate.h"
 
 ///保存请求队列的单例
 static NSMutableSet* GKSharedTasks()
@@ -27,35 +27,10 @@ static NSMutableSet* GKSharedTasks()
     return sharedTasks;
 }
 
-///http任务状态
-typedef NS_ENUM(NSInteger, GKHttpTaskState) {
-    
-    ///准备中
-    GKHttpTaskStateReady,
-    
-    ///运行中
-    GKHttpTaskStateExecuting,
-    
-    ///已完成
-    GKHttpTaskStateCompleted,
-    
-    ///已取消
-    GKHttpTaskStateCancelled,
-};
-
 @interface GKHttpTask()
 
 ///当前任务
 @property(nonatomic, readonly) NSURLSessionTask *URLSessionTask;
-
-///锁
-@property(nonatomic, strong) GKLock *lock;
-
-///状态
-@property(nonatomic, assign) GKHttpTaskState state;
-
-///代理
-@property(nonatomic, weak, nullable) id<GKHttpTaskDelegate> delegate;
 
 @end
 
@@ -67,26 +42,10 @@ typedef NS_ENUM(NSInteger, GKHttpTaskState) {
 {
     self = [super init];
     if(self){
-        self.loadingToastDelay = 0.5;
         self.timeoutInterval = 15;
-        self.lock = [GKLock new];
     }
     
     return self;
-}
-
-- (NSString *)taskKey
-{
-    return self.name;
-}
-
-- (NSString*)name
-{
-    if(_name == nil){
-        return NSStringFromClass(self.class);
-    }
-    
-    return _name;
 }
 
 // MARK: - Handler
@@ -175,39 +134,17 @@ typedef NS_ENUM(NSInteger, GKHttpTaskState) {
     [self requestDidFail];
 }
 
-// MARK: - 状态
-
-- (BOOL)isExecuting
-{
-    return self.state == GKHttpTaskStateExecuting;
-}
-
 - (BOOL)isSuspended
 {
     return _URLSessionTask != nil && _URLSessionTask.state == NSURLSessionTaskStateSuspended;
-}
-
-- (BOOL)isCancelled
-{
-    return self.state == GKHttpTaskStateCancelled;
-}
-
-- (BOOL)isCompleted
-{
-    return self.state == GKHttpTaskStateCompleted;
 }
 
 // MARK: - 子类重写 回调
 
 - (void)onStart
 {
+    [super onStart];
     [GKSharedTasks() addObject:self];
-    if(self.shouldShowloadingToast){
-        [UIApplication.sharedApplication.keyWindow endEditing:YES];
-        if(self.view != nil){
-            [self.view gkShowLoadingToastWithText:nil delay:self.loadingToastDelay];
-        }
-    }
 }
 
 - (BOOL)onLoadData:(NSDictionary *)data
@@ -215,103 +152,28 @@ typedef NS_ENUM(NSInteger, GKHttpTaskState) {
     return YES;
 }
 
-- (void)onSuccess{}
-
-- (void)onFail{}
-
 - (void)onComplete
 {
-    if([self.delegate respondsToSelector:@selector(taskDidComplete:)]){
-        [self.delegate taskDidComplete:self];
-    }
-    
-    [self.view gkDismissLoadingToast];
+    [super onComplete];
     _URLSessionTask = nil;
     [GKSharedTasks() removeObject:self];
 }
 
 // MARK: - 外部调用方法
 
-- (void)start
+- (void)startSafe
 {
-    [self.lock lock];
-    if(self.state == GKHttpTaskStateReady) {
-        self.state = GKHttpTaskStateExecuting;
-        [self onStart];
-        [self.URLSessionTask resume];
-        if (!self.URLSessionTask) {
-            [self processError:[NSError errorWithDomain:@"GKHttpURLSesstionError" code:0 userInfo:nil]];
-        }
+    [self.URLSessionTask resume];
+    if (!self.URLSessionTask) {
+        [self processError:[NSError errorWithDomain:@"GKHttpURLSesstionError" code:0 userInfo:nil]];
     }
-    [self.lock unlock];
 }
 
-- (void)cancel
+- (void)cancelSafe
 {
-    [self.lock lock];
-    if(!self.isCancelled && !self.isCompleted){
-        self.state = GKHttpTaskStateCancelled;
-        if(self.isSuspended || self.isExecuting){
-            [_URLSessionTask cancel];
-        }
-        [self onComplete];
+    if(self.isSuspended || self.isExecuting){
+        [_URLSessionTask cancel];
     }
-    [self.lock unlock];
 }
-
-// MARK: - 内部回调
-
-///请求成功
-- (void)requestDidSuccess
-{
-    [self onSuccess];
-    if([self.delegate respondsToSelector:@selector(taskDidSuccess:)]){
-        [self.delegate taskDidSuccess:self];
-    }
-    //防止解析错误
-    @try {
-        [self onSuccess];
-        if([self.delegate respondsToSelector:@selector(taskDidSuccess:)]){
-            [self.delegate taskDidSuccess:self];
-        }
-    } @catch (NSException *exception) {
-        _isDataParseFail = YES;
-        [self onDataParseFail];
-        [self requestDidFail];
-        return;
-    }
-    
-    dispatch_main_async_safe(^{
-        [self.lock lock];
-        if(!self.isCancelled){
-            self.state = GKHttpTaskStateCompleted;
-            !self.successHandler ?: self.successHandler(self);
-            [self onComplete];
-        }
-        [self.lock unlock];
-    })
-}
-
-- (void)onDataParseFail{}
-
-///请求失败
-- (void)requestDidFail
-{
-    dispatch_main_async_safe(^{
-        [self.lock lock];
-        if(!self.isCancelled){
-            self.state = GKHttpTaskStateCompleted;
-            !self.willFailHandler ?: self.willFailHandler(self);
-            [self onFail];
-            !self.failHandler ?: self.failHandler(self);
-            if([self.delegate respondsToSelector:@selector(taskDidFail:)]){
-                [self.delegate taskDidFail:self];
-            }
-            [self onComplete];
-        }
-        [self.lock unlock];
-    })
-}
-
 
 @end

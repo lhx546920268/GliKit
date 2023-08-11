@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1123ACA92A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */; };
 		1123ACB22A790DE6006AF990 /* GKBaseScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */; };
+		119B53622A84D66D00411C92 /* GKBaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 119B53612A84D66D00411C92 /* GKBaseTask.m */; };
 		11D9FC612A79E964005D5496 /* GKLRUCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D9FC602A79E964005D5496 /* GKLRUCache.m */; };
 		4C0CFB3061FB9BE38BAC4629 /* Pods_GliKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5A7ADB3093E8F667CC9CB8 /* Pods_GliKit.framework */; };
 		CE01C515243EC7DD000D0268 /* GKScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01C514243EC7DD000D0268 /* GKScanViewController.m */; };
@@ -186,6 +187,8 @@
 		1123ACA82A789F1A006AF990 /* GKDialogInteractiveDismisHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDialogInteractiveDismisHelper.m; sourceTree = "<group>"; };
 		1123ACB02A790DE6006AF990 /* GKBaseScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseScanViewController.h; sourceTree = "<group>"; };
 		1123ACB12A790DE6006AF990 /* GKBaseScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseScanViewController.m; sourceTree = "<group>"; };
+		119B53602A84D66D00411C92 /* GKBaseTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKBaseTask.h; sourceTree = "<group>"; };
+		119B53612A84D66D00411C92 /* GKBaseTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKBaseTask.m; sourceTree = "<group>"; };
 		11D9FC5F2A79E964005D5496 /* GKLRUCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKLRUCache.h; sourceTree = "<group>"; };
 		11D9FC602A79E964005D5496 /* GKLRUCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKLRUCache.m; sourceTree = "<group>"; };
 		9CC83CF7E28F562EE2FD6D85 /* Pods-GliKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliKit.debug.xcconfig"; path = "Target Support Files/Pods-GliKit/Pods-GliKit.debug.xcconfig"; sourceTree = "<group>"; };
@@ -340,7 +343,7 @@
 		CED0D282230BC6250057D405 /* GKDataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKDataBase.h; sourceTree = "<group>"; };
 		CED0D283230BC6250057D405 /* GKFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKFileManager.m; sourceTree = "<group>"; };
 		CED0D284230BC6250057D405 /* GKDataBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKDataBase.m; sourceTree = "<group>"; };
-		CED0D286230BC6250057D405 /* GKHttpTaskDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKHttpTaskDelegate.h; sourceTree = "<group>"; };
+		CED0D286230BC6250057D405 /* GKTaskDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKTaskDelegate.h; sourceTree = "<group>"; };
 		CED0D287230BC6250057D405 /* GKHttpTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKHttpTask.h; sourceTree = "<group>"; };
 		CED0D288230BC6250057D405 /* GKHttpMultiTasks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GKHttpMultiTasks.m; sourceTree = "<group>"; };
 		CED0D289230BC6250057D405 /* GKHttpSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GKHttpSessionManager.h; sourceTree = "<group>"; };
@@ -1021,8 +1024,10 @@
 				CED0D28C230BC6250057D405 /* GKHttpSessionManager.m */,
 				CED0D287230BC6250057D405 /* GKHttpTask.h */,
 				CED0D28B230BC6250057D405 /* GKHttpTask.m */,
-				CED0D286230BC6250057D405 /* GKHttpTaskDelegate.h */,
+				CED0D286230BC6250057D405 /* GKTaskDelegate.h */,
 				CE21683E2733964E00DADC23 /* GKCancelableTask.h */,
+				119B53602A84D66D00411C92 /* GKBaseTask.h */,
+				119B53612A84D66D00411C92 /* GKBaseTask.m */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -1488,6 +1493,7 @@
 				CECE565523A88387007A96C4 /* GKButton.m in Sources */,
 				CED0D38E230BC8790057D405 /* GKPhotosOptions.m in Sources */,
 				CED0D38F230BC8790057D405 /* GKPhotosListCell.m in Sources */,
+				119B53622A84D66D00411C92 /* GKBaseTask.m in Sources */,
 				CED0D402230BECD00057D405 /* UICollectionReusableView+GKUtils.m in Sources */,
 				CED0D390230BC8790057D405 /* GKPhotosGridCell.m in Sources */,
 				CE549B482480E4B400534D91 /* GKTabBar.m in Sources */,
