@@ -48,12 +48,20 @@ iOS 基础框架
 3、	二维码/条形码扫描，支持摄像头扫码和从相册获取图片识别
 
 4、	倒计时，可防止app进入后台时，计时器被系统终止产生的问题
+
 5、 路由组件`GKRouter`，支持URL参数和对象参数，支持界面跳转动画配置，支持拦截器和重定向
+
 6、嵌套滑动组件`NestedScroll`，支持垂直方向的两个`UIScrollView`嵌套，通过分类的方式实现，不需要继承任何类，只要配置`ParentScrollView`和`ChildScrollView`的属性即可，支持一个`Parent`和多个`Child`
+
 7、条形菜单组件`GKMenuBar`，支持高度自定义
+
 8、气泡弹窗组件`GKPopover`，支持高度自定义
+
 9、骨架层`Skeleton`，通过分类的方式实现，支持任意View
+
 10、侧滑删除组件`Swipe`，支持`UITableView`和`UICollectionView`
+
+11、交错布局组件`GKCollectionViewStaggerLayout`，支持大小不一`Item`错乱显示，支持`Header`置顶悬浮
 
 ## 6. 第三方组件
 1、	http请求框架AFNetworking
