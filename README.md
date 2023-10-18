@@ -1,6 +1,6 @@
 # GliKit
 
-iOS 基础框架
+iOS 基础框架，GliKt是基础组件库，GliKitDemo是测试Demo
 
 使用
 
