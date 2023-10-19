@@ -51,17 +51,18 @@ iOS 基础框架，GliKt是基础组件库，GliKitDemo是测试Demo
 
 5、 路由组件`GKRouter`，支持URL参数和对象参数，支持界面跳转动画配置，支持拦截器和重定向
 
-6、嵌套滑动组件`NestedScroll`，支持垂直方向的两个`UIScrollView`嵌套，通过分类的方式实现，不需要继承任何类，只要配置`ParentScrollView`和`ChildScrollView`的属性即可，支持一个`Parent`和多个`Child`
+6、 嵌套滑动组件`NestedScroll`，支持垂直方向的两个`UIScrollView`嵌套，通过分类的方式实现，不需要继承任何类，只要配置`ParentScrollView`和`ChildScrollView`的属性即可，支持一个`Parent`和多个`Child`
 
-7、条形菜单组件`GKMenuBar`，支持高度自定义
+7、 条形菜单组件`GKMenuBar`，支持高度自定义
 
-8、气泡弹窗组件`GKPopover`，支持高度自定义
+8、 气泡弹窗组件`GKPopover`，支持高度自定义
 
-9、骨架层`Skeleton`，通过分类的方式实现，支持任意View
+9、 骨架层`Skeleton`，通过分类的方式实现，支持任意View
 
-10、侧滑删除组件`Swipe`，支持`UITableView`和`UICollectionView`
+10、 侧滑删除组件`Swipe`，支持`UITableView`和`UICollectionView`
 
-11、交错布局组件`GKCollectionViewStaggerLayout`，支持大小不一`Item`错乱显示，支持`Header`置顶悬浮
+11、 交错布局组件`GKCollectionViewStaggerLayout`，支持大小不一`Item`错乱显示，支持`Header`置顶悬浮
+12、 `GKKVOHelper ` `KVO`组件，支持`Block`的方式，支持同一个属性多个监听，支持同时监听多个属性，自动管理生命周期，让开发者不再需要管理`KVO`的移除，避免崩溃问题
 
 ## 6. 第三方组件
 1、	http请求框架AFNetworking
